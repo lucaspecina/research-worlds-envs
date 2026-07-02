@@ -151,6 +151,14 @@ construcción verificado; suite 85 verde) → **(2)** calibrar `c_F` mínimo-suf
 congelar → **(3)** P2-v1 con el par de control v0/v1 → **(4)** P3 → **(5)** P4 + banda de
 sensibilidad.
 
+**Preparación del paso 2 (v0.33, HECHA)**: brief de v0 ✅ (excepción de bootstrap
+registrada; self-check anti-susurro ✓) · **ladder de v1 ✅** (`make_ladder_fixtures.py`:
+7 rungs 2–8, determinístico byte-exacto, ablaciones desde meta, rationale por par;
+smoke 7/7 + momentos del oráculo verificados vs verdad) · `battery_derived` verificado
+NO texto-derivado (el rival (c) no entra a `build_standard_rivals`) · **falta: grilla
+de calibración** (correcciones de Lucas pendientes → re-presentar → verbatim al log →
+barrido).
+
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
 **(d-exp)** (presupuesto experimental estandarizado y scripteado, acceso igualado al agente)
