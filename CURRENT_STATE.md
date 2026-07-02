@@ -18,13 +18,14 @@ Copia verificada: suite completa verde en venv fresco. Detalle en Decision Log v
 certificados) completos y verdes.** `pip install -e .[dev,agent,report]` + `pytest` →
 **86 verdes, 2 skip** (tests LLM opt-in; correr con `RUN_LLM_TESTS=1`). Python 3.13.
 
-**Última sesión (v0.32)**: migración al repo nuevo (arriba) + sincronización de headers —
-ARCHITECTURE v0.5→v0.6, CLAUDE.md v0.30→v0.32, extra `[report]` en la instrucción de install.
-Antes (v0.30–v0.31): auditoría código-vs-docs por iniciativa propia (deriva v0.18→v0.29
-corregida + checklist de supersesión + certificados auto-descriptivos `RivalAccess`) y cierres
-v0.31 (banda fuera-de-registro 20–35% canonizada; protocolo de calibración de `c_F`
-PRE-REGISTRADO). **Próximo paso de trabajo: (2) calibrar `c_F` mínimo-suficiente** (ver
-"Orden del slice" abajo).
+**Última sesión (v0.32–v0.33)**: migración al repo nuevo (arriba) + sincronización de headers
++ **hardening post-re-skin** (v0.33): trazabilidad post-skin verificada (cláusula de v1
+verbatim ✓), **brief de v0 autorado** (misma cláusula/skin que v1; marker limpio y en la
+fuente barata), footnotes de procedencia de artefactos semánticos pre-skin (abajo), y **lint
+de headers + trazabilidad en CI** (`tests/test_doc_headers.py`). Antes (v0.30–v0.31):
+auditoría código-vs-docs + cierres v0.31 (banda 20–35% canonizada; protocolo de calibración
+de `c_F` PRE-REGISTRADO). **Próximo paso de trabajo: (2) calibrar `c_F` mínimo-suficiente**
+(ver "Orden del slice" abajo; la grilla la detalla Lucas antes del verbatim al log).
 
 - `wager/contracts/` — contratos Pydantic v2 (world, case, episode, reports).
 - `wager/reward/` — **zona cero-LLM** (allowlist de imports en CI + no importa
@@ -66,6 +67,10 @@ Fixtures de la escalera intactos.
 
 ## Resultados del Slice 2 (C2 + C3, Decision Log v0.15–v0.16)
 
+> **Footnote de procedencia (v0.33)**: E0/E0.5 y la firma conductual se jugaron contra los
+> briefs PRE-skin (re-skin 2026-07-02). Historia válida; NO comparable con episodios futuros
+> sin re-correr contra el brief actual.
+
 - **C2**: naive R=0.044 vs canonical R=1.000 por el juego real (investigar gana).
 - **E0** (gpt-5.4): R=0.895, 4 turnos — jugable; 1 submit falló humo y se corrigió.
 - **E0.5 (corregido, seeds arreglados)**: gpt-5.4 R∈{0.000, 0.960}, DeepSeek-V3.2
@@ -96,7 +101,9 @@ Pre-registración v0.17 (predicciones dummy/Latent ANTES de correr). Hecho:
     investigar (a), no retunear). El acceso de cada rival viaja ahora EN el
     `certificates.json` y el dossier (certificados auto-descriptivos).
 - **Rival (c) panel ✅** (LLM-first milestone, `rival_c_panel.py`): 3/3 LLMs frescos
-  compilan a programa ejecutable; el prior aterriza < ingenuo (R≈0).
+  compilan a programa ejecutable; el prior aterriza < ingenuo (R≈0). **Footnote (v0.33)**:
+  elicitado del brief PRE-skin (ídem brecha de prior 1.011 de v0.19); el rival (c) no se
+  persiste → **re-elicitar el panel con el brief actual antes de cualquier reuso**.
 
 **Hecho desde entonces (v0.20–v0.24)**:
 1. ✅ `battery_builder` (candidatos + `disagreement_norm`=D/D_MAX + piso de elegibilidad +
@@ -175,7 +182,9 @@ funcional acota c_F por arriba → sándwich = hallazgo); **grilla de calibraci�
 batería derivada es función de c_F → circular; P3 queda como validación independiente);
 Latent v0 se AUTORA como caso (brief+meta, mismo funcional que v1). Banda ×2/÷2 al cierre.
 
-**Después**: detector de contaminación v1 = contraste-gemelo (sobre el dummy). Stretch: E0-Latent.
+**Después**: detector de contaminación v1 = contraste-gemelo (sobre el dummy) — su
+pre-registro se **RE-DECLARA contra el skin actual** antes de implementarlo (v0.33).
+Stretch: E0-Latent.
 
 ## Qué falta (más allá del slice)
 
