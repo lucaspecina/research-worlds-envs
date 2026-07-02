@@ -1,19 +1,30 @@
 # CURRENT_STATE — WAGER
 
 > Estado vivo del repo: qué corre hoy, qué falta. Lo mantiene Claude Code al día en cada
-> sesión de trabajo (regla: NORTH_STAR §0.10). Última actualización: **2026-07-01**.
+> sesión de trabajo (regla: NORTH_STAR §0.10). Última actualización: **2026-07-02**.
+
+## Migración de repo (2026-07-02)
+
+El proyecto vive ahora en `research-worlds-envs`
+(github.com/lucaspecina/research-worlds-envs). La **historia git previa** — incluidos los
+hashes de pre-registro citados en el Decision Log (`30365fa`, `255d781`, `7ccaf23`) — queda
+en el repo viejo `../wager/.git` (NO borrar); los **traces de episodios** (E0/E0.5) están
+archivados en `../wager_traces_archive/` (fuera del repo por diseño, ver `.gitignore`).
+Copia verificada: suite completa verde en venv fresco. Detalle en Decision Log v0.32.
 
 ## Qué corre hoy
 
 **Slice 1 (reward path), Slice 2 (harness C1+C2+C3) y slice de derivación (rivales+batería+
-certificados) completos y verdes.** `pip install -e .[dev,agent]` + `pytest` → **86 verdes,
-2 skip** (tests LLM opt-in; correr con `RUN_LLM_TESTS=1`). Python 3.13.
+certificados) completos y verdes.** `pip install -e .[dev,agent,report]` + `pytest` →
+**86 verdes, 2 skip** (tests LLM opt-in; correr con `RUN_LLM_TESTS=1`). Python 3.13.
 
-**Última sesión (v0.30)**: auditoría código-vs-docs por iniciativa propia → deriva doc-código
-v0.18→v0.29 corregida + checklist de supersesión + certificados auto-descriptivos (`RivalAccess`).
-Antes (v0.26–v0.29): decisión (A) funcionales de stakes (spec-first, triangulada), score
-combinado implementado (paso 1), acceso de rivales (β) en dos modos (d-obs)/(d-exp). **Próximo
-paso de trabajo: (2) calibrar `c_F` mínimo-suficiente** (ver "Orden del slice" abajo).
+**Última sesión (v0.32)**: migración al repo nuevo (arriba) + sincronización de headers —
+ARCHITECTURE v0.5→v0.6, CLAUDE.md v0.30→v0.32, extra `[report]` en la instrucción de install.
+Antes (v0.30–v0.31): auditoría código-vs-docs por iniciativa propia (deriva v0.18→v0.29
+corregida + checklist de supersesión + certificados auto-descriptivos `RivalAccess`) y cierres
+v0.31 (banda fuera-de-registro 20–35% canonizada; protocolo de calibración de `c_F`
+PRE-REGISTRADO). **Próximo paso de trabajo: (2) calibrar `c_F` mínimo-suficiente** (ver
+"Orden del slice" abajo).
 
 - `wager/contracts/` — contratos Pydantic v2 (world, case, episode, reports).
 - `wager/reward/` — **zona cero-LLM** (allowlist de imports en CI + no importa
