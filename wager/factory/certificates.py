@@ -120,11 +120,12 @@ def per_regime_reading(
         except Exception:  # noqa: BLE001
             pred, dist, crashed = None, d_max, True
         real = world_sample(ns, params.n_samples, item.seed_world)
+        # generic regime keys (v0.39: the reading recited the dummy's schema)
         row = {
             "idx": idx,
             "weight": item.weight,
-            "dose": item.regime.config.get("dose"),
-            "cohort": item.regime.context.get("cohort", 0.0),
+            "config": dict(item.regime.config),
+            "context": dict(item.regime.context),
             "distance": float(dist),
             "d_max": float(d_max),
             "crashed": crashed,

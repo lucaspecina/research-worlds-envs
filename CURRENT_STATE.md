@@ -176,9 +176,20 @@ CONGELADO** en ScoringParams (campo nuevo) de v0/v1 + lint de suite en el mismo 
 corrida confirmatoria bajo el spec final (banda asimétrica pre-declarada: ÷2 falla el piso
 por definición; ×2 debe pasar sin inversiones). Replicación del punto ciego v0.25 anotada
 (0.952 ≈ 0.952, otra grilla/skin). Pregunta κ-stakes viva → evidencia (P2/E2; gaps
-comprimidos o gradiente insuficiente → do-over registrado). **Próximo: PASO 3 (P2-v1)** —
-(d-obs)/(d-exp) estandarizada con `RivalAccess` (generalizar factory: `cohort` hardcodeado
-→ context var por caso) + tabla 2×2 pre-registrada, gaps en AMBAS unidades (R y |ΔP|).
+comprimidos o gradiente insuficiente → do-over registrado).
+
+**GENERALIZACIÓN DE LA FACTORY (v0.39, HECHA)**: la clase "recita el schema del dummy"
+matada como clase — `CaseSchema` desde meta (decisión/contexto/columnas/rangos), refit
+del twin = Gauss-Newton sobre knobs DECLARADOS de operadores no-ablados (self-describing
+`refit_knobs`), miembro `logistic_ctx_no_latent` (equidad v0.29), sampler/estratos/dedup
+del builder y dossier de certificados genéricos. **Test estructural + audit-guard en CI**
+(`test_factory_generalization.py`) — y ya cazó su primer incidente: fallback de 3 niveles
+de contexto → no-latente débil → gap del dummy 0.062→0.234; fix por declaración
+(`experimentable_range` en el meta del dummy) → ~0.06 de vuelta. Suite **98 verdes**.
+**Próximo: correr P2 (tabla 2×2 v0/v1)** — pre-registro COMPLETO en v0.39: grilla fresca
+compartida (seeds 95001+, mix hasta ±2.5), (d-exp) estandarizada (30 celdas, 18.000
+unidades ≤ presupuesto), gaps en AMBAS unidades (R y |ΔP|), árbol de interpretación de
+4 celdas FIRMADO antes de los números.
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,

@@ -15,6 +15,7 @@ from wager.factory.certificates import compute_certificates
 from wager.factory.derive_rivals import (
     best_no_latent,
     capacity_ladder,
+    case_schema,
     experimental_grid,
     observational_pool,
     rival_naive,
@@ -31,16 +32,15 @@ def test_dummy_theory_gap_small_mechanistic_gap_large():
     world_sample = load_world_sample(CASE_DIR)
     source = list(meta.episode.observe_sources.values())[0]
 
+    schema = case_schema(meta)  # v0.39: everything from the declared meta
     pool = observational_pool(world_sample, source, 4000, 50001)
     # the THEORY-GAP reference must be the BEST no-latent -> dense, smooth grid
-    train = experimental_grid(
-        world_sample, "dose", list(range(0, 11)), [-1.5, -0.75, 0.0, 0.75, 1.5], 400, 60001
-    )
-    naive = rival_naive(pool)
-    no_latent = best_no_latent(train, pool)
+    train = experimental_grid(world_sample, schema, list(range(0, 11)), 400, 60001)
+    naive = rival_naive(pool, schema)
+    no_latent = best_no_latent(train, pool, schema)
     pool_train = pool.copy()
-    pool_train["cohort"] = 0.0
-    associational = capacity_ladder(pool_train, pool)
+    pool_train[schema.context] = 0.0
+    associational = capacity_ladder(pool_train, pool, schema)
 
     ws = WorldSide(world_sample, battery, meta.column_names, meta.scoring.n_samples)
     theory_access = RivalAccess(mode="experimental", n_rows=len(train), seed0=60001,
@@ -69,7 +69,7 @@ def test_certificate_access_guard():
     world_sample = load_world_sample(CASE_DIR)
     source = list(meta.episode.observe_sources.values())[0]
     pool = observational_pool(world_sample, source, 200, 50001)
-    naive = rival_naive(pool)
+    naive = rival_naive(pool, case_schema(meta))
     ws = WorldSide(world_sample, battery, meta.column_names, meta.scoring.n_samples)
     obs = RivalAccess(mode="observational", n_rows=200, seed0=1)
     exp = RivalAccess(mode="experimental", n_rows=200, seed0=2, grid="g")

@@ -30,19 +30,30 @@ def _ns(r: Regime) -> SimpleNamespace:
     return SimpleNamespace(config=dict(r.config), context=dict(r.context), horizon=r.horizon)
 
 
-def sample_candidates(rng, n: int, dose_lo=0.0, dose_hi=10.0) -> list[Regime]:
+def _stakes_vars(stakes: StakesSpec) -> tuple[str, str]:
+    """Decision + context variable names from the DECLARED stakes (v0.39: the
+    candidate sampler used to recite the dummy schema names as literals)."""
+    decision = stakes.decision_variables[0]
+    ctx_keys = sorted(stakes.context_relevance.keys())
+    if len(ctx_keys) != 1:
+        raise ValueError(f"v0 sampler expects ONE declared context var, got {ctx_keys}")
+    return decision, ctx_keys[0]
+
+
+def sample_candidates(rng, n: int, stakes: StakesSpec, dose_lo=0.0, dose_hi=10.0) -> list[Regime]:
+    decision, ctx = _stakes_vars(stakes)
     regimes = []
     for _ in range(n):
         u = rng.random()
         if u < 0.65:  # interventional, in-surface
-            regimes.append(Regime(config={"dose": float(rng.uniform(dose_lo, dose_hi))},
-                                   context={"cohort": float(rng.uniform(-1.5, 1.5))}))
-        elif u < 0.80:  # off-support: extreme cohort (outside the historical record)
+            regimes.append(Regime(config={decision: float(rng.uniform(dose_lo, dose_hi))},
+                                   context={ctx: float(rng.uniform(-1.5, 1.5))}))
+        elif u < 0.80:  # off-support: extreme context (outside the historical record)
             sign = 1.0 if rng.random() < 0.5 else -1.0
-            regimes.append(Regime(config={"dose": float(rng.uniform(dose_lo, dose_hi))},
-                                   context={"cohort": float(sign * rng.uniform(1.5, 2.5))}))
+            regimes.append(Regime(config={decision: float(rng.uniform(dose_lo, dose_hi))},
+                                   context={ctx: float(sign * rng.uniform(1.5, 2.5))}))
         else:  # observational
-            regimes.append(Regime(config={}, context={"cohort": float(rng.uniform(-1.0, 1.0))}))
+            regimes.append(Regime(config={}, context={ctx: float(rng.uniform(-1.0, 1.0))}))
     return regimes
 
 
@@ -124,7 +135,8 @@ def build_battery(
     dedup_radius: float = 0.0,
 ) -> Battery:
     rng = np.random.default_rng(seed)
-    candidates = sample_candidates(rng, n_candidates)
+    candidates = sample_candidates(rng, n_candidates, stakes)
+    decision, ctx = _stakes_vars(stakes)
     samplers = [world_sample, *rivals]
 
     scored = []
@@ -134,22 +146,22 @@ def build_battery(
             continue  # item does not separate truth from null -> non-discriminating
         scored.append((stakes_relevance(r, stakes) * dis, r))
 
-    # dose-stratified top-K (force coverage across the dose range) + audit tail
+    # decision-stratified top-K (force coverage across the decision range) + audit tail
     def _stratum(r: Regime) -> str:
-        if "dose" not in r.config:
+        if decision not in r.config:
             return "obs"
-        return f"dose{int(min(r.config['dose'], 9.999) // 2.5)}"
+        return f"dec{int(min(r.config[decision], 9.999) // 2.5)}"
 
     def _too_close(r: Regime, chosen: list) -> bool:
-        # diversity/dedup radius in (dose, cohort) space (Decision Log v0.24):
+        # diversity/dedup radius in (decision, context) space (Decision Log v0.24):
         # avoid near-duplicate probes (e.g. the dose 1.9-2.9 cluster)
         if dedup_radius <= 0:
             return False
-        d = r.config.get("dose", -5.0)
-        c = r.context.get("cohort", 0.0)
+        d = r.config.get(decision, -5.0)
+        c = r.context.get(ctx, 0.0)
         for _, rr in chosen:
-            dd = rr.config.get("dose", -5.0)
-            cc = rr.context.get("cohort", 0.0)
+            dd = rr.config.get(decision, -5.0)
+            cc = rr.context.get(ctx, 0.0)
             if ((d - dd) ** 2 + (c - cc) ** 2) ** 0.5 < dedup_radius:
                 return True
         return False

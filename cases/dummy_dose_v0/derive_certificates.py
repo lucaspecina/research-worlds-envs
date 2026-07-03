@@ -15,6 +15,7 @@ from wager.factory.case_loader import load_battery, load_meta, load_world_sample
 from wager.factory.certificates import compute_certificates, per_regime_reading
 from wager.factory.derive_rivals import (
     best_no_latent,
+    case_schema,
     capacity_ladder,
     experimental_grid,
     observational_pool,
@@ -33,27 +34,28 @@ def main():
     params = meta.scoring
     source = list(meta.episode.observe_sources.values())[0]
 
+    schema = case_schema(meta)  # v0.39: everything from the declared meta
     N_POOL, POOL_SEED = 4000, 50001
     pool = observational_pool(world_sample, source, N_POOL, POOL_SEED)
     # dense, smooth coverage of the control surface (a capable rival's experiments)
-    DOSE_LEVELS = list(range(0, 11))
-    COHORTS = [-1.5, -0.75, 0.0, 0.75, 1.5]
+    DOSE_LEVELS = list(range(int(schema.lo), int(schema.hi) + 1))
+    COHORTS = list(schema.ctx_levels)
     N_TRAIN, TRAIN_SEED = 400, 60001
-    train = experimental_grid(world_sample, "dose", DOSE_LEVELS, COHORTS, N_TRAIN, TRAIN_SEED)
+    train = experimental_grid(world_sample, schema, DOSE_LEVELS, N_TRAIN, TRAIN_SEED)
 
-    naive = rival_naive(pool)
-    no_latent = best_no_latent(train, pool)  # full data access (incl. experiments)
+    naive = rival_naive(pool, schema)
+    no_latent = best_no_latent(train, pool, schema)  # full data access (incl. experiments)
     # associational baseline = best no-latent fit on OBSERVATIONAL data ONLY
     pool_train = pool.copy()
-    pool_train["cohort"] = 0.0  # the observational source is cohort 0
-    associational = capacity_ladder(pool_train, pool)
+    pool_train[schema.context] = 0.0  # the observational source sits at context 0
+    associational = capacity_ladder(pool_train, pool, schema)
 
     # self-describing access (Decision Log v0.30). theory gap = vs PROTO-(d-exp):
     # the ad-hoc do(dose) grid below; standardized=False until the v0.29 budget
     # lands (paso 3). mechanistic gap = vs (a)/(d-obs): the observational pool.
     theory_access = RivalAccess(
         mode="experimental", n_rows=N_TRAIN * len(DOSE_LEVELS) * len(COHORTS), seed0=TRAIN_SEED,
-        grid=f"do(dose) x {len(DOSE_LEVELS)} levels x {len(COHORTS)} cohorts (ad-hoc, pre-standard)",
+        grid=f"do({schema.decision}) x {len(DOSE_LEVELS)} levels x {len(COHORTS)} contexts (ad-hoc, pre-standard)",
         standardized=False,
     )
     mechanistic_access = RivalAccess(
@@ -111,8 +113,9 @@ def main():
     print(f"  crashes: {crashes}/{len(rows)}  (theory gap is from HONEST distances, not D_MAX)")
     worst = sorted(rows, key=lambda r: -r["distance"])[:4]
     for r in worst:
-        d = "obs" if r["dose"] is None else f"{r['dose']:.0f}"
-        print(f"  item {r['idx']:>2} dose={d:>3} coh={r['cohort']:+.1f} w={r['weight']:.2f} "
+        d = "obs" if not r["config"] else f"{next(iter(r['config'].values())):.0f}"
+        c = next(iter(r["context"].values()), 0.0)
+        print(f"  item {r['idx']:>2} dec={d:>3} ctx={c:+.1f} w={r['weight']:.2f} "
               f"dist={r['distance']:.4f}  truth_out={r.get('truth_outcome_mean', float('nan')):.2f} "
               f"nolat_out={r.get('rival_outcome_mean', float('nan')):.2f}")
 
