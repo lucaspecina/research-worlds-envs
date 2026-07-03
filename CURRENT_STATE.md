@@ -151,13 +151,18 @@ construcción verificado; suite 85 verde) → **(2)** calibrar `c_F` mínimo-suf
 congelar → **(3)** P2-v1 con el par de control v0/v1 → **(4)** P3 → **(5)** P4 + banda de
 sensibilidad.
 
-**Preparación del paso 2 (v0.33, HECHA)**: brief de v0 ✅ (excepción de bootstrap
+**Preparación del paso 2 (v0.33–v0.34, HECHA)**: brief de v0 ✅ (excepción de bootstrap
 registrada; self-check anti-susurro ✓) · **ladder de v1 ✅** (`make_ladder_fixtures.py`:
 7 rungs 2–8, determinístico byte-exacto, ablaciones desde meta, rationale por par;
 smoke 7/7 + momentos del oráculo verificados vs verdad) · `battery_derived` verificado
-NO texto-derivado (el rival (c) no entra a `build_standard_rivals`) · **falta: grilla
-de calibración** (correcciones de Lucas pendientes → re-presentar → verbatim al log →
-barrido).
+NO texto-derivado (el rival (c) no entra a `build_standard_rivals`) · **grilla de
+calibración PRE-REGISTRADA verbatim ✅** (Decision Log v0.34: 27 ítems, bandas en ambos
+ejes contra el registro histórico [dosis central-95% = 2.00–8.46], 27.9% fuera-de-registro,
+pesos = `stakes_relevance` del builder, `experimentable_range` de mix declarado en meta
+v0/v1, CV pre-fijado) + enmiendas pre-ejecución: línea base por-rung (B), gate (ii) de
+heterogeneidad sobre el ORÁCULO (C, principio momento-calzado → ARCHITECTURE §7), bug del
+refit del gemelo (b) registrado (D, gate antes de P3; NO bloquea el barrido). **Falta:
+implementar y correr el barrido** (script + resultados al log).
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
