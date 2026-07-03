@@ -199,8 +199,17 @@ descartado); columna **outcome** carga (energía 1-D ≈2.0 vs marker 0.03–0.2
 heteroscedasticidad extrema). **Doctrina registrada** (línea sin-latente afilada →
 ARCHITECTURE §7). **Miembros implementados**: `hetero_no_latent` (std condicional) +
 `marker_conditional_no_latent` (re-muestreo empírico por celda de contexto + interpolación
-suave). **Próximo: correr el do-over de P2** (mismo pre-registro; predicciones (i)–(iv)
-en v0.41-4).
+suave). **P2 CORRIDAS 2–3 (v0.42)**: la corrida 2 destapó el **bug del null de permutación en
+`p2_table.py`** (WorldSide sin `null_sample` → D_MAX diminuto → all-capped; regla v0.12
+violada en tooling — 6ª captura de la familia de escala; corregido). **Corrida 3
+(instrumento sano): celda AMBOS CHICOS** — v0=0.033 (✓ (i): `marker_conditional` cierra,
+R=0.967) / v1=0.036 (✗ (ii): `hetero` 0.964, el funcional no lo atrapa; (iii) no
+alcanzado; mecanística grande en ambos ✓ 0.859/0.866). **Dato de las dos unidades**: el
+best sin-latente de v1 pierde 0.036 en R (bajo el piso) pero mispricea P(scrap) hasta
+|ΔP|=0.48 (media 0.134) → **la pregunta κ (v0.38-c) se activa con evidencia**.
+**Bloqueado en: decisión de Lucas (v0.42)** — (a) marker demasiado informativo (rediseño
+de v1) / (b) shifts de mix insuficientes (grilla/mundo) / (c) el mundo está bien y el
+reward no paga: revisitar `c_F` con do-over registrado. Nada se toca hasta esa decisión.
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
