@@ -49,8 +49,13 @@ def test_dummy_theory_gap_small_mechanistic_gap_large():
     cert = compute_certificates(world_sample, naive, no_latent, associational, ws, meta.scoring,
                                 theory_access=theory_access, mechanistic_access=mech_access)
 
-    # prediction (i): dummy theory gap small (a no-latent model recovers ~all)
-    assert cert["theory_gap"] < 0.2, f"theory gap {cert['theory_gap']:.3f} not small"
+    # prediction (i): dummy theory gap small (a no-latent model recovers ~all).
+    # PINNED regression (v0.39 addendum, Lucas): the most load-bearing number of
+    # the project is pinned, not re-discovered -- tolerance ~3x its noise scale.
+    # The generalization pass reproduced it byte-identically (0.0624).
+    assert abs(cert["theory_gap"] - 0.0624) < 0.035, (
+        f"theory gap {cert['theory_gap']:.4f} drifted from the pinned 0.0624"
+    )
     # the dummy still forces investigation: obs-only curve-fitting loses
     assert cert["mechanistic_gap"] > 0.7, f"mechanistic gap {cert['mechanistic_gap']:.3f} not large"
     # self-describing access travels with the certificate (Decision Log v0.30)
