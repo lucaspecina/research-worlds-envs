@@ -70,3 +70,24 @@ def test_case_meta_extra_forbidden(case_dir):
     raw["bogus_field"] = 1
     with pytest.raises(ValidationError):
         CaseMeta.model_validate(raw)
+
+
+def test_suite_c_f_is_frozen_identically_across_cases():
+    """Suite lint (Decision Log v0.31-e / v0.38, same commit as the freeze):
+    within a suite, every case that declares functionals must freeze the SAME
+    c_f -- calibrating per case would be authorship."""
+    import json
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    by_suite = {}
+    for meta_path in sorted((root / "cases").glob("*/meta.json")):
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        if (meta.get("stakes") or {}).get("functionals"):
+            c_f = meta.get("scoring", {}).get("c_f")
+            assert c_f is not None, f"{meta_path.parent.name}: declares functionals but no frozen c_f"
+            by_suite.setdefault(meta["suite"], {})[meta_path.parent.name] = c_f
+    for suite, vals in by_suite.items():
+        assert len(set(map(str, vals.values()))) == 1, (
+            f"suite '{suite}' declares different c_f across cases: {vals}"
+        )

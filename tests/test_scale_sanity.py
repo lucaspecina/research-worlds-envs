@@ -183,3 +183,14 @@ def test_sub_battery_r_renormalizes_and_cancels_mdl():
     rung = report([0.5, 0.9, 0.6, 0.6], mdl_term=9.9)  # MDL must NOT matter
     r_obs = sub_battery_r(rung, truth, naive, idxs=[2, 3])
     assert r_obs == pytest.approx((-0.6 + 1.0) / (-0.2 + 1.0))  # 0.5 exactly
+
+
+def test_visibility_threshold_has_significance_and_magnitude_components():
+    # Decision Log v0.38: max(3 x own std, resolution floor). With CRN-tight
+    # noise the floor binds (significance alone would collapse the selector);
+    # with noisy quantities the 3xstd binds.
+    from wager.factory.calibration import RESOLUTION_FLOOR, visibility_threshold
+
+    assert RESOLUTION_FLOOR == pytest.approx(0.05)  # the L1 margin constant (v0.10)
+    assert visibility_threshold([0.0013]) == pytest.approx(0.05)   # floor binds
+    assert visibility_threshold([0.1419]) == pytest.approx(3 * 0.1419)  # std binds

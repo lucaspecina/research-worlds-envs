@@ -96,6 +96,12 @@ class ScoringParams(BaseModel):
     # lambda calibrated so the MDL term is ~5% of (S_truth - S_null) on this
     # case; provisional until calibrated over the E1 suite (Decision Log v0.11)
     lambda_provisional: bool = True
+    # c_F: weight of the stakes-functional term (ARCHITECTURE §9.3). Frozen ONCE
+    # per suite at the minimum-sufficient value under the visibility gate
+    # max(3 x own std, 5% resolution floor) -- Decision Log v0.38; identical
+    # across the suite's cases (suite lint enforces). 1.0 = historical default,
+    # inert for cases with no declared functionals (identity by construction).
+    c_f: float | dict[str, float] = 1.0
     n_samples: int = 1000
     m_reps: int = 2  # v0 default (Decision Log v0.12 item 2): CV(R)~1.2% on the
     # dummy, world-side noise dominates so m>2 buys little; raise per case if the

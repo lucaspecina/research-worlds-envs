@@ -30,6 +30,23 @@ def gate_threshold(stds: list[float]) -> float:
     return 3.0 * float(max(stds))
 
 
+# Resolution floor: 5% of the normalization range, in the R units of the
+# (sub-)battery where the gate lives -- the SAME house constant as the L1
+# margins (Decision Log v0.10), reused with its semantics: the declared
+# resolution of the instrument (Decision Log v0.38).
+RESOLUTION_FLOOR = 0.05
+
+
+def visibility_threshold(stds: list[float], floor: float = RESOLUTION_FLOOR) -> float:
+    """Visibility gates have TWO components answering different questions
+    (Decision Log v0.38): significance (3 x the gated quantity's OWN std --
+    "is it real?") and magnitude (the resolution floor -- "does it matter at
+    the level the instrument declares it can distinguish?"). With CRN crushing
+    variance, significance is almost free and can NEVER be the selector:
+    statistically-visible is not economically-visible."""
+    return max(gate_threshold(stds), floor)
+
+
 def sub_battery_fidelity(report: ScoreReport, idxs: list[int]) -> float:
     """Fidelity restricted to a sub-battery (weights renormalized within it).
 

@@ -169,12 +169,16 @@ CV-relativo → 5ª de la familia); funcional confirmado (oráculo 0.952→0.672
 (instrumento-vs-stakes → ARCHITECTURE §7); margen-vs-verdad solo visibilidad+anclas.
 **DO-OVER (v0.37) corrido**: sub-batería VALIDADA (conf-ablación separa 1.723 local,
 R_obs=−0.723 — peor que el ingenuo localmente); todos los gates pasan en TODO el rango →
-`c_F*=0` → **guardia ANTI-COLAPSO disparó** (nada congelado). Hallazgo: **significancia ≠
-suficiencia** — el oráculo tiene toe-hold real por energía (sep 0.048 = 37× su std propio
-0.0013); con CRN, cualquier gate de significancia es cruzable → falta un bar de
-SUFICIENCIA. **Bloqueado en: decisión de Lucas (v0.37)** — piso L1 5% (→ c_F*=0.25) /
-κ-atado-a-stakes / aceptar 0; + wiring per-quantity del umbral. Después: congelar `c_F`
-en ScoringParams + lint de suite (mismo commit, v0.31-e) → paso 3 (P2-v1).
+`c_F*=0` → **guardia ANTI-COLAPSO disparó**. Hallazgo: **significancia ≠ suficiencia**
+(toe-hold real del oráculo: 0.048 = 37× su std 0.0013). **DECISIÓN v0.38 (Lucas): opción
+1 — gate = max(3×std propio, PISO DE RESOLUCIÓN 5% [constante L1 v0.10]) → `c_F* = 0.25`
+CONGELADO** en ScoringParams (campo nuevo) de v0/v1 + lint de suite en el mismo commit +
+corrida confirmatoria bajo el spec final (banda asimétrica pre-declarada: ÷2 falla el piso
+por definición; ×2 debe pasar sin inversiones). Replicación del punto ciego v0.25 anotada
+(0.952 ≈ 0.952, otra grilla/skin). Pregunta κ-stakes viva → evidencia (P2/E2; gaps
+comprimidos o gradiente insuficiente → do-over registrado). **Próximo: PASO 3 (P2-v1)** —
+(d-obs)/(d-exp) estandarizada con `RivalAccess` (generalizar factory: `cohort` hardcodeado
+→ context var por caso) + tabla 2×2 pre-registrada, gaps en AMBAS unidades (R y |ΔP|).
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
