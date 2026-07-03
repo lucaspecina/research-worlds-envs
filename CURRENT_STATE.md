@@ -186,10 +186,16 @@ del builder y dossier de certificados genéricos. **Test estructural + audit-gua
 (`test_factory_generalization.py`) — y ya cazó su primer incidente: fallback de 3 niveles
 de contexto → no-latente débil → gap del dummy 0.062→0.234; fix por declaración
 (`experimentable_range` en el meta del dummy) → ~0.06 de vuelta. Suite **98 verdes**.
-**Próximo: correr P2 (tabla 2×2 v0/v1)** — pre-registro COMPLETO en v0.39: grilla fresca
-compartida (seeds 95001+, mix hasta ±2.5), (d-exp) estandarizada (30 celdas, 18.000
-unidades ≤ presupuesto), gaps en AMBAS unidades (R y |ΔP|), árbol de interpretación de
-4 celdas FIRMADO antes de los números.
+**P2 CORRIDO (v0.40)** — celda **AMBOS GRANDES** (v0=0.987/v1=1.052, ratio 1.1×; los tres
+(d-exp) al nivel del ancla ingenua; share funcional ≈0) → **guardia del árbol firmado:
+investigación de equidad de la escalera, CERO lectura sustantiva**. Diagnóstico: (1)
+residual global homoscedástico (la dispersión de outcome crece con dosis en Latent —
+trampa v0.18 del lado de la escalera; el dummy homoscedástico nunca la vio); (2) falta
+el miembro marker-condicionado que la expectativa "v0 chico" (v0.27-Q5) supone.
+**Bloqueado en: decisión de Lucas (v0.40)** — do-over de P2 con dos miembros nuevos
+(residual heteroscedástico; re-muestreo del marker observado + outcome|d,marker,ctx —
+¿admisible en la línea sin-latente? mi lectura: sí, memoria de un observable, no
+estructura postulada). Con su OK: re-correr P2, mismo pre-registro.
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
