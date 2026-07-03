@@ -161,8 +161,18 @@ ejes contra el registro histórico [dosis central-95% = 2.00–8.46], 27.9% fuer
 pesos = `stakes_relevance` del builder, `experimentable_range` de mix declarado en meta
 v0/v1, CV pre-fijado) + enmiendas pre-ejecución: línea base por-rung (B), gate (ii) de
 heterogeneidad sobre el ORÁCULO (C, principio momento-calzado → ARCHITECTURE §7), bug del
-refit del gemelo (b) registrado (D, gate antes de P3; NO bloquea el barrido). **Falta:
-implementar y correr el barrido** (script + resultados al log).
+refit del gemelo (b) registrado (D, gate antes de P3; NO bloquea el barrido).
+
+**PRIMER BARRIDO CORRIDO (v0.35)** — `calibrate_cf.py` + `calibration_report.json`:
+la **guardia pre-registrada DISPARÓ** (frenado sin re-tune). Confirmado: el funcional
+hace visible el latente (oráculo R 0.952→0.672 monótono en c_F; punto ciego v0.25
+replicado en v1 a c_F=0); hetero-ablación separa por energía (0.417, enmienda v0.34-B ✓);
+confounding c_F-insensible ✓. Disparadores: (1) confounding NO separa (abl 0.0078 /
+twin 0.0035 — señal solo-observacional, cuota 9.9%); (2) bug de escala del umbral
+(CV relativo se infla ×4.4 cuando el peldaño medio colapsa; std absoluto casi quieto
+0.0092→0.0124). **Bloqueado en: 3 decisiones de Lucas (v0.35)** — umbral absoluto
+3×std(R); visibilidad de confounding (declaración / sub-batería / reclasificar);
+alcance del gate de extremos. Con eso: do-over registrado del barrido.
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
