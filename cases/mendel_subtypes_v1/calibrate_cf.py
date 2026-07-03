@@ -1,35 +1,40 @@
-"""c_F calibration sweep -- pre-registered protocol (Decision Log v0.31 + v0.34).
+"""c_F calibration sweep -- registered DO-OVER (Decision Log v0.31 + v0.34 + v0.36).
 
 Factory-side measurement tooling (NOT the reward path; it CONSUMES wager.reward).
+Run 1 (v0.35) halted on the pre-registered guard; this do-over integrates the
+three approved decisions and RETIRES run 1's gates (its numbers stand as
+measurements; `calibration_report.json` history preserves them).
 
-Protocol implemented verbatim:
-  1. FIXED calibration grid (v0.34-A, 27 items, seeds 91001+i, weights =
-     battery_builder.stakes_relevance) -- NOT the derived battery (circularity,
-     v0.31 refinement 3). The grid is DISQUALIFIED as validity evidence.
-  2. CV fixed BEFORE the sweep (v0.34-A4): CV_sweep = max(CV at c_F=0, c_F=8),
-     B=10 resampled seed-sets on the MIDDLE degradation rung (rung_5, the 4th of
-     7); that threshold applies to the gates of ALL candidates.
-  3. Log-grid sweep c_F in {0, 0.25, 0.5, 1, 2, 4, 8}; per candidate the
-     WorldSide recomputes D_MAX_item = 1.5 x D_combined(truth, null) (v0.28
-     amendment 4 -- the cap is a FUNCTION of c_F).
-  4. Gates (conjoint, all >= 3 x CV_sweep in R units; v0.31 + v0.34 amendments):
-     (i)   extremes + per-axis monotonicity: every measurement rung strictly
-           below truth AND strictly above the null (no total order between
-           heterogeneous rungs; the ladder rationales are pre-registered
-           expectations, reported not gated);
-     (ii)  visibility per operator: confounding -> its PARAM ablation (and twin)
-           lose >= 3xCV; heterogeneity -> the MOMENT-MATCHED oracle loses
-           >= 3xCV (v0.34-C: the param ablation shifts moments and is visible
-           for the wrong reason; it is reported as an intermediate rung);
-     (iii) instrument diagnostic: oracle strictly below world.py >= 3xCV.
-  5. Baseline at c_F=0 reports ALL gates per rung (v0.31-a; v0.34-B expectations:
-     confounding rungs PASS via observational items and are c_F-INSENSITIVE --
-     their failure means FIX THE GRID, not sweep; pure heterogeneity ablation
-     PASSES via energy; the oracle FAILS and is THE gate that fixes c_F*).
-  6. c_F* = MINIMUM candidate passing all gates; sensitivity band x2 / /2;
-     confirmation CV at the winner with B=20 + extremes B=10. The binomial
-     noise of the functional bounds c_F from above -- if the minimum sits near
-     that ceiling, the SANDWICH is reported as a finding.
+Protocol (v0.36):
+  1. FIXED grid (v0.34-A, verbatim): 27 items, seeds 91001+i, weights =
+     battery_builder.stakes_relevance. Disqualified as validity evidence.
+  2. Thresholds in ABSOLUTE R units -- 3 x std(R), NEVER relative CV (v0.36-1,
+     fifth scale pathology; convention pinned in wager/factory/calibration.py
+     and guarded by the scale-sanity suite). Fixed BEFORE the sweep via mini-L2
+     (B=10) at the c_F extremes {0, 8}:
+       thr_global = 3 x max std(R_mid)        [mid degradation rung, full grid]
+       thr_local  = 3 x max std(R_obs(conf))  [confounding ablation, obs sub-battery]
+     std(R_oracle) is also measured and REPORTED (investigation data, not a gate).
+  3. Gates (conjoint) per candidate c_F, D_MAX recomputed per candidate:
+     (i)   NO INVERSIONS: no measurement rung above truth beyond 1 x std_global;
+           null strictly below the naive anchor (floor). Margins-vs-truth of
+           non-visibility rungs are REPORTED as instrument resolution, not gated
+           (v0.36-3: "cannot distinguish a 15% perturbation at current K/n/m" is
+           an honest datum, not a failure).
+     (ii)  VISIBILITY per operator, measured where its signature lives (v0.36-2,
+           instrument-vs-stakes principle): heterogeneidad_latente -> the
+           MOMENT-MATCHED ORACLE on the full grid >= thr_global;
+           confounding_por_clase -> its PURE ABLATION on the OBSERVATIONAL
+           sub-battery >= thr_local (the twin's local separation is reported --
+           it measures what the (b) refit buys, it is a rival, not the probe).
+     (iii) instrument diagnostic: oracle strictly below world.py >= thr_global.
+  4. Sub-battery R is FIDELITY-ONLY (MDL is global and cancels; helper
+     sub_battery_r) with anchors recomputed on the same sub-battery.
+  5. Baseline at c_F=0 reports all gates per rung. c_F* = MINIMUM candidate
+     passing all gates (if 0 passes, the anti-collapse guard fires ->
+     investigate). Band x2 / /2; winner confirmation at B=20 (absolute std).
+     The functional's binomial noise bounds c_F from above: if the minimum sits
+     near that ceiling, report the SANDWICH.
 
 Run:  .venv/Scripts/python cases/mendel_subtypes_v1/calibrate_cf.py
 """
@@ -47,21 +52,21 @@ sys.path.insert(0, str(CASE_DIR))
 from wager.contracts import Battery, BatteryItem, CaseMeta, ScoringParams  # noqa: E402
 from wager.contracts.world import Regime  # noqa: E402
 from wager.factory.battery_builder import stakes_relevance  # noqa: E402
+from wager.factory.calibration import gate_threshold, sub_battery_r  # noqa: E402
 from wager.reward.sandbox import SandboxedSubmission  # noqa: E402
 from wager.reward.scorer import WorldSide, sandboxed_null_sample, score_submission  # noqa: E402
 from wager.reward.seeds import derive_world_seed  # noqa: E402
 
 C_F_GRID = [0.0, 0.25, 0.5, 1.0, 2.0, 4.0, 8.0]
 GRID_SEED0 = 91001
-B_SWEEP = 10   # CV estimation at the c_F extremes (pre-fixed threshold)
+B_SWEEP = 10   # std estimation at the c_F extremes (pre-fixed thresholds)
 B_WINNER = 20  # confirmation at the winner
-MID_RUNG = "rung_5_ablate_heterogeneity"  # middle of the 7 degradation rungs
-
-# gate (ii) assignment per operator (Decision Log v0.34-C)
-VISIBILITY_RUNG = {
-    "confounding_por_clase": ["rung_3_ablate_confounding", "rung_4_twin_confounding"],
-    "heterogeneidad_latente": ["rung_6_oracle_moments"],  # moment-matched, NOT the param ablation
-}
+MID_RUNG = "rung_5_ablate_heterogeneity"   # middle of the 7 degradation rungs
+ORACLE = "rung_6_oracle_moments"
+CONF_ABL = "rung_3_ablate_confounding"
+CONF_TWIN = "rung_4_twin_confounding"
+NAIVE = "rung_7_naive_fit"
+NULL = "rung_8_null"
 
 
 def calibration_grid() -> Battery:
@@ -106,53 +111,61 @@ def resampled(battery: Battery, b: int) -> Battery:
     ])
 
 
-def score_rungs(world_sample, battery, meta, params, c_f, sandboxes, null_code, which=None):
-    """R per rung on one battery seed-set at one c_F. Returns dict name -> R."""
+def score_set(world_sample, battery, meta, params, c_f, sandboxes, null_code, which=None):
+    """Score a set of rungs on one battery seed-set at one c_F.
+
+    Returns (R_full per rung, reports per rung, denom)."""
     with sandboxed_null_sample(null_code, meta.column_names, params.model_call_timeout_s) as null_sample:
         ws = WorldSide(world_sample, battery, meta.column_names, params.n_samples,
                        null_sample=null_sample, functionals=meta.stakes.functionals, c_f=c_f)
-        raw = {}
+        reports = {}
         for name, sb in sandboxes.items():
             if which is not None and name not in which:
                 continue
-            raw[name] = score_submission(sb.code, ws, params, sandbox=sb).raw_score
-    s_truth, s_naive = raw["world"], raw["rung_7_naive_fit"]
+            reports[name] = score_submission(sb.code, ws, params, sandbox=sb)
+    s_truth, s_naive = reports["world"].raw_score, reports[NAIVE].raw_score
     denom = s_truth - s_naive
-    return {name: (s - s_naive) / denom for name, s in raw.items()}, denom
+    r = {name: (rep.raw_score - s_naive) / denom for name, rep in reports.items()}
+    return r, reports, denom
 
 
-def cv_of_mid_rung(world_sample, battery, meta, params, c_f, sandboxes, null_code, b_total):
-    rs = []
+def stds_at(world_sample, battery, meta, params, c_f, sandboxes, null_code, obs_idx, b_total):
+    """Absolute std over B resampled seed-sets of: R(mid) full, R(oracle) full,
+    R_obs(confounding ablation) on the observational sub-battery."""
+    which = ("world", NAIVE, MID_RUNG, ORACLE, CONF_ABL)
+    r_mid, r_ora, r_loc = [], [], []
     for b in range(1, b_total + 1):
-        r, _ = score_rungs(world_sample, resampled(battery, b), meta, params, c_f,
-                           sandboxes, null_code, which=("world", "rung_7_naive_fit", MID_RUNG))
-        rs.append(r[MID_RUNG])
-    rs = np.array(rs)
-    return float(rs.std(ddof=1) / abs(rs.mean())), float(rs.mean())
+        r, reports, _ = score_set(world_sample, resampled(battery, b), meta, params, c_f,
+                                  sandboxes, null_code, which=which)
+        r_mid.append(r[MID_RUNG])
+        r_ora.append(r[ORACLE])
+        r_loc.append(sub_battery_r(reports[CONF_ABL], reports["world"], reports[NAIVE], obs_idx))
+    def sd(v):
+        return float(np.std(v, ddof=1))
+    return {"mid": (sd(r_mid), float(np.mean(r_mid))),
+            "oracle": (sd(r_ora), float(np.mean(r_ora))),
+            "conf_local": (sd(r_loc), float(np.mean(r_loc)))}
 
 
-def gates(r: dict, cv: float, operators) -> dict:
-    """Evaluate the three conjoint gates at threshold 3xCV. Returns per-gate detail."""
-    thr = 3.0 * cv
-    meas = [k for k in r if k not in ("world", "rung_7_naive_fit", "rung_8_null")]
-    g1 = {k: {"below_truth": (1.0 - r[k]) >= thr, "above_null": (r[k] - r["rung_8_null"]) >= thr}
-          for k in meas}
-    gate_i = all(v["below_truth"] and v["above_null"] for v in g1.values())
-    g2 = {}
-    for op in operators:
-        rungs = VISIBILITY_RUNG[op.name]
-        g2[op.name] = {rk: (1.0 - r[rk]) >= thr for rk in rungs}
-    gate_ii = all(all(d.values()) for d in g2.values())
-    gate_iii = (1.0 - r["rung_6_oracle_moments"]) >= thr
-    return {"i": gate_i, "i_detail": g1, "ii": gate_ii, "ii_detail": g2,
-            "iii": gate_iii, "all": gate_i and gate_ii and gate_iii, "threshold": thr}
+def evaluate_gates(r_full, r_obs_abl, thr_global, thr_local, std_global):
+    meas = [k for k in r_full if k not in ("world", NAIVE, NULL)]
+    inversions = {k: r_full[k] > 1.0 + std_global for k in meas}
+    gate_i = (not any(inversions.values())) and (r_full[NULL] < 0.0)
+    vis_het = (1.0 - r_full[ORACLE]) >= thr_global
+    vis_conf = (1.0 - r_obs_abl) >= thr_local
+    gate_ii = vis_het and vis_conf
+    gate_iii = (1.0 - r_full[ORACLE]) >= thr_global
+    return {"i": gate_i, "inversions": inversions, "null_floor": r_full[NULL] < 0.0,
+            "ii": gate_ii, "ii_hetero_oracle": vis_het, "ii_conf_local": vis_conf,
+            "iii": gate_iii, "all": gate_i and gate_ii and gate_iii}
 
 
 def main():
     t0 = time.perf_counter()
     meta, world_source, rungs, params = load_case()
     battery = calibration_grid()
-    null_code = rungs["rung_8_null"]
+    null_code = rungs[NULL]
+    obs_idx = [i for i, it in enumerate(battery.items) if "dose" not in it.regime.config]
 
     import importlib.util
     spec = importlib.util.spec_from_file_location("world_v1", CASE_DIR / "world.py")
@@ -161,8 +174,7 @@ def main():
     world_sample = world_mod.sample
 
     codes = {"world": world_source, **rungs}
-    print(f"grid: {len(battery.items)} items, seeds {GRID_SEED0}..{GRID_SEED0 + len(battery.items) - 1}")
-    print(f"rungs: {list(codes)}")
+    print(f"grid: {len(battery.items)} items (obs sub-battery: {len(obs_idx)}), seeds {GRID_SEED0}..")
 
     sandboxes = {}
     try:
@@ -172,76 +184,81 @@ def main():
             sb.code = code
             sandboxes[name] = sb
 
-        # --- (2) CV fixed BEFORE the sweep: max over the c_F extremes ----------
-        cv_lo, mid_lo = cv_of_mid_rung(world_sample, battery, meta, params, C_F_GRID[0],
-                                       sandboxes, null_code, B_SWEEP)
-        cv_hi, mid_hi = cv_of_mid_rung(world_sample, battery, meta, params, C_F_GRID[-1],
-                                       sandboxes, null_code, B_SWEEP)
-        cv_sweep = max(cv_lo, cv_hi)
-        print(f"\nCV (B={B_SWEEP}, mid rung {MID_RUNG}):")
-        print(f"  c_F=0: CV={cv_lo:.4f} (mean R={mid_lo:.3f})   c_F=8: CV={cv_hi:.4f} (mean R={mid_hi:.3f})")
-        print(f"  CV_sweep = {cv_sweep:.4f}  -> gate threshold 3xCV = {3 * cv_sweep:.4f} (R units)")
+        # --- thresholds fixed BEFORE the sweep (absolute std, both extremes) ----
+        s_lo = stds_at(world_sample, battery, meta, params, C_F_GRID[0], sandboxes, null_code, obs_idx, B_SWEEP)
+        s_hi = stds_at(world_sample, battery, meta, params, C_F_GRID[-1], sandboxes, null_code, obs_idx, B_SWEEP)
+        thr_global = gate_threshold([s_lo["mid"][0], s_hi["mid"][0]])
+        thr_local = gate_threshold([s_lo["conf_local"][0], s_hi["conf_local"][0]])
+        print(f"\nabsolute stds (B={B_SWEEP}):")
+        for lbl, s in (("c_F=0", s_lo), ("c_F=8", s_hi)):
+            print(f"  {lbl}: std(R_mid)={s['mid'][0]:.4f} (mean {s['mid'][1]:.3f})  "
+                  f"std(R_oracle)={s['oracle'][0]:.4f} (mean {s['oracle'][1]:.3f})  "
+                  f"std(R_obs conf)={s['conf_local'][0]:.4f} (mean {s['conf_local'][1]:.3f})")
+        print(f"  thr_global = {thr_global:.4f}   thr_local = {thr_local:.4f}   "
+              f"[std(R_oracle) reported as investigation data, not a gate]")
 
-        # --- (3-5) sweep ------------------------------------------------------
+        # --- sweep ---------------------------------------------------------------
         results = {}
         for c_f in C_F_GRID:
-            r, denom = score_rungs(world_sample, battery, meta, params, c_f, sandboxes, null_code)
-            g = gates(r, cv_sweep, meta.operators)
-            results[c_f] = {"R": r, "denom": denom, "gates": g}
+            r, reports, denom = score_set(world_sample, battery, meta, params, c_f, sandboxes, null_code)
+            r_obs_abl = sub_battery_r(reports[CONF_ABL], reports["world"], reports[NAIVE], obs_idx)
+            r_obs_twin = sub_battery_r(reports[CONF_TWIN], reports["world"], reports[NAIVE], obs_idx)
+            g = evaluate_gates(r, r_obs_abl, thr_global, thr_local, s_lo["mid"][0])
+            results[c_f] = {"R": r, "R_obs_conf_abl": r_obs_abl, "R_obs_conf_twin": r_obs_twin,
+                            "denom": denom, "gates": g}
             flag = "PASS" if g["all"] else "fail"
-            print(f"\nc_F={c_f:<5} denom={denom:.4f}  gates: i={g['i']} ii={g['ii']} iii={g['iii']}  -> {flag}")
+            print(f"\nc_F={c_f:<5} denom={denom:.4f}  i={g['i']} ii={g['ii']} "
+                  f"(het/oracle={g['ii_hetero_oracle']} conf/local={g['ii_conf_local']}) "
+                  f"iii={g['iii']}  -> {flag}")
             for name in codes:
-                print(f"    R({name}) = {r[name]:+.3f}")
+                sep = 1.0 - r[name]
+                print(f"    R({name}) = {r[name]:+.3f}   sep={sep:+.3f}")
+            print(f"    R_obs(conf ablation) = {r_obs_abl:+.3f} (local sep {1 - r_obs_abl:+.3f} vs thr {thr_local:.3f})"
+                  f"   R_obs(conf twin) = {r_obs_twin:+.3f} [reported]")
 
-        # --- baseline report (v0.34-B) ----------------------------------------
+        # --- baseline + resolution report ---------------------------------------
         base = results[0.0]
-        print("\nBASELINE c_F=0 (pre-registered expectations, v0.34-B):")
-        b_thr = base["gates"]["threshold"]
-        for name, expect in [("rung_3_ablate_confounding", "PASS (observational items; c_F-insensitive)"),
-                             ("rung_4_twin_confounding", "PASS (idem)"),
-                             ("rung_5_ablate_heterogeneity", "PASS via energy (moments, the wrong reason)"),
-                             ("rung_6_oracle_moments", "FAIL (THE gate that must fix c_F*)")]:
-            sep = 1.0 - base["R"][name]
-            print(f"  {name}: separation={sep:.4f} vs thr={b_thr:.4f} -> "
-                  f"{'separates' if sep >= b_thr else 'DOES NOT separate'}   [expected: {expect}]")
+        print("\nBASELINE c_F=0 (v0.36 gates):")
+        print(f"  oracle: sep={1 - base['R'][ORACLE]:.4f} vs thr_global={thr_global:.4f} -> "
+              f"{'separates (guard: investigate if c_F*=0)' if (1 - base['R'][ORACLE]) >= thr_global else 'does NOT separate (as designed)'}")
+        print(f"  conf ablation (obs sub-battery): sep={1 - base['R_obs_conf_abl']:.4f} vs thr_local={thr_local:.4f} -> "
+              f"{'separates' if (1 - base['R_obs_conf_abl']) >= thr_local else 'does NOT separate'}")
+        print("\nINSTRUMENT RESOLUTION (margins vs truth, reported not gated):")
+        for name in (f"rung_2_perturbed", CONF_ABL, CONF_TWIN):
+            print(f"  {name}: {1 - base['R'][name]:.4f} (K/n/m = {len(battery.items)}/{params.n_samples}/{params.m_reps})")
 
-        # --- (6) c_F* = minimum passing all gates ------------------------------
+        # --- c_F* ----------------------------------------------------------------
         passing = [c for c in C_F_GRID if results[c]["gates"]["all"]]
-        report = {"cv_sweep": cv_sweep, "cv_lo": cv_lo, "cv_hi": cv_hi,
-                  "grid_items": len(battery.items), "results": {
-                      str(c): {"R": results[c]["R"], "denom": results[c]["denom"],
-                               "gates": {k: results[c]["gates"][k] for k in ("i", "ii", "iii", "all", "threshold")}}
-                      for c in C_F_GRID}}
+        report = {"thr_global": thr_global, "thr_local": thr_local,
+                  "stds": {"c_f_0": s_lo, "c_f_8": s_hi},
+                  "results": {str(c): {"R": results[c]["R"],
+                                       "R_obs_conf_abl": results[c]["R_obs_conf_abl"],
+                                       "R_obs_conf_twin": results[c]["R_obs_conf_twin"],
+                                       "denom": results[c]["denom"],
+                                       "gates": {k: v for k, v in results[c]["gates"].items() if k != "inversions"}}
+                              for c in C_F_GRID}}
         if not passing:
             print("\nNO candidate passes all gates -> investigate (do NOT retune the grid).")
         else:
             c_star = min(passing)
-            print(f"\nc_F* = {c_star} (minimum passing; candidates passing: {passing})")
+            print(f"\nc_F* = {c_star} (minimum passing; passing set: {passing})")
             if c_star == 0.0:
-                print("  WARNING: c_F*=0 -> the functional is NOT needed on this grid; "
-                      "the anti-collapse guard expected the oracle to fail at 0. INVESTIGATE.")
-            # which gate binds: the gate that fails at the largest c_F below c_star
-            below = [c for c in C_F_GRID if c < c_star]
-            if below:
-                g = results[max(below)]["gates"]
-                binding = [k for k in ("i", "ii", "iii") if not g[k]]
-                print(f"  binding gate(s) just below c_F*: {binding}")
-            # sensitivity band x2 / /2
+                print("  ANTI-COLLAPSE GUARD: c_F*=0 -> the functional would be unnecessary on this "
+                      "grid; pre-registered response: INVESTIGATE (std(R_oracle) above is the first datum).")
             for lbl, cb in (("x2", c_star * 2), ("/2", c_star / 2)):
                 if cb in results:
                     print(f"  band {lbl} (c_F={cb}): all gates = {results[cb]['gates']['all']}")
                 elif cb > 0:
-                    r, _ = score_rungs(world_sample, battery, meta, params, cb, sandboxes, null_code)
-                    gb = gates(r, cv_sweep, meta.operators)
+                    r, reports, _ = score_set(world_sample, battery, meta, params, cb, sandboxes, null_code)
+                    ro = sub_battery_r(reports[CONF_ABL], reports["world"], reports[NAIVE], obs_idx)
+                    gb = evaluate_gates(r, ro, thr_global, thr_local, s_lo["mid"][0])
                     print(f"  band {lbl} (c_F={cb}): all gates = {gb['all']}")
-            # confirmation CV at winner (B=20); extremes already at B=10
-            cv_win, mid_win = cv_of_mid_rung(world_sample, battery, meta, params, c_star,
-                                             sandboxes, null_code, B_WINNER)
-            print(f"  CV at winner (B={B_WINNER}): {cv_win:.4f} (mean R mid rung={mid_win:.3f})")
-            if 3 * cv_win > 3 * cv_sweep:
-                print("  NOTE: winner CV exceeds the pre-fixed sweep CV -> report; "
-                      "if gates fail under it, that is the noise-vs-sufficiency SANDWICH.")
-            report.update({"c_star": c_star, "cv_winner": cv_win})
+            s_win = stds_at(world_sample, battery, meta, params, c_star, sandboxes, null_code, obs_idx, B_WINNER)
+            print(f"  winner confirmation (B={B_WINNER}): std(R_mid)={s_win['mid'][0]:.4f}  "
+                  f"std(R_oracle)={s_win['oracle'][0]:.4f}  std(R_obs conf)={s_win['conf_local'][0]:.4f}")
+            if 3 * s_win["mid"][0] > thr_global:
+                print("  SANDWICH check: winner std exceeds the pre-fixed threshold basis -> report as finding.")
+            report.update({"c_star": c_star, "stds_winner": s_win})
         out = CASE_DIR / "calibration_report.json"
         out.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
         print(f"\nreport -> {out}  ({time.perf_counter() - t0:.1f}s)")

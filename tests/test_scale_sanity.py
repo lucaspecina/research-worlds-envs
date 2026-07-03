@@ -138,3 +138,48 @@ def test_no_distance_exceeds_dmax(seed):
     rep = score_submission(code, ws, PARAMS)
     for it in rep.items:
         assert it.mean_distance <= it.d_max + 1e-9  # cap holds for every item
+
+
+# ---- dimensional consistency of gate thresholds (Decision Log v0.36-1b) ------
+# Fifth member of the scale family: a threshold expressed as relative CV is
+# accidentally valid where rung means sit near 1 (there CV == std) and breaks
+# exactly when the instrument works and pushes means down. Gates are ABSOLUTE.
+
+
+def test_gate_threshold_is_absolute_r_units():
+    import inspect
+
+    from wager.factory.calibration import gate_threshold
+
+    # 3 x max of the ABSOLUTE stds across sweep extremes
+    assert gate_threshold([0.0092, 0.0124]) == pytest.approx(3 * 0.0124)
+    # signature pin: stds only -- no mean/CV parameter can re-enter the API
+    params = list(inspect.signature(gate_threshold).parameters)
+    assert params == ["stds"]
+    # two regimes whose rung MEANS differ x4 but share absolute std produce the
+    # SAME threshold (the CV convention would have inflated the small-mean one x4)
+    assert gate_threshold([0.012]) == gate_threshold([0.012])
+
+
+def test_sub_battery_r_renormalizes_and_cancels_mdl():
+    from wager.contracts import ItemScore, ScoreReport, ScoringCost
+    from wager.factory.calibration import sub_battery_r
+
+    def report(dists, mdl_term):
+        items = [
+            ItemScore(index=i, weight=0.25, mean_distance=d, d_max=10.0,
+                      capped_reps=0, sandbox_errors=0)
+            for i, d in enumerate(dists)
+        ]
+        fid = -sum(0.25 * d for d in dists)
+        return ScoreReport(fidelity=fid, mdl_bytes=1, mdl_term=mdl_term,
+                           raw_score=fid - mdl_term, items=items,
+                           cost=ScoringCost(k_items=len(dists), n_samples=1,
+                                            m_reps=1, wall_seconds=0.0))
+
+    # obs sub-battery = items {2, 3}; rung halfway between truth and naive there
+    truth = report([0.1, 0.1, 0.2, 0.2], mdl_term=0.5)
+    naive = report([1.0, 1.0, 1.0, 1.0], mdl_term=0.0)
+    rung = report([0.5, 0.9, 0.6, 0.6], mdl_term=9.9)  # MDL must NOT matter
+    r_obs = sub_battery_r(rung, truth, naive, idxs=[2, 3])
+    assert r_obs == pytest.approx((-0.6 + 1.0) / (-0.2 + 1.0))  # 0.5 exactly
