@@ -192,10 +192,15 @@ investigación de equidad de la escalera, CERO lectura sustantiva**. Diagnóstic
 residual global homoscedástico (la dispersión de outcome crece con dosis en Latent —
 trampa v0.18 del lado de la escalera; el dummy homoscedástico nunca la vio); (2) falta
 el miembro marker-condicionado que la expectativa "v0 chico" (v0.27-Q5) supone.
-**Bloqueado en: decisión de Lucas (v0.40)** — do-over de P2 con dos miembros nuevos
-(residual heteroscedástico; re-muestreo del marker observado + outcome|d,marker,ctx —
-¿admisible en la línea sin-latente? mi lectura: sí, memoria de un observable, no
-estructura postulada). Con su OK: re-correr P2, mismo pre-registro.
+**VERIFICACIÓN v0.41 (hecha)**: mecanismo del colapso CONFIRMADO — firma **all-capped**
+(v1 33/33, v0 29/33 ítems en D_MAX; outputs por miembro genuinamente distintos → fallback
+descartado); columna **outcome** carga (energía 1-D ≈2.0 vs marker 0.03–0.26); peores
+ítems todos en dose=0 con d/dmax ~10³–10⁴ (residual global std≈8 vs verdad std≈0.5:
+heteroscedasticidad extrema). **Doctrina registrada** (línea sin-latente afilada →
+ARCHITECTURE §7). **Miembros implementados**: `hetero_no_latent` (std condicional) +
+`marker_conditional_no_latent` (re-muestreo empírico por celda de contexto + interpolación
+suave). **Próximo: correr el do-over de P2** (mismo pre-registro; predicciones (i)–(iv)
+en v0.41-4).
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,

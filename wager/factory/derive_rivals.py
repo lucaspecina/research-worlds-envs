@@ -226,11 +226,99 @@ def _fit_no_latent(train: pd.DataFrame, pool: pd.DataFrame, schema: CaseSchema,
     return sample
 
 
+def _fit_hetero_no_latent(train: pd.DataFrame, pool: pd.DataFrame, schema: CaseSchema) -> Callable:
+    """No-latent with CONDITIONAL residual scale (Decision Log v0.41-3): poly
+    means + per-row std fitted on |residual| over (decision, sig(ctx)) features.
+    Unimodal per regime -- no mixture head; kills the global-residual explosion
+    at low decision values (the all-capped collapse of P2 run 1)."""
+    outputs = [c for c in schema.columns if c != schema.decision]
+
+    def feats(d, c):
+        s = _sigmoid(c)
+        return np.column_stack([d, s, d * s, d * d])
+
+    X = feats(train[schema.decision].to_numpy(), train[schema.context].to_numpy())
+    mean_m = {c: make_pipeline(PolynomialFeatures(2), LinearRegression()).fit(X, train[c].to_numpy())
+              for c in outputs}
+    resid = {c: train[c].to_numpy() - mean_m[c].predict(X) for c in outputs}
+    std_m = {c: make_pipeline(PolynomialFeatures(2), LinearRegression()).fit(X, np.abs(resid[c]))
+             for c in outputs}
+    z = np.vstack([resid[c] / np.maximum(std_m[c].predict(X), 1e-3) for c in outputs])
+    z_corr = np.atleast_2d(np.corrcoef(z))
+    dec_pool = pool[schema.decision].to_numpy()
+
+    def sample(regime, n, seed):
+        rng = np.random.default_rng(seed)
+        c = float(regime.context.get(schema.context, 0.0))
+        d = (np.full(n, float(regime.config[schema.decision]))
+             if schema.decision in regime.config else rng.choice(dec_pool, n, replace=True))
+        Xq = feats(d, np.full(n, c))
+        draw = rng.multivariate_normal(np.zeros(len(outputs)), z_corr, n)
+        out = {schema.decision: d}
+        for k, col in enumerate(outputs):
+            sd = np.maximum(std_m[col].predict(Xq), 1e-3) * np.sqrt(np.pi / 2.0)
+            out[col] = mean_m[col].predict(Xq) + draw[:, k] * sd
+        return pd.DataFrame(out)[list(schema.columns)]
+
+    return sample
+
+
+def _fit_marker_conditional(train: pd.DataFrame, pool: pd.DataFrame, schema: CaseSchema) -> Callable:
+    """No-latent that USES the observed channel (Decision Log v0.41-2 doctrine):
+    resamples the OBSERVED marker empirically per context cell (population memory
+    of an observable's marginal -- no per-sample component inference anywhere),
+    then outcome | (decision, marker, ctx) with interaction + conditional scale.
+    Empirical/quantile machinery only; the null hypothesis of the theory-gap test."""
+    outputs = [c for c in schema.columns if c != schema.decision]
+    marker_col = next((c for c in outputs if c != "outcome"), outputs[0])
+    other = [c for c in outputs if c != marker_col]
+    levels = np.array(schema.ctx_levels)
+    bank = {lv: train.loc[np.isclose(train[schema.context], lv), marker_col].to_numpy()
+            for lv in levels}
+
+    def feats(d, m, c):
+        s = _sigmoid(c)
+        return np.column_stack([d, m, d * m, s, d * s])
+
+    X = feats(train[schema.decision].to_numpy(), train[marker_col].to_numpy(),
+              train[schema.context].to_numpy())
+    mean_m = {c: make_pipeline(PolynomialFeatures(2), LinearRegression()).fit(X, train[c].to_numpy())
+              for c in other}
+    std_m = {c: make_pipeline(PolynomialFeatures(2), LinearRegression()).fit(
+        X, np.abs(train[c].to_numpy() - mean_m[c].predict(X))) for c in other}
+    dec_pool = pool[schema.decision].to_numpy()
+
+    def sample(regime, n, seed):
+        rng = np.random.default_rng(seed)
+        c = float(regime.context.get(schema.context, 0.0))
+        d = (np.full(n, float(regime.config[schema.decision]))
+             if schema.decision in regime.config else rng.choice(dec_pool, n, replace=True))
+        # smooth dependence on the declared knob: interpolate between the two
+        # nearest context cells' EMPIRICAL banks (clamped beyond the range)
+        cc = float(np.clip(c, levels[0], levels[-1]))
+        hi = int(np.searchsorted(levels, cc, side="left").clip(1, len(levels) - 1))
+        lo = hi - 1
+        w_hi = 0.0 if levels[hi] == levels[lo] else (cc - levels[lo]) / (levels[hi] - levels[lo])
+        pick_hi = rng.random(n) < w_hi
+        m = np.where(pick_hi, rng.choice(bank[levels[hi]], n, replace=True),
+                     rng.choice(bank[levels[lo]], n, replace=True))
+        Xq = feats(d, m, np.full(n, c))
+        out = {schema.decision: d, marker_col: m}
+        for col in other:
+            sd = np.maximum(std_m[col].predict(Xq), 1e-3) * np.sqrt(np.pi / 2.0)
+            out[col] = mean_m[col].predict(Xq) + rng.normal(0.0, 1.0, n) * sd
+        return pd.DataFrame(out)[list(schema.columns)]
+
+    return sample
+
+
 def capacity_ladder(train: pd.DataFrame, pool: pd.DataFrame, schema: CaseSchema) -> list[tuple[str, Callable]]:
     return [
         ("linear_no_latent", _fit_no_latent(train, pool, schema, "linear")),
         ("gbm_no_latent", _fit_no_latent(train, pool, schema, "poly")),
         ("logistic_ctx_no_latent", _fit_no_latent(train, pool, schema, "logistic_ctx")),
+        ("hetero_no_latent", _fit_hetero_no_latent(train, pool, schema)),
+        ("marker_conditional_no_latent", _fit_marker_conditional(train, pool, schema)),
     ]
 
 
