@@ -38,6 +38,25 @@ DEXP_N, DEXP_SEED0 = 250, 60001
 DOBS_N, DOBS_SEED = 4000, 50001
 
 
+def null_model(pool, schema):
+    """Null MODEL (independent pool marginals) for the D_MAX reference -- the
+    v0.12 rule: NEVER the permutation fallback (it conserves marginals and
+    shrinks D_MAX until everything caps; that exact pathology produced the
+    all-capped collapse of P2 runs 1-2, Decision Log v0.42)."""
+    stats = {c: (float(pool[c].mean()), float(pool[c].std())) for c in schema.columns}
+
+    def sample(regime, n, seed):
+        rng = np.random.default_rng(seed)
+        out = {}
+        for c, (mu, sd) in stats.items():
+            v = rng.normal(mu, sd, n)
+            out[c] = np.clip(v, schema.lo, schema.hi) if c == schema.decision else v
+        import pandas as pd
+        return pd.DataFrame(out)
+
+    return sample
+
+
 def p2_grid(schema) -> Battery:
     items, s = [], 95001
     for d in (0.0, 2.0, 4.0, 6.0, 8.0, 10.0):
@@ -77,10 +96,11 @@ def run_case(case_dir):
     naive = rival_naive(pool, schema)
 
     battery = p2_grid(schema)
+    null_fn = null_model(pool, schema)
     out = {}
     for c_f, tag in ((meta.scoring.c_f, "frozen"), (meta.scoring.c_f * 2, "x2")):
         ws = WorldSide(world_sample, battery, meta.column_names, meta.scoring.n_samples,
-                       functionals=meta.stakes.functionals, c_f=c_f)
+                       null_sample=null_fn, functionals=meta.stakes.functionals, c_f=c_f)
         s_truth = score_callable(world_sample, ws, meta.scoring)
         s_naive = score_callable(naive, ws, meta.scoring)
         den = s_truth - s_naive
@@ -94,7 +114,7 @@ def run_case(case_dir):
         best_dobs_r = max(max(r_dobs.values()), 0.0)  # (a) naive anchors 0
         # energy/functional decomposition for the best (d-exp) member at this c_F
         ws_e = WorldSide(world_sample, battery, meta.column_names, meta.scoring.n_samples,
-                         functionals=meta.stakes.functionals, c_f=0.0)
+                         null_sample=null_fn, functionals=meta.stakes.functionals, c_f=0.0)
         s_truth_e = score_callable(world_sample, ws_e, meta.scoring)
         s_naive_e = score_callable(naive, ws_e, meta.scoring)
         fn_best = dict(dexp)[best_dexp]
