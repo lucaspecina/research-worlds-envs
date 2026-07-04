@@ -252,9 +252,22 @@ Bayes-adaptivo, world.py-con-oráculo = cota diagnóstica; ingenuo = pooled; mie
 PLUG-IN obligatorio — el gap verdadero es contra él, en n_cal chico + mixes extremos;
 curva gap(n_cal) ES el resultado; pre-compromiso honesto si cierra: latente escalar
 posiblemente inconmensurable → repensar arquetipo). `cases/mendel_subtypes_v2/brief.md`
-escrito (misma cláusula, ventana narrada, anti-susurro ✓). **Próximos (PARALELO)**:
-(1) v2: meta + world.py + protocolo de ventana según §10.1; (2) 3er mundo
-(collider + error de medición, capa de muestreo) — E1 NO se serializa detrás de v2.
+escrito (misma cláusula, ventana narrada, anti-susurro ✓).
+
+**ORDEN v0.48 (Lucas): MUNDO 3 PRIMERO, v2 segundo.** Razones: cartera (3 rediseños en
+un slot de ~20); segundo ejercicio del test estructural sobre capa nueva (dummy-ismos
+baratos ANTES del contrato v2); v2 toca la familia anclas/escala → sesión propia.
+**Pre-registros del mundo 3** (collider_seleccion + error_de_medicion — PRIMERA vez que
+las trampas viven en FUENTES, no en mecanismo): (1) "experiment nunca esquiva el canal"
+muerde por primera vez → test que lo afirme; (2) visibilidad del collider por
+SUB-BATERÍA observacional desde el día uno (ruido local); (3) el gemelo del collider
+("la correlación seleccionada es real") debe salir de la factory generalizada SIN tocar
+código — si pide código = dummy-ismo encontrado y registrado; (4) L1 100% derivado +
+E0-probe frontier apenas pase L1, con headroom pre-registrado ANTES del probe; (5) ambas
+monedas si el brief declara funcional (si no, registrar por qué). **Gates de v2 (después)**:
+ancla Bayes-adaptiva a revisión nivel-artefacto (R_uncl>1 esperado = piso de inferencia
+visible, no bug); smoke de ventana como primer milestone (misma ventana bajo CRN,
+afirmado por test); el brief ya escrito ES el contrato. **Próximo: construir mundo 3.**
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
