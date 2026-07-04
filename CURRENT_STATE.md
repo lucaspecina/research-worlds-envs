@@ -222,11 +222,17 @@ REFUTADAS** — v0-|ΔP| NO chico (in-exp max 0.302; centro del registro dec4/mi
 v1 NO concentrado afuera (in-exp media 0.137 > beyond 0.107; max 0.49 afuera pero
 0.40/0.31 adentro). Contraste v1/v0 en |ΔP|: ~1.3–1.5× (no ≥3×). **Rama firmada
 ejecutada: (a)/(b) activadas, κ-do-over EN ESPERA.** Hallazgo: mispricing de cola
-**ubicuo y simétrico** (residual gaussiano cerca del umbral, en ambos mundos). **Bloqueado
-en: decisión de Lucas (v0.44)** — experimento discriminante propuesto (miembro de
-residuos EMPÍRICOS por cuantiles, doctrina-admisible): clava-v0-y-no-v1 → contraste
-renace, (c) se re-abre; tampoco-en-v0 → (a)/(b) con evidencia. (Nota infra: venv
-recreado — el Python base de uv desapareció; suite verde post-rebuild, pin reproduce.)
+**ubicuo y simétrico** (residual gaussiano cerca del umbral, en ambos mundos). **GO v0.45 (Lucas)**:
+retractación doble registrada (mecanismo: umbral cerca de la mediana ⇒ FORMA del
+residual; corolario: |ΔP| resuelve cola mejor que R) + sonda `empirical_residual_no_latent`
+implementada (supremo práctico de la clase admisible; banco por bins declarados
+(d, ctx, cuartil-marker); interpola en rango, CONGELA afuera) + TRES salidas firmadas
+(A: v0 cierra + v1 falla beyond-exp → κ re-abre / B: v0 no cierra → mundo-funcional /
+C: ambos cierran → clase AGOTADA → v2 mix-no-declarado ACTIVO) + localización c1/c2 de
+la peor celda de v0 (¿kurtosis por decil fino? ¿sigma vs forma?). Python pineado
+(`.python-version`=3.13.13). (Nota infra: venv recreado — base de uv desapareció; suite
+verde post-rebuild, pin 0.0624 reproduce.) **Próximo: correr `p2_probe_empirical.py` y
+leer contra A/B/C — es la ronda de CIERRE del arco fortalecer-rivales.**
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,

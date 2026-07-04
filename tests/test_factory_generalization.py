@@ -54,8 +54,8 @@ def test_full_derivation_runs_on_a_non_dummy_schema():
     rivals, pool, train = build_standard_rivals(V1, load_world_sample(V1), meta,
                                                 n_pool=800, n_train=60)
     assert schema.context in train.columns  # grid labeled with the DECLARED context
-    # naive + 5 ladder members (incl. hetero + marker-conditional, v0.41) + twins
-    assert len(rivals) == 6 + len([o for o in meta.operators if o.ablation])
+    # naive + 6 ladder members (incl. empirical-residual supremum, v0.45) + twins
+    assert len(rivals) == 7 + len([o for o in meta.operators if o.ablation])
     for fn in rivals:
         for regime in _regimes(schema):
             df = fn(regime, 200, 12345)

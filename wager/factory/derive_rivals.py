@@ -312,6 +312,90 @@ def _fit_marker_conditional(train: pd.DataFrame, pool: pd.DataFrame, schema: Cas
     return sample
 
 
+def _fit_empirical_residual(train: pd.DataFrame, pool: pd.DataFrame, schema: CaseSchema) -> Callable:
+    """Practical SUPREMUM of the admissible no-latent class (Decision Log v0.45-2):
+    conditional mean on (decision, marker, ctx) + EMPIRICAL residual bank keyed by
+    DECLARED bins (decision level, ctx cell, marker quartile within the cell) --
+    population memory of observable residual SHAPES (quantile machinery; zero
+    per-sample component inference). The ctx dial: interpolation between the two
+    nearest cells WITHIN the experimentable range; BEYOND it the bank FREEZES
+    (clamp to the boundary cell, declared) -- that is where v1 must bite."""
+    outputs = [c for c in schema.columns if c != schema.decision]
+    marker_col = next((c for c in outputs if c != "outcome"), outputs[0])
+    other = [c for c in outputs if c != marker_col]
+    levels_c = np.array(schema.ctx_levels)
+    levels_d = np.array(sorted(train[schema.decision].unique()))
+    m_bank = {lv: train.loc[np.isclose(train[schema.context], lv), marker_col].to_numpy()
+              for lv in levels_c}
+
+    def feats(d, m, c):
+        s = _sigmoid(c)
+        return np.column_stack([d, m, d * m, s, d * s])
+
+    X = feats(train[schema.decision].to_numpy(), train[marker_col].to_numpy(),
+              train[schema.context].to_numpy())
+    mean_m = {c: make_pipeline(PolynomialFeatures(2), LinearRegression()).fit(X, train[c].to_numpy())
+              for c in other}
+
+    # residual banks: (d level, ctx cell, marker quartile) -> empirical residuals
+    q_edges: dict = {}
+    r_bank: dict = {}
+    for id_, dl in enumerate(levels_d):
+        for ic, cl in enumerate(levels_c):
+            cell = train[np.isclose(train[schema.decision], dl) & np.isclose(train[schema.context], cl)]
+            if len(cell) == 0:
+                continue
+            m = cell[marker_col].to_numpy()
+            edges = np.quantile(m, [0.25, 0.5, 0.75])
+            q_edges[(id_, ic)] = edges
+            iq = np.searchsorted(edges, m)
+            Xc = feats(cell[schema.decision].to_numpy(), m, cell[schema.context].to_numpy())
+            for col in other:
+                res = cell[col].to_numpy() - mean_m[col].predict(Xc)
+                for q in range(4):
+                    r_bank[(col, id_, ic, q)] = res[iq == q]
+    dec_pool = pool[schema.decision].to_numpy()
+
+    def sample(regime, n, seed):
+        rng = np.random.default_rng(seed)
+        c = float(regime.context.get(schema.context, 0.0))
+        d = (np.full(n, float(regime.config[schema.decision]))
+             if schema.decision in regime.config else rng.choice(dec_pool, n, replace=True))
+        cc = float(np.clip(c, levels_c[0], levels_c[-1]))   # FREEZE beyond range (declared)
+        hi = int(np.searchsorted(levels_c, cc, side="left").clip(1, len(levels_c) - 1))
+        lo = hi - 1
+        w_hi = 0.0 if levels_c[hi] == levels_c[lo] else (cc - levels_c[lo]) / (levels_c[hi] - levels_c[lo])
+        ic_row = np.where(rng.random(n) < w_hi, hi, lo)
+        m = np.empty(n)
+        for ic in np.unique(ic_row):
+            mask = ic_row == ic
+            m[mask] = rng.choice(m_bank[levels_c[ic]], int(mask.sum()), replace=True)
+        id_row = np.abs(d[:, None] - levels_d[None, :]).argmin(axis=1)
+        Xq = feats(d, m, np.full(n, c))
+        out = {schema.decision: d, marker_col: m}
+        for col in other:
+            base = mean_m[col].predict(Xq)
+            res = np.empty(n)
+            for id_ in np.unique(id_row):
+                for ic in np.unique(ic_row):
+                    mask = (id_row == id_) & (ic_row == ic)
+                    if not mask.any():
+                        continue
+                    edges = q_edges[(int(id_), int(ic))]
+                    iq = np.searchsorted(edges, m[mask])
+                    res_m = np.empty(int(mask.sum()))
+                    for q in range(4):
+                        qmask = iq == q
+                        if qmask.any():
+                            bank = r_bank[(col, int(id_), int(ic), q)]
+                            res_m[qmask] = rng.choice(bank, int(qmask.sum()), replace=True)
+                    res[mask] = res_m
+            out[col] = base + res
+        return pd.DataFrame(out)[list(schema.columns)]
+
+    return sample
+
+
 def capacity_ladder(train: pd.DataFrame, pool: pd.DataFrame, schema: CaseSchema) -> list[tuple[str, Callable]]:
     return [
         ("linear_no_latent", _fit_no_latent(train, pool, schema, "linear")),
@@ -319,6 +403,7 @@ def capacity_ladder(train: pd.DataFrame, pool: pd.DataFrame, schema: CaseSchema)
         ("logistic_ctx_no_latent", _fit_no_latent(train, pool, schema, "logistic_ctx")),
         ("hetero_no_latent", _fit_hetero_no_latent(train, pool, schema)),
         ("marker_conditional_no_latent", _fit_marker_conditional(train, pool, schema)),
+        ("empirical_residual_no_latent", _fit_empirical_residual(train, pool, schema)),
     ]
 
 
