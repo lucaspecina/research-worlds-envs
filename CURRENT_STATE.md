@@ -231,8 +231,18 @@ implementada (supremo práctico de la clase admisible; banco por bins declarados
 C: ambos cierran → clase AGOTADA → v2 mix-no-declarado ACTIVO) + localización c1/c2 de
 la peor celda de v0 (¿kurtosis por decil fino? ¿sigma vs forma?). Python pineado
 (`.python-version`=3.13.13). (Nota infra: venv recreado — base de uv desapareció; suite
-verde post-rebuild, pin 0.0624 reproduce.) **Próximo: correr `p2_probe_empirical.py` y
-leer contra A/B/C — es la ronda de CIERRE del arco fortalecer-rivales.**
+verde post-rebuild, pin 0.0624 reproduce.) **RONDA DE CIERRE CORRIDA (v0.46)**: salida **(C) con matiz** — supremo R=0.984 en AMBOS
+mundos (escalera monótona ✓), |ΔP| con **cero contraste** en todas las bandas (in-exp
+0.041 vs 0.047; beyond 0.065 vs 0.064 — donde el banco congelado debía morder, no mordió)
+→ clase admisible AGOTADA sin separar → **v1 no fuerza representación**. Mecanismo: el
+dial `mix_logit` DECLARADO permite extrapolación suave de la media condicional aun con
+residuos congelados (confirma v0.43-4). Localización: (c1) condicional de v0 dado marker
+fino ES unimodal (kurt −0.12 ≈ gaussiano — diseño de v0 verificado); (c2) el error
+gaussiano era σ/condicionamiento (+0.182), no forma (0.039). Residuo compartido
+(~0.05–0.12 medias) = piso del miembro, idéntico en ambos → no afecta la conclusión.
+**Bloqueado en: DISEÑO DE v2 (Lucas)** — mix como contexto NO-declarado (lotes de mezcla
+desconocida; inferir el mix del marker → representar es la única salida). κ EN ESPERA.
+Arco fortalecer-rivales: CERRADO con piso demostrado (la escalera actual es la vara).
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
