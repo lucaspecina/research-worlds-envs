@@ -240,9 +240,21 @@ residuos congelados (confirma v0.43-4). Localización: (c1) condicional de v0 da
 fino ES unimodal (kurt −0.12 ≈ gaussiano — diseño de v0 verificado); (c2) el error
 gaussiano era σ/condicionamiento (+0.182), no forma (0.039). Residuo compartido
 (~0.05–0.12 medias) = piso del miembro, idéntico en ambos → no afecta la conclusión.
-**Bloqueado en: DISEÑO DE v2 (Lucas)** — mix como contexto NO-declarado (lotes de mezcla
-desconocida; inferir el mix del marker → representar es la única salida). κ EN ESPERA.
+κ EN ESPERA.
 Arco fortalecer-rivales: CERRADO con piso demostrado (la escalera actual es la vara).
+
+**SPEC-FIRST v2 REGISTRADO (v0.47)**: vara canonizada (escalera-de-6 = bar permanente;
+tríptico v0/v1/v2 con pre-registro estructural gap(v0)≈gap(v1)≈0 < gap(v2)); definición
+afilada de brecha de teoría (→ NORTH_STAR §4.6); **contrato de ventana en ARCHITECTURE
+§10.1** (mix oculto por lote de prior no visible; ventana `n_cal` sin etiquetar en
+`regime.context` con seed lado-mundo/CRN; firma de model() intacta; techo R=1 =
+Bayes-adaptivo, world.py-con-oráculo = cota diagnóstica; ingenuo = pooled; miembro
+PLUG-IN obligatorio — el gap verdadero es contra él, en n_cal chico + mixes extremos;
+curva gap(n_cal) ES el resultado; pre-compromiso honesto si cierra: latente escalar
+posiblemente inconmensurable → repensar arquetipo). `cases/mendel_subtypes_v2/brief.md`
+escrito (misma cláusula, ventana narrada, anti-susurro ✓). **Próximos (PARALELO)**:
+(1) v2: meta + world.py + protocolo de ventana según §10.1; (2) 3er mundo
+(collider + error de medición, capa de muestreo) — E1 NO se serializa detrás de v2.
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
