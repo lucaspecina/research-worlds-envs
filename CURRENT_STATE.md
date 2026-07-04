@@ -215,7 +215,18 @@ v0-chico-en-todos-lados + v1-concentrado-en-|mix|>experimentable → mundo vindi
 (v0 |ΔP| max=0.389, ¿dónde vive?). Spec κ-do-over condicional en v0.43-3 (ancla
 `ΔP_decisivo` en meta, regla pricing ≥ piso, `c_F* = max(c_F_vis, c_F_stakes)`,
 validación no-circular). Concepto v2 encolado (mix como contexto NO declarado, decide
-post-κ). **Próximo: correr la localización del cuadrante y leer contra las ramas.**
+post-κ).
+
+**CUADRANTE CORRIDO (v0.44, n=4000, `p2_dp_quadrant.json`)**: **ambas predicciones
+REFUTADAS** — v0-|ΔP| NO chico (in-exp max 0.302; centro del registro dec4/mix0 = 0.214);
+v1 NO concentrado afuera (in-exp media 0.137 > beyond 0.107; max 0.49 afuera pero
+0.40/0.31 adentro). Contraste v1/v0 en |ΔP|: ~1.3–1.5× (no ≥3×). **Rama firmada
+ejecutada: (a)/(b) activadas, κ-do-over EN ESPERA.** Hallazgo: mispricing de cola
+**ubicuo y simétrico** (residual gaussiano cerca del umbral, en ambos mundos). **Bloqueado
+en: decisión de Lucas (v0.44)** — experimento discriminante propuesto (miembro de
+residuos EMPÍRICOS por cuantiles, doctrina-admisible): clava-v0-y-no-v1 → contraste
+renace, (c) se re-abre; tampoco-en-v0 → (a)/(b) con evidencia. (Nota infra: venv
+recreado — el Python base de uv desapareció; suite verde post-rebuild, pin reproduce.)
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
