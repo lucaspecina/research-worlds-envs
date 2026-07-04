@@ -207,9 +207,15 @@ R=0.967) / v1=0.036 (✗ (ii): `hetero` 0.964, el funcional no lo atrapa; (iii) 
 alcanzado; mecanística grande en ambos ✓ 0.859/0.866). **Dato de las dos unidades**: el
 best sin-latente de v1 pierde 0.036 en R (bajo el piso) pero mispricea P(scrap) hasta
 |ΔP|=0.48 (media 0.134) → **la pregunta κ (v0.38-c) se activa con evidencia**.
-**Bloqueado en: decisión de Lucas (v0.42)** — (a) marker demasiado informativo (rediseño
-de v1) / (b) shifts de mix insuficientes (grilla/mundo) / (c) el mundo está bien y el
-reward no paga: revisitar `c_F` con do-over registrado. Nada se toca hasta esa decisión.
+**LECTURA v0.43 (Lucas)**: "la 2×2 cambió de moneda — el cuello de botella es el tipo de
+cambio del reward, no (todavía) el mundo". Retractación simétrica de (ii) registrada
+(off-support sub-preciado a c_F=0.25). **Cuadrante |ΔP| PRE-REGISTRADO** (ramas firmadas:
+v0-chico-en-todos-lados + v1-concentrado-en-|mix|>experimentable → mundo vindicado →
+κ-do-over; v0 también grande → (a)/(b) y κ espera) — ojo: corrida 3 ya insinúa tensión
+(v0 |ΔP| max=0.389, ¿dónde vive?). Spec κ-do-over condicional en v0.43-3 (ancla
+`ΔP_decisivo` en meta, regla pricing ≥ piso, `c_F* = max(c_F_vis, c_F_stakes)`,
+validación no-circular). Concepto v2 encolado (mix como contexto NO declarado, decide
+post-κ). **Próximo: correr la localización del cuadrante y leer contra las ramas.**
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
