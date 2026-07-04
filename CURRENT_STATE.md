@@ -267,7 +267,20 @@ E0-probe frontier apenas pase L1, con headroom pre-registrado ANTES del probe; (
 monedas si el brief declara funcional (si no, registrar por qué). **Gates de v2 (después)**:
 ancla Bayes-adaptiva a revisión nivel-artefacto (R_uncl>1 esperado = piso de inferencia
 visible, no bug); smoke de ventana como primer milestone (misma ventana bajo CRN,
-afirmado por test); el brief ya escrito ES el contrato. **Próximo: construir mundo 3.**
+afirmado por test); el brief ya escrito ES el contrato.
+
+**v0.49 (HECHO)**: lint de headers movido a **PRE-COMMIT** (hook versionado `hooks/pre-commit`
++ `core.hooksPath hooks`; paso post-clone en CLAUDE.md; el CI queda de segunda red) +
+**plan corto del mundo 3 (`selection_bias_v0`) registrado**: mecanismo SCM limpio
+(driver→outcome; signal sin arista directa) + trampas por PRIMERA vez en capa FUENTE —
+pipeline de corrupción declarado en `SourceSpec` (filtro collider `f(signal,outcome)>umbral`
++ canal σ_med/sesgo que muerde TAMBIÉN en experiment, regla v0.9 con test) — maquinaria
+nueva DECLARADA de antemano (es la anatomía §1 pendiente, no dummy-ismo); predicción
+honesta: el test del gemelo destapa el **dummy-ismo #7 (mechanism-only twins)** → fix =
+ablación por capa (fuente = re-muestrear pool con operador off); certificados con
+sub-batería observacional día uno; funcional de cola en el brief (ambas monedas).
+**Próximo: ejecutar el plan — contrato de fuentes → world+meta → brief → derivación →
+L1 → headroom pre-registrado → E0-probe.**
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
