@@ -2,13 +2,14 @@
 
 Operativa del repo para Claude Code.
 
-**▶ Al arrancar una sesión**: leé **`docs/roadmap.md`** (sección *Estado actual* + *Próximo*) para saber dónde
-estamos y qué sigue — es la única fuente de verdad del estado. Si no conocés el proyecto, leé **`WIKI.md`** primero.
+**▶ Al arrancar una sesión**: leé **`docs/roadmap.md`** (sección *Estado actual*, que incluye el próximo paso)
+para saber dónde estamos y qué sigue — es la única fuente de verdad del estado. Si no conocés el proyecto, leé
+**`WIKI.md`** primero.
 
 Mapa de docs (abrí el que la tarea pida, no todos):
 
 - **`WIKI.md`** — entender de cero, sin jerga: qué es, cómo funciona, dónde estamos.
-- **`ARCHITECTURE.md`** — referencia técnica: contratos, operadores, rivales, batería, scoring, harness.
+- **`ARCHITECTURE.md`** — índice de la referencia técnica → **`docs/reference/`** (contratos, operadores, rivales, batería, scoring, harness; abrí el archivo del tema).
 - **`docs/roadmap.md`** — estado vivo + cartera E1 + programa E1→E4 (dónde estamos, qué falta, el plan).
 - **`docs/adr/`** — decisiones (una por archivo, append-only)
   · **`docs/open-questions.md`** (lo sin decidir) · **`docs/red-team.md`** (amenazas del proyecto)
@@ -35,7 +36,7 @@ propone la edición del doc + un ADR nuevo en `docs/adr/`.
   ve la taxonomía de operadores.
 - Casos con semilla investigativa: **test de contaminación obligatorio** antes de certificar; trasplante cruzado
   de dominio por defecto para semillas famosas.
-- El handle del mundo es **opaco server-side**: el agente jamás lee `world.py`, `battery.json` ni `rivals/`.
+- El handle del mundo es **opaco server-side**: el agente jamás lee `world.py`, `battery.json` ni `ladder/` (anclas/rivales).
   El brief lo escribe un proceso **ciego** a batería y rivales (anti-leak).
 
 ## Workflow
@@ -77,10 +78,10 @@ El repo SREG (proyecto anterior, mismo autor) es **referencia de SOLO LECTURA** 
   **Tripwires (únicos frenos)**: (1) semántica del reward path o de anclas, (2) frontera cero-LLM, (3)
   contradicción de pre-registro firmado que exija tocar algo certificado, (4) gasto material de API/infra fuera
   del alcance ordenado. El siguiente mensaje a Lucas es el dossier consolidado — o un tripwire.
-- Python 3.11+, Pydantic para contratos, pytest, dependencias mínimas (numpy/pandas/scipy).
+- Python 3.13 (pineado en `.python-version`), Pydantic para contratos, pytest, dependencias mínimas (numpy/pandas/scipy).
 - Docs en español, código e identificadores en inglés.
 - Suites con nombres de científicos arquetipo: Horizon (observacional), Anomaly (anomalías), Latent (latentes),
-  Prior (prior vs evidencia). Casos en `cases/<case_id>/` con la anatomía de ARCHITECTURE §1.
+  Prior (prior vs evidencia). Casos en `cases/<case_id>/` con la anatomía de `docs/reference/world-model.md` §1.
 
 ## Infraestructura
 

@@ -1,14 +1,11 @@
 # WAGER — ARCHITECTURE.md
 ## Diseño técnico (referencia; el "por qué" está en WIKI.md)
 
-> **Qué es este documento.** El "cómo" a nivel de contratos, librerías y algoritmos. El "por qué" llano vive en `WIKI.md`; el ethos/reglas en `CLAUDE.md`; las decisiones en `docs/adr/`. Se mantiene con la misma disciplina: nada se borra, decisiones a un ADR nuevo, secciones `[ESTABLE]` / `[EN DEBATE]`.
->
-> **Estado**: v0.14 (2026-07-05). v0.14: mundos-trayectoria en §9 — entregable formato largo (`unit_id, t, y`), pivot largo→ancho como función pura del reward path (Decision Log v0.68-R1). El cuerpo incorpora decisiones del Decision Log hasta v0.68; el changelog completo del header (v0.1→v0.14) está en [`docs/archived/ARCHITECTURE_changelog.md`](docs/archived/ARCHITECTURE_changelog.md).
-
----
-
-> **Descompuesto (ADR 0072)**: el detalle técnico vive en `docs/reference/` (uno por
-> tema, se abre solo el que la tarea pide). Este archivo es el índice.
+> **Qué es este documento.** El "cómo" a nivel de contratos, librerías y algoritmos — es un
+> **índice** (ADR 0072); el detalle vive en `docs/reference/` (un archivo por tema, cada uno con
+> sus marcadores `[ESTABLE]`/`[EN DEBATE]`, se abre solo el que la tarea pide). El "por qué" llano
+> en `WIKI.md`; el ethos/reglas en `CLAUDE.md`; las decisiones en `docs/adr/`. Changelog histórico
+> del header (v0.1→v0.14, del ARCHITECTURE monolítico) en [`docs/archived/ARCHITECTURE_changelog.md`](docs/archived/ARCHITECTURE_changelog.md).
 
 ## Índice de referencia
 

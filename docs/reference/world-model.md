@@ -10,17 +10,26 @@ Un caso es una carpeta autocontenida:
 
 ```
 cases/<case_id>/
-  world.py        # mecanismo + superficie de control + sample()  — la verdad
-  sources.yaml    # fuentes observacionales: costo, n disponible, operadores aplicados
-  brief.md        # narrativa + stakes + ficha técnica — lo ÚNICO que ve el agente
-  battery.json    # [(peso, regime, seed_mundo), ...] — OCULTO al agente
-                  #   (los seeds lado-maqueta se derivan: derive_seed(seed_mundo, j), §9)
-  rivals/         # programas rivales (misma firma que world.sample) — OCULTOS
-  meta.json       # operadores instalados + perillas, brechas computadas, suite,
-                  # semilla de origen (si hubo), perilla de prior, certificados
+  world.py          # mecanismo + superficie de control + sample()  — la verdad (OCULTO)
+  meta.json         # operadores instalados + perillas + ablaciones, stakes/funcionales,
+                    #   scoring (c_f, λ), FUENTES observacionales del episodio (costos, canal
+                    #   de medición, filtro de selección), suite, semilla de origen, prior
+  brief.md          # narrativa + stakes + ficha técnica — lo ÚNICO que ve el agente
+  battery.json      # [(peso, regime, seed_mundo), ...] — OCULTO (seeds lado-maqueta se
+                    #   derivan: derive_seed(seed_mundo, j), §9)
+  ladder/           # fixtures de la escalera L1 = anclas (ingenuo/nulo) + rivales — OCULTOS
+  certificates.json # gates computados en design time
+  traces/           # episodios corridos (evidencia; gitignored salvo ejemplares)
 ```
 
 Regla de visibilidad: el agente ve `brief.md` y el handle `env`. Todo lo demás es lado fábrica.
+
+> **Nota de implementación (doc-vs-código)**: las fuentes observacionales y sus corrupciones
+> (canal de medición, filtro de selección, `pipeline_order`) se declaran **dentro de `meta.json`**
+> (`episode.observe_sources`), no en un `sources.yaml` aparte. Los rivales se **derivan** en la
+> fábrica; los que se persisten son los fixtures de `ladder/`. La spec original hablaba de
+> `sources.yaml`/`rivals/` (ver `docs/archived/NORTH_STAR_full.md`); el código consolidó ambos en
+> `meta.json` + `ladder/`.
 
 ---
 
@@ -48,8 +57,8 @@ class World:
 | Capa | Implementación | Trampas |
 |---|---|---|
 | Mecanismo | `world.py` (ecuaciones/dinámica) | Raras (heterogeneidad latente, umbrales, contaminación) |
-| Canal de observación | operadores aplicados en `sources.yaml` | Frecuentes (error de medición, proxies, batch effects) |
-| Proceso de muestreo | operadores aplicados en `sources.yaml` | Frecuentes (selección, survivorship, censura) |
+| Canal de observación | operadores declarados en `meta.json` | Frecuentes (error de medición, proxies, batch effects) |
+| Proceso de muestreo | operadores declarados en `meta.json` | Frecuentes (selección, survivorship, censura) |
 
 **Invariante**: las trampas viven en las fuentes; `world.sample()` (lo que usa el scorer) es siempre el mecanismo limpio. El agente recibe vistas corrompidas vía `observe`; la corrección corre la verdad.
 

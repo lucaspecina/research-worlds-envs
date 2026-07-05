@@ -140,11 +140,12 @@ La brecha se piensa en **cuatro sabores**, cada uno una presión distinta: ¿el 
 composición oculta por lote) donde cada lote de material trae una mezcla distinta de dos
 variantes que responden de forma **opuesta** al nivel de entrada — y esa mezcla no está
 registrada; solo llega una muestrita de sensor por lote. Para ganar hay que *inferir* la
-composición de cada lote desde esa muestrita. Resultado con el mejor modelo disponible: jugó
-**técnicamente perfecto, cero errores** — y sacó **0.096 sobre 1**. No por torpeza: porque no
-se le ocurrió la idea (que había que inferir la mezcla). Ejecutar la jugada ganadora cuesta
-diez líneas de código; *concebirla* es lo que faltó. **Ese es el trofeo: un mundo donde falta
-juicio, no ejecución.**
+composición de cada lote desde esa muestrita. En la partida más ilustrativa, el mejor modelo
+disponible jugó **técnicamente perfecto, cero errores** — y sacó **0.096 sobre 1**. Y en las
+diez partidas que corrimos (dos familias de modelo), el **máximo fue 0.666** — igual lejísimos
+del techo (1.0): **nadie** intentó inferir la composición del lote. No por torpeza: porque no
+se le ocurrió la idea. Ejecutar la jugada ganadora cuesta diez líneas de código; *concebirla*
+es lo que faltó. **Ese es el trofeo: un mundo donde falta juicio, no ejecución.**
 
 Y descubrimos que **el presupuesto es una perilla de dificultad gratis** ✅: al mismo mundo,
 con la plata recortada a un cuarto, la escasez no bloquea el premio — **separa estilos**. Un
@@ -171,21 +172,23 @@ del techo — así "solo se gana pivoteando" deja de ser deseo y pasa a ser prop
 
 ## 9. Dónde estamos hoy ✅
 
+> El estado **vivo y preciso** (qué corre, próximo paso, la cartera completa con cifras) está en
+> **`docs/roadmap.md`** — es la única fuente que se mantiene al día. Acá va solo la foto de alto nivel.
+
 **Lo que funciona:**
 - El camino completo de la nota (juez matemático, cero-IA, con test que lo protege).
 - El harness de partidas (una IA real juega de punta a punta).
-- La fábrica que deriva rivales, batería y certificados automáticamente desde la declaración
-  de un mundo.
+- La fábrica que deriva rivales, batería y certificados desde la declaración de un mundo.
 - El dossier visual para inspeccionar partidas.
-- **Seis mundos**: cuatro de control (fáciles, sirven de vara) y dos de dificultad real (el
-  trofeo de composición oculta y el de presupuesto escaso).
+- Varios mundos: unos de control (la vara) y los primeros de dificultad real (el trofeo de
+  composición oculta y el de presupuesto escaso).
 
 **Lo que todavía no:**
-- No entrenamos nada aún (eso es la fase de RL — la apuesta grande, no un hecho).
-- No corrimos la evaluación multi-modelo en serio (todo hasta ahora es puñado de partidas con
-  uno o dos modelos — sirve para probar que los mundos muerden, no para rankear IAs).
-- Casi todos los mundos son del mismo tipo (sistemas causales estáticos); el primer mundo
-  *dinámico* (con tiempo) está en construcción 🔨.
+- No entrenamos nada aún (la fase de RL — la apuesta grande, no un hecho).
+- No corrimos la evaluación multi-modelo en serio (hasta ahora, puñados de partidas con uno o
+  dos modelos — prueba que los mundos muerden, no rankea IAs).
+- Casi todos los mundos son del mismo tipo (causales estáticos); el primer mundo *dinámico*
+  (con tiempo) es el próximo paso 🔨.
 
 ## 10. Qué falta y qué no está decidido ❓
 

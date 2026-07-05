@@ -4,7 +4,10 @@
 > [adr.github.io](https://adr.github.io/)). **Append-only**: los archivos existentes son
 > INMUTABLES; superseder una decisión = archivo nuevo que la referencia, y se anota el
 > estado acá. La guardia `scripts/check_decision_log.py` (pre-commit) lo verifica.
-> El *por qué/qué* del proyecto está en `WIKI.md` (llano) y `NORTH_STAR`/`ARCHITECTURE`.
+> El *por qué/qué* del proyecto está en `WIKI.md` (llano) y `ARCHITECTURE.md` → `docs/reference/`.
+>
+> **Mapeo de citas**: los docs viejos citan "**Decision Log v0.NN**"; equivale al ADR con esa
+> **Versión** (columna de abajo). Ej.: "Decision Log v0.64" → ADR 0064. El filename preserva el `v0.NN`.
 
 | # | Versión | Fecha | Decisión | Estado |
 |---|---------|-------|----------|--------|
@@ -80,3 +83,4 @@
 | 0070 | v0.70 | 2026-07-05 | [Reestructura de docs a estructura best-practice (WIKI + ADRs + NORTH_STAR disuelto)](0070-v0.70-reestructura-de-docs-a-best-practice.md) | Vigente |
 | 0071 | v0.71 | 2026-07-05 | [Re-skin de casos a "línea de proceso" (neutral, anti-flag)](0071-v0.71-re-skin-a-linea-de-proceso.md) | Vigente |
 | 0072 | v0.72 | 2026-07-05 | [Consolidaciones finales de docs (ARCHITECTURE→reference, CURRENT_STATE→roadmap, REDTEAM→test)](0072-v0.72-consolidaciones-finales-de-docs.md) | Vigente |
+| 0073 | v0.73 | 2026-07-05 | [Auditoría post-reestructura y fixes (14 findings, método de dos frentes)](0073-v0.73-auditoria-post-reestructura-y-fixes.md) | Vigente |
