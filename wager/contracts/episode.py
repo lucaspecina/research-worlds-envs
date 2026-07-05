@@ -82,6 +82,11 @@ class EpisodeConfig(BaseModel):
     budget: float = Field(gt=0)
     observe_sources: dict[str, SourceConfig]
     experiment: ExperimentCost
+    # the DECLARED instrument experiments read (v0.58-2: positional conventions
+    # are dummy-ism seeds -- two sources with different channels would bite
+    # silently). Names the source whose channel is the case's meter; None only
+    # when no source declares a channel.
+    experiment_meter: str | None = None
     smoke_regimes: list[Regime] = Field(min_length=1)
     control_surface: dict = Field(default_factory=dict)  # what describe() shows
 

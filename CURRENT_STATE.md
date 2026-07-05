@@ -318,10 +318,14 @@ experiment→medidor del caso, describe con schema-entregable vs schemas-por-fue
 tasa de aceptación en ningún lado — verificado por test); **plantilla de headroom
 registrada** (predicción de Lucas: "collider atrapado, deconvolución omitida"; ramas
 firmadas; QA 1–2 episodios con trace completo). Suite 110 verdes.
+**v0.58 (HECHO)**: regla registrado≠implementado (test-en-commit o PENDING-IMPL rastreado
+acá; el catch del observe como ejemplar); `experiment_meter` DECLARADO en contrato + meta
+(posicional prohibido, error si falta; autotest par ✓); lint de secciones clave
+CLAUDE/ARCHITECTURE (should-fail embebido). Suite 112 verdes. **PENDING-IMPL: (ninguno).**
 **FALTA (tramo final sesión 2): derivación (#7 con predicción firmada — ablación por
 capa = vista con operador off + refit) → los dos gemelos v0.52-2 → L1 derivado (firma:
 ingenuo ancla lejos) → llenar (a) de la plantilla de headroom ANTES de mirar →
-E0-probe, ambas monedas. Desborde a sesión 3 = dato contra la vara.**
+E0-probe, ambas monedas, trace completo. Desborde a sesión 3 = dato contra la vara.**
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,

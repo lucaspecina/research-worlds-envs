@@ -132,3 +132,28 @@ def test_server_serves_views_and_split_schemas_on_source_trap_worlds():
         2000, 999,
     )["outcome"].var()
     assert exp["outcome"].var() > clean_var + 1.0  # the meter never sleeps (v0.9)
+
+
+def test_meter_is_declared_never_positional():
+    """v0.58-2 guard WITH its autotest pair (v0.57-1 rule, applied to itself):
+    should-pass = declared meter resolves; should-fail = a channel without
+    declaration raises instead of guessing positionally."""
+    from pathlib import Path
+
+    import pytest as _pytest
+
+    from wager.factory.case_loader import load_meta, load_world_sample
+    from wager.harness.world_server import WorldServer
+
+    case_dir = Path(__file__).resolve().parents[1] / "cases" / "selection_bias_v0"
+    meta = load_meta(case_dir)
+    ws = load_world_sample(case_dir)
+    ok = WorldServer(world_sample=ws, columns=meta.column_names, brief="", config=meta.episode,
+                     scoring=None, control_surface={})
+    assert ok._meter is not None and ok._meter.noise_sd == 1.5   # should-pass
+
+    undeclared = meta.episode.model_copy(update={"experiment_meter": None})
+    bad = WorldServer(world_sample=ws, columns=meta.column_names, brief="", config=undeclared,
+                      scoring=None, control_surface={})
+    with _pytest.raises(ValueError, match="experiment_meter"):    # should-fail
+        _ = bad._meter

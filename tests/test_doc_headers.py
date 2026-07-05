@@ -15,6 +15,8 @@ import json
 import re
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -100,3 +102,23 @@ def test_functional_brief_clauses_verbatim_in_brief():
                 f"edit broke traceability; fix the CASE (brief + meta), never "
                 f"invent the clause"
             )
+
+
+def _assert_key_sections(text: str, sections: list[str]) -> None:
+    missing = [s for s in sections if s not in text]
+    assert not missing, f"missing constitutional sections: {missing}"
+
+
+def test_constitutional_docs_keep_their_key_sections():
+    """v0.58-3: the append-only guard's equivalent for CLAUDE/ARCHITECTURE --
+    a bulk edit that drops a section fails before entering history. Includes
+    its own should-fail (v0.57-1: guards ship with their autotest pair)."""
+    claude = (ROOT / "CLAUDE.md").read_text(encoding="utf-8")
+    _assert_key_sections(claude, ["## Reglas duras", "## Workflow", "## Convenciones",
+                                  "## Infraestructura", "## Estado actual"])
+    arch = (ROOT / "ARCHITECTURE.md").read_text(encoding="utf-8")
+    _assert_key_sections(arch, ["## 1. Anatomía de un caso", "## 5. Rivales",
+                                "## 7. Certificados", "## 9. Scoring",
+                                "### 10.1 Contrato de ventana", "## 13. Validación"])
+    with pytest.raises(AssertionError):  # should-fail half of the pair
+        _assert_key_sections("## solo esto", ["## Reglas duras"])

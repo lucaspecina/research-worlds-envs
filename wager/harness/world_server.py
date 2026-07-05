@@ -101,12 +101,17 @@ class WorldServer:
 
     @property
     def _meter(self):
-        """The case's declared measurement channel (the first source's, by
-        convention): experiments bypass historical SELECTION, never the meter
-        (v0.9). Anti-leak: selection itself is never described."""
-        for s in self.config.observe_sources.values():
-            if s.channel is not None:
-                return s.channel
+        """The case's DECLARED measurement channel (meta.episode.experiment_meter,
+        v0.58-2 -- never positional): experiments bypass historical SELECTION,
+        never the meter (v0.9). Raises if a source declares a channel but the
+        meter is undeclared (a positional guess would bite silently)."""
+        if self.config.experiment_meter is not None:
+            return self.config.observe_sources[self.config.experiment_meter].channel
+        if any(s.channel is not None for s in self.config.observe_sources.values()):
+            raise ValueError(
+                "a source declares a measurement channel but meta.episode."
+                "experiment_meter is undeclared (v0.58-2: declared, not positional)"
+            )
         return None
 
     # --- verbs ---------------------------------------------------------
