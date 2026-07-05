@@ -286,10 +286,16 @@ zero-mean en outcome, σ_med knob; hetero diferido; (b) spec-instrumento y (c) g
 del pool) + refit sobre knobs** (la ablación de capa sola da twin degenerado — rival débil);
 (3) **batería: observacionales = POBLACIÓN COMPLETA** (≠ pool filtrado; skill = des-sesgar
 la vista); sub-batería collider = población-completa + do(signal); **driver observable**
-(clase de dificultad declarada; theory gap ~0 condicionado a eso). **VARA DE VELOCIDAD:
-cierres + build ≤ ~2 sesiones o se reporta como señal** (reloj corre desde la próxima
-sesión). **Próximo: ejecutar — contrato de fuentes → world+meta → brief → derivación
-(test del gemelo, #7 predicho) → L1 → headroom pre-registrado → E0-probe.**
+(clase de dificultad declarada; theory gap ~0 condicionado a eso). **CIERRE #4 (v0.51)**: σ_med
+no identificable con una medición por unidad (Var_obs = σ_true² + σ_med²) → **fuente de
+mediciones REPLICADAS** (dos lecturas/unidad, n chico, costo declarado; σ_med vía
+Var(Y₁−Y₂)/2 — skill real: estimar el error del propio instrumento; techo alcanzable).
+**Gate**: el certificado de recuperabilidad debe mostrar techo ≈ world.py bajo la elección.
+**CERO decisiones entre el mundo 3 y el código. VARA DE VELOCIDAD: cierres + build ≤ ~2
+sesiones o se reporta como señal — el reloj CORRE.** **Próximo: ejecutar — contrato de
+fuentes (SourceSpec + pipeline: filtro collider, canal σ_med, réplicas) → world+meta →
+brief → derivación (test del gemelo, #7 predicho) → L1 → headroom pre-registrado →
+E0-probe.**
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
