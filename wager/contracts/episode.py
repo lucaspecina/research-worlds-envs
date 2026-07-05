@@ -5,6 +5,8 @@ Log v0.14, precision 3): typed scalar dicts with extra="forbid" reject callables
 and stray objects at validation time.
 """
 
+from typing import Literal
+
 from pydantic import BaseModel, ConfigDict, Field
 
 from wager.contracts.world import Regime
@@ -22,12 +24,43 @@ class ExperimentDesign(BaseModel):
         return Regime(config=dict(self.config), context=dict(self.context), horizon=self.horizon)
 
 
+class SelectionFilter(BaseModel):
+    """Collider selection into a source's records (sampling layer, ARCHITECTURE
+    §1/§3; first implemented for world 3, Decision Log v0.49-2). Rows enter the
+    record iff score(row) = sum(weights[c] * row[c]) is on the `keep` side of
+    the threshold. The corruption lives in the SOURCE; world.sample() stays
+    clean for the scorer."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    weights: dict[str, float]
+    threshold: float
+    keep: Literal["above", "below"] = "above"
+
+
+class MeasurementChannel(BaseModel):
+    """Zero-mean measurement noise on ONE observed column (channel layer;
+    bias = 0 by decision v0.50-1 -- an all-views bias is undiscoverable).
+    replicates=2 emits `<column>__rep1/__rep2` (two readings per unit, the
+    v0.51 identifiability source: sigma_med via Var(rep1-rep2)/2)."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    column: str
+    noise_sd: float = Field(ge=0)
+    replicates: int = Field(default=1, ge=1, le=2)
+
+
 class SourceConfig(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     cost_per_row: float = Field(ge=0)
     config: dict[str, float] = Field(default_factory=dict)
     context: dict[str, float] = Field(default_factory=dict)
+    # declared corruption pipeline (applied by the harness/factory VIEW, never
+    # by the scorer): selection filter (sampling) + measurement channel
+    selection: SelectionFilter | None = None
+    channel: MeasurementChannel | None = None
 
 
 class ExperimentCost(BaseModel):
