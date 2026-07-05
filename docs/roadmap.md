@@ -16,8 +16,10 @@ familias nadie infiere composición por-lote, máx R=0.666 (falta juicio, no eje
 **#6** — el presupuesto discrimina estilos. Detalle en ADRs 0064-0068.
 
 **Próximo**: **#11 — primer mundo ODE** (logístico saturante, Horizon): valida el 2º
-formalismo. Spec en `docs/archived/MUNDOS_DINAMICOS_CONTEXT.md`. Orden: contrato de fuentes
-→ world+meta → brief ciego → derivación → certificados → E0-probe. Vara: 1-2 sesiones.
+formalismo. **Spec de trabajo: [`docs/mundos-dinamicos.md`](mundos-dinamicos.md)** (leerlo antes de
+arrancar). La infra de trayectorias (pivot R1, guardia R2, cronograma R3) ya está hecha (ADR 0068);
+lo que falta es el mundo. Orden: contrato de fuentes → world+meta → brief ciego → derivación →
+certificados → E0-probe. Vara: 1-2 sesiones.
 
 **Decisión pendiente de Lucas**: re-orientar los slots 7-20 de la cartera a cobertura de
 failure modes (`docs/open-questions.md` #16); prioridad del proto-designer (#14).
