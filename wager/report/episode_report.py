@@ -175,9 +175,14 @@ def certificates_section(cert: dict) -> str:
 
 def episode_section(trace: dict, fname: str) -> str:
     sig = trace.get("signal", {})
+    # aborted episodes (e.g. no_cell) carry R=None: show the abort, never a score
+    if trace.get("R") is None:
+        r_chip = f"<span class='chip bad'>abortado: {esc(str(trace.get('abort_reason', '?')))}</span>"
+    else:
+        r_chip = (f"<span class='chip {'ok' if trace['R'] > 0.5 else 'bad'}'>R = {trace['R']:.3f}</span>"
+                  f" <span class='small dim'>(R_uncl {trace.get('R_unclipped', 0):+.3f})</span>")
     head = f"""
-<h3>{esc(fname)} — <span class='chip {'ok' if (trace.get('R') or 0) > 0.5 else 'bad'}'>R = {trace.get('R'):.3f}</span>
- <span class='small dim'>(R_uncl {trace.get('R_unclipped'):+.3f})</span></h3>
+<h3>{esc(fname)} — {r_chip}</h3>
 <div class='kv'>
  <div><div class='n'>{trace.get('turns')}</div><div class='l'>turnos</div></div>
  <div><div class='n'>{trace.get('budget_spent', 0):.0f}</div><div class='l'>presupuesto / {trace.get('budget_total', 0):.0f}</div></div>
