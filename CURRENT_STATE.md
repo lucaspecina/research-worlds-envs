@@ -375,15 +375,24 @@ mediana 0.64 > gpt 0.0, con 2× turnos/tokens: 3ª aparición de profundidad↔r
 `E0_LEDGER.md` committeado (contabilidad completa, ambas monedas); 4 traces ejemplares
 whitelisteadas al repo (.gitignore por-archivo, v0.66).
 
-**PRÓXIMO PASO** (hoja de ruta presentada a Lucas, decisiones suyas pendientes:
-GO matriz→failure-modes; prioridad del proto-designer): 0) opcional simétrico —
-consolidar #6 con 2-4 episodios + DeepSeek; 1) **#11** (1er mundo ODE, logistic,
-Horizon — valida el 2º formalismo; compuerta: cirugía mayor = frenar); 2) spec de
-eventos mid-trayectoria (§10-15); 3) 1er mundo anti-vicio con certificado de trampa
-necesaria (§10-16); 4) proto-designer con yield (§10-14); 5) llenar cartera → E1
-multi-modelo (presupuesto API antes); 6) E2 RL. Deudas sin gatillar: barrido c_F
-sampling; κ (presión creciente: 3 divergencias R vs |ΔP|); rival (c); derivación
-automática mundos-ventana.
+**v0.67 (HECHO — CONSOLIDACIÓN #6)**: E0.5 con 4 episodios (2× gpt seeds 2-3, 2× DS
+seeds 2-3). Escasez REPLICADA cross-familia (máx 0.742; 6 episodios acumulados todos
+lejos del 0.97/0.99 pleno) y AFINADA: no bloquea el premio — separa estilos. gpt:
+réplicas compradas 4/4 y jamás usadas (0 líneas sigma). **DS-seed2 la joya: R=0.742
+gastando 1635/5000, 17 turnos/188k tokens, deconvolución SÍ** (primer premio cobrado
+bajo escasez; 4ª aparición profundidad↔resultado). DS-seed3: sigma declarado SIN
+comprar réplicas (números inventados — semilla conductual §10-16). e05_summary.json
+committeado; traces archivadas afuera.
+
+**PRÓXIMO PASO (ESPERANDO OK DE LUCAS)**: 1) **#11** (1er mundo ODE, logistic, Horizon
+— valida el 2º formalismo; contexto de diseño en `MUNDOS_DINAMICOS_CONTEXT.md`,
+evaluado con 3 reconciliaciones a registrar antes de construir: pivot largo↔ancho +
+semántica de n; guard de persistencia vs t_grid persistente; schedule en
+ExperimentDesign); 2) spec de eventos mid-trayectoria (§10-15); 3) 1er mundo
+anti-vicio con certificado de trampa necesaria (§10-16); 4) proto-designer con yield
+(§10-14); 5) llenar cartera → E1 multi-modelo (presupuesto API antes); 6) E2 RL.
+Deudas sin gatillar: barrido c_F sampling; κ (4 datos acumulados); rival (c);
+derivación automática mundos-ventana.
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
