@@ -1,7 +1,7 @@
 # CURRENT_STATE — WAGER
 
 > Estado vivo del repo: qué corre hoy, qué falta. Lo mantiene Claude Code al día en cada
-> sesión de trabajo (regla: NORTH_STAR §0.10). Última actualización: **2026-07-02**.
+> sesión de trabajo (regla: NORTH_STAR §0.10). Última actualización: **2026-07-05**.
 
 ## Migración de repo (2026-07-02)
 
@@ -336,7 +336,28 @@ trackea el mix; cero wiring de scorer). **FRENADO EN EL GATE (tripwire-1): spec 
 Bayes-adaptiva a revisión de Lucas** — techo R=1 := verdad Bayes-adaptiva, world.py-con-
 oráculo = cota diagnóstica (R_uncl>1 esperado), enriquecimiento del regime en scoring.
 `E1_MATRIX.md` borrador: 20 slots, 4 controles HECHOS (~25%), pipeline v2 → #6 (hipótesis-
-presupuesto sobre mundo saturado) → #11 (1er ODE). **BLOQUEADO EN: revisión del ancla.**
+presupuesto sobre mundo saturado) → #11 (1er ODE). ~~BLOQUEADO EN: revisión del ancla.~~
+**v0.62 (HECHO)**: dossier E2E humano (`wager/report/episode_report.py` → `reports/`, tabs
+por run). **v0.63 (HECHO)**: gate del ancla APROBADO por Lucas (rationale world.py=jugador
+ilegal + 5 correcciones + L1-v2 a n_cal=4 + matriz aprobada, cupo control CERRADO).
+**v0.64 (HECHO — v2 COMPLETO)**: ancla cableada a-la-letra ("cada FILA" load-bearing: el
+predictivo por-tabla era superado por el plug-in R=1.059 → verbatim restaura plugin
+0.9991 ≤ techo, paridad exacta); certificación corrida (curva gap(n_cal) en sonda de 16
+lotes: +0.71→+0.02; impuesto de lo incognoscible 0.15→0.03; L1-v2 con empate pooled-null
+EXPLICADO: lotes extremos capean al pooled); convenciones nuevas (truth_code.py como techo
+legal de episodio; guard `Battery.to_json_file` anti-persistencia de ventana; enrich en
+smoke+scoring; registro histórico = archivo multi-lote per-row); **E0-v2 4 episodios
+gpt-5.4**: cero crashes (ergonomía #19 pre-escrita FUNCIONÓ), nadie infirió composición
+por-lote — seed3 = marker_conditional suave (la arquitectura que cerró v0) anota
+**R=0.096**, |ΔP| scrap hasta 0.61 → **tríptico CONFIRMADO con solver real; headroom
+enorme (techo 1.0 / plugin 0.999 / mejor solver 0.096)**; #19 especie nueva (experiment()
+= UN lote por llamada) documentada en brief+meta con re-run 2+2. Suite 120 verdes.
+Traces en `cases/mendel_subtypes_v2/traces/` (gitignored). **PENDING-IMPL: (ninguno).**
+
+**PRÓXIMO PASO**: pipeline aprobado continúa — **#6** (hermano de selection_bias:
+presupuesto÷4, réplicas ×3 precio; certificados RE-DERIVADOS; hipótesis "escasez vs
+composición") → **#11** (1er mundo ODE, logistic growth, suite Horizon) → dossier
+consolidado a Lucas (regla de autonomía: próximo mensaje = dossier o tripwire).
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,

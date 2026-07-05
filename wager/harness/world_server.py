@@ -54,6 +54,12 @@ class ScoringArtifacts:
     battery: Battery
     params: ScoringParams
     functionals: list = field(default_factory=list)  # declared stakes functionals (v0.60)
+    # window worlds (Decision Log v0.63): the LEGAL bayes-ceiling fixture that
+    # anchors S_truth (world.py is the ILLEGAL player there), plus the ONE
+    # choke point that materializes runtime-only context (cal_window) from the
+    # persisted scalar. Both None for every non-window world (inert).
+    truth_code: str | None = None
+    enrich_regime: Callable | None = None
 
 
 @dataclass
@@ -187,6 +193,8 @@ class WorldServer:
             columns=self.columns,
             params=self.scoring.params,
             functionals=self.scoring.functionals,
+            truth_code=self.scoring.truth_code,
+            enrich_regime=self.scoring.enrich_regime,
         )
         self.result["code"] = code
         self.terminal = True
@@ -205,9 +213,15 @@ class WorldServer:
             with SandboxedSubmission(code, self.columns, timeout_s=self.scoring.params.model_call_timeout_s) as sb:
                 for i, regime in enumerate(self.config.smoke_regimes):
                     try:
+                        # window worlds: smoke regimes cross the SAME choke
+                        # point as scoring (v0.63-4) -- a submission that reads
+                        # cal_window must see one here, not crash at scoring
+                        run_regime = regime
+                        if self.scoring.enrich_regime is not None:
+                            run_regime = self.scoring.enrich_regime(_ns(regime), derive_seed(99991, i))
                         # representative seeds (same magnitude as scoring) so a
                         # seed-range crash is caught here, not silently at scoring
-                        sb.run(regime, SMOKE_N, derive_seed(99991, i))
+                        sb.run(run_regime, SMOKE_N, derive_seed(99991, i))
                     except SandboxError as exc:
                         return (
                             f"smoke regime {i} (config={regime.config}) failed: {exc}. "

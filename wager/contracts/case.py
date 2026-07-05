@@ -32,6 +32,17 @@ class Battery(BaseModel):
         return cls.model_validate(json.loads(Path(path).read_text(encoding="utf-8")))
 
     def to_json_file(self, path: str | Path) -> None:
+        # window worlds (Decision Log v0.63-4): the calibration window is
+        # RUNTIME-ONLY context, materialized at the WorldSide choke point from
+        # the persisted scalar (n_cal). Tuples in context are exactly that
+        # enrichment -- refusing them here makes "never persisted" structural.
+        for i, item in enumerate(self.items):
+            for key, value in item.regime.context.items():
+                if isinstance(value, tuple):
+                    raise ValueError(
+                        f"battery item {i}: context[{key!r}] is a runtime-only "
+                        "window (tuple); batteries persist scalars only (v0.63-4)"
+                    )
         Path(path).write_text(
             json.dumps(self.model_dump(), indent=2) + "\n", encoding="utf-8"
         )
@@ -120,6 +131,11 @@ class CaseMeta(BaseModel):
     scoring: ScoringParams
     episode: EpisodeConfig | None = None
     prior_reliability: float | None = None
+    # window worlds (ARCHITECTURE §10.1 / Decision Log v0.63): versioned
+    # protocol for the per-item calibration window -- context/n_cal keys,
+    # posterior grid and prior DECLARED here (no hidden constants). None for
+    # every non-window world (the whole machinery is inert then).
+    window_protocol: dict | None = None
 
     @classmethod
     def from_json_file(cls, path: str | Path) -> "CaseMeta":

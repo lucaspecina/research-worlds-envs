@@ -51,6 +51,7 @@ PARAMS = {
 DOSE_MIN, DOSE_MAX = 0.0, 10.0
 _LOT_TAG = 424243            # lot-identity rng tag (disjoint from scoring reps)
 _WINDOW_TAG = 424244         # calibration-window rng tag
+_RECORD_TAG = 424245         # historical-record (multi-lot archive) rng tag
 
 WINDOW_KEY = "cal_window"    # regime.context key carrying the unlabeled readings
 WINDOW_PROTOCOL = "v2.window.1"  # versioned (§10.1-b)
@@ -77,10 +78,13 @@ def make_window(seed: int, n_cal: int) -> tuple:
                  + rng.normal(0.0, PARAMS["marker_noise"], n_cal))
 
 
-def mechanism(params, regime, n, seed):
+def mechanism_given_mix(params, mix, regime, n, seed):
+    """The per-grade invariant laws for a KNOWN mix -- shared by the truth
+    (mix = lot_mix(seed)) and the factory anchors (Bayes predictive samples
+    mix from the posterior; plug-in uses its point estimate). `mix` may be a
+    scalar (one lot) or a length-n vector (the multi-lot archive)."""
     p = params
     rng = np.random.default_rng(seed)
-    mix = lot_mix(seed)  # HIDDEN: never read from regime
     z = rng.binomial(1, _sigmoid(mix), n).astype(float)
 
     marker = p["marker_sep"] * z + rng.normal(0.0, p["marker_noise"], n)
@@ -92,6 +96,20 @@ def mechanism(params, regime, n, seed):
     effect = np.where(z > 0.5, p["slope_b"], p["slope_a"])
     outcome = effect * dose + rng.normal(0.0, p["outcome_noise"], n)
     return pd.DataFrame({"dose": dose, "marker": marker, "outcome": outcome})
+
+
+def mechanism(params, regime, n, seed):
+    # per-LOT semantics (one hidden mix) wherever the regime addresses a lot:
+    # a set input level (do/deliverable) or a calibration window (exam). The
+    # bare regime is the HISTORICAL RECORD: units from MANY past lots -- each
+    # row its own hidden lot, the archive's marginal law (the brief's "past
+    # lots of varying, unrecorded composition"; fixed pre-E0, Decision Log
+    # v0.64 -- a single observe() must never masquerade one lot as history).
+    per_lot = "dose" in regime.config or "n_cal" in regime.context or WINDOW_KEY in regime.context
+    if per_lot:
+        return mechanism_given_mix(params, lot_mix(seed), regime, n, seed)  # HIDDEN mix
+    mixes = np.random.default_rng((seed, _RECORD_TAG)).normal(0.0, params["lot_mix_sd"], n)
+    return mechanism_given_mix(params, mixes, regime, n, seed)
 
 
 def sample(regime, n, seed):

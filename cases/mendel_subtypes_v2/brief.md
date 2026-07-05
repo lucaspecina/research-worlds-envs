@@ -23,14 +23,16 @@ lot before your model must speak.
 
 - `observe(records)` -- cheap historical line records: past lots of varying,
   unrecorded composition. Columns: `dose`, `marker`, `outcome`.
-- `experiment(design)` -- pay to sample fresh lots and set the input level on
-  them (randomization breaks the historical assignment, not the measurement
-  channel). You choose levels and how many lots/units; you cannot choose or see
-  a lot's composition.
+- `experiment(design)` -- pay to run a trial on **one fresh lot per call**: you
+  set the input level and how many units to draw from that single lot
+  (randomization breaks the historical assignment, not the measurement
+  channel). Lots differ -- to cover several fresh lots, run several
+  experiments. You cannot choose or see a lot's composition.
 - `submit(model)` -- hand back `model(regime, n, seed) -> table` over
   `dose, marker, outcome`. Each evaluation regime carries that lot's
-  **calibration readings** (a small unlabeled sample of `marker` values) in its
-  context; your model answers for THAT lot.
+  **calibration readings** in `regime.context["cal_window"]`: unlabeled sensor
+  readings from the target lot, **variable length** (some lots come with 2,
+  some with 64). Your model answers for THAT lot.
 
 ## The catch you are paid to find
 

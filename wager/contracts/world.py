@@ -14,7 +14,11 @@ class Regime(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     config: dict[str, float] = Field(default_factory=dict)
-    context: dict[str, float] = Field(default_factory=dict)
+    # context values: scalars, plus (v0.63-4, window worlds) the RUNTIME-only
+    # calibration window as a tuple of readings. Batteries persist the scalar
+    # n_cal ONLY; the window materializes at the WorldSide choke point and is
+    # never written to battery.json (coverage test enforces it).
+    context: dict[str, float | tuple[float, ...]] = Field(default_factory=dict)
     horizon: int | None = None
 
 

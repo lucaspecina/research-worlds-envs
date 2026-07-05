@@ -69,7 +69,13 @@ class WorldSide:
         null_sample: Callable | None = None,
         functionals: list[FunctionalSpec] | None = None,
         c_f: float | dict[str, float] = 1.0,
+        enrich_regime: Callable | None = None,
     ) -> None:
+        # enrich_regime (v0.63-4: the ONE choke point for window worlds):
+        # (namespace, seed_world) -> namespace with runtime-only context (e.g.
+        # cal_window), applied ONCE per item; truth sampling, every sandboxed
+        # submission, anchors and rivals consume the SAME enriched namespace
+        # (CRN intact). Batteries never persist the window.
         self.battery = battery
         self.columns = list(columns)
         self.n_samples = n_samples
@@ -77,8 +83,12 @@ class WorldSide:
         self.truth_sides: list[TruthSide] = []
         self.func_scorers: list[FunctionalScorer] = []
         self.d_maxes: list[float] = []
+        self.regimes: list[SimpleNamespace] = []
         for item in battery.items:
             ns = regime_to_namespace(item.regime)
+            if enrich_regime is not None:
+                ns = enrich_regime(ns, item.seed_world)
+            self.regimes.append(ns)
             real = world_sample(ns, n_samples, item.seed_world)
             truth_side = TruthSide(real, self.columns)
             # functional contribution, standardized by the SAME truth sample (CRN).
@@ -131,7 +141,8 @@ def score_submission(
             for j in range(params.m_reps):
                 seed_model = derive_seed(item.seed_world, j + rep_offset)
                 try:
-                    pred = sandbox.run(item.regime, params.n_samples, seed_model)
+                    # the ENRICHED runtime regime (choke point, v0.63-4)
+                    pred = sandbox.run(world_side.regimes[idx], params.n_samples, seed_model)
                     d = truth_side.distance_to(pred) + func_scorer.extra_distance(pred)
                     if d >= d_max:  # robustness bound: worse than 1.5x the null
                         d = d_max
@@ -194,7 +205,7 @@ def score_callable(
         truth_side = world_side.truth_sides[idx]
         func_scorer = world_side.func_scorers[idx]
         d_max = world_side.d_maxes[idx]
-        ns = regime_to_namespace(item.regime)
+        ns = world_side.regimes[idx]  # the ENRICHED runtime regime (choke point)
         d = 0.0
         for j in range(params.m_reps):
             seed_m = derive_seed(item.seed_world, j + rep_offset)

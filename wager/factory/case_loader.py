@@ -49,10 +49,41 @@ def load_meta(case_dir: str | Path) -> CaseMeta:
 def load_ladder(case_dir: str | Path) -> list[tuple[str, str]]:
     """Committed ladder fixtures (rungs 2..N), sorted by filename.
 
-    Rung 1 is never a fixture: it is world.py itself (Decision Log v0.11).
+    Rung 1 is never a fixture: it is world.py itself (Decision Log v0.11) --
+    except in window worlds, where world.py is the ILLEGAL player and the
+    legal R=1 anchor is the separate truth_code.py fixture (v0.63).
     """
     ladder_dir = Path(case_dir) / LADDER_DIRNAME
     return [
         (path.stem, path.read_text(encoding="utf-8"))
         for path in sorted(ladder_dir.glob("rung_*.py"))
     ]
+
+
+def load_truth_code(case_dir: str | Path) -> str | None:
+    """Window worlds (meta.window_protocol set): the LEGAL R=1 ceiling as a
+    committed fixture -- world.py reads the lot's hidden state and is the
+    ILLEGAL player (Decision Log v0.63), so the episode's S_truth anchor is
+    this code, never world_source. None when the fixture is absent."""
+    path = Path(case_dir) / "truth_code.py"
+    return path.read_text(encoding="utf-8") if path.exists() else None
+
+
+def make_window_enrich(case_dir: str | Path, meta: CaseMeta) -> Callable | None:
+    """The ONE choke point for window worlds (v0.63-4): (ns, seed_world) -> ns
+    with runtime-only context[context_key] = world.make_window(seed_world,
+    n_cal), n_cal read LOUDLY from the persisted context scalar. None (inert)
+    for every non-window world."""
+    if meta.window_protocol is None:
+        return None
+    protocol = meta.window_protocol
+    context_key = protocol["context_key"]
+    n_cal_key = protocol.get("n_cal_key", "n_cal")
+    module = load_world_module(case_dir)
+
+    def enrich(ns, seed_world: int):
+        ns.context = dict(ns.context)
+        ns.context[context_key] = module.make_window(seed_world, int(ns.context[n_cal_key]))
+        return ns
+
+    return enrich
