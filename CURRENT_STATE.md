@@ -300,9 +300,20 @@ measure_then_select = admisión por valor medido, filtra la PRIMERA lectura) —
 el canal — test pre-registrado ✓), 5 tests de wiring verdes (collider pc −0.35 vs 0.02
 limpio; σ_med por Var(diff)/2 al 10%; determinismo byte-exacto). Registros v0.53:
 ergonomía del entregable (describe() separa schemas; humo referencia entregable; NO
-exponer tasa de aceptación) — se implementa con el meta del caso. **SESIÓN 2: world+meta
-→ brief (línea proceso-no-medidor + funcional de cola) → derivación (#7 espera) → L1 →
-headroom pre-registrado → E0-probe. Desborde a sesión 3 = dato contra la vara.**
+exponer tasa de aceptación) — se implementa con el meta del caso. **SESIÓN 2 (EN CURSO, v0.54)**: `.vscode` purgado + denylist en pre-commit (causa raíz);
+cierre #4 **ORDERING-DEPENDENT** (Var(diff)/2=σ² solo si la selección no toca lecturas;
+test del sesgo bajo admisión ✓); precisión de σ̂ propaga al gate de recuperabilidad
+(ajuste = knob de réplicas, jamás silencioso); **`selection_bias_v0` AUTORADO** —
+world.py limpio (signal↔outcome solo vía driver; decoy `ambient`; contexto `shift`),
+meta.json (collider sampling thr=14 + canal σ_med=1.5 con ablaciones; fuentes:
+`registros_linea` [selección+canal, tasa de aceptación NO expuesta] y
+`replicas_calibracion` [cara, réplicas=2]; funcional `P(outcome<2)` con cláusula
+verbatim; `c_f=0.25` PROVISIONAL suite `sampling`), brief.md (línea proceso-no-medidor
+verbatim v0.52-1). Suite 108 verdes. **Falta de sesión 2: derivación sobre el caso
+(el test del gemelo — #7 espera con predicción firmada; nota: `observational_pool` de
+la factory aún llama a `world_sample` directo, NO a `source_view` — el wiring
+factory→vistas es parte de la derivación) → L1 derivado → headroom pre-registrado →
+E0-probe. Ambas monedas.**
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,

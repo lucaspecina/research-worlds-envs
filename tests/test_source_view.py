@@ -90,3 +90,22 @@ def test_pipeline_order_knob_changes_what_the_filter_sees():
                                        pipeline_order="measure_then_select"), 2000, 33)
     assert (mts2["outcome__rep1"] > 6.0).all()
     assert not (mts2["outcome__rep2"] > 6.0).all()
+
+
+def test_sigma_med_identification_is_ordering_dependent():
+    """v0.54-2: Var(rep1-rep2)/2 = sigma_med^2 holds ONLY when selection does
+    not touch the readings (survivorship / true-values, the v0 case). Under
+    admission ordering the gate saw rep1 (the admission measurement decides;
+    the follow-up stays free) -> rep1 is truncation-contaminated and the
+    estimator inherits the selection: biased LOW on the selected sample."""
+    sel = SelectionFilter(weights={"outcome": 1.0}, threshold=10.0, keep="above")
+    ch2 = MeasurementChannel(column="outcome", noise_sd=3.0, replicates=2)
+
+    surv = source_view(toy_world, _src(selection=sel, channel=ch2), 6000, 41)
+    s_surv = np.sqrt((surv["outcome__rep1"] - surv["outcome__rep2"]).var() / 2.0)
+    assert s_surv == pytest.approx(ch2.noise_sd, rel=0.1)   # clean identification
+
+    adm = source_view(toy_world, _src(selection=sel, channel=ch2,
+                                      pipeline_order="measure_then_select"), 6000, 41)
+    s_adm = np.sqrt((adm["outcome__rep1"] - adm["outcome__rep2"]).var() / 2.0)
+    assert s_adm < ch2.noise_sd * 0.95  # inherits the truncation: NOT sigma_med
