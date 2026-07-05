@@ -364,11 +364,26 @@ deconvoluciona; seed1 bajo la banda del twin 0.903) + auto-recorte de profundida
 las dos monedas divergen otra vez). **Veredicto: el presupuesto ES eje de dificultad**;
 #6 entra validado a la cartera. Traces en `cases/selection_bias_scarce_v0/traces/`.
 
-**PRÓXIMO PASO**: dossier consolidado ENTREGADO (v2 + #6). Sigue: **#11** (1er mundo
-ODE, logistic growth, suite Horizon — valida el segundo formalismo) → resto de la
-matriz por pares suite/formalismo. Deudas registradas sin gatillar: barrido c_F suite
-sampling; κ en espera; re-elicitación rival (c); derivación automática para mundos-
-ventana (case_schema con var de contexto).
+**v0.66 (HECHO — CONSOLIDACIÓN v2, orden de Lucas)**: E0.5 con 6 episodios nuevos
+post-fix (4× gpt-5.4 seeds 4-7, 2× DeepSeek-V3.2 seeds 4-5). **Techo intocado en 10
+episodios / 2 familias** (máx 0.666; "mixture" en cero submissions — nadie intentó
+inferir composición por-lote); muro conceptual ≈0.67, techo↔muro ≈0.33 R sin reclamar;
+distribución bimodal (payload-overfit catastrófico R_uncl −5.66 con 249 KB vs modelos
+compactos 1.4-2.3 KB en banda 0.62-0.67); |ΔP| de cola 0.48-0.65 hasta en los mejores.
+Pre-registro DeepSeek REFUTADO (0 fallas de contrato — la ergonomía generaliza — y
+mediana 0.64 > gpt 0.0, con 2× turnos/tokens: 3ª aparición de profundidad↔resultado).
+`E0_LEDGER.md` committeado (contabilidad completa, ambas monedas); 4 traces ejemplares
+whitelisteadas al repo (.gitignore por-archivo, v0.66).
+
+**PRÓXIMO PASO** (hoja de ruta presentada a Lucas, decisiones suyas pendientes:
+GO matriz→failure-modes; prioridad del proto-designer): 0) opcional simétrico —
+consolidar #6 con 2-4 episodios + DeepSeek; 1) **#11** (1er mundo ODE, logistic,
+Horizon — valida el 2º formalismo; compuerta: cirugía mayor = frenar); 2) spec de
+eventos mid-trayectoria (§10-15); 3) 1er mundo anti-vicio con certificado de trampa
+necesaria (§10-16); 4) proto-designer con yield (§10-14); 5) llenar cartera → E1
+multi-modelo (presupuesto API antes); 6) E2 RL. Deudas sin gatillar: barrido c_F
+sampling; κ (presión creciente: 3 divergencias R vs |ΔP|); rival (c); derivación
+automática mundos-ventana.
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
