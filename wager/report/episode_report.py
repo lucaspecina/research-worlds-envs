@@ -89,6 +89,16 @@ details>summary{cursor:pointer;font-weight:600;font-size:.85rem;color:var(--acce
 .kv .l{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
 .brief{border:1px dashed var(--rule);border-radius:6px;padding:.2rem 1.15rem;background:var(--card);}
 .note{font-size:.85rem;color:var(--dim);margin:.3rem 0 0;}
+.tabs{display:flex;flex-wrap:wrap;gap:.45rem;margin:.2rem 0 1rem;}
+.tabs button{font:inherit;font-size:.82rem;font-weight:600;color:var(--ink);
+  background:var(--card);border:1px solid var(--rule);border-radius:999px;
+  padding:.35rem .95rem;cursor:pointer;display:flex;align-items:center;gap:.5rem;}
+.tabs button .r{font-variant-numeric:tabular-nums;font-weight:700;}
+.tabs button .r.ok{color:var(--ok);} .tabs button .r.bad{color:var(--bad);}
+.tabs button[aria-selected="true"]{border-color:var(--accent);color:var(--accent-ink);
+  box-shadow:inset 0 0 0 1px var(--accent);}
+.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.ep[hidden]{display:none;}
 """
 
 
@@ -208,8 +218,33 @@ def build_body(case_dir: Path) -> str:
     cert = (json.loads((case_dir / "certificates.json").read_text(encoding="utf-8"))
             if (case_dir / "certificates.json").exists() else {})
     traces = sorted((case_dir / "traces").glob("*.json")) if (case_dir / "traces").exists() else []
-    eps = "".join(f"<section class='card'>{episode_section(json.loads(p.read_text(encoding='utf-8')), p.name)}</section>"
-                  for p in traces)
+    loaded = [(p.name, json.loads(p.read_text(encoding="utf-8"))) for p in traces]
+    tabs, panels = [], []
+    for i, (fname, tr) in enumerate(loaded):
+        r = tr.get("R") or 0.0
+        label = fname.replace(".json", "").replace("e0_", "")
+        tabs.append(
+            f"<button role='tab' id='tab-{i}' aria-selected={'\"true\"' if i == 0 else '\"false\"'} "
+            f"aria-controls='ep-{i}' onclick='selEp({i})'>{esc(label)} "
+            f"<span class='r {'ok' if r > 0.5 else 'bad'}'>R {r:.3f}</span></button>"
+        )
+        panels.append(
+            f"<div class='ep card' id='ep-{i}' role='tabpanel' aria-labelledby='tab-{i}'"
+            f"{'' if i == 0 else ' hidden'}>{episode_section(tr, fname)}</div>"
+        )
+    eps = ""
+    if loaded:
+        eps = (
+            f"<div class='tabs' role='tablist' aria-label='runs'>{''.join(tabs)}</div>"
+            + "".join(panels)
+            + """<script>
+function selEp(k){
+  document.querySelectorAll('.ep').forEach(function(p,i){ p.hidden = (i!==k); });
+  document.querySelectorAll('.tabs [role=tab]').forEach(function(t,i){
+    t.setAttribute('aria-selected', i===k ? 'true' : 'false'); });
+}
+</script>"""
+        )
     return f"""<title>Dossier E2E — {esc(meta['case_id'])}</title>
 <style>{CSS}</style>
 <div class='wrap'>
@@ -223,7 +258,7 @@ def build_body(case_dir: Path) -> str:
 <div class='brief'>{md(brief)}</div></section>
 {certificates_section(cert)}
 <section><h2><span class='eyebrow'>las partidas</span> Episodios ({len(traces)})</h2>
-<p class='note'>Los turnos con borde rojo contienen un submit rechazado por el humo. El razonamiento y las celdas vienen colapsados: expandí lo que quieras auditar.</p>
+<p class='note'>Elegí el run arriba — se muestra uno a la vez. Los turnos con borde rojo contienen un submit rechazado por el humo; el razonamiento y las celdas vienen colapsados: expandí lo que quieras auditar.</p>
 {eps or "<p class='dim'>sin traces en disco</p>"}</section>
 </div>"""
 
