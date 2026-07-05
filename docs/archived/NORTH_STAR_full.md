@@ -1,4 +1,11 @@
-# WAGER — North Star
+# NORTH_STAR — texto completo (archivado)
+
+> La constitución monolítica original, preservada íntegra (ADR 0070: nada se borra).
+> Su contenido vivo se distribuyó: el *por qué* llano → `WIKI.md`; el diseño técnico →
+> `ARCHITECTURE.md`; el ethos/reglas → `CLAUDE.md`; el red-team → `docs/red-team.md`;
+> el programa y las preguntas abiertas → `CURRENT_STATE.md`; las decisiones → `docs/adr/`.
+> Las citas 'NORTH_STAR §N' resuelven acá.
+
 ## Worlds As Generators of Epistemic Reward
 ### Mundos sintéticos para entrenar juicio investigativo
 

@@ -1,73 +1,95 @@
 # CLAUDE.md — WAGER
 
-Operativa del repo para Claude Code. Leer en este orden la primera vez:
+Operativa del repo para Claude Code. Mapa de docs (abrí el que la tarea pida, no todos):
 
-1. `NORTH_STAR.md` — la constitución: por qué existe el proyecto, ethos, diseño conceptual, programa experimental, red-team. **§0 contiene las reglas de mantenimiento de los docs: cumplirlas siempre.**
-2. `ARCHITECTURE.md` — el diseño técnico: contratos, librería de operadores, semántica de rivales, algoritmo de batería, harness, scoring.
-3. Este archivo — convenciones operativas.
+- **`WIKI.md`** — entender de cero, sin jerga: qué es, cómo funciona, dónde estamos.
+- **`ARCHITECTURE.md`** — referencia técnica: contratos, operadores, rivales, batería, scoring, harness.
+- **`CURRENT_STATE.md`** — estado vivo + cartera E1 (qué corre, qué falta, próximo).
+- **`docs/adr/`** — decisiones (una por archivo, append-only) · **`docs/roadmap.md`** (programa E1→E4)
+  · **`docs/open-questions.md`** (lo sin decidir) · **`docs/red-team.md`** (amenazas del proyecto)
+  · **`docs/archived/`** (histórico; el `NORTH_STAR_full.md` original vive acá — citas "NORTH_STAR §N" resuelven ahí).
 
-## Jerarquía de autoridad
+**Jerarquía de autoridad**: Ethos (Reglas duras, abajo) > `ARCHITECTURE` > `docs/adr/` > issues > código.
+El código nunca contradice los docs en silencio: si la implementación revela un error de diseño, se
+propone la edición del doc + un ADR nuevo en `docs/adr/`.
 
-`NORTH_STAR §2 (Ethos)` > `NORTH_STAR (diseño)` > `ARCHITECTURE` > issues > código.
-El código nunca contradice los docs en silencio: si la implementación revela un error de diseño, se propone la edición del doc + entrada en el Decision Log (`DECISION_LOG.md`).
+## Reglas duras
 
-## Reglas duras (resumen de bolsillo — el detalle está en NORTH_STAR)
-
-- **JAMÁS un LLM en el cómputo del reward.** Si una solución lo requiere, frenar y discutir. (NORTH_STAR §2.2)
-- Esa regla se convierte en código desde el día uno: **test de CI que falla el build si hay llamadas a LLM en el camino del reward** (ARCHITECTURE §13-L0). Ídem sandbox red-team: tests que intentan hacer trampa y deben fallar.
-- **Integración LLM primero** (Decision Log v0.14): todo subsistema con superficie hacia un LLM (harness/solver; en el futuro brief writer, prior evocado, digestion, validators) tiene como **PRIMER milestone un smoke test con LLM real del camino más fino** — nunca como último. Los bugs de integración (plumbing multi-turn, comprensión del contrato, ergonomía del sandbox, costos reales) son los que más calendario queman y solo aparecen con modelo real. Los tests de wiring y los solvers scripteados siguen como controles, pero **no gatean la primera llamada real**. Excepción que no se mueve con el apuro: el reward path sigue cero-LLM (el CI lo protege; ataque #18).
-- Todo mundo nuevo pasa la **escalera de verdades degradadas** (ARCHITECTURE §13-L1) antes de entrar a una suite.
-- Antes de tocar submission/batería/score: releer NORTH_STAR §4.4 y ARCHITECTURE §5–6–9.
-- Las conductas del agente se **observan** (traces, firmas), nunca se premian. (NORTH_STAR §2.1, §2.6)
+- **JAMÁS un LLM en el cómputo del reward.** Si una solución lo requiere, frenar y discutir. Se protege con
+  **test de CI que falla el build si hay llamadas a LLM en el reward path** (ARCHITECTURE §13-L0). Ídem sandbox:
+  tests que intentan escapar y deben fallar cerrado (`REDTEAM.md`).
+- **Integración LLM primero** (ADR 0014): todo subsistema con superficie hacia un LLM tiene como PRIMER milestone
+  un smoke con LLM real del camino más fino — nunca como último. El reward path sigue cero-LLM (excepción que no
+  se mueve con el apuro).
+- Todo mundo nuevo pasa la **escalera de verdades degradadas** (ARCHITECTURE §13-L1) + sus **certificados**
+  (ARCHITECTURE §7, carga diferencial ≥2 coordenadas) antes de entrar a una suite.
+- Las conductas del agente se **observan** (traces, firmas), nunca se premian (el vicio se vuelve la jugada
+  perdedora del mundo; el juez cobra la consecuencia).
 - Rivales y batería se **derivan** del caso declarado en `meta.json`; nunca se autorean a mano por caso.
-- La librería de operadores **crece a demanda de semillas reales** (moraleja de un caso real que no se puede expresar → proponer operador nuevo), nunca por imaginación suelta. El solver jamás ve la taxonomía de operadores.
-- Casos con semilla investigativa: **test de contaminación obligatorio** antes de certificar (ARCHITECTURE §4); trasplante cruzado de dominio por defecto para semillas famosas. Las tres fuentes de generación (semillas / composición / búsqueda) tienen roles distintos y ninguna reemplaza a las otras.
-- Todo mundo nuevo debe pasar sus **certificados** (ARCHITECTURE §7), incluida carga diferencial ≥2 coordenadas.
-- El handle del mundo es **opaco server-side**: el agente jamás puede leer `world.py`, `battery.json` ni `rivals/`.
-- El brief lo escribe un proceso **ciego** a batería y rivales (anti-leak).
+- La librería de operadores **crece a demanda de semillas reales**, nunca por imaginación suelta. El solver jamás
+  ve la taxonomía de operadores.
+- Casos con semilla investigativa: **test de contaminación obligatorio** antes de certificar; trasplante cruzado
+  de dominio por defecto para semillas famosas.
+- El handle del mundo es **opaco server-side**: el agente jamás lee `world.py`, `battery.json` ni `rivals/`.
+  El brief lo escribe un proceso **ciego** a batería y rivales (anti-leak).
 
 ## Workflow
 
-- Unidad de avance: el **slice vertical más chico** que ejercite el reward path completo (mundo → episodio → submission → score).
-- El orden de trabajo lo define la escalera experimental (NORTH_STAR §6). **E1 primero**: no requiere RL ni designer automático. Lo mínimo para E1 está en ARCHITECTURE §12.
-- Primer slice sugerido: contenedor de caso + scorer con UN mundo dummy hardcodeado y una batería escrita a mano — smoke test end-to-end del reward path. Recién después, harness interactivo. (Batería y pelfallas L1 a mano = **excepción de bootstrap, SOLO Slice 1**; expira cuando exista la derivación automática de rivales §5 + batería §6 — Decision Log v0.10.)
+- Unidad de avance: el **slice vertical más chico** que ejercite el reward path completo (mundo → episodio →
+  submission → score). El orden lo define la escalera experimental (`docs/roadmap.md`).
 - Tests de wiring por componente; tests E2E con LLM real solo cuando el wiring está verde.
-- Toda decisión de diseño no trivial → Decision Log (`DECISION_LOG.md`) (fecha — decisión — razón en una línea).
-- Open questions nuevas → NORTH_STAR §10 (inbox); al resolverse, migran al Decision Log.
-- **Checklist de supersesión (regla dura, Decision Log v0.30)**: toda entrada del Decision Log que **supersede** una decisión previa DEBE hacer **grep de la regla vieja en TODOS los docs** y enumerar + tildar cada ubicación que la edita. Principio **"una regla, una casa"**: la regla vive en UNA sección; el resto referencia. (Origen: la v0.29 editó ARCHITECTURE §7 pero olvidó §5, que quedó contradiciendo en silencio — lo destapó una auditoría código-vs-docs.)
-- **Auditoría código-vs-docs por iniciativa propia**: ante una inconsistencia doc-doc o doc-código, **reportar con ubicación exacta + fix propuesto, nunca arreglar en silencio**; aplicar recién con aprobación (NORTH_STAR §0.1: el código nunca contradice los docs en silencio).
+- Toda decisión de diseño no trivial → **ADR nuevo** en `docs/adr/` (fecha — decisión — razón).
+- Open questions nuevas → `docs/open-questions.md` (inbox); al resolverse, migran a un ADR con su resolución.
+- **Checklist de supersesión** (regla dura, ADR 0030): todo ADR que **supersede** una decisión previa hace
+  **grep de la regla vieja en TODOS los docs** y enumera cada ubicación que edita. Principio **"una regla, una casa"**.
+- **Auditoría código-vs-docs por iniciativa propia**: ante una inconsistencia, **reportar con ubicación exacta +
+  fix propuesto, nunca arreglar en silencio**; aplicar recién con aprobación.
 
 ## Referencia SREG — política de cuarentena
 
-El repo SREG (proyecto anterior, mismo autor) es **referencia de SOLO LECTURA** en: `C:\Users\YT40432\Desktop\lp\research\lucaspecina\synthetic-research-envs`.
+El repo SREG (proyecto anterior, mismo autor) es **referencia de SOLO LECTURA** en:
+`C:\Users\YT40432\Desktop\lp\research\lucaspecina\synthetic-research-envs`.
 
-- **Regla spec-first**: SREG se consulta SOLO cuando el spec WAGER del componente ya está escrito y aceptado. SREG responde "cómo implemento este spec", nunca "qué debería ser el spec".
-- **Allowlist** (portear con mínima cirugía — plomería neutral que costó días de debugging): kernel Jupyter persistente (patrón python_exec), cliente LLM Azure incluidos los fixes de multi-turn de la Responses API, patrones de contratos Pydantic, maquinaria anti-leak (capsule / writers ciegos), scaffolding de repo y tests.
-- **Cirugía obligatoria** (leer el patrón, reescribir contratos y prompts contra el spec WAGER): digestion agent, architect + lints, validators — embeben supuestos de v1.5.
-- **Denylist** (NO leer — es la filosofía que matamos y leerla invita a recontrabandearla): evaluator/judge, restos del compiler NL↔IR, scoring por rubrics/SQ, formatos de claims.
-
-**Portear deliberadamente, nunca importar por arrastre.** La lección fundante (por qué murió el compiler) está en NORTH_STAR §2.3.
+- **Spec-first**: SREG se consulta SOLO cuando el spec WAGER del componente ya está escrito y aceptado. Responde
+  "cómo implemento este spec", nunca "qué debería ser el spec".
+- **Allowlist** (portear con mínima cirugía): kernel Jupyter persistente, cliente LLM Azure (fixes multi-turn de
+  la Responses API), patrones de contratos Pydantic, maquinaria anti-leak, scaffolding de repo y tests.
+- **Cirugía obligatoria** (reescribir contra el spec WAGER): digestion agent, architect + lints, validators.
+- **Denylist** (NO leer — es la filosofía que matamos): evaluator/judge, restos del compiler NL↔IR, scoring por
+  rubrics/SQ, formatos de claims. **Portear deliberadamente, nunca importar por arrastre.**
 
 ## Convenciones
 
-- **Hook de pre-commit obligatorio** (Decision Log v0.49): `git config core.hooksPath hooks` tras clonar — corre los lints de headers/trazabilidad ANTES de que la deriva entre a la historia (el CI queda como segunda red).
-- **Docs constitucionales solo con herramientas quirúrgicas** (Decision Log v0.56-4, tras un casi-accidente): NORTH_STAR/ARCHITECTURE/CLAUDE se editan con Edit/Write puntuales, JAMÁS con scripts bulk de regex — las advertencias del sandbox eran la señal. El Decision Log es **append-only** (bloques existentes inmutables; enmendar = entrada nueva) y el pre-commit lo verifica (`scripts/check_decision_log.py`).
-- **Guardias con autotest** (Decision Log v0.57-1): toda guardia nueva (hook, lint, gate) llega con su par should-pass/should-fail corrido ANTES de instalarse — el falso positivo inaugural ya es tasa base (3/3 estrenos con captura).
-- **MODO AUTONOMÍA** (Lucas, 2026-07-05): tramos designados se ejecutan DE CORRIDO, sin reportes intermedios — guardias con salida en doctrina existente se resuelven/registran/siguen; los pre-registros los firma Claude ANTES de mirar. **Tripwires (únicos frenos)**: (1) semántica del reward path o de anclas (incl. techo Bayes-adaptivo v2), (2) frontera cero-LLM, (3) contradicción de pre-registro firmado que exija tocar algo certificado, (4) gasto material de API/infra más allá del alcance ordenado. El siguiente mensaje a Lucas es el dossier consolidado — o un tripwire.
-
-- Python 3.11, Pydantic para contratos, pytest, dependencias mínimas (numpy/pandas/scipy; nada exótico sin justificar).
+- **Hook de pre-commit obligatorio** (ADR 0049): `git config core.hooksPath hooks` tras clonar — corre los lints
+  de trazabilidad/secciones + la guardia de ADRs ANTES de que la deriva entre a la historia (el CI es 2ª red).
+- **Docs constitucionales solo con herramientas quirúrgicas** (ADR 0056): `WIKI`/`ARCHITECTURE`/`CLAUDE` se editan
+  con Edit/Write puntuales, JAMÁS con scripts bulk de regex. Los **ADRs son append-only** (archivos existentes
+  inmutables; superseder = archivo nuevo) y el pre-commit lo verifica (`scripts/check_decision_log.py`).
+- **Guardias con autotest** (ADR 0057): toda guardia nueva llega con su par should-pass/should-fail corrido ANTES
+  de instalarse.
+- **MODO AUTONOMÍA** (Lucas, 2026-07-05): tramos designados se ejecutan DE CORRIDO — guardias con salida en
+  doctrina existente se resuelven/registran/siguen; los pre-registros los firma Claude ANTES de mirar.
+  **Tripwires (únicos frenos)**: (1) semántica del reward path o de anclas, (2) frontera cero-LLM, (3)
+  contradicción de pre-registro firmado que exija tocar algo certificado, (4) gasto material de API/infra fuera
+  del alcance ordenado. El siguiente mensaje a Lucas es el dossier consolidado — o un tripwire.
+- Python 3.11+, Pydantic para contratos, pytest, dependencias mínimas (numpy/pandas/scipy).
 - Docs en español, código e identificadores en inglés.
-- Los nombres de suites de mundos siguen la convención de científicos arquetipo: Horizon (observacional), Anomaly (anomalías), Latent (constructos latentes), Prior (prior vs evidencia).
-- Casos en `cases/<case_id>/` con la anatomía exacta de ARCHITECTURE §1.
+- Suites con nombres de científicos arquetipo: Horizon (observacional), Anomaly (anomalías), Latent (latentes),
+  Prior (prior vs evidencia). Casos en `cases/<case_id>/` con la anatomía de ARCHITECTURE §1.
 
 ## Infraestructura
 
-- **GPU**: VM Azure `lp-gpu-h100-x2-spot` (Standard NC80adis H100 v5: 2× H100 94GB, 80 vCPU, 640 GiB RAM). Es **SPOT** → preemptible: checkpointing y reanudación obligatorios en todo job largo, desde el día uno.
-- **Qué corre dónde**: **E1 es API-bound** (modelos frontier vía API; scoring, oráculos y rivales son CPU) — la GPU es opcional en E1 (servir modelos abiertos para engordar el spread). La GPU es central en **E2**: RL de una policy abierta de ~4–8B (group rollouts con seeds de batería compartidos para baselines de baja varianza; LoRA o full según memoria) + reference solvers locales.
-- **Costos**: estimar el presupuesto de API de E1 ANTES de correr (orden: ~10³ episodios de REPL largo); diseñar la primera pasada como la mínima informativa.
-- **Workflow y conexiones**: usar las **skills de usuario** de Lucas (workflow Azure/VM, SSH, convenciones) — no duplicar esa información acá.
+- **GPU**: VM Azure `lp-gpu-h100-x2-spot` (2× H100 94GB). Es **SPOT** → preemptible: checkpointing y reanudación
+  obligatorios en todo job largo.
+- **Qué corre dónde**: **E1 es API-bound** (frontier vía API; scoring/oráculos/rivales son CPU; GPU opcional para
+  servir modelos abiertos). La GPU es central en **E2** (RL de una policy abierta ~4–8B).
+- **Costos**: estimar el presupuesto de API de E1 ANTES de correr (~10³ episodios); la primera pasada, la mínima
+  informativa.
+- **Workflow y conexiones**: usar las **skills de usuario** de Lucas (Azure/VM, SSH) — no duplicar acá.
 
 ## Estado actual
 
-El estado vivo (qué corre hoy, qué falta, próximo paso) está en `CURRENT_STATE.md` — mantenerlo SIEMPRE actualizado al cerrar cada sesión. **Decision Log en v0.69** (`DECISION_LOG.md`, movido fuera de NORTH_STAR en la reestructura v0.69); ARCHITECTURE con §9 (mundos-trayectoria) + §10.1 (ventana de calibración v2). Resumen: reward path + harness + factory completos; 6 mundos hechos; **v2 (trofeo): tríptico confirmado con solver real** (techo intocado en 10 episodios/2 familias) y **#6: el presupuesto discrimina estilos**; infra de mundos-trayectoria (v0.68) lista. **En curso**: reestructura de docs (v0.69) + re-skin a "línea de proceso" (anti-flag). **Próximo**: #11 ODE. Decisiones pendientes de Lucas: GO matriz→failure-modes; prioridad del proto-designer. κ en espera (4 divergencias).
-
+El estado vivo está en **`CURRENT_STATE.md`** — mantenerlo SIEMPRE al día al cerrar cada sesión. Resumen: reward
+path + harness + factory completos; 6 mundos hechos; **v2 (trofeo): tríptico confirmado con solver real** y **#6:
+el presupuesto discrimina estilos**; infra de mundos-trayectoria lista. **Próximo**: #11 (1er mundo ODE). Decisión
+pendiente de Lucas: re-orientar la cartera a failure modes; prioridad del proto-designer. κ en espera.

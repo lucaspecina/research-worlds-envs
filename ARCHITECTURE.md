@@ -1,7 +1,7 @@
 # WAGER — ARCHITECTURE.md
-## Diseño técnico (companion de NORTH_STAR.md)
+## Diseño técnico (referencia; el "por qué" está en WIKI.md)
 
-> **Qué es este documento.** El "cómo" a nivel de contratos, librerías y algoritmos. El "por qué" y el "qué" viven en `NORTH_STAR.md` — ante conflicto conceptual, manda NORTH_STAR. Se mantiene con la misma disciplina (NORTH_STAR §0): nada se borra, decisiones al Decision Log, secciones `[ESTABLE]` / `[EN DEBATE]`.
+> **Qué es este documento.** El "cómo" a nivel de contratos, librerías y algoritmos. El "por qué" llano vive en `WIKI.md`; el ethos/reglas en `CLAUDE.md`; las decisiones en `docs/adr/`. Se mantiene con la misma disciplina: nada se borra, decisiones a un ADR nuevo, secciones `[ESTABLE]` / `[EN DEBATE]`.
 >
 > **Estado**: v0.14 (2026-07-05). v0.14: mundos-trayectoria en §9 — entregable formato largo (`unit_id, t, y`), pivot largo→ancho como función pura del reward path (Decision Log v0.68-R1). El cuerpo incorpora decisiones del Decision Log hasta v0.68; el changelog completo del header (v0.1→v0.14) está en [`docs/archived/ARCHITECTURE_changelog.md`](docs/archived/ARCHITECTURE_changelog.md).
 
@@ -70,13 +70,13 @@ Fuente: libros de texto de modelado aplicado (modelado dinámico multi-compartim
 
 ### 2.4 Piel semántica y perilla de prior
 
-Cada mundo lleva naming + dominio + narrativa. `meta.json` registra `prior_reliability ∈ [0,1]`: correlación entre lo que un panel de LLMs frescos espera del mundo dado solo el naming, y la verdad del programa. El curriculum controla la *base rate* de sorpresa con esta perilla (NORTH_STAR §4.6, anti-contrarian).
+Cada mundo lleva naming + dominio + narrativa. `meta.json` registra `prior_reliability ∈ [0,1]`: correlación entre lo que un panel de LLMs frescos espera del mundo dado solo el naming, y la verdad del programa. El curriculum controla la *base rate* de sorpresa con esta perilla (`docs/archived/NORTH_STAR_full.md` §4.6, anti-contrarian).
 
 ---
 
 ## 3. Librería de operadores v0 `[EN DEBATE — lista inicial, set abierto]`
 
-**Principio: la librería es el alfabeto, no el contenido.** Los operadores son el vocabulario interno de la fábrica para expresar estructuras epistémicas — no un temario. El solver jamás ve la taxonomía (evaluación ciega a motivos, NORTH_STAR §2.4): desde su lado solo existe un mundo cuyos datos no cierran. La diversidad fenomenológica sale del producto motor × composición × perillas × piel — el mismo operador sobre motores distintos produce superficies de datos irreconocibles entre sí; lo único compartido es la *movida* que lo detecta, y esa movida es lo que debe generalizar (E3 es la alarma si no).
+**Principio: la librería es el alfabeto, no el contenido.** Los operadores son el vocabulario interno de la fábrica para expresar estructuras epistémicas — no un temario. El solver jamás ve la taxonomía (evaluación ciega a motivos, `docs/archived/NORTH_STAR_full.md` §2.4): desde su lado solo existe un mundo cuyos datos no cierran. La diversidad fenomenológica sale del producto motor × composición × perillas × piel — el mismo operador sobre motores distintos produce superficies de datos irreconocibles entre sí; lo único compartido es la *movida* que lo detecta, y esa movida es lo que debe generalizar (E3 es la alarma si no).
 
 **Operador** = transformación parametrizada que se aplica sobre fuentes (capas 2–3) o, raramente, sobre el mecanismo (capa 1). Firma conceptual: `apply(target, **knobs)`. Cada operador declara: capa, perillas con rangos, el malentendido canónico que induce, y su fuente histórica.
 
@@ -178,7 +178,7 @@ Cobertura imperfecta de rivales = ataque #13: se amortigua con la cola de audito
 6. PERSISTIR: battery.json = [(w, r, seed)]
 ```
 
-Forma de la batería como dial de tipo de caso: concentrada en decisiones (casos con cliente) ↔ plana y ancha (system mapping). Las dos muertes (NORTH_STAR §4.4): angosta → examen cerrado; uniforme → la trivia diluye.
+Forma de la batería como dial de tipo de caso: concentrada en decisiones (casos con cliente) ↔ plana y ancha (system mapping). Las dos muertes (`docs/archived/NORTH_STAR_full.md` §4.4): angosta → examen cerrado; uniforme → la trivia diluye.
 
 **Banda fuera-de-registro (canonizada, Decision Log v0.31): 20–35% del peso total** en regímenes fuera del soporte histórico, como default de forma. Los stakes fijan el NIVEL dentro de la banda; la discriminación es un constraint (verificado por escalera-por-banda: fuera-de-registro testea saturación/extrapolación — un skill que in-support no testea; v0.24 item 5). Fuera de la banda en cualquier dirección → revisar declaración de stakes, no retunear pesos.
 
@@ -252,7 +252,7 @@ def score(submission, world, battery, lam, m):
 - Ensemble: `[(peso, code)]` → D sobre la mezcla muestreada según pesos.
 - `λ` calibrado empíricamente sobre la suite E1 para que MDL pese 5–10% del rango de score.
 - **Differential testing**: búsqueda (random restarts / CEM) de `r* = argmax D(submission, world)` — auditoría y engrosamiento de batería.
-- **PROHIBIDO**: cualquier salida de LLM en este cómputo (NORTH_STAR §2.2).
+- **PROHIBIDO**: cualquier salida de LLM en este cómputo (regla dura, `CLAUDE.md`).
 
 ### 9.1 Normalización del reward entre mundos (obligatoria para RL)
 
@@ -300,7 +300,7 @@ fid   -= w · d_item
 | Media condicional por subgrupo declarado | `E[outcome \| subgrupo]` | `\|Δ\|/σ_verdad(columna)` |
 | Pérdida esperada bajo regla declarada | `E[loss(decisión(régimen), outcome)]` | `\|ΔL\|/rango_de_L declarado` |
 
-**Preferencia de la librería (Decision Log v0.27).** Si el brief define una **decisión nítida** (una regla de acción única), se usa **UN solo funcional de pérdida esperada** `E[loss(decisión, outcome)]` — menos perillas, menos superficie de calibración. La suma de varios funcionales queda solo para mundos **sin regla de acción única** (stakes difusos). Y el **valor de información** de descubrir el latente (VoI) NO entra acá: es un **oráculo de valor** que vive en firmas/análisis, **PROHIBIDO en el reward** — recompensar VoI sería premiar una conducta (investigar), y las conductas se observan, jamás se premian (NORTH_STAR §2.1).
+**Preferencia de la librería (Decision Log v0.27).** Si el brief define una **decisión nítida** (una regla de acción única), se usa **UN solo funcional de pérdida esperada** `E[loss(decisión, outcome)]` — menos perillas, menos superficie de calibración. La suma de varios funcionales queda solo para mundos **sin regla de acción única** (stakes difusos). Y el **valor de información** de descubrir el latente (VoI) NO entra acá: es un **oráculo de valor** que vive en firmas/análisis, **PROHIBIDO en el reward** — recompensar VoI sería premiar una conducta (investigar), y las conductas se observan, jamás se premian (`docs/archived/NORTH_STAR_full.md` §2.1).
 
 **Criterio de completitud (cierra "¿cuántos funcionales?", Decision Log v0.27).** No es whack-a-mole abierto: es un **invariante de fábrica POR-MUNDO y chequeable**. (1) Toda estructura que **instalamos** (operadores declarados) debe pasar el **certificado de visibilidad** (§7) bajo el score combinado — y nosotros instalamos todo lo del mundo. (2) El residuo emergente (estructura no instalada a mano, surgida de la composición) lo cubre el `theory_gap_probe` como diagnóstico permanente. (3) Lo que ni el probe ve es el **ataque #14** (techo de lo comprensible), ya declarado como límite abierto. Suficiencia = visibilidad de lo instalado, no enumeración infinita de funcionales.
 
@@ -366,23 +366,23 @@ El designer LLM solo *propone* (operadores nuevos, composiciones); ejecución + 
 
 ## 12. Lo mínimo para E1 `[ESTABLE]`
 
-Contenedor de casos (§1) + harness (§8) + scorer (§9) + constructor de batería (§6, puede ser semiautomático al principio) + **~20 mundos hechos a mano** en 2 familias (SCM + un ODE), cubriendo ≥5 suites, con certificados computados. Sin designer automático, sin RL, sin operadores abiertos. Modelos frontier vía API + las 3 manipulaciones de constructo de NORTH_STAR §6-E1.
+Contenedor de casos (§1) + harness (§8) + scorer (§9) + constructor de batería (§6, puede ser semiautomático al principio) + **~20 mundos hechos a mano** en 2 familias (SCM + un ODE), cubriendo ≥5 suites, con certificados computados. Sin designer automático, sin RL, sin operadores abiertos. Modelos frontier vía API + las 3 manipulaciones de constructo de `docs/archived/NORTH_STAR_full.md` §6-E1.
 
 ---
 
 ## 13. Validación de la maquinaria — la pirámide `[ESTABLE]`
 
-La escalera E1→E4 (NORTH_STAR §6) valida constructo e hipótesis; estos niveles validan que la maquinaria mide algo *antes*:
+La escalera E1→E4 (`docs/roadmap.md`) valida constructo e hipótesis; estos niveles validan que la maquinaria mide algo *antes*:
 
 - **L0 — Tests de contrato**: unidades/semántica de regímenes entre mundo y maqueta (un error de escala que no crashea es un corruptor mudo); **sandbox red-team** (tests que intentan activamente leer `world.py`/`battery.json` desde el episodio y desde la submission, y deben fallar); **test de CI cero-LLM en el reward path** (el build falla si se viola). **Suite de sanidad de escala (extendida al score combinado, v0.28; consistencia dimensional, v0.36)**: con `D_MAX_item` recomputado por cada `c_F`, afirmar para `c_F` en todo el rango del barrido — orden de anclas sin clipear (`R(crash) < R(null) < R(ingenuo)=0 < R(verdad)=1`), ninguna distancia combinada > su cap, crash paga peor que el null. Además: **todo umbral de gate se expresa en unidades ABSOLUTAS de R** (3×std, jamás CV relativo) — la suite fija la convención (test sobre `wager/factory/calibration.py`; la firma de `gate_threshold` no admite medias).
 - **L1 — Escalera de verdades degradadas** (aceptación obligatoria por mundo, automática): se scorea una secuencia de submissions de calidad conocida — `world.py` exacto, verdad con parámetros perturbados, verdad con un mecanismo ablado, gemelo inocente, ajuste ingenuo, modelo nulo. **Forma del certificado en producción (v0.3): monotonía-por-eje + extremos** — `world.py` > cada rival > nulo, y dentro de cada eje de degradación, perturbación creciente ⇒ score no-creciente. NO se exige orden total entre pelfallas heterogéneos: no está garantizado teóricamente, y tunear las degradaciones hasta que el orden pase sería autoría silenciosa — exactamente lo que L1 debe detectar. El **orden total** se usa solo como test de aceptación del scorer sobre el dummy canónico del Slice 1 (perillas elegidas para que valga). Margen inicial: cada separación exigida ≥5% del **rango de normalización (S_verdad − S_ingenuo), en unidades de R** (v0.12 — NO S_verdad − S_nulo: el nulo es un outlier patológico off-support que infla el rango, y R clipea la región sub-ingenuo; ver §9.1); modelo nulo v0 = marginales independientes del pool, usado como referencia de D_MAX y diagnóstico. Valores empíricos, ajustables. Si el certificado falla, la batería de ese mundo está rota. Es el detector automático de rivales débiles (ataque #13) — y en el Slice 1 destapó tres bugs de maquinaria del scorer (Decision Log v0.12), cumpliendo exactamente su función. **Rung de DIAGNÓSTICO extra para mundos latentes (suite Latent, v0.26/v0.27): el oráculo de momentos matcheados** (Gaussiana media+cov exactas por-régimen, unimodal) — responde "¿el metro ve?", NO es el rival de teoría (ese es el mejor miembro de la escalera **(d-exp)** — sin cabezal de mezcla, con miembros de extrapolación suave; §5/§7, v0.29). Debe quedar **estrictamente por debajo** de `world.py` bajo el score COMBINADO; si lo iguala (como bajo energía-sola: R=0.96, Decision Log v0.25), el funcional no captura la estructura y el mundo no es recompensable. Operacionaliza el certificado de Visibilidad (§7).
 - **L2 — Protocolo de varianza del reward**: con seeds de producción fijos el score es determinístico; el ruido relevante es la dependencia del azar de los seeds elegidos. Protocolo (v0.3): re-scorear con B sets de seeds re-sampleados (lado mundo y lado maqueta) la submission del **pelfalla medio** de la escalera (donde el ruido más confunde) → **CV objetivo < 5% sobre R normalizado** (la escala cruda varía por mundo), reportando además el **CV de S_verdad** (denominador de R) y la **descomposición lado-mundo / solo-lado-maqueta** (mundo fijo, variando j). Medir en el primer slice junto con el costo K×n×m; ajustar K, n, m hasta cumplir. Sin esto, RL aprende ruido.
-- **L3 — E1** (instrumento): NORTH_STAR §6 — incluye mundos de control, baseline humano, auditoría humana de baterías, validez convergente/discriminante externa.
+- **L3 — E1** (instrumento): `docs/roadmap.md` — incluye mundos de control, baseline humano, auditoría humana de baterías, validez convergente/discriminante externa.
 - **L4 — E2/E3** (entrenamiento y abstracción). **L5 — E4** (transfer real).
 
 ## 14. Open items técnicos
 
-1. Sampler de regímenes candidatos por familia de superficie (hereda OQ#1 de NORTH_STAR — punto de presión #1).
+1. Sampler de regímenes candidatos por familia de superficie (hereda OQ#1 de `docs/open-questions.md` — punto de presión #1).
 2. Arquitectura RPC del handle opaco sin matar latencia del REPL.
 3. Gramática de `design` en `experiment` por familia (describe el experimento, no creencias).
 4. n_mc, K, m y n de scoring para varianza de reward objetivo (<x% del rango).
