@@ -45,28 +45,52 @@ def apply_channel(df: pd.DataFrame, ch: MeasurementChannel, rng: np.random.Gener
 
 
 def source_view(world_sample: Callable, source: SourceConfig, n: int, seed: int) -> pd.DataFrame:
-    """The agent-facing draw from one source: clean mechanism -> selection ->
-    channel. Selection oversamples deterministically until n rows survive."""
+    """The agent-facing draw from one source, per the DECLARED pipeline_order
+    (v0.53-1): select_then_measure (survivorship: filter sees TRUE values; v0
+    default) or measure_then_select (admission by recorded symptom: filter sees
+    MEASURED values -- with replicates, the FIRST reading). Selection
+    oversamples deterministically until n rows survive."""
     ns = SimpleNamespace(config=dict(source.config), context=dict(source.context), horizon=None)
-    if source.selection is None:
-        df = world_sample(ns, n, seed)
-    else:
-        frames, got, s = [], 0, seed
-        for _ in range(_MAX_TRIES):
-            draw = world_sample(ns, n * _OVERSAMPLE, s)
-            kept = apply_selection(draw, source.selection)
-            frames.append(kept)
-            got += len(kept)
-            if got >= n:
-                break
-            s = derive_seed(s, _SEL_TAG)
-        df = pd.concat(frames, ignore_index=True)
-        if len(df) < n:
-            raise ValueError(
-                f"selection filter too harsh: {len(df)}/{n} rows after {_MAX_TRIES} tries"
-            )
-        df = df.head(n)
-    if source.channel is not None:
+    measure_first = source.pipeline_order == "measure_then_select"
+
+    def measured(df, rng):
+        return apply_channel(df, source.channel, rng) if source.channel is not None else df
+
+    def filter_frame(df):
+        if source.selection is None:
+            return df
+        if not measure_first:
+            return apply_selection(df, source.selection)
+        # filter on MEASURED values; a replicated column resolves to the FIRST
+        # reading (the admission measurement, v0.53-1)
+        sel = source.selection
+        scored = pd.DataFrame({
+            c: df[c] if c in df.columns else df[f"{c}__rep1"] for c in sel.weights
+        }, index=df.index)
+        return df.loc[apply_selection(scored, sel).index]
+
+    if source.selection is None and not measure_first:
+        df = measured(world_sample(ns, n, seed), np.random.default_rng(derive_seed(seed, _CH_TAG)))
+        return df.reset_index(drop=True)
+
+    frames, got, s = [], 0, seed
+    for _ in range(_MAX_TRIES):
+        draw = world_sample(ns, n * _OVERSAMPLE, s)
+        if measure_first:
+            draw = measured(draw, np.random.default_rng(derive_seed(s, _CH_TAG)))
+        kept = filter_frame(draw)
+        frames.append(kept)
+        got += len(kept)
+        if got >= n:
+            break
+        s = derive_seed(s, _SEL_TAG)
+    df = pd.concat(frames, ignore_index=True)
+    if len(df) < n:
+        raise ValueError(
+            f"selection filter too harsh: {len(df)}/{n} rows after {_MAX_TRIES} tries"
+        )
+    df = df.head(n)
+    if not measure_first and source.channel is not None:
         rng = np.random.default_rng(derive_seed(seed, _CH_TAG))
         df = apply_channel(df, source.channel, rng)
     return df.reset_index(drop=True)

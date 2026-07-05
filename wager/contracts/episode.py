@@ -58,9 +58,15 @@ class SourceConfig(BaseModel):
     config: dict[str, float] = Field(default_factory=dict)
     context: dict[str, float] = Field(default_factory=dict)
     # declared corruption pipeline (applied by the harness/factory VIEW, never
-    # by the scorer): selection filter (sampling) + measurement channel
+    # by the scorer): selection filter (sampling) + measurement channel.
+    # pipeline_order (Decision Log v0.53-1): select_then_measure = survivorship
+    # (the filter sees TRUE values; v0 default, chosen consciously);
+    # measure_then_select = admission-by-recorded-symptom (the filter sees
+    # MEASURED values; with replicates, the FIRST reading) -- changes the
+    # de-biasing structure, future worlds declare it.
     selection: SelectionFilter | None = None
     channel: MeasurementChannel | None = None
+    pipeline_order: Literal["select_then_measure", "measure_then_select"] = "select_then_measure"
 
 
 class ExperimentCost(BaseModel):

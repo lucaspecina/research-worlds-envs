@@ -67,3 +67,26 @@ def test_views_are_deterministic_per_seed():
     pd.testing.assert_frame_equal(a, b)
     c = source_view(toy_world, _src(selection=SEL, channel=CH), 500, 22)
     assert not a.equals(c)
+
+
+def test_pipeline_order_knob_changes_what_the_filter_sees():
+    # v0.53-1: select_then_measure (survivorship, filter on TRUE values) vs
+    # measure_then_select (admission by recorded symptom, filter on MEASURED
+    # values -- with replicates, the FIRST reading). Same knobs, different bias.
+    sel = SelectionFilter(weights={"outcome": 1.0}, threshold=6.0, keep="above")
+    ch = MeasurementChannel(column="outcome", noise_sd=3.0)
+    stm = source_view(toy_world, _src(selection=sel, channel=ch), 4000, 31)
+    mts = source_view(toy_world, _src(selection=sel, channel=ch,
+                                      pipeline_order="measure_then_select"), 4000, 31)
+    # survivorship: TRUE outcome > 6 for every kept row (noise added after) ->
+    # measured values can dip below 6 only via noise, but the noisy-admission
+    # view keeps rows whose TRUE outcome is well below 6 (admitted on a lucky
+    # reading) -> its MEASURED floor is exactly 6 while its true tail is fatter
+    assert (mts["outcome"] > 6.0).all()          # admission on the measured value
+    assert not (stm["outcome"] > 6.0).all()      # survivorship: measured dips below
+    # replicates + measure_then_select: filter used rep1 (all rep1 above), rep2 free
+    ch2 = MeasurementChannel(column="outcome", noise_sd=3.0, replicates=2)
+    mts2 = source_view(toy_world, _src(selection=sel, channel=ch2,
+                                       pipeline_order="measure_then_select"), 2000, 33)
+    assert (mts2["outcome__rep1"] > 6.0).all()
+    assert not (mts2["outcome__rep2"] > 6.0).all()

@@ -292,10 +292,17 @@ mediciones REPLICADAS** (dos lecturas/unidad, n chico, costo declarado; σ_med v
 Var(Y₁−Y₂)/2 — skill real: estimar el error del propio instrumento; techo alcanzable).
 **Gate**: el certificado de recuperabilidad debe mostrar techo ≈ world.py bajo la elección.
 **CERO decisiones entre el mundo 3 y el código. VARA DE VELOCIDAD: cierres + build ≤ ~2
-sesiones o se reporta como señal — el reloj CORRE.** **Próximo: ejecutar — contrato de
-fuentes (SourceSpec + pipeline: filtro collider, canal σ_med, réplicas) → world+meta →
-brief → derivación (test del gemelo, #7 predicho) → L1 → headroom pre-registrado →
-E0-probe.**
+sesiones o se reporta como señal — el reloj CORRE.** **SESIÓN 1 DEL RELOJ (HECHA, v0.52–v0.53)**: contrato de fuentes REAL — `SourceConfig` con
+`SelectionFilter` + `MeasurementChannel` (réplicas ocultan la columna verdadera) +
+**`pipeline_order`** (select_then_measure = survivorship, default v0 a conciencia;
+measure_then_select = admisión por valor medido, filtra la PRIMERA lectura) —
+`source_view()`/`experiment_view()` en harness (el experimento esquiva selección, JAMÁS
+el canal — test pre-registrado ✓), 5 tests de wiring verdes (collider pc −0.35 vs 0.02
+limpio; σ_med por Var(diff)/2 al 10%; determinismo byte-exacto). Registros v0.53:
+ergonomía del entregable (describe() separa schemas; humo referencia entregable; NO
+exponer tasa de aceptación) — se implementa con el meta del caso. **SESIÓN 2: world+meta
+→ brief (línea proceso-no-medidor + funcional de cola) → derivación (#7 espera) → L1 →
+headroom pre-registrado → E0-probe. Desborde a sesión 3 = dato contra la vara.**
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
