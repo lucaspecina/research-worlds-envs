@@ -14,8 +14,8 @@
 | 2 | mendel_subtypes_v0 | Latent | SCM | hetero+confounding, proxy limpio | C | **HECHO** (control negativo) |
 | 3 | mendel_subtypes_v1 | Latent | SCM | ídem, dial declarado | C | **HECHO** (control; reclasificado v0.46) |
 | 4 | selection_bias_v0 | sampling | SCM | collider+medición (2, fuentes) | C | **HECHO** (saturado v0.60) |
-| 5 | mendel_subtypes_v2 | Latent | SCM | hetero+confounding+**estado oculto por lote** (ventana n_cal) | T | **EN CURSO** (gate del ancla) |
-| 6 | collider+medición+presupuesto | sampling | SCM | #4 recompuesto: mismo mundo, presupuesto ÷4 y réplicas ×3 precio | T | siguiente tras v2 (barato: re-meta) |
+| 5 | mendel_subtypes_v2 | Latent | SCM | hetero+confounding+**estado oculto por lote** (ventana n_cal) | T | **HECHO** (v0.64: tríptico confirmado; mejor solver 0.096 vs techo 1.0) |
+| 6 | selection_bias_scarce_v0 | sampling | SCM | #4 recompuesto: mismo mundo, presupuesto ÷4 y réplicas ×3 precio | T | **HECHO** (v0.65: escasez muerde — R 0.00/0.84 vs 0.97/0.99) |
 | 7 | survivorship+censura | sampling | SCM | survivorship + censura informativa (2) | T | por autorar |
 | 8 | immortal-time | sampling | SCM longitudinal | immortal_time + selección (2) | T | por autorar |
 | 9 | batch-effect confundido | canal | SCM | batch_effect + confounding (2) | T | por autorar |
