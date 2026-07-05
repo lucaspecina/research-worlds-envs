@@ -5,7 +5,7 @@ instead of deriving from the world's declared meta. Two known instances --
 hardcoded `cohort` context var, and the twin refit over `effect_dose` (a key
 v1 does not have -> silently inert rival, family #13). The kill is structural:
 the FULL derivation must run on a world whose schema DIFFERS from the dummy's.
-mendel_subtypes_v1 (context var `mix_logit`, params slope_a/slope_b/...) is
+latent_mix_v1 (context var `mix_logit`, params slope_a/slope_b/...) is
 that world.
 """
 
@@ -24,7 +24,7 @@ from wager.factory.derive_rivals import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-V1 = ROOT / "cases" / "mendel_subtypes_v1"
+V1 = ROOT / "cases" / "latent_mix_v1"
 DUMMY = ROOT / "cases" / "dummy_dose_v0"
 
 

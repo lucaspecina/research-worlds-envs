@@ -121,7 +121,7 @@ def test_v2_window_protocol_crn_smoke():
     import sys
     from pathlib import Path
 
-    case = Path(__file__).resolve().parents[1] / "cases" / "mendel_subtypes_v2"
+    case = Path(__file__).resolve().parents[1] / "cases" / "latent_mix_v2"
     sys.path.insert(0, str(case))
     import importlib.util
 

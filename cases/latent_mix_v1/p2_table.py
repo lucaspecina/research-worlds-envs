@@ -9,7 +9,7 @@ c_F=0.25 from each meta, gaps in BOTH units (R and |dP|), energy/functional
 decomposition, mechanistic gap in both worlds, x2 band. The interpretation tree
 is SIGNED in v0.39 -- the numbers only choose the branch.
 
-Run:  .venv/Scripts/python cases/mendel_subtypes_v1/p2_table.py
+Run:  .venv/Scripts/python cases/latent_mix_v1/p2_table.py
 """
 
 import json
@@ -145,7 +145,7 @@ def run_case(case_dir):
 
 def main():
     res = {}
-    for case in ("mendel_subtypes_v0", "mendel_subtypes_v1"):
+    for case in ("latent_mix_v0", "latent_mix_v1"):
         res[case] = run_case(ROOT / "cases" / case)
         f = res[case]["frozen"]
         print(f"[{case}] theory_gap={f['theory_gap']:.3f} (energy-only {f['gap_energy_only']:.3f}, "
@@ -154,13 +154,13 @@ def main():
         print(f"    R_dexp={ {k: round(v, 3) for k, v in f['R_dexp'].items()} }")
         print(f"    |dP| mean={res[case]['delta_p']['mean']:.3f} max={res[case]['delta_p']['max']:.3f}   "
               f"x2: theory={res[case]['x2']['theory_gap']:.3f} mech={res[case]['x2']['mechanistic_gap']:.3f}")
-    tg0 = res["mendel_subtypes_v0"]["frozen"]["theory_gap"]
-    tg1 = res["mendel_subtypes_v1"]["frozen"]["theory_gap"]
+    tg0 = res["latent_mix_v0"]["frozen"]["theory_gap"]
+    tg1 = res["latent_mix_v1"]["frozen"]["theory_gap"]
     print(f"\n2x2: v0={tg0:.3f}  v1={tg1:.3f}  ratio={tg1 / tg0 if tg0 else float('inf'):.1f}x  "
           f"(tree: expected v0 SMALL / v1 LARGE >=3x and >= 0.05 floor)")
-    (ROOT / "cases" / "mendel_subtypes_v1" / "p2_report.json").write_text(
+    (ROOT / "cases" / "latent_mix_v1" / "p2_report.json").write_text(
         json.dumps(res, indent=2, default=str) + "\n", encoding="utf-8")
-    print("report -> cases/mendel_subtypes_v1/p2_report.json")
+    print("report -> cases/latent_mix_v1/p2_report.json")
 
 
 if __name__ == "__main__":

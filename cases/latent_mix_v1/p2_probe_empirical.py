@@ -11,7 +11,7 @@ and the LOCALIZATION of v0's worst cell (dec=4, mix=0):
        -> dP_shape = |P_gaussfine - P_truth| (best possible Gaussian residual
           given fine marker) vs dP_sigma = dP_member_gaussian - dP_shape.
 
-Run:  .venv/Scripts/python cases/mendel_subtypes_v1/p2_probe_empirical.py
+Run:  .venv/Scripts/python cases/latent_mix_v1/p2_probe_empirical.py
 """
 
 import json
@@ -23,7 +23,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(ROOT / "cases" / "mendel_subtypes_v1"))
+sys.path.insert(0, str(ROOT / "cases" / "latent_mix_v1"))
 
 from scipy import stats  # noqa: E402
 
@@ -119,13 +119,13 @@ def localization_v0(res0):
 def main():
     out = {}
     res = {}
-    for case in ("mendel_subtypes_v0", "mendel_subtypes_v1"):
+    for case in ("latent_mix_v0", "latent_mix_v1"):
         res[case] = run_case(case)
         out[case] = {k: res[case][k] for k in ("R", "by_band", "rows")}
-    out["localizacion_v0"] = localization_v0(res["mendel_subtypes_v0"])
-    (ROOT / "cases" / "mendel_subtypes_v1" / "p2_probe_empirical.json").write_text(
+    out["localizacion_v0"] = localization_v0(res["latent_mix_v0"])
+    (ROOT / "cases" / "latent_mix_v1" / "p2_probe_empirical.json").write_text(
         json.dumps(out, indent=2, default=str) + "\n", encoding="utf-8")
-    print("\nreport -> cases/mendel_subtypes_v1/p2_probe_empirical.json")
+    print("\nreport -> cases/latent_mix_v1/p2_probe_empirical.json")
     print("Salidas firmadas (v0.45-2b): A = v0 cierra + v1 falla beyond-exp -> kappa re-abre;")
     print("B = v0 no cierra -> mundo/funcional; C = ambos cierran -> clase agotada -> v2 ACTIVO.")
 

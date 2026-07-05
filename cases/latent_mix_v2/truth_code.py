@@ -1,4 +1,4 @@
-"""truth_code -- the LEGAL R=1 anchor of mendel_subtypes_v2 (Decision Log v0.63).
+"""truth_code -- the LEGAL R=1 anchor of latent_mix_v2 (Decision Log v0.63).
 
 Bayes posterior-predictive ceiling: posterior over the hidden lot mix from
 regime.context["cal_window"] (declared grid x declared prior, marker mixture

@@ -19,7 +19,7 @@ import numpy as np
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-CASE = ROOT / "cases" / "mendel_subtypes_v2"
+CASE = ROOT / "cases" / "latent_mix_v2"
 sys.path.insert(0, str(CASE))
 
 import anchors  # noqa: E402

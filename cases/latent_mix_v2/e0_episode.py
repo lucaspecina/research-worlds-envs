@@ -1,4 +1,4 @@
-"""E0 -- real episodes on mendel_subtypes_v2 (the window world's first exam).
+"""E0 -- real episodes on latent_mix_v2 (the window world's first exam).
 
 Pre-registered and SIGNED (autonomy, Decision Log v0.63/v0.64) BEFORE any
 episode ran. Certification anchors: bayes ceiling R=1, plugin R=0.9991 global
@@ -31,7 +31,7 @@ lot composition (window) from dose response (experiments); if both still
 ignore the window for the OUTCOME law, that is branch B and counts as v2
 headroom evidence, not tooling failure.
 
-Run:  .venv/Scripts/python cases/mendel_subtypes_v2/e0_episode.py [model] [seed_offset]
+Run:  .venv/Scripts/python cases/latent_mix_v2/e0_episode.py [model] [seed_offset]
 """
 
 import json

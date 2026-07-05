@@ -1,4 +1,4 @@
-"""mendel_subtypes_v1 - latent-class heterogeneity, GENUINE latent (v0.27 Q5).
+"""latent_mix_v1 - latent-class heterogeneity, GENUINE latent (v0.27 Q5).
 
 The truth of the case. Server-side only: the agent never sees this file.
 
@@ -9,7 +9,7 @@ hidden material GRADES (a latent class Z) respond to the input level with OPPOSI
 SIGN. The incoming lot's grade COMPOSITION (`mix_logit`) may differ from the one
 on record.
 
-Contrast with mendel_subtypes_v0 (the negative control): v0's sensor reading was
+Contrast with latent_mix_v0 (the negative control): v0's sensor reading was
 CLEAN (5-sigma separated) -> the grade was fully proxied by an observable, so a
 flexible conditional learner P(outcome|dose,marker) recovers everything and the
 theory gap is small EVEN with functionals (Decision Log v0.27). v1 makes the

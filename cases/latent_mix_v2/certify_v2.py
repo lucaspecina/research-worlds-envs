@@ -10,7 +10,7 @@ ceiling<->oracle distance = the tax of the unknowable, reported per n_cal.
 L1-v2 at n_cal = 4 (signed): order bayes(1) > plugin > pooled(0) > null; the
 convergence of plugin -> ceiling at LARGE n_cal is design, not failure.
 
-Run:  .venv/Scripts/python cases/mendel_subtypes_v2/certify_v2.py
+Run:  .venv/Scripts/python cases/latent_mix_v2/certify_v2.py
 """
 
 import json

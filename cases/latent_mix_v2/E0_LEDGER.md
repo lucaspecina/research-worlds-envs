@@ -1,4 +1,4 @@
-# E0_LEDGER — mendel_subtypes_v2 (contabilidad completa de episodios)
+# E0_LEDGER — latent_mix_v2 (contabilidad completa de episodios)
 
 GENERADO por build_ledger.py — no editar a mano; regenerar para auditar.
 Fase pre-fix = antes de documentar experiment()=un-lote-por-llamada (v0.64-e).

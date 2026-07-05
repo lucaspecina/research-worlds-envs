@@ -5,7 +5,7 @@ draws (submission run in the sandbox with the ENRICHED regime -- same choke
 point as scoring). Zero-LLM. Reports mean/max |dP| per n_cal and flags items
 where the submission's scrap price is off by more than the 5% resolution floor.
 
-Run:  .venv/Scripts/python cases/mendel_subtypes_v2/diagnose_e0.py <trace.json>
+Run:  .venv/Scripts/python cases/latent_mix_v2/diagnose_e0.py <trace.json>
 """
 
 import json

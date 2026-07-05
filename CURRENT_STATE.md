@@ -27,16 +27,16 @@ activo (`git config core.hooksPath hooks`).
 | # | Caso | Suite | Bucket | Resultado |
 |---|------|-------|--------|-----------|
 | 1 | dummy_dose_v0 | causal-cliente | control | brecha de teoría 0.062 |
-| 2-3 | mendel_subtypes_v0/v1 | Latent | control | tríptico: v0 proxy limpio, v1 dial declarado |
+| 2-3 | latent_mix_v0/v1 | Latent | control | tríptico: v0 proxy limpio, v1 dial declarado |
 | 4 | selection_bias_v0 | sampling | control (saturado) | collider+medición; R 0.97/0.99 a presupuesto pleno |
-| 5 | **mendel_subtypes_v2** | Latent | **[T] trofeo** | estado oculto por lote; **tríptico confirmado con solver real** |
+| 5 | **latent_mix_v2** | Latent | **[T] trofeo** | estado oculto por lote; **tríptico confirmado con solver real** |
 | 6 | selection_bias_scarce_v0 | sampling | [T] | presupuesto ÷4 → **el presupuesto DISCRIMINA estilos** |
 
 **Hallazgos centrales** (detalle en `DECISION_LOG.md` v0.64-v0.68):
 - **v2 (trofeo)**: techo Bayes-adaptivo por ventana de calibración; en 10 episodios /
   2 familias (gpt-5.4 + DeepSeek) **nadie infiere composición por-lote** — máx R=0.666,
   muro conceptual ≈0.67 (≈0.33 R sin reclamar). La arquitectura que cerró v0 anota 0.096.
-  Headroom genuino: falta juicio, no ejecución. Ledger completo en `cases/mendel_subtypes_v2/E0_LEDGER.md`.
+  Headroom genuino: falta juicio, no ejecución. Ledger completo en `cases/latent_mix_v2/E0_LEDGER.md`.
 - **#6 (escasez)**: la escasez no bloquea el premio, **separa estilos** — gasto-apurado-sin-pensar
   vs profundidad-frugal (DeepSeek: 0.742 con 33% del presupuesto). Firmas conductuales al
   catálogo: `bought_unused_evidence`, `fabricated_precision`.

@@ -15,7 +15,7 @@ PRE-REGISTERED (signed in autonomy BEFORE running):
     ergonomics were polished against gpt); median R <= gpt's.
   - Both currencies for every episode; ledger in E0_LEDGER.md.
 
-Run:  .venv/Scripts/python cases/mendel_subtypes_v2/e05_consolidation.py
+Run:  .venv/Scripts/python cases/latent_mix_v2/e05_consolidation.py
 """
 
 import json

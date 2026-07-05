@@ -13,7 +13,7 @@ If confirmed -> the v0-small/v1-large pattern HOLDS in the client's currency ->
 world vindicated, branch (c) kappa-do-over activated. If v0-|dP| is also large
 outside clamped deep shifts -> branches (a)/(b) activate and kappa WAITS.
 
-Run:  .venv/Scripts/python cases/mendel_subtypes_v1/p2_dp_quadrant.py
+Run:  .venv/Scripts/python cases/latent_mix_v1/p2_dp_quadrant.py
 """
 
 import json
@@ -24,7 +24,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(ROOT / "cases" / "mendel_subtypes_v1"))
+sys.path.insert(0, str(ROOT / "cases" / "latent_mix_v1"))
 
 from wager.factory.case_loader import load_meta, load_world_sample  # noqa: E402
 from wager.factory.derive_rivals import (  # noqa: E402
@@ -37,8 +37,8 @@ from wager.reward.seeds import derive_seed  # noqa: E402
 from p2_table import DEXP_LEVELS, DEXP_N, DEXP_SEED0, DOBS_N, DOBS_SEED, p2_grid  # noqa: E402
 
 N_DP = 4000
-BEST = {"mendel_subtypes_v0": "marker_conditional_no_latent",
-        "mendel_subtypes_v1": "hetero_no_latent"}
+BEST = {"latent_mix_v0": "marker_conditional_no_latent",
+        "latent_mix_v1": "hetero_no_latent"}
 
 
 def main():
@@ -81,9 +81,9 @@ def main():
             d = "obs" if r["dec"] is None else f"{r['dec']:.0f}"
             print(f"     dec={d:>3} mix={r['mix']:+.1f} [{r['band']:10s}]  |dP|={r['dP']:.3f}  (P_truth={r['P_truth']:.3f})")
 
-    (ROOT / "cases" / "mendel_subtypes_v1" / "p2_dp_quadrant.json").write_text(
+    (ROOT / "cases" / "latent_mix_v1" / "p2_dp_quadrant.json").write_text(
         json.dumps(out, indent=2) + "\n", encoding="utf-8")
-    print("\nreport -> cases/mendel_subtypes_v1/p2_dp_quadrant.json")
+    print("\nreport -> cases/latent_mix_v1/p2_dp_quadrant.json")
 
 
 if __name__ == "__main__":

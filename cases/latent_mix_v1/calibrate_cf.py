@@ -38,7 +38,7 @@ Protocol (v0.36):
      The functional's binomial noise bounds c_F from above: if the minimum sits
      near that ceiling, report the SANDWICH.
 
-Run:  .venv/Scripts/python cases/mendel_subtypes_v1/calibrate_cf.py
+Run:  .venv/Scripts/python cases/latent_mix_v1/calibrate_cf.py
 """
 
 import json

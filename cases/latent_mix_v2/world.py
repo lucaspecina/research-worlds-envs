@@ -1,4 +1,4 @@
-"""mendel_subtypes_v2 - hidden per-lot mix, inferred from a calibration window.
+"""latent_mix_v2 - hidden per-lot mix, inferred from a calibration window.
 
 The truth of the case. Server-side only: the agent never sees this file.
 

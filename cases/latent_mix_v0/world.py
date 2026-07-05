@@ -1,4 +1,4 @@
-"""mendel_subtypes_v0 - latent-class heterogeneity with opposite input effects.
+"""latent_mix_v0 - latent-class heterogeneity with opposite input effects.
 
 The truth of the case. Server-side only: the agent never sees this file.
 

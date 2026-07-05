@@ -8,7 +8,7 @@ turns, tokens, branch per the signed pre-registration (A: R>=0.85 /
 B: scored below / abort). The ledger is COMMITTED (the paper's accounting);
 traces named exemplar are whitelisted into the repo (Decision Log v0.66).
 
-Run:  .venv/Scripts/python cases/mendel_subtypes_v2/build_ledger.py
+Run:  .venv/Scripts/python cases/latent_mix_v2/build_ledger.py
 """
 
 import json
@@ -94,7 +94,7 @@ def main():
            "| lee ventana | KB | gasto | turnos | tokens | rama |")
     sep = "|" + "---|" * 14
     lines = [
-        "# E0_LEDGER — mendel_subtypes_v2 (contabilidad completa de episodios)", "",
+        "# E0_LEDGER — latent_mix_v2 (contabilidad completa de episodios)", "",
         "GENERADO por build_ledger.py — no editar a mano; regenerar para auditar.",
         "Fase pre-fix = antes de documentar experiment()=un-lote-por-llamada (v0.64-e).",
         "Rama A: R>=0.85 (uso la ventana para la ley del outcome). Rama B: scoreado abajo.",

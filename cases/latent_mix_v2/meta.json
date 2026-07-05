@@ -1,5 +1,5 @@
 {
-  "case_id": "mendel_subtypes_v0",
+  "case_id": "latent_mix_v2",
   "suite": "latent",
   "columns": [
     {
@@ -12,7 +12,7 @@
       "name": "marker",
       "dtype": "float",
       "unit": null,
-      "description": "per-unit sensor reading (clean, well-separated grades); PRESENT in the cheap records (the negative control -- unlike v1 it need not be bought)"
+      "description": "noisy per-unit sensor reading"
     },
     {
       "name": "outcome",
@@ -45,12 +45,12 @@
     }
   ],
   "stakes": {
-    "narrative": "A process line must set a single input level for incoming lots whose grade composition may differ from the one standing population in its records; a poor outcome (quality below the scrap line) is far costlier than a forgone gain, so the failing tail under a deliberately set input level is what must be priced -- including for lots unlike the one on record. NEGATIVE CONTROL for the v0/v1 pair: here the sensor reading is clean and already in the records, so a flexible conditional learner over observables recovers the grades and the theory gap stays small even with the functional.",
+    "narrative": "A process line must set a single input level per incoming lot; lots arrive UNLABELED with grade compositions that vary lot to lot and may lie outside anything on record; the only per-lot evidence is a small calibration sample of sensor readings. A poor outcome (quality below the scrap line) is far costlier than a forgone gain, so the failing tail under a deliberately set input level is what must be priced -- per lot, from its window.",
     "decision_variables": [
       "dose"
     ],
     "context_relevance": {
-      "mix_logit": {"center": 0.0, "sd": 1.0, "out_of_record_above_abs": 1.5, "out_of_record_floor": 0.3}
+      "n_cal": {"center": 8.0, "sd": 16.0}
     },
     "decision_relevance": {},
     "functionals": [
@@ -71,15 +71,28 @@
     "m_reps": 2,
     "model_call_timeout_s": 10.0
   },
+  "window_protocol": {
+    "version": "v2.window.1",
+    "context_key": "cal_window",
+    "n_cal_key": "n_cal",
+    "posterior_grid": {
+      "lo": -5.4,
+      "hi": 5.4,
+      "points": 61
+    },
+    "prior": {
+      "dist": "normal",
+      "mu": 0.0,
+      "sd": 1.8
+    }
+  },
   "episode": {
     "budget": 20000,
     "observe_sources": {
-      "registros_proceso": {
+      "registros_lotes": {
         "cost_per_row": 1.0,
         "config": {},
-        "context": {
-          "mix_logit": 0.0
-        }
+        "context": {}
       }
     },
     "experiment": {
@@ -92,7 +105,7 @@
           "dose": 2.0
         },
         "context": {
-          "mix_logit": 0.0
+          "n_cal": 8.0
         },
         "horizon": null
       },
@@ -101,14 +114,14 @@
           "dose": 8.0
         },
         "context": {
-          "mix_logit": 0.0
+          "n_cal": 8.0
         },
         "horizon": null
       },
       {
         "config": {},
         "context": {
-          "mix_logit": 0.0
+          "n_cal": 8.0
         },
         "horizon": null
       }
@@ -122,14 +135,13 @@
         }
       },
       "context": {
-        "mix_logit": {
-          "description": "lot grade-composition on a logit scale; the historical records sit at one value (0); incoming lots may differ (targetable in experiments, not set per-unit)",
-          "experimentable_range": [-1.5, 1.5]
+        "n_cal": {
+          "description": "size of the lot's calibration sample; each evaluation regime delivers context.cal_window with that many UNLABELED sensor readings from the target lot (variable length)"
         }
       },
-      "instruments": {
-        "marker": "per-unit sensor reading; CLEAN and already PRESENT in the cheap records (no buy_instrument needed -- the negative control)"
-      }
+      "instruments": {},
+      "experiment_note": "each experiment call draws ONE fresh lot (hidden, differing composition) and applies your input level to n units from it; several lots require several calls",
+      "deliverable_note": "model(regime, n, seed) receives regime.context['cal_window']: unlabeled sensor readings from the target lot, variable length; your model answers for THAT lot."
     }
   },
   "prior_reliability": null

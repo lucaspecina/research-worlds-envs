@@ -1,4 +1,4 @@
-"""Deterministic generator of the mendel_subtypes_v1 ladder fixtures (rungs 2-8).
+"""Deterministic generator of the latent_mix_v1 ladder fixtures (rungs 2-8).
 
 Factory-side tooling (bootstrap exception, Decision Log v0.33 addendum: hand-built
 ladder expires with automatic rival derivation, same rule as the dummy's).
@@ -27,7 +27,7 @@ moments only -- re-running must reproduce the committed fixtures byte-for-byte.
 lambda_mdl is NOT recalibrated here: v1 has no battery yet (the calibration grid
 is pre-registered separately, Decision Log v0.31); meta's lambda stays provisional.
 
-Run:  .venv/Scripts/python cases/mendel_subtypes_v1/make_ladder_fixtures.py
+Run:  .venv/Scripts/python cases/latent_mix_v1/make_ladder_fixtures.py
 """
 
 import sys
