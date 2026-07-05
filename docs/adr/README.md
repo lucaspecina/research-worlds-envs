@@ -78,3 +78,4 @@
 | 0068 | v0.68 | 2026-07-05 | [#6 ACEPTADA (Lucas, 3 registros) + GO MUNDO #11 con el doc de contexto y trat...](0068-v0.68-6-aceptada-lucas-3-registros-go-mundo-11-con-el.md) | Vigente |
 | 0069 | v0.69 | 2026-07-05 | [REESTRUCTURA DE DOCS (orden de Lucas: "los docs crecieron brutalmente"; opció...](0069-v0.69-reestructura-de-docs-orden-de-lucas-los-docs-cre.md) | Vigente |
 | 0070 | v0.70 | 2026-07-05 | [Reestructura de docs a estructura best-practice (WIKI + ADRs + NORTH_STAR disuelto)](0070-v0.70-reestructura-de-docs-a-best-practice.md) | Vigente |
+| 0071 | v0.71 | 2026-07-05 | [Re-skin de casos a "línea de proceso" (neutral, anti-flag)](0071-v0.71-re-skin-a-linea-de-proceso.md) | Vigente |

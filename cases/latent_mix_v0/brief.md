@@ -7,7 +7,7 @@ price its policy.
 
 ## What is at stake
 
-A poor outcome -- a quality score below the scrap line of -5 -- is far costlier than a forgone gain: scrapping a unit with the wrong input level is the failure the line most wants to avoid. So predicting *where the bad tail sits* under a given level matters as much as predicting the average.
+A poor outcome -- a quality score below the reject line of -5 -- is far costlier than a forgone gain: rejecting a unit with the wrong input level is the failure the line most wants to avoid. So predicting *where the bad tail sits* under a given level matters as much as predicting the average.
 
 The line also warns you: **the lots that arrive are not the lot in your
 records.** The historical data was collected from one standing population of units;
@@ -28,5 +28,5 @@ heterogeneity in how they respond is plausible and worth investigating.
 
 The historical input-outcome association is what an untrained eye would price. The
 line suspects it is misleading and is paying you to find out *why*, *for which
-units*, and *what actually happens to the outcome -- and its scrap tail -- when the
+units*, and *what actually happens to the outcome -- and its reject tail -- when the
 input level is set deliberately for a population unlike the one on record.*

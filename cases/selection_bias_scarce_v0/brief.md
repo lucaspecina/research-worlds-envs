@@ -7,7 +7,7 @@ set, so the line can price its policy.
 
 ## What is at stake
 
-Getting the tail right is the money: a unit whose quality lands below the cull line of 2 is far costlier than a forgone gain. So predicting *where the culled tail sits* under a given intensity matters as much as predicting the average.
+Getting the tail right is the money: a unit whose quality lands below the reject line of 2 is far costlier than a forgone gain. So predicting *where the rejected tail sits* under a given intensity matters as much as predicting the average.
 
 One thing the lab is upfront about: **your model should reproduce the system's
 true behavior; your measurements include instrument error.** The quality meter
@@ -31,5 +31,5 @@ you for the process, not for the meter.
 The historical association between the gauge, the intensity and the quality is
 what an untrained eye would price. The line suspects its records flatter the
 gauge and is paying you to find out *why*, *what the intensity really does*,
-and *where the culled tail actually sits when you set the intensity
+and *where the rejected tail actually sits when you set the intensity
 deliberately* -- for runs like and unlike the ones on record.

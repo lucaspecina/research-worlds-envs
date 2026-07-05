@@ -7,7 +7,7 @@ line can price its policy lot by lot.
 
 ## What is at stake
 
-A poor outcome -- a quality score below the scrap line of -5 -- is far costlier than a forgone gain: scrapping a unit with the wrong input level is the failure the line most wants to avoid. So predicting *where the bad tail sits* under a given level matters as much as predicting the average.
+A poor outcome -- a quality score below the reject line of -5 -- is far costlier than a forgone gain: rejecting a unit with the wrong input level is the failure the line most wants to avoid. So predicting *where the bad tail sits* under a given level matters as much as predicting the average.
 
 The line also warns you: **lots are not labeled and they are not alike.** The
 material composition of each incoming lot varies, is nowhere recorded, and may
@@ -38,6 +38,6 @@ lot before your model must speak.
 
 The historical input-outcome association is what an untrained eye would price.
 The line suspects it is misleading and is paying you to find out *why*, *for
-which lots*, and *what actually happens to the outcome -- and its scrap tail --
+which lots*, and *what actually happens to the outcome -- and its reject tail --
 when the input level is set deliberately for a lot you have only a handful of
 sensor readings from.*

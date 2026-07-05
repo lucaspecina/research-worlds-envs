@@ -7,14 +7,14 @@ FIRST world whose traps live in the SOURCES, not the mechanism (ARCHITECTURE
 below is CLEAN: `signal` correlates with `outcome` ONLY through `driver` (no
 direct edge). The spurious signal<->outcome association the agent sees in the
 cheap records is manufactured entirely by the source's declared selection
-filter (f(signal, outcome) > threshold: survivorship, filter on TRUE values --
+filter (f(signal, outcome) > threshold: value-based selection, filter on TRUE values --
 v0.53-1); the measured `outcome` carries declared zero-mean instrument noise
 (sigma_med; v0.50-1 bias=0), identifiable via the replicated source (v0.51).
 
 Domain skin: a batch conditioning line. An operator sets a CONDITIONING
 INTENSITY (`driver`, 0-10); an inline GAUGE reads during conditioning
 (`signal`); each unit gets a final QUALITY score (`outcome`, higher = better;
-below 2 = culled). `ambient` is a logged hall reading (decoy: plausible and
+below 2 = rejected). `ambient` is a logged hall reading (decoy: plausible and
 irrelevant, ARCHITECTURE §4).
 
 Mechanism (all clean):
