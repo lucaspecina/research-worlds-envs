@@ -330,8 +330,13 @@ ahora scorea COMBINADO** (+1 registrado≠implementado) → corrida 2: **R=0.974
 |ΔP|≈0.01, cero crashes, firmas plenas** → **RAMA: MUNDO SATURADO → bucket de control;
 hito de headroom VACANTE → presión honesta sobre v2**. Traces en `cases/selection_bias_v0/
 traces/` (gitignored; archivar con los demás). **PENDING-IMPL: (ninguno).**
-**PRÓXIMO (orden de Lucas, sin esperar): v2 hasta el GATE DEL ANCLA Bayes-adaptiva
-(ahí frenar, tripwire-1) + borrador de matriz de celdas E1 en paralelo.**
+**v0.61 (HECHO)**: v2 hasta el gate — world.py (lote oculto `lot_mix(seed)`, prior N(0,1.8);
+`make_window` versionado v2.window.1) + smoke CRN verde (ventana determinística, compartida,
+trackea el mix; cero wiring de scorer). **FRENADO EN EL GATE (tripwire-1): spec del ancla
+Bayes-adaptiva a revisión de Lucas** — techo R=1 := verdad Bayes-adaptiva, world.py-con-
+oráculo = cota diagnóstica (R_uncl>1 esperado), enriquecimiento del regime en scoring.
+`E1_MATRIX.md` borrador: 20 slots, 4 controles HECHOS (~25%), pipeline v2 → #6 (hipótesis-
+presupuesto sobre mundo saturado) → #11 (1er ODE). **BLOQUEADO EN: revisión del ancla.**
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,

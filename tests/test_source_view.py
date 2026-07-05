@@ -109,3 +109,37 @@ def test_sigma_med_identification_is_ordering_dependent():
                                       pipeline_order="measure_then_select"), 6000, 41)
     s_adm = np.sqrt((adm["outcome__rep1"] - adm["outcome__rep2"]).var() / 2.0)
     assert s_adm < ch2.noise_sd * 0.95  # inherits the truncation: NOT sigma_med
+
+
+def test_v2_window_protocol_crn_smoke():
+    """v2 FIRST milestone (v0.48 gate sequence): the calibration window is
+    deterministic in (world-seed, n_cal) and IDENTICAL for every consumer
+    (submission / anchors / rivals share it -- CRN intact); different lots
+    (seeds) get different windows; the window reflects the lot (its mean
+    tracks the hidden mix through the marker law). Pre-anchor-gate: no
+    scorer wiring here."""
+    import sys
+    from pathlib import Path
+
+    case = Path(__file__).resolve().parents[1] / "cases" / "mendel_subtypes_v2"
+    sys.path.insert(0, str(case))
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("world_v2", case / "world.py")
+    w = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(w)
+
+    w1 = w.make_window(91001, 8)
+    w2 = w.make_window(91001, 8)
+    assert w1 == w2 and len(w1) == 8              # deterministic, n_cal respected
+    assert w.make_window(91002, 8) != w1          # another lot, another window
+    assert w.make_window(91001, 3) == w1[:0] or len(w.make_window(91001, 3)) == 3
+    # the window tracks the hidden lot: big-window mean correlates with mix sign
+    mixes = [w.lot_mix(s) for s in range(5000, 5040)]
+    means = [np.mean(w.make_window(s, 64)) for s in range(5000, 5040)]
+    assert np.corrcoef(mixes, means)[0, 1] > 0.8
+    # and the truth side sees the SAME lot the window came from
+    ns = SimpleNamespace(config={"dose": 6.0}, context={}, horizon=None)
+    hi = max(range(5000, 5040), key=lambda s: w.lot_mix(s))
+    lo = min(range(5000, 5040), key=lambda s: w.lot_mix(s))
+    assert w.sample(ns, 4000, hi)["marker"].mean() > w.sample(ns, 4000, lo)["marker"].mean()
