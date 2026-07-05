@@ -22,6 +22,12 @@ class BatteryItem(BaseModel):
     seed_world: int
 
 
+# Context keys that only ever exist as runtime enrichment derived from the
+# item's seed (window protocols' context_key). DECLARED tuple context (e.g. a
+# trajectory battery's t_grid) is item identity and persists fine (v0.68-R2).
+RUNTIME_DERIVED_CONTEXT_KEYS = frozenset({"cal_window"})
+
+
 class Battery(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
@@ -32,16 +38,20 @@ class Battery(BaseModel):
         return cls.model_validate(json.loads(Path(path).read_text(encoding="utf-8")))
 
     def to_json_file(self, path: str | Path) -> None:
-        # window worlds (Decision Log v0.63-4): the calibration window is
-        # RUNTIME-ONLY context, materialized at the WorldSide choke point from
-        # the persisted scalar (n_cal). Tuples in context are exactly that
-        # enrichment -- refusing them here makes "never persisted" structural.
+        # Persistence PRINCIPLE (Decision Log v0.68-R2, amending v0.63-4):
+        # what persists is what is DECLARED as part of the item (a trajectory
+        # world's t_grid); what is blocked is what is DERIVED from the seed at
+        # runtime (the calibration window, materialized at the WorldSide choke
+        # point from the persisted scalar n_cal). Derived keys are the ones the
+        # versioned window protocols name (context_key); blocking them here
+        # keeps "never persisted" structural for every consumer.
         for i, item in enumerate(self.items):
             for key, value in item.regime.context.items():
-                if isinstance(value, tuple):
+                if isinstance(value, tuple) and key in RUNTIME_DERIVED_CONTEXT_KEYS:
                     raise ValueError(
-                        f"battery item {i}: context[{key!r}] is a runtime-only "
-                        "window (tuple); batteries persist scalars only (v0.63-4)"
+                        f"battery item {i}: context[{key!r}] is runtime-DERIVED "
+                        "enrichment (window protocol); batteries persist only "
+                        "declared context (v0.68-R2 / v0.63-4)"
                     )
         Path(path).write_text(
             json.dumps(self.model_dump(), indent=2) + "\n", encoding="utf-8"
@@ -136,6 +146,11 @@ class CaseMeta(BaseModel):
     # posterior grid and prior DECLARED here (no hidden constants). None for
     # every non-window world (the whole machinery is inert then).
     window_protocol: dict | None = None
+    # trajectory worlds (v0.68-R1): versioned protocol for the long->wide pivot
+    # -- the deliverable is LONG format (unit_id, t, y), n counts UNITS, the
+    # item's grid travels as DECLARED context under grid_key. None for every
+    # static world (pivot machinery inert).
+    trajectory_protocol: dict | None = None
 
     @classmethod
     def from_json_file(cls, path: str | Path) -> "CaseMeta":

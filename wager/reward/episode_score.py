@@ -24,6 +24,7 @@ def score_episode_submission(
     functionals=None,
     truth_code: str | None = None,
     enrich_regime: Callable | None = None,
+    sample_transform: Callable | None = None,
 ) -> dict:
     # combined score (ARCHITECTURE 9.3): the declared functionals + the frozen
     # c_f from ScoringParams. Empty functionals -> identity with the energy
@@ -40,7 +41,7 @@ def score_episode_submission(
     with sandboxed_null_sample(null_code, columns, params.model_call_timeout_s) as null_sample:
         ws = WorldSide(world_sample, battery, columns, params.n_samples, null_sample=null_sample,
                        functionals=functionals or [], c_f=params.c_f,
-                       enrich_regime=enrich_regime)
+                       enrich_regime=enrich_regime, sample_transform=sample_transform)
         s_truth = score_submission(truth_code or world_source, ws, params).raw_score
         s_naive = score_submission(naive_code, ws, params).raw_score
         s_null = score_submission(null_code, ws, params).raw_score

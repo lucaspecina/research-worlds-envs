@@ -14,6 +14,7 @@ from wager.factory.case_loader import (
     load_truth_code,
     load_world_sample,
     load_world_source,
+    make_sample_transform,
     make_window_enrich,
 )
 from wager.harness.world_server import ScoringArtifacts, WorldServer
@@ -47,6 +48,7 @@ def build_world_server(case_dir: str | Path, seed_offset: int = 0) -> WorldServe
         functionals=list(meta.stakes.functionals),
         truth_code=truth_code,
         enrich_regime=make_window_enrich(case_dir, meta),
+        sample_transform=make_sample_transform(meta),
     )
     return WorldServer(
         world_sample=load_world_sample(case_dir),

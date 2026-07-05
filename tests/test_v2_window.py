@@ -41,7 +41,7 @@ def small_battery(seed0: int = 96101) -> Battery:
     return Battery(items=items)
 
 
-# --- (4) window never persisted: structural guard pair -----------------------
+# --- (4) persistence principle (v0.68-R2): DECLARED persists, DERIVED blocks --
 
 def test_battery_persists_scalar_ncal(tmp_path):
     path = tmp_path / "battery.json"
@@ -50,13 +50,25 @@ def test_battery_persists_scalar_ncal(tmp_path):
     assert "n_cal" in text and "cal_window" not in text
 
 
+def test_battery_persists_declared_tuple_grid(tmp_path):
+    # should-pass: a trajectory world's t_grid is DECLARED item identity
+    battery = Battery(items=[BatteryItem(
+        weight=1.0,
+        regime=Regime(config={}, context={"t_grid": (0.0, 2.0, 8.0)}),
+        seed_world=1,
+    )])
+    path = tmp_path / "battery.json"
+    battery.to_json_file(path)
+    assert Battery.from_json_file(path).items[0].regime.context["t_grid"] == (0.0, 2.0, 8.0)
+
+
 def test_battery_refuses_runtime_window(tmp_path):
     enriched = Battery(items=[BatteryItem(
         weight=1.0,
         regime=Regime(config={}, context={"n_cal": 4.0, "cal_window": (0.1, 0.2)}),
         seed_world=1,
     )])
-    with pytest.raises(ValueError, match="runtime-only"):
+    with pytest.raises(ValueError, match="runtime-DERIVED"):
         enriched.to_json_file(tmp_path / "battery.json")  # should-fail
 
 

@@ -225,7 +225,11 @@ class SandboxedSubmission:
         status, payload = self._conn.recv()
         if status != "ok":
             raise SandboxError(f"submission raised: {payload}")
-        return self._validate(payload, n)
+        # trajectory worlds (v0.68-R1): n counts UNITS; the long table carries
+        # one row per (unit, grid time) -> expected rows = n * len(t_grid).
+        grid = regime_dict["context"].get("t_grid")
+        expected = n * (len(grid) if isinstance(grid, (tuple, list)) and grid else 1)
+        return self._validate(payload, expected)
 
     def _validate(self, df, n: int) -> pd.DataFrame:
         import numpy as np

@@ -60,6 +60,9 @@ class ScoringArtifacts:
     # persisted scalar. Both None for every non-window world (inert).
     truth_code: str | None = None
     enrich_regime: Callable | None = None
+    # trajectory worlds (v0.68-R1): long->wide pivot for every scored sample;
+    # None (inert) for every static world.
+    sample_transform: Callable | None = None
 
 
 @dataclass
@@ -164,7 +167,16 @@ class WorldServer:
 
     def experiment(self, design: ExperimentDesign) -> pd.DataFrame:
         self._guard_open()
-        cost = self.config.experiment.cost_fixed + self.config.experiment.cost_per_row * design.n
+        # trajectory pricing (v0.68-R3): n counts UNITS; every (unit, timestamp)
+        # reading is a row, and leaving the run going costs per horizon -- THE
+        # knob that makes knowing K expensive. Static worlds: grid absent,
+        # cost_per_horizon 0.0 -> byte-identical to the old formula.
+        grid = design.context.get("t_grid")
+        n_readings = design.n * (len(grid) if isinstance(grid, tuple) and grid else 1)
+        horizon_span = max(grid) if isinstance(grid, tuple) and grid else 0.0
+        cost = (self.config.experiment.cost_fixed
+                + self.config.experiment.cost_per_row * n_readings
+                + self.config.experiment.cost_per_horizon * horizon_span)
         self._charge(cost, f"experiment(n={design.n})")
         # The experiment runs the MECHANISM fresh under the chosen assignment --
         # randomization bypasses the historical SELECTION, but NEVER the
@@ -195,6 +207,7 @@ class WorldServer:
             functionals=self.scoring.functionals,
             truth_code=self.scoring.truth_code,
             enrich_regime=self.scoring.enrich_regime,
+            sample_transform=self.scoring.sample_transform,
         )
         self.result["code"] = code
         self.terminal = True

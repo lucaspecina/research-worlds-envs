@@ -70,16 +70,24 @@ class WorldSide:
         functionals: list[FunctionalSpec] | None = None,
         c_f: float | dict[str, float] = 1.0,
         enrich_regime: Callable | None = None,
+        sample_transform: Callable | None = None,
     ) -> None:
         # enrich_regime (v0.63-4: the ONE choke point for window worlds):
         # (namespace, seed_world) -> namespace with runtime-only context (e.g.
         # cal_window), applied ONCE per item; truth sampling, every sandboxed
         # submission, anchors and rivals consume the SAME enriched namespace
         # (CRN intact). Batteries never persist the window.
+        #
+        # sample_transform (v0.68-R1, trajectory worlds): (namespace, df) -> df
+        # applied to EVERY sample crossing the scorer -- truth, null reference,
+        # rivals and submissions alike (pivot long->wide on the item's t_grid).
+        # The scored columns are then the TRANSFORMED table's columns, per item.
+        # None -> byte-identical behavior for every static world.
         self.battery = battery
         self.columns = list(columns)
         self.n_samples = n_samples
         self.functionals = list(functionals or [])
+        self.sample_transform = sample_transform
         self.truth_sides: list[TruthSide] = []
         self.func_scorers: list[FunctionalScorer] = []
         self.d_maxes: list[float] = []
@@ -90,16 +98,21 @@ class WorldSide:
                 ns = enrich_regime(ns, item.seed_world)
             self.regimes.append(ns)
             real = world_sample(ns, n_samples, item.seed_world)
-            truth_side = TruthSide(real, self.columns)
+            if sample_transform is not None:
+                real = sample_transform(ns, real)
+            score_cols = list(real.columns) if sample_transform is not None else self.columns
+            truth_side = TruthSide(real, score_cols)
             # functional contribution, standardized by the SAME truth sample (CRN).
             # Empty list -> extra_distance == 0 -> combined distance ≡ energy (the
             # dummy is byte-identical; identity by construction, ARCHITECTURE §9.3).
-            func_scorer = FunctionalScorer(self.functionals, real, self.columns, truth_side.std, c_f)
+            func_scorer = FunctionalScorer(self.functionals, real, score_cols, truth_side.std, c_f)
             # D_MAX_item = 1.5 x D_COMBINED(truth, null) (amendment 4, v0.28): the cap
             # lives in the metric we actually score, and it is a FUNCTION of c_f.
             if null_sample is not None:
                 null_seed = derive_seed(item.seed_world, _NULL_REF_REP)
                 null_pred = null_sample(ns, n_samples, null_seed)
+                if sample_transform is not None:
+                    null_pred = sample_transform(ns, null_pred)
                 d_null = truth_side.distance_to(null_pred) + func_scorer.extra_distance(null_pred)
             else:
                 d_null = truth_side.permutation_null_distance(derive_null_seed(item.seed_world))
@@ -143,13 +156,17 @@ def score_submission(
                 try:
                     # the ENRICHED runtime regime (choke point, v0.63-4)
                     pred = sandbox.run(world_side.regimes[idx], params.n_samples, seed_model)
+                    if world_side.sample_transform is not None:
+                        # trajectory pivot (v0.68-R1); a grid-violating table
+                        # raises ValueError -> priced as a crash below
+                        pred = world_side.sample_transform(world_side.regimes[idx], pred)
                     d = truth_side.distance_to(pred) + func_scorer.extra_distance(pred)
                     if d >= d_max:  # robustness bound: worse than 1.5x the null
                         d = d_max
                         capped += 1
-                except SandboxError:
-                    # crash/NaN: assign D_MAX (strictly worse than the null),
-                    # NOT a clamp on a legitimate distance (ARCHITECTURE 8)
+                except (SandboxError, ValueError):
+                    # crash/NaN/grid violation: assign D_MAX (strictly worse than
+                    # the null), NOT a clamp on a legitimate distance (ARCH. 8)
                     errors += 1
                     d = d_max
                 distances.append(d)
@@ -211,6 +228,8 @@ def score_callable(
             seed_m = derive_seed(item.seed_world, j + rep_offset)
             try:
                 pred = sample_fn(ns, params.n_samples, seed_m)
+                if world_side.sample_transform is not None:
+                    pred = world_side.sample_transform(ns, pred)
                 dist = truth_side.distance_to(pred) + func_scorer.extra_distance(pred)
                 if dist >= d_max:
                     dist = d_max

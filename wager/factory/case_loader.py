@@ -87,3 +87,19 @@ def make_window_enrich(case_dir: str | Path, meta: CaseMeta) -> Callable | None:
         return ns
 
     return enrich
+
+
+def make_sample_transform(meta: CaseMeta) -> Callable | None:
+    """Trajectory worlds (v0.68-R1): the long->wide pivot applied to EVERY
+    sample crossing the scorer (truth, null, rivals, submissions), on the
+    item's DECLARED grid (context[grid_key]). None (inert) for static worlds."""
+    if meta.trajectory_protocol is None:
+        return None
+    from wager.reward.trajectory import pivot_trajectories
+
+    grid_key = meta.trajectory_protocol.get("grid_key", "t_grid")
+
+    def transform(ns, df):
+        return pivot_trajectories(df, ns.context[grid_key])
+
+    return transform

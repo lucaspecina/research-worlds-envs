@@ -16,7 +16,10 @@ class ExperimentDesign(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     config: dict[str, float] = Field(default_factory=dict)  # do(): fixed knobs
-    context: dict[str, float] = Field(default_factory=dict)
+    # trajectory worlds (v0.68-R3): the measurement SCHEDULE travels here as a
+    # declared tuple (t_grid) -- same typed union as Regime.context; n then
+    # counts UNITS (trajectories), readings = n x len(t_grid).
+    context: dict[str, float | tuple[float, ...]] = Field(default_factory=dict)
     n: int = Field(gt=0, le=5000)  # bounded: runaway guard on a single draw
     horizon: int | None = None
 
@@ -56,7 +59,8 @@ class SourceConfig(BaseModel):
 
     cost_per_row: float = Field(ge=0)
     config: dict[str, float] = Field(default_factory=dict)
-    context: dict[str, float] = Field(default_factory=dict)
+    # a source may DECLARE its historical sampling grid (t_grid) here (v0.68-R3)
+    context: dict[str, float | tuple[float, ...]] = Field(default_factory=dict)
     # declared corruption pipeline (applied by the harness/factory VIEW, never
     # by the scorer): selection filter (sampling) + measurement channel.
     # pipeline_order (Decision Log v0.53-1): select_then_measure = survivorship
@@ -73,7 +77,11 @@ class ExperimentCost(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     cost_fixed: float = Field(ge=0)
-    cost_per_row: float = Field(ge=0)
+    cost_per_row: float = Field(ge=0)  # per READING (unit x timestamp) in trajectory worlds
+    # trajectory worlds (v0.68-R3): price of leaving the run going -- charged on
+    # max(t_grid). THE knob that makes knowing K expensive and knowing r cheap;
+    # declared difficulty dial of the world. 0.0 = inert (every static world).
+    cost_per_horizon: float = Field(default=0.0, ge=0)
 
 
 class EpisodeConfig(BaseModel):
