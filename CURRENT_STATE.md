@@ -279,8 +279,17 @@ nueva DECLARADA de antemano (es la anatomía §1 pendiente, no dummy-ismo); pred
 honesta: el test del gemelo destapa el **dummy-ismo #7 (mechanism-only twins)** → fix =
 ablación por capa (fuente = re-muestrear pool con operador off); certificados con
 sub-batería observacional día uno; funcional de cola en el brief (ambas monedas).
-**Próximo: ejecutar el plan — contrato de fuentes → world+meta → brief → derivación →
-L1 → headroom pre-registrado → E0-probe.**
+**CIERRES v0.50 (decididos, pre-registrados)**: (1) canal: **sesgo=0 en v0** (solo ruido
+zero-mean en outcome, σ_med knob; hetero diferido; (b) spec-instrumento y (c) gold-standard
+= perillas futuras — la (c) es perilla de VoI) + recuperabilidad cuantifica el de-noising;
+(2) **gemelo del collider = esqueleto + arista `signal→outcome` sugerida-por-patrón (coef
+del pool) + refit sobre knobs** (la ablación de capa sola da twin degenerado — rival débil);
+(3) **batería: observacionales = POBLACIÓN COMPLETA** (≠ pool filtrado; skill = des-sesgar
+la vista); sub-batería collider = población-completa + do(signal); **driver observable**
+(clase de dificultad declarada; theory gap ~0 condicionado a eso). **VARA DE VELOCIDAD:
+cierres + build ≤ ~2 sesiones o se reporta como señal** (reloj corre desde la próxima
+sesión). **Próximo: ejecutar — contrato de fuentes → world+meta → brief → derivación
+(test del gemelo, #7 predicho) → L1 → headroom pre-registrado → E0-probe.**
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
