@@ -21,9 +21,15 @@ def score_episode_submission(
     battery: Battery,
     columns: list[str],
     params: ScoringParams,
+    functionals=None,
 ) -> dict:
+    # combined score (ARCHITECTURE 9.3): the declared functionals + the frozen
+    # c_f from ScoringParams. Empty functionals -> identity with the energy
+    # score (the dummy is byte-identical). v0.60 wiring: the episode path had
+    # been scoring energy-only -- registered != implemented, third+1 instance.
     with sandboxed_null_sample(null_code, columns, params.model_call_timeout_s) as null_sample:
-        ws = WorldSide(world_sample, battery, columns, params.n_samples, null_sample=null_sample)
+        ws = WorldSide(world_sample, battery, columns, params.n_samples, null_sample=null_sample,
+                       functionals=functionals or [], c_f=params.c_f)
         s_truth = score_submission(world_source, ws, params).raw_score
         s_naive = score_submission(naive_code, ws, params).raw_score
         s_null = score_submission(null_code, ws, params).raw_score

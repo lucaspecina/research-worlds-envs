@@ -53,6 +53,7 @@ class ScoringArtifacts:
     null_code: str
     battery: Battery
     params: ScoringParams
+    functionals: list = field(default_factory=list)  # declared stakes functionals (v0.60)
 
 
 @dataclass
@@ -185,6 +186,7 @@ class WorldServer:
             battery=self.scoring.battery,
             columns=self.columns,
             params=self.scoring.params,
+            functionals=self.scoring.functionals,
         )
         self.result["code"] = code
         self.terminal = True

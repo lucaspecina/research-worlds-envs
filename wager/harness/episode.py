@@ -38,8 +38,11 @@ cells. `env` provides:
         config fixes knobs, e.g. config={"dose": 4.0}; context targets a population, e.g. {"cohort": 1.0}
   env.submit(code_string)             -> result with .accepted and .error
 Spend the budget wisely; experiments cost more than observations. When your reasoning has converged, build
-your model program (a string defining model(regime, n, seed)) and call env.submit(code). If it fails
-validation, read .error, fix, resubmit. For big DataFrames print .head() and .shape, not the whole thing."""
+your model program (a string defining model(regime, n, seed)) and call env.submit(code). Inside model(),
+`regime.config` is a dict of the fixed knobs for that evaluation (empty dict for observational draws) and
+`regime.context` is a dict of context variables -- read them like regime.config.get("dose") /
+regime.context.get("cohort", 0.0); regime is NOT itself a dict. If submit fails validation, read .error,
+fix, resubmit. For big DataFrames print .head() and .shape, not the whole thing."""
 
 _SUSPICION = (
     "confound", "causal", "spurious", "intervention", "intervene", "stratif",

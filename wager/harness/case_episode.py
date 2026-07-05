@@ -33,6 +33,7 @@ def build_world_server(case_dir: str | Path, seed_offset: int = 0) -> WorldServe
         null_code=ladder[-1][1],  # the S_null / D_MAX reference
         battery=load_battery(case_dir),
         params=meta.scoring,
+        functionals=list(meta.stakes.functionals),
     )
     return WorldServer(
         world_sample=load_world_sample(case_dir),
