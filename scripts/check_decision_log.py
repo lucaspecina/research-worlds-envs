@@ -1,54 +1,46 @@
-"""Decision Log integrity lint (pre-commit; Decision Log v0.56-4, repointed v0.69).
+"""ADR integrity lint (pre-commit; ADR 0070, ex Decision Log v0.56-4).
 
-Born from a near-miss: a bulk regex script transiently corrupted NORTH_STAR
-(recovered via git checkout). The scare becomes a guard: existing version
-blocks are IMMUTABLE (append-only -- amendments are new entries) and the
-version sequence is monotone. The Decision Log moved out of NORTH_STAR into
-DECISION_LOG.md in the v0.69 doc restructure; this compares the staged
-DECISION_LOG.md against HEAD.
+Decision records live in docs/adr/ -- one markdown file per decision (the
+adr.github.io pattern). Append-only: you ADD new ADRs; existing files are
+IMMUTABLE and never disappear (supersede = new file + a status note in the
+index). README.md (the index) is the one mutable file. Compares the staged
+tree against HEAD.
+
+Born from a near-miss (a bulk regex once corrupted the monolithic log); the
+scare became this guard. It moved from block-diffing one file to file-level
+immutability when the log became per-file ADRs.
 """
 
-import re
 import subprocess
 import sys
 
-
-def blocks(text):
-    parts = re.split(r"(?=^\*\*v\d+\.\d+ \()", text, flags=re.M)
-    out = []
-    for p in parts:
-        m = re.match(r"\*\*v(\d+\.\d+) \(", p)
-        if m:
-            out.append((tuple(int(x) for x in m.group(1).split(".")), p))
-    return out
-
-
-def show(ref):
-    r = subprocess.run(["git", "show", ref], capture_output=True, text=True, encoding="utf-8")
-    return r.stdout if r.returncode == 0 else ""
+ADR_DIR = "docs/adr/"
+INDEX = "docs/adr/README.md"
 
 
 def main():
-    staged = show(":DECISION_LOG.md")
-    head = show("HEAD:DECISION_LOG.md")
-    if not staged or not head:
-        return 0  # file not staged / first commit (incl. the v0.69 move): nothing to compare
-    hb, sb = dict(blocks(head)), dict(blocks(staged))
+    r = subprocess.run(
+        ["git", "diff", "--cached", "--name-status", "HEAD", "--", ADR_DIR],
+        capture_output=True, text=True, encoding="utf-8",
+    )
+    if r.returncode != 0:
+        return 0  # no HEAD yet / dir absent: nothing to compare
     errs = []
-    for v, b in hb.items():
-        tag = "v" + ".".join(map(str, v))
-        if v not in sb:
-            errs.append(f"{tag}: REMOVED (nada se borra, se supersede)")
-        elif sb[v].rstrip() != b.rstrip():
-            # rstrip: the LAST block of HEAD runs to EOF; appending a new entry
-            # moves its boundary by trailing whitespace only (maiden-commit
-            # false positive, fixed like the denylist's --diff-filter=d)
-            errs.append(f"{tag}: MODIFIED (bloques existentes son INMUTABLES; enmendar = entrada nueva)")
-    versions = [v for v, _ in blocks(staged)]
-    if versions != sorted(versions):
-        errs.append("secuencia de versiones no monotona (append-only)")
+    for line in r.stdout.splitlines():
+        if not line.strip():
+            continue
+        parts = line.split("\t")
+        status, path = parts[0], parts[-1]
+        if path == INDEX or not path.endswith(".md"):
+            continue  # the index is mutable
+        if status.startswith("M"):
+            errs.append(f"{path}: MODIFICADO (los ADR existentes son INMUTABLES; superseder = archivo nuevo)")
+        elif status.startswith("D"):
+            errs.append(f"{path}: BORRADO (nada se borra, se supersede)")
+        elif status.startswith("R"):
+            errs.append(f"{path}: RENOMBRADO (los ADR existentes son inmutables)")
     if errs:
-        print("Decision Log integrity FAILED:", file=sys.stderr)
+        print("ADR integrity FAILED:", file=sys.stderr)
         for e in errs:
             print("  - " + e, file=sys.stderr)
         return 1
