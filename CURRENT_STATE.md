@@ -354,10 +354,21 @@ enorme (techo 1.0 / plugin 0.999 / mejor solver 0.096)**; #19 especie nueva (exp
 = UN lote por llamada) documentada en brief+meta con re-run 2+2. Suite 120 verdes.
 Traces en `cases/mendel_subtypes_v2/traces/` (gitignored). **PENDING-IMPL: (ninguno).**
 
-**PRÓXIMO PASO**: pipeline aprobado continúa — **#6** (hermano de selection_bias:
-presupuesto÷4, réplicas ×3 precio; certificados RE-DERIVADOS; hipótesis "escasez vs
-composición") → **#11** (1er mundo ODE, logistic growth, suite Horizon) → dossier
-consolidado a Lucas (regla de autonomía: próximo mensaje = dossier o tripwire).
+**v0.65 (HECHO — #6 CORRIDO)**: `selection_bias_scarce_v0` (presupuesto 5000, réplicas
+15/fila; certificados RE-derivados idénticos al mundo 3, gates all-PASS). E0 2 episodios
+gpt-5.4: **R=0.000 (R_uncl −0.544, 0 crashes 0 caps) y R=0.838** vs 0.974/0.993 a
+presupuesto pleno → pre-registro modal (A) REFUTADO; firma "evidencia comprada y no
+usada" (ambos compraron réplicas — seed1 42% del presupuesto — y ninguna submission
+deconvoluciona; seed1 bajo la banda del twin 0.903) + auto-recorte de profundidad
+(4-6 turnos, 13-26k tokens); |ΔP| de descarte casi limpio (mean 0.015, max 0.073 —
+las dos monedas divergen otra vez). **Veredicto: el presupuesto ES eje de dificultad**;
+#6 entra validado a la cartera. Traces en `cases/selection_bias_scarce_v0/traces/`.
+
+**PRÓXIMO PASO**: dossier consolidado ENTREGADO (v2 + #6). Sigue: **#11** (1er mundo
+ODE, logistic growth, suite Horizon — valida el segundo formalismo) → resto de la
+matriz por pares suite/formalismo. Deudas registradas sin gatillar: barrido c_F suite
+sampling; κ en espera; re-elicitación rival (c); derivación automática para mundos-
+ventana (case_schema con var de contexto).
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
