@@ -1,6 +1,11 @@
 # CLAUDE.md — WAGER
 
-Operativa del repo para Claude Code. Mapa de docs (abrí el que la tarea pida, no todos):
+Operativa del repo para Claude Code.
+
+**▶ Al arrancar una sesión**: leé **`docs/roadmap.md`** (sección *Estado actual* + *Próximo*) para saber dónde
+estamos y qué sigue — es la única fuente de verdad del estado. Si no conocés el proyecto, leé **`WIKI.md`** primero.
+
+Mapa de docs (abrí el que la tarea pida, no todos):
 
 - **`WIKI.md`** — entender de cero, sin jerga: qué es, cómo funciona, dónde estamos.
 - **`ARCHITECTURE.md`** — referencia técnica: contratos, operadores, rivales, batería, scoring, harness.
@@ -89,8 +94,6 @@ El repo SREG (proyecto anterior, mismo autor) es **referencia de SOLO LECTURA** 
 
 ## Estado actual
 
-El estado vivo está en **`docs/roadmap.md`** (sección *Estado actual* + cartera E1) — mantenerlo SIEMPRE al día al
-cerrar cada sesión. Resumen: reward path + harness + factory completos; 6 mundos hechos; **v2 (trofeo): tríptico
-confirmado con solver real** y **#6: el presupuesto discrimina estilos**; infra de mundos-trayectoria lista.
-**Próximo**: #11 (1er mundo ODE). Decisión pendiente de Lucas: re-orientar la cartera a failure modes; prioridad
-del proto-designer. κ en espera.
+El estado vivo, la cartera y el próximo paso viven en **`docs/roadmap.md`** (sección *Estado actual*) — **única
+fuente de verdad; mantenerla al día al cerrar cada sesión.** No se duplica acá (un resumen en CLAUDE se
+desactualiza — la lección de ADR 0072). Para el histórico de decisiones: `docs/adr/`.
