@@ -1,7 +1,68 @@
-# Programa experimental — la escalera E1→E4
+# Roadmap y estado — WAGER
 
-> El plan de validación del proyecto (ex NORTH_STAR §6). De barato a caro; cada
-> escalón con criterio de muerte explícito. `[ESTABLE]`
+> **Dónde estamos, la cartera de mundos, y el plan de validación E1→E4.** La sección
+> *Estado actual* se mantiene al día cada sesión; el resto es el plan estable. Los
+> resultados detallados de cada hito están en `docs/adr/`; lo sin decidir en
+> `docs/open-questions.md`.
+
+## Estado actual `[VOLÁTIL — mantener al día]`
+
+**Verde**: reward path (Slice 1) + harness (C1+C2+C3) + factory de derivación completos;
+`pytest` ~125 verdes. Infra de mundos-trayectoria lista (ADR 0068). Docs reestructurados
+(ADR 0070) + re-skin a "línea de proceso" (ADR 0071).
+
+**Hitos**: **v2 (trofeo)** — tríptico confirmado con solver real; en 10 episodios / 2
+familias nadie infiere composición por-lote, máx R=0.666 (falta juicio, no ejecución).
+**#6** — el presupuesto discrimina estilos. Detalle en ADRs 0064-0068.
+
+**Próximo**: **#11 — primer mundo ODE** (logístico saturante, Horizon): valida el 2º
+formalismo. Spec en `docs/archived/MUNDOS_DINAMICOS_CONTEXT.md`. Orden: contrato de fuentes
+→ world+meta → brief ciego → derivación → certificados → E0-probe. Vara: 1-2 sesiones.
+
+**Decisión pendiente de Lucas**: re-orientar los slots 7-20 de la cartera a cobertura de
+failure modes (`docs/open-questions.md` #16); prioridad del proto-designer (#14).
+
+## Cartera E1 (20 slots; 6 hechos)
+
+> El mundo = **composición de operadores** con dificultad declarada, no trampas sueltas.
+> Buckets: **[C]ontrol** (frontier debe aprobar) / **[T]rampa** (headroom buscado).
+> Presupuesto holgado en [C], ajustado en [T] (el dial central).
+
+| # | Slot | Suite | Formalismo | Bucket | Estado |
+|---|------|-------|-----------|--------|--------|
+| 1 | dummy_dose_v0 | causal-cliente | SCM | C | HECHO |
+| 2 | latent_mix_v0 | Latent | SCM | C | HECHO (control negativo) |
+| 3 | latent_mix_v1 | Latent | SCM | C | HECHO |
+| 4 | selection_bias_v0 | sampling | SCM | C | HECHO (saturado) |
+| 5 | latent_mix_v2 | Latent | SCM | T | HECHO (tríptico confirmado) |
+| 6 | selection_bias_scarce_v0 | sampling | SCM | T | HECHO (presupuesto discrimina) |
+| 7 | survivorship+censura | sampling | SCM | T | por autorar |
+| 8 | immortal-time | sampling | SCM longitudinal | T | por autorar |
+| 9 | batch-effect confundido | canal | SCM | T | por autorar |
+| 10 | missingness informativo | canal | SCM | T | por autorar |
+| 11 | **logístico saturante** | Horizon | **ODE** | C→T | **PRÓXIMO** (1er ODE) |
+| 12 | compartimental 2-tanques | Horizon | ODE | T | por autorar |
+| 13 | colas M/M/k | diagnóstico | eventos discretos | T | por autorar (3er formalismo) |
+| 14 | anomalía plantada | Anomaly | SCM | T | por autorar |
+| 15 | anomalía temporal | Anomaly | ODE | T | por autorar |
+| 16 | prior confiable | Prior | SCM | C | por autorar |
+| 17 | prior traicionero (move-37) | Prior | SCM | T | por autorar |
+| 18 | identificabilidad | identificabilidad | SCM | T | por autorar |
+| 19 | triangulación | Horizon | SCM/ODE | T | por autorar |
+| 20 | revelación secuencial | causal-cliente | SCM | T | por autorar |
+
+Reglas: ningún [T] se certifica sin visibilidad de TODOS sus operadores + E0-probe con
+headroom pre-registrado; cada [T] carga ≥2 coordenadas; los [C] son ~25% y ya están.
+
+**Deudas registradas sin gatillar**: barrido c_F suite sampling; κ (4 divergencias R vs
+|ΔP|); re-elicitación rival (c); derivación automática para mundos-ventana.
+
+---
+
+# Programa experimental — la escalera E1→E4 `[ESTABLE]`
+
+> El plan de validación del proyecto (ex NORTH_STAR §6). De barato a caro; cada escalón con
+> criterio de muerte explícito.
 
 Principio rector: **no se testea la droga sin validar el ensayo.** Orden de barato a caro; cada pelfalla con criterio de muerte explícito; cada pelfalla publicable por sí solo. E2 y E3 son, además, **el sensor del loop maestro**: sus firmas dicen dónde parchear el juego.
 
@@ -50,5 +111,3 @@ Entrenar reteniendo **familias enteras de operadores** y hasta **formalismos ent
 - Un nulo a escala chica (ej. 8B) es evidencia débil: el juicio podría "prender" a cierta escala. Mitigación: E1 ya da señal con frontiers sin entrenar; versión intermedia barata: experiencia in-context sobre mundos (sin tocar pesos) como sonda de transfer.
 - Un positivo a escala chica con los controles bien hechos ya es enorme.
 - Precedente a favor de E2: el RL de matemática con reward de outcome puro hizo emerger verificación y backtracking sin pedirlos; nuestro reward es más denso que un binario.
-
----

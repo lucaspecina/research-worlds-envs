@@ -79,3 +79,4 @@
 | 0069 | v0.69 | 2026-07-05 | [REESTRUCTURA DE DOCS (orden de Lucas: "los docs crecieron brutalmente"; opció...](0069-v0.69-reestructura-de-docs-orden-de-lucas-los-docs-cre.md) | Vigente |
 | 0070 | v0.70 | 2026-07-05 | [Reestructura de docs a estructura best-practice (WIKI + ADRs + NORTH_STAR disuelto)](0070-v0.70-reestructura-de-docs-a-best-practice.md) | Vigente |
 | 0071 | v0.71 | 2026-07-05 | [Re-skin de casos a "línea de proceso" (neutral, anti-flag)](0071-v0.71-re-skin-a-linea-de-proceso.md) | Vigente |
+| 0072 | v0.72 | 2026-07-05 | [Consolidaciones finales de docs (ARCHITECTURE→reference, CURRENT_STATE→roadmap, REDTEAM→test)](0072-v0.72-consolidaciones-finales-de-docs.md) | Vigente |

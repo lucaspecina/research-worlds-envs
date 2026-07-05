@@ -4,8 +4,8 @@ Operativa del repo para Claude Code. Mapa de docs (abrí el que la tarea pida, n
 
 - **`WIKI.md`** — entender de cero, sin jerga: qué es, cómo funciona, dónde estamos.
 - **`ARCHITECTURE.md`** — referencia técnica: contratos, operadores, rivales, batería, scoring, harness.
-- **`CURRENT_STATE.md`** — estado vivo + cartera E1 (qué corre, qué falta, próximo).
-- **`docs/adr/`** — decisiones (una por archivo, append-only) · **`docs/roadmap.md`** (programa E1→E4)
+- **`docs/roadmap.md`** — estado vivo + cartera E1 + programa E1→E4 (dónde estamos, qué falta, el plan).
+- **`docs/adr/`** — decisiones (una por archivo, append-only)
   · **`docs/open-questions.md`** (lo sin decidir) · **`docs/red-team.md`** (amenazas del proyecto)
   · **`docs/archived/`** (histórico; el `NORTH_STAR_full.md` original vive acá — citas "NORTH_STAR §N" resuelven ahí).
 
@@ -17,7 +17,7 @@ propone la edición del doc + un ADR nuevo en `docs/adr/`.
 
 - **JAMÁS un LLM en el cómputo del reward.** Si una solución lo requiere, frenar y discutir. Se protege con
   **test de CI que falla el build si hay llamadas a LLM en el reward path** (ARCHITECTURE §13-L0). Ídem sandbox:
-  tests que intentan escapar y deben fallar cerrado (`REDTEAM.md`).
+  tests que intentan escapar y deben fallar cerrado (`tests/test_sandbox_redteam.py` = el checklist).
 - **Integración LLM primero** (ADR 0014): todo subsistema con superficie hacia un LLM tiene como PRIMER milestone
   un smoke con LLM real del camino más fino — nunca como último. El reward path sigue cero-LLM (excepción que no
   se mueve con el apuro).
@@ -89,7 +89,8 @@ El repo SREG (proyecto anterior, mismo autor) es **referencia de SOLO LECTURA** 
 
 ## Estado actual
 
-El estado vivo está en **`CURRENT_STATE.md`** — mantenerlo SIEMPRE al día al cerrar cada sesión. Resumen: reward
-path + harness + factory completos; 6 mundos hechos; **v2 (trofeo): tríptico confirmado con solver real** y **#6:
-el presupuesto discrimina estilos**; infra de mundos-trayectoria lista. **Próximo**: #11 (1er mundo ODE). Decisión
-pendiente de Lucas: re-orientar la cartera a failure modes; prioridad del proto-designer. κ en espera.
+El estado vivo está en **`docs/roadmap.md`** (sección *Estado actual* + cartera E1) — mantenerlo SIEMPRE al día al
+cerrar cada sesión. Resumen: reward path + harness + factory completos; 6 mundos hechos; **v2 (trofeo): tríptico
+confirmado con solver real** y **#6: el presupuesto discrimina estilos**; infra de mundos-trayectoria lista.
+**Próximo**: #11 (1er mundo ODE). Decisión pendiente de Lucas: re-orientar la cartera a failure modes; prioridad
+del proto-designer. κ en espera.

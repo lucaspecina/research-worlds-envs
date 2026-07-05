@@ -36,9 +36,9 @@ Credenciales de LLM (lado solver/fábrica) en `.env` (nunca se commitea). Ver `p
 | [`WIKI.md`](WIKI.md) | Entender de cero, sin jerga, en profundidad |
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | Referencia técnica: contratos, scoring, rivales, batería, harness |
 | [`CLAUDE.md`](CLAUDE.md) | Operativa del repo (reglas duras, workflow, convenciones) |
-| [`CURRENT_STATE.md`](CURRENT_STATE.md) | Estado vivo + cartera E1 (qué corre, qué falta) |
+| [`docs/roadmap.md`](docs/roadmap.md) | Estado vivo + cartera E1 + programa E1→E4 |
 | [`docs/adr/`](docs/adr/) | Decisiones (una por archivo, append-only) |
-| [`docs/roadmap.md`](docs/roadmap.md) · [`docs/open-questions.md`](docs/open-questions.md) · [`docs/red-team.md`](docs/red-team.md) | Programa E1→E4 · lo sin decidir · amenazas |
+| [`docs/open-questions.md`](docs/open-questions.md) · [`docs/red-team.md`](docs/red-team.md) | Lo sin decidir · amenazas del proyecto |
 
 ## Estructura del código
 

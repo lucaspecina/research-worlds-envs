@@ -1,9 +1,12 @@
 """L0 - sandbox red-team (ARCHITECTURE 13-L0).
 
-THREAT MODEL (Slice 1, Decision Log v0.11): submissions are our own committed
-fixtures; this proves the sandbox stops the accidental and the obvious and that
-escapes degrade to D_MAX rather than leaking. Real hardening arrives with the
-interactive harness. Every new escape idea is appended here and to REDTEAM.md.
+THIS FILE IS THE CHECKLIST (ADR 0072): each test IS an escape attempt; a new
+escape idea means a new test here, not a separate list. The original
+threat-model notes are archived at docs/archived/REDTEAM_sandbox.md.
+
+THREAT MODEL (Slice 1): submissions are our own committed fixtures; this proves
+the sandbox stops the accidental and the obvious and that escapes degrade to
+D_MAX rather than leaking. Real hardening arrives with the interactive harness.
 
 Each escape must FAIL CLOSED: a SandboxError (capped at D_MAX by the scorer),
 never a value and never a leak.

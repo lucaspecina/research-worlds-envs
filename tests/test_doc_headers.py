@@ -60,10 +60,13 @@ def test_constitutional_docs_keep_their_key_sections():
     claude = (ROOT / "CLAUDE.md").read_text(encoding="utf-8")
     _assert_key_sections(claude, ["## Reglas duras", "## Workflow", "## Convenciones",
                                   "## Infraestructura", "## Estado actual"])
-    arch = (ROOT / "ARCHITECTURE.md").read_text(encoding="utf-8")
-    _assert_key_sections(arch, ["## 1. Anatomía de un caso", "## 5. Rivales",
-                                "## 7. Certificados", "## 9. Scoring",
-                                "### 10.1 Contrato de ventana", "## 13. Validación"])
+    # ARCHITECTURE was decomposed into docs/reference/ (ADR 0072): the reference
+    # files must all be present (a lost topic file fails before entering history).
+    ref = ROOT / "docs" / "reference"
+    expected = ["world-model.md", "operators.md", "rivals-battery.md",
+                "scoring.md", "certificates.md", "harness.md"]
+    missing = [f for f in expected if not (ref / f).exists()]
+    assert not missing, f"missing docs/reference files: {missing}"
     with pytest.raises(AssertionError):  # should-fail half of the pair
         _assert_key_sections("## solo esto", ["## Reglas duras"])
 
