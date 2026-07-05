@@ -129,3 +129,32 @@ def test_factory_pool_routes_through_source_view():
     assert pc(pool) < -0.15             # the pool carries the collider
     # and the channel: pool outcome variance exceeds the clean process variance
     assert pool["outcome"].var() > clean["outcome"].var() * 1.1
+
+
+def test_source_layer_twins_exist_and_believe_the_lie():
+    """Dummy-ism 7: predicted (v0.49), CONFIRMED (zero twins for sampling and
+    channel ops), FIXED (v0.59) -- layer-aware twins from declared pieces."""
+    from wager.factory.derive_rivals import observational_pool, source_layer_twins
+
+    case_dir = ROOT / "cases" / "selection_bias_v0"
+    meta = load_meta(case_dir)
+    schema = case_schema(meta)
+    ws = load_world_sample(case_dir)
+    source = list(meta.episode.observe_sources.values())[0]
+    pool = observational_pool(ws, source, 2000, 50001)
+    twins = dict(source_layer_twins(ws, meta, pool, schema))
+    assert set(twins) == {"twin_collider_seleccion", "twin_error_de_medicion"}
+    # collider twin: pattern-suggested edge, negative like the pool's collider
+    a, b, beta = twins["twin_collider_seleccion"].edge
+    assert (a, b) == ("signal", "outcome") and beta < -0.1
+    # its samples CARRY the believed edge in the clean population
+    df = twins["twin_collider_seleccion"](
+        SimpleNamespace(config={}, context={"shift": 0.0}, horizon=None), 3000, 7)
+    rs = df["signal"] - np.polyval(np.polyfit(df["driver"], df["signal"], 1), df["driver"])
+    ro = df["outcome"] - np.polyval(np.polyfit(df["driver"], df["outcome"], 1), df["driver"])
+    assert float(np.corrcoef(rs, ro)[0, 1]) < -0.15
+    # channel twin: the observed dispersion believed as process
+    clean = ws(SimpleNamespace(config={"driver": 5.0}, context={"shift": 0.0}, horizon=None), 3000, 7)
+    noisy = twins["twin_error_de_medicion"](
+        SimpleNamespace(config={"driver": 5.0}, context={"shift": 0.0}, horizon=None), 3000, 7)
+    assert noisy["outcome"].var() > clean["outcome"].var() + 1.0

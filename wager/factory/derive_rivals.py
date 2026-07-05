@@ -429,6 +429,57 @@ def best_no_latent(train: pd.DataFrame, pool: pd.DataFrame, schema: CaseSchema) 
     return _fit_no_latent(train, pool, schema, "poly")
 
 
+def source_layer_twins(world_sample: Callable, meta, pool: pd.DataFrame,
+                       schema: CaseSchema) -> list[tuple[str, Callable]]:
+    """Layer-aware innocent twins for SOURCE-layer operators (dummy-ism #7,
+    predicted v0.49, CONFIRMED and fixed v0.59). Built from DECLARED pieces:
+
+    - sampling (collider, v0.50-2): 'the selected correlation is REAL' -- true
+      skeleton + the PATTERN-SUGGESTED edge between the filtered columns
+      (coefficient = the spurious partial regression in the corrupted pool);
+      the clean draw's target column is adjusted by that edge on residuals.
+    - channel (v0.52-2): 'the observed dispersion is REAL' -- the meter baked
+      into the mechanism (the agent's error of never buying replicates).
+    """
+    from wager.reward.seeds import derive_seed as _ds
+
+    twins: list[tuple[str, Callable]] = []
+    source = list(meta.episode.observe_sources.values())[0]
+    for op in meta.operators:
+        if op.layer == "sampling" and source.selection is not None:
+            sel_cols = [c for c in source.selection.weights if c != schema.decision]
+            if len(sel_cols) < 2:
+                continue
+            a, b = sel_cols[0], sel_cols[1]
+            d = pool[schema.decision].to_numpy()
+            fa = np.polyfit(d, pool[a].to_numpy(), 1)
+            fb = np.polyfit(d, pool[b].to_numpy(), 1)
+            ra = pool[a].to_numpy() - np.polyval(fa, d)
+            rb = pool[b].to_numpy() - np.polyval(fb, d)
+            beta = float(np.polyfit(ra, rb, 1)[0])
+
+            def sample_col(regime, n, seed, _fa=fa, _beta=beta, _a=a, _b=b):
+                df = world_sample(regime, n, seed).copy()
+                resid_a = df[_a].to_numpy() - np.polyval(_fa, df[schema.decision].to_numpy())
+                df[_b] = df[_b] + _beta * resid_a
+                return df
+
+            sample_col.edge = (a, b, beta)  # self-describing (audit surface)
+            twins.append((f"twin_{op.name}", sample_col))
+        elif op.layer == "channel" and source.channel is not None:
+            ch = source.channel
+
+            def sample_ch(regime, n, seed, _ch=ch):
+                rng = np.random.default_rng(_ds(seed, 977))
+                df = world_sample(regime, n, seed).copy()
+                df[_ch.column] = df[_ch.column] + rng.normal(0.0, _ch.noise_sd, len(df))
+                return df
+
+            sample_ch.absorbed_sd = ch.noise_sd
+            twins.append((f"twin_{op.name}", sample_ch))
+    return twins
+
+
 def build_standard_rivals(case_dir, world_sample: Callable, meta, n_pool=4000, n_train=300):
     """The disagreement rival set the battery_builder weighs (Decision Log v0.24):
     naive (a) + the FULL capacity ladder (d: linear + poly + logistic-ctx) + an
@@ -448,4 +499,5 @@ def build_standard_rivals(case_dir, world_sample: Callable, meta, n_pool=4000, n
     for op in meta.operators:
         if op.layer == "mechanism" and op.ablation:
             rivals.append(rival_twin(wmod.mechanism, wmod.PARAMS, meta, op, pool, schema))
+    rivals += [fn for _, fn in source_layer_twins(world_sample, meta, pool, schema)]
     return rivals, pool, train

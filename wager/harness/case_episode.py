@@ -22,12 +22,15 @@ def build_world_server(case_dir: str | Path, seed_offset: int = 0) -> WorldServe
     meta = load_meta(case_dir)
     if meta.episode is None:
         raise ValueError(f"{meta.case_id} has no episode config (meta.episode)")
-    ladder = dict(load_ladder(case_dir))
+    ladder = load_ladder(case_dir)
     brief = (case_dir / "brief.md").read_text(encoding="utf-8")
+    # anchors by the run_ladder CONVENTION (second-to-last = naive, last = null;
+    # v0.59: dummy-ism-family fix -- the dummy's rung NAMES were hardcoded here,
+    # which would have KeyError'd on any case with a different ladder length)
     scoring = ScoringArtifacts(
         world_source=load_world_source(case_dir),
-        naive_code=ladder["rung_5_naive_fit"],  # the S_naive anchor (rival a)
-        null_code=ladder["rung_6_null"],  # the S_null / D_MAX reference
+        naive_code=ladder[-2][1],  # the S_naive anchor (rival a)
+        null_code=ladder[-1][1],  # the S_null / D_MAX reference
         battery=load_battery(case_dir),
         params=meta.scoring,
     )
