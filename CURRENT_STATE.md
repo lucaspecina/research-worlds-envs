@@ -318,14 +318,20 @@ experiment→medidor del caso, describe con schema-entregable vs schemas-por-fue
 tasa de aceptación en ningún lado — verificado por test); **plantilla de headroom
 registrada** (predicción de Lucas: "collider atrapado, deconvolución omitida"; ramas
 firmadas; QA 1–2 episodios con trace completo). Suite 110 verdes.
-**v0.58 (HECHO)**: regla registrado≠implementado (test-en-commit o PENDING-IMPL rastreado
-acá; el catch del observe como ejemplar); `experiment_meter` DECLARADO en contrato + meta
-(posicional prohibido, error si falta; autotest par ✓); lint de secciones clave
-CLAUDE/ARCHITECTURE (should-fail embebido). Suite 112 verdes. **PENDING-IMPL: (ninguno).**
-**FALTA (tramo final sesión 2): derivación (#7 con predicción firmada — ablación por
-capa = vista con operador off + refit) → los dos gemelos v0.52-2 → L1 derivado (firma:
-ingenuo ancla lejos) → llenar (a) de la plantilla de headroom ANTES de mirar →
-E0-probe, ambas monedas, trace completo. Desborde a sesión 3 = dato contra la vara.**
+**MUNDO 3 CERRADO (v0.59–v0.60, modo autonomía, vara de 2 sesiones CUMPLIDA)**:
+#7 confirmado→fix por capa (`source_layer_twins` que creen la mentira) + #7-familia en
+anchors de episodio (convención posicional); batería derivada K=16, **denom 0.583**
+(ingenuo LEJOS ✓); visibilidad AMBOS operadores bajo c_f=0.25 (0.180/0.097 ≥ piso —
+condición v0.55-2 sostenida, barrido de suite = deuda no gatillada); **headroom (a):
+R_canonical=0.9991, σ̂=1.4996** (prima de deconvolución ≈0.09 R). **E0 2+2**: corrida 1
+R=0 por **#19 puro** (regime-como-dict; la ciencia fue nivel-techo: do-grid + réplicas +
+deconvolución 0.909) → fixes: prompt documenta regime.config/context + **episode path
+ahora scorea COMBINADO** (+1 registrado≠implementado) → corrida 2: **R=0.974/0.993,
+|ΔP|≈0.01, cero crashes, firmas plenas** → **RAMA: MUNDO SATURADO → bucket de control;
+hito de headroom VACANTE → presión honesta sobre v2**. Traces en `cases/selection_bias_v0/
+traces/` (gitignored; archivar con los demás). **PENDING-IMPL: (ninguno).**
+**PRÓXIMO (orden de Lucas, sin esperar): v2 hasta el GATE DEL ANCLA Bayes-adaptiva
+(ahí frenar, tripwire-1) + borrador de matriz de celdas E1 en paralelo.**
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,
