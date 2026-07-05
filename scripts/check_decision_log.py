@@ -1,9 +1,11 @@
-"""Decision Log integrity lint (pre-commit; Decision Log v0.56-4).
+"""Decision Log integrity lint (pre-commit; Decision Log v0.56-4, repointed v0.69).
 
 Born from a near-miss: a bulk regex script transiently corrupted NORTH_STAR
 (recovered via git checkout). The scare becomes a guard: existing version
 blocks are IMMUTABLE (append-only -- amendments are new entries) and the
-version sequence is monotone. Compares the staged NORTH_STAR against HEAD.
+version sequence is monotone. The Decision Log moved out of NORTH_STAR into
+DECISION_LOG.md in the v0.69 doc restructure; this compares the staged
+DECISION_LOG.md against HEAD.
 """
 
 import re
@@ -27,10 +29,10 @@ def show(ref):
 
 
 def main():
-    staged = show(":NORTH_STAR.md")
-    head = show("HEAD:NORTH_STAR.md")
+    staged = show(":DECISION_LOG.md")
+    head = show("HEAD:DECISION_LOG.md")
     if not staged or not head:
-        return 0  # file not staged / first commit: nothing to compare
+        return 0  # file not staged / first commit (incl. the v0.69 move): nothing to compare
     hb, sb = dict(blocks(head)), dict(blocks(staged))
     errs = []
     for v, b in hb.items():

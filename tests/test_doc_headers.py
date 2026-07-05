@@ -24,10 +24,11 @@ def _vt(s: str) -> tuple[int, ...]:
     return tuple(int(x) for x in s.split("."))
 
 
-def _north_star_last_entry() -> str:
-    text = (ROOT / "NORTH_STAR.md").read_text(encoding="utf-8")
+def _decision_log_last_entry() -> str:
+    # The Decision Log moved to DECISION_LOG.md in the v0.69 restructure.
+    text = (ROOT / "DECISION_LOG.md").read_text(encoding="utf-8")
     entries = re.findall(r"^\*\*v(\d+\.\d+) \(", text, flags=re.M)
-    assert entries, "NORTH_STAR must have Decision Log entries (**vX.Y (date)**)"
+    assert entries, "DECISION_LOG.md must have entries (**vX.Y (date)**)"
     return max(entries, key=_vt)
 
 
@@ -35,10 +36,10 @@ def test_north_star_header_matches_last_decision_log_entry():
     text = (ROOT / "NORTH_STAR.md").read_text(encoding="utf-8")
     header = re.search(r"\*\*Estado\*\*: v(\d+\.\d+)", text)
     assert header, "NORTH_STAR header must declare **Estado**: vX.Y"
-    last = _north_star_last_entry()
+    last = _decision_log_last_entry()
     assert header.group(1) == last, (
         f"NORTH_STAR header declares v{header.group(1)} but the last Decision Log "
-        f"entry is v{last}: a new entry requires bumping the header (and vice versa)"
+        f"entry (DECISION_LOG.md) is v{last}: a new entry requires bumping the header"
     )
 
 
@@ -70,9 +71,9 @@ def test_claude_md_cites_current_decision_log_version():
     text = (ROOT / "CLAUDE.md").read_text(encoding="utf-8")
     m = re.search(r"Decision Log en v(\d+\.\d+)", text)
     assert m, "CLAUDE.md must cite 'Decision Log en vX.Y' in Estado actual"
-    last = _north_star_last_entry()
+    last = _decision_log_last_entry()
     assert m.group(1) == last, (
-        f"CLAUDE.md cites Decision Log v{m.group(1)} but NORTH_STAR's last entry "
+        f"CLAUDE.md cites Decision Log v{m.group(1)} but DECISION_LOG.md's last entry "
         f"is v{last}"
     )
 

@@ -9,7 +9,7 @@ Operativa del repo para Claude Code. Leer en este orden la primera vez:
 ## Jerarquía de autoridad
 
 `NORTH_STAR §2 (Ethos)` > `NORTH_STAR (diseño)` > `ARCHITECTURE` > issues > código.
-El código nunca contradice los docs en silencio: si la implementación revela un error de diseño, se propone la edición del doc + entrada en el Decision Log de NORTH_STAR.
+El código nunca contradice los docs en silencio: si la implementación revela un error de diseño, se propone la edición del doc + entrada en el Decision Log (`DECISION_LOG.md`).
 
 ## Reglas duras (resumen de bolsillo — el detalle está en NORTH_STAR)
 
@@ -32,7 +32,7 @@ El código nunca contradice los docs en silencio: si la implementación revela u
 - El orden de trabajo lo define la escalera experimental (NORTH_STAR §6). **E1 primero**: no requiere RL ni designer automático. Lo mínimo para E1 está en ARCHITECTURE §12.
 - Primer slice sugerido: contenedor de caso + scorer con UN mundo dummy hardcodeado y una batería escrita a mano — smoke test end-to-end del reward path. Recién después, harness interactivo. (Batería y pelfallas L1 a mano = **excepción de bootstrap, SOLO Slice 1**; expira cuando exista la derivación automática de rivales §5 + batería §6 — Decision Log v0.10.)
 - Tests de wiring por componente; tests E2E con LLM real solo cuando el wiring está verde.
-- Toda decisión de diseño no trivial → Decision Log de NORTH_STAR (fecha — decisión — razón en una línea).
+- Toda decisión de diseño no trivial → Decision Log (`DECISION_LOG.md`) (fecha — decisión — razón en una línea).
 - Open questions nuevas → NORTH_STAR §10 (inbox); al resolverse, migran al Decision Log.
 - **Checklist de supersesión (regla dura, Decision Log v0.30)**: toda entrada del Decision Log que **supersede** una decisión previa DEBE hacer **grep de la regla vieja en TODOS los docs** y enumerar + tildar cada ubicación que la edita. Principio **"una regla, una casa"**: la regla vive en UNA sección; el resto referencia. (Origen: la v0.29 editó ARCHITECTURE §7 pero olvidó §5, que quedó contradiciendo en silencio — lo destapó una auditoría código-vs-docs.)
 - **Auditoría código-vs-docs por iniciativa propia**: ante una inconsistencia doc-doc o doc-código, **reportar con ubicación exacta + fix propuesto, nunca arreglar en silencio**; aplicar recién con aprobación (NORTH_STAR §0.1: el código nunca contradice los docs en silencio).
@@ -69,5 +69,5 @@ El repo SREG (proyecto anterior, mismo autor) es **referencia de SOLO LECTURA** 
 
 ## Estado actual
 
-El estado vivo (qué corre hoy, qué falta, próximo paso) está en `CURRENT_STATE.md` — mantenerlo SIEMPRE actualizado al cerrar cada sesión de trabajo. Decision Log en v0.68 (NORTH_STAR); ARCHITECTURE con §10.1 (ventana de calibración v2) + §7 (visibilidad sub-batería + piso 5%; línea sin-latente afilada). Último: **ambas consolidaciones CERRADAS** — v2 (v0.66): techo intocado en 10 episodios/2 familias (máx 0.666, "mixture" en cero submissions), muro ≈0.67; #6 (v0.67): escasez replicada y AFINADA — separa estilos (gpt compró réplicas 4/4 sin usarlas; DS-seed2 cobró el premio con 1635/5000 y 17 turnos — 4ª aparición profundidad↔resultado; DS-seed3 inventó sigma sin comprar réplicas). E0_LEDGER.md + 4 traces ejemplares EN el repo (v2). `MUNDOS_DINAMICOS_CONTEXT.md` = contexto de diseño de #11 (evaluado, 3 reconciliaciones señaladas). **Próximo (esperando OK de Lucas): #11 ODE → spec eventos mid-trayectoria → 1er mundo anti-vicio → proto-designer con yield → E1.** Decisiones pendientes: GO matriz→failure-modes; prioridad designer. κ en espera (4 divergencias/datos acumulados).
+El estado vivo (qué corre hoy, qué falta, próximo paso) está en `CURRENT_STATE.md` — mantenerlo SIEMPRE actualizado al cerrar cada sesión. **Decision Log en v0.69** (`DECISION_LOG.md`, movido fuera de NORTH_STAR en la reestructura v0.69); ARCHITECTURE con §9 (mundos-trayectoria) + §10.1 (ventana de calibración v2). Resumen: reward path + harness + factory completos; 6 mundos hechos; **v2 (trofeo): tríptico confirmado con solver real** (techo intocado en 10 episodios/2 familias) y **#6: el presupuesto discrimina estilos**; infra de mundos-trayectoria (v0.68) lista. **En curso**: reestructura de docs (v0.69) + re-skin a "línea de proceso" (anti-flag). **Próximo**: #11 ODE. Decisiones pendientes de Lucas: GO matriz→failure-modes; prioridad del proto-designer. κ en espera (4 divergencias).
 
