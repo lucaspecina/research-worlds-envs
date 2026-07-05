@@ -83,3 +83,52 @@ def test_submit_with_hasattr_is_accepted(server):
     )
     res = server.submit(code)
     assert res.accepted is True
+
+
+def test_server_serves_views_and_split_schemas_on_source_trap_worlds():
+    """v0.54-2/v0.56 wiring, verified pre-E0 (family #19): describe() separates
+    the DELIVERABLE schema from per-source VIEW schemas (__rep1/__rep2, costs);
+    observe() returns the corrupted view, never the clean mechanism; the
+    acceptance rate appears nowhere."""
+    import json
+    from pathlib import Path
+
+    from wager.factory.case_loader import load_meta, load_world_sample
+
+    case_dir = Path(__file__).resolve().parents[1] / "cases" / "selection_bias_v0"
+    meta = load_meta(case_dir)
+    from wager.harness.world_server import WorldServer
+
+    server = WorldServer(
+        world_sample=load_world_sample(case_dir),
+        columns=meta.column_names,
+        brief="(test)",
+        config=meta.episode,
+        scoring=None,
+        control_surface=meta.episode.control_surface,
+    )
+    d = server.describe()
+    assert d["schema"] == ["driver", "signal", "outcome", "ambient"]  # deliverable
+    assert d["sources"]["registros_linea"]["columns"] == d["schema"]  # measured in place
+    assert d["sources"]["replicas_calibracion"]["columns"] == [
+        "driver", "signal", "outcome__rep1", "outcome__rep2", "ambient",
+    ]
+    assert "threshold" not in json.dumps(d) and "selection" not in json.dumps(d)
+
+    reps = server.observe("replicas_calibracion", 300)
+    assert "outcome" not in reps.columns and "outcome__rep1" in reps.columns
+    rec = server.observe("registros_linea", 1500)
+    # the view carries the collider: kept rows beat the intensity-adjusted bar
+    # on TRUE values; the MEASURED outcome dips below via channel noise
+    # (survivorship ordering, v0.53-1) -- fraction far above the population
+    # base rate (~0.24) without being 1.0
+    assert (rec["signal"] + rec["outcome"] - 2 * rec["driver"] > 1.0).mean() > 0.6
+
+    from wager.contracts import ExperimentDesign
+
+    exp = server.experiment(ExperimentDesign(config={"driver": 5.0}, context={"shift": 0.0}, n=2000))
+    clean_var = load_world_sample(case_dir)(
+        __import__("types").SimpleNamespace(config={"driver": 5.0}, context={"shift": 0.0}, horizon=None),
+        2000, 999,
+    )["outcome"].var()
+    assert exp["outcome"].var() > clean_var + 1.0  # the meter never sleeps (v0.9)

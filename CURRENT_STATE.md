@@ -309,11 +309,19 @@ meta.json (collider sampling thr=14 + canal σ_med=1.5 con ablaciones; fuentes:
 `registros_linea` [selección+canal, tasa de aceptación NO expuesta] y
 `replicas_calibracion` [cara, réplicas=2]; funcional `P(outcome<2)` con cláusula
 verbatim; `c_f=0.25` PROVISIONAL suite `sampling`), brief.md (línea proceso-no-medidor
-verbatim v0.52-1). Suite 108 verdes. **Falta de sesión 2: derivación sobre el caso
-(el test del gemelo — #7 espera con predicción firmada; nota: `observational_pool` de
-la factory aún llama a `world_sample` directo, NO a `source_view` — el wiring
-factory→vistas es parte de la derivación) → L1 derivado → headroom pre-registrado →
-E0-probe. Ambas monedas.**
+verbatim v0.52-1). Suite 108 verdes. **v0.55–v0.57 (HECHOS)**: pool factory ruteado por `source_view` (la clase predicha;
+semántica del ancla restaurada; pin byte-idéntico = validación del no-op); collider
+re-parametrizado a survivorship residual (pc −0.29; línea brillante del tuning + lección
+a la librería §3); Decision Log **append-only** en pre-commit + regla quirúrgica + regla
+guardias-con-autotest; **wiring #19 del harness IMPLEMENTADO** (observe→source_view,
+experiment→medidor del caso, describe con schema-entregable vs schemas-por-fuente,
+tasa de aceptación en ningún lado — verificado por test); **plantilla de headroom
+registrada** (predicción de Lucas: "collider atrapado, deconvolución omitida"; ramas
+firmadas; QA 1–2 episodios con trace completo). Suite 110 verdes.
+**FALTA (tramo final sesión 2): derivación (#7 con predicción firmada — ablación por
+capa = vista con operador off + refit) → los dos gemelos v0.52-2 → L1 derivado (firma:
+ingenuo ancla lejos) → llenar (a) de la plantilla de headroom ANTES de mirar →
+E0-probe, ambas monedas. Desborde a sesión 3 = dato contra la vara.**
 
 **v0.29 (acceso de rivales, β)**: la variación de mix entra por EXPERIMENTOS (fuente barata
 sigue single-mix); escalera (d) en dos modos — **(d-obs)** ancla la brecha mecanística,

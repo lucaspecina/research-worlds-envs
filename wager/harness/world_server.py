@@ -23,6 +23,7 @@ from wager.contracts import (
     SubmitResult,
 )
 from wager.contracts.world import Regime
+from wager.harness.source_view import experiment_view, source_view
 from wager.reward.episode_score import score_episode_submission
 from wager.reward.sandbox import SandboxedSubmission, SandboxError, lint_submission
 from wager.reward.seeds import derive_seed
@@ -88,13 +89,41 @@ class WorldServer:
         self._seq += 1
         return base + self.seed_offset * 100_000 + self._seq
 
+    # --- source views (v0.54-2/v0.56: the agent sees VIEWS, the exam grades
+    # the PROCESS; first implemented for source-trap worlds) ----------------
+    def _source_view_columns(self, spec) -> list[str]:
+        cols = list(self.columns)
+        ch = spec.channel
+        if ch is not None and ch.replicates > 1:
+            i = cols.index(ch.column)
+            cols[i : i + 1] = [f"{ch.column}__rep{r + 1}" for r in range(ch.replicates)]
+        return cols
+
+    @property
+    def _meter(self):
+        """The case's declared measurement channel (the first source's, by
+        convention): experiments bypass historical SELECTION, never the meter
+        (v0.9). Anti-leak: selection itself is never described."""
+        for s in self.config.observe_sources.values():
+            if s.channel is not None:
+                return s.channel
+        return None
+
     # --- verbs ---------------------------------------------------------
     def describe(self) -> dict:
         return {
             "brief": self.brief,
+            # the DELIVERABLE schema: what model(regime, n, seed) must return
+            # (the system's true behavior -- family #19, v0.54-2)
             "schema": list(self.columns),
+            # per-source VIEW schemas: what observe(source) actually returns
+            # (measured columns, incl. __rep1/__rep2). Costs yes; the filter's
+            # acceptance rate NEVER (discovering selection IS the investigation).
             "sources": {
-                name: {"cost_per_row": s.cost_per_row}
+                name: {
+                    "cost_per_row": s.cost_per_row,
+                    "columns": self._source_view_columns(s),
+                }
                 for name, s in self.config.observe_sources.items()
             },
             "experiment_cost": {
@@ -115,8 +144,9 @@ class WorldServer:
         spec = self.config.observe_sources[source]
         cost = spec.cost_per_row * n
         self._charge(cost, f"observe({source!r}, {n})")
-        regime = Regime(config=dict(spec.config), context=dict(spec.context))
-        df = self.world_sample(_ns(regime), n, self._next_seed(700_000))
+        # the agent receives the SOURCE VIEW (selection + channel per the
+        # declared pipeline), never the clean mechanism (v0.55/v0.56)
+        df = source_view(self.world_sample, spec, n, self._next_seed(700_000))
         self._log("observe", {"source": source, "n": n}, cost)
         return df
 
@@ -124,10 +154,13 @@ class WorldServer:
         self._guard_open()
         cost = self.config.experiment.cost_fixed + self.config.experiment.cost_per_row * design.n
         self._charge(cost, f"experiment(n={design.n})")
-        # The experiment runs the MECHANISM fresh under the chosen assignment, but
-        # NEVER bypasses the measurement channel (Decision Log v0.14): world.sample
-        # always builds `marker` the same noisy way, whatever the regime.
-        df = self.world_sample(_ns(design.to_regime()), design.n, self._next_seed(800_000))
+        # The experiment runs the MECHANISM fresh under the chosen assignment --
+        # randomization bypasses the historical SELECTION, but NEVER the
+        # measurement channel (v0.9): the same imperfect meter reads the result.
+        df = experiment_view(
+            self.world_sample, _ns(design.to_regime()), self._meter,
+            design.n, self._next_seed(800_000),
+        )
         self._log("experiment", {"config": dict(design.config), "context": dict(design.context), "n": design.n}, cost)
         return df
 
