@@ -101,3 +101,31 @@ def test_no_dummy_schema_names_hardcoded_in_factory():
         for i, line in enumerate(text.splitlines(), 1):
             code = line.split("#", 1)[0]
             assert not banned.search(code), f"{mod}:{i} hardcodes a dummy schema name: {line.strip()}"
+
+
+def test_factory_pool_routes_through_source_view():
+    """The predicted class (Decision Log v0.55-1): with source-layer traps, the
+    fitting pool must match SOURCE_VIEW statistics, not world_sample -- an
+    anchor fit on clean data is the truth in disguise (collapsed denominator)."""
+    import numpy as np
+
+    from wager.factory.derive_rivals import observational_pool
+
+    case_dir = ROOT / "cases" / "selection_bias_v0"
+    meta = load_meta(case_dir)
+    world_sample = load_world_sample(case_dir)
+    source = list(meta.episode.observe_sources.values())[0]
+    pool = observational_pool(world_sample, source, 3000, 50001)
+    clean = world_sample(
+        SimpleNamespace(config={}, context={"shift": 0.0}, horizon=None), 3000, 50001
+    )
+
+    def pc(df):  # spurious partial corr signal<->outcome given driver
+        rs = df["signal"] - np.polyval(np.polyfit(df["driver"], df["signal"], 1), df["driver"])
+        ro = df["outcome"] - np.polyval(np.polyfit(df["driver"], df["outcome"], 1), df["driver"])
+        return float(np.corrcoef(rs, ro)[0, 1])
+
+    assert abs(pc(clean)) < 0.08        # the mechanism installs nothing
+    assert pc(pool) < -0.15             # the pool carries the collider
+    # and the channel: pool outcome variance exceeds the clean process variance
+    assert pool["outcome"].var() > clean["outcome"].var() * 1.1

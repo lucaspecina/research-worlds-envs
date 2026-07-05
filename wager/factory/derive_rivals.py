@@ -77,18 +77,34 @@ def _ns(config=None, context=None):
 
 
 def observational_pool(world_sample: Callable, source, n: int, seed: int) -> pd.DataFrame:
-    return world_sample(_ns(dict(source.config), dict(source.context)), n, seed)
+    """The pool every factory-side fit consumes -- routed through the SOURCE
+    VIEW (Decision Log v0.55-1, the predicted class): until world 3, traps
+    lived in the mechanism so world_sample WAS the observational view; with
+    source-layer traps the rival (a), the (d-obs) ladder and the twin refits
+    must fit the FILTERED+NOISY view or the naive anchor becomes the truth in
+    disguise (collapsed L1 denominator). This is not weakening the rival to
+    inflate gaps -- it RESTORES its defined semantics (anchor = believe the
+    data at face value). The battery stays on world.sample (full population,
+    contract v0.50-3)."""
+    from wager.harness.source_view import source_view
+
+    return source_view(world_sample, source, n, seed)
 
 
-def experimental_grid(world_sample: Callable, schema: CaseSchema, levels, n: int, seed0: int) -> pd.DataFrame:
-    """Clean interventional data do(decision=level) across declared context
-    levels -- the access a capable rival would buy. Context column named by the
-    schema (v0.39: no hardcoded key)."""
+def experimental_grid(world_sample: Callable, schema: CaseSchema, levels, n: int, seed0: int,
+                      channel=None) -> pd.DataFrame:
+    """Interventional data do(decision=level) across declared context levels --
+    the access a capable rival would buy. Randomization bypasses the source's
+    SELECTION, never its measurement channel (v0.9): pass the source's declared
+    channel so the rival's experiments read the same imperfect meter."""
+    from wager.harness.source_view import experiment_view
+
     frames = []
     s = seed0
     for lv in levels:
         for c in schema.ctx_levels:
-            df = world_sample(_ns({schema.decision: float(lv)}, {schema.context: float(c)}), n, s).copy()
+            ns = _ns({schema.decision: float(lv)}, {schema.context: float(c)})
+            df = experiment_view(world_sample, ns, channel, n, s).copy()
             df[schema.context] = c
             frames.append(df)
             s += 1
@@ -424,7 +440,8 @@ def build_standard_rivals(case_dir, world_sample: Callable, meta, n_pool=4000, n
     source = list(meta.episode.observe_sources.values())[0]
     pool = observational_pool(world_sample, source, n_pool, 50001)
     levels = list(range(int(schema.lo), int(schema.hi) + 1))
-    train = experimental_grid(world_sample, schema, levels, n_train, 60001)
+    train = experimental_grid(world_sample, schema, levels, n_train, 60001,
+                              channel=source.channel)
     wmod = load_world_module(case_dir)
     rivals = [rival_naive(pool, schema)]
     rivals += [fn for _, fn in capacity_ladder(train, pool, schema)]
