@@ -487,6 +487,44 @@ def source_layer_twins(world_sample: Callable, meta, pool: pd.DataFrame,
 
             sample_col.edge = (a, b, beta)  # self-describing (audit surface)
             twins.append((f"twin_{op.name}", sample_col))
+        elif (op.layer == "channel" and source.batch is not None
+              and "drift_per_batch" in op.knobs):
+            # slope-believer (#9, ADR 0078): 'the record's driver response is
+            # REAL' -- the spurious component is ESTIMABLE from the pool alone
+            # as pooled slope minus median within-batch slope (offsets are
+            # constant inside a batch), and the twin adds exactly that edge.
+            be = source.batch
+            d = pool[schema.decision].to_numpy()
+            y = pool[be.column].to_numpy()
+            pooled_slope = float(np.polyfit(d, y, 1)[0])
+            within = [float(np.polyfit(g[schema.decision], g[be.column], 1)[0])
+                      for _, g in pool.groupby(be.id_column) if len(g) >= 10]
+            beta_spur = pooled_slope - float(np.median(within))
+            d_mean = float(d.mean())
+
+            def sample_drift(regime, n, seed, _b=beta_spur, _c=be.column, _m=d_mean):
+                df = world_sample(regime, n, seed).copy()
+                df[_c] = df[_c] + _b * (df[schema.decision].to_numpy() - _m)
+                return df
+
+            sample_drift.edge = (schema.decision, be.column, beta_spur)
+            twins.append((f"twin_{op.name}", sample_drift))
+        elif (op.layer == "channel" and source.batch is not None
+              and "offset_sd" in op.knobs):
+            # scatter-believer (#9): 'the between-batch scatter is real process
+            # variability' -- per-batch offsets baked into its clean draws.
+            be = source.batch
+
+            def sample_off(regime, n, seed, _be=be):
+                rng = np.random.default_rng(_ds(seed, 983))
+                df = world_sample(regime, n, seed).copy()
+                batch_of = np.arange(len(df)) // _be.batch_size
+                offs = rng.normal(0.0, _be.offset_sd, int(batch_of.max()) + 1)
+                df[_be.column] = df[_be.column] + offs[batch_of]
+                return df
+
+            sample_off.absorbed_sd = be.offset_sd
+            twins.append((f"twin_{op.name}", sample_off))
         elif op.layer == "channel" and source.channel is not None:
             ch = source.channel
 

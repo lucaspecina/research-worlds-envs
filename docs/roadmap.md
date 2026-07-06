@@ -19,15 +19,16 @@ gates all-PASS a la primera, K̂=2000 certificado (la invisibilidad de K medida)
 régimen histórico. Dos deudas de factory registradas (ladder/battery foto-only).
 
 **Próximo (orden de trabajo ADR 0075: lo conocido primero, el diseño juntos después)**:
-cola ejecutable **#9 (batch-effect) → #16 (prior confiable) → #8/#10**, cada uno con el
-molde probado (~1 sesión). #7 HECHO (ADR 0077: capa archival + twins nuevos schema-driven;
-el frontier lo resuelve a presupuesto pleno — dial #6 disponible para endurecerlo). #12
-salió de la cola por hallazgo (ADR 0076: la trampa de truncación requiere DEGENERACIÓN
-temprana — regla de diseño nueva + test de viabilidad barato). La **pila de diseño**
-queda para sesión de dirección conjunta: eventos mid-trayectoria (#15) + slot 20,
-re-orientación failure-mode + primer mundo anti-vicio (jugadores-robot del certificado
-de trampa necesaria), proto-designer (#14), colas (#13, 3er formalismo), **#12
-rediseñado con drenaje no-lineal (integrador)**, suite Anomaly, κ.
+cola ejecutable **#16 (prior confiable) → #8/#10**, con el molde probado (~1 sesión).
+#7 y #9 HECHOS (ADRs 0077/0078: capas archival y batch nuevas, 4 twins schema-driven
+nuevos; en ambos el frontier resuelve a presupuesto pleno — dial #6 disponible). Lección
+que se repite (2×): la visibilidad económica de un operador de canal exige magnitud
+comparable a la heterogeneidad intrínseca del mundo. #12 fuera de cola por hallazgo
+(ADR 0076: degeneración temprana). La **pila de diseño** para sesión conjunta: eventos
+mid-trayectoria (#15) + slot 20, re-orientación failure-mode + primer mundo anti-vicio
+(jugadores-robot del certificado de trampa necesaria), proto-designer (#14), colas
+(#13, 3er formalismo), **#12 rediseñado con drenaje no-lineal (integrador)**, suite
+Anomaly, κ.
 
 ## Cartera E1 (20 slots; 6 hechos)
 
@@ -45,7 +46,7 @@ rediseñado con drenaje no-lineal (integrador)**, suite Anomaly, κ.
 | 6 | selection_bias_scarce_v0 | sampling | SCM | T | HECHO (presupuesto discrimina) |
 | 7 | survivorship_censor_v0 | sampling | SCM | T | **HECHO** (ADR 0077: capa archival nueva; naive malaprecia reclamos 5×; E0 0.975/0.818) |
 | 8 | immortal-time | sampling | SCM longitudinal | T | por autorar |
-| 9 | batch-effect confundido | canal | SCM | T | por autorar |
+| 9 | batch_confound_v0 | canal | SCM | T | **HECHO** (ADR 0078: pendiente espuria +87%; twin deriva −0.115; E0 0.890/0.933) |
 | 10 | missingness informativo | canal | SCM | T | por autorar |
 | 11 | logistic_yield_v0 | Horizon | **ODE** | C→T | **HECHO** (formalismo validado, ADR 0074) |
 | 12 | twotank_clearance_v0 | Horizon | ODE | T | **BLOQUEADO por hallazgo** (ADR 0076: cascada lineal sin degeneración temprana → sin trampa; rediseño no-lineal en pila de diseño) |

@@ -70,6 +70,34 @@ class CensoringRule(BaseModel):
     side: Literal["above", "below"] = "above"  # above: values > limit recorded AS limit
 
 
+class BatchEffect(BaseModel):
+    """Per-BATCH meter offsets on one measured column (channel layer, #9 --
+    ADR 0078): readings are taken in runs/batches sharing a calibration state.
+    The view exposes the batch id as an EXTRA column (id_column, like __rep
+    columns -- view schema != deliverable schema, v0.53). Two declared parts:
+
+    - offset_sd: idiosyncratic per-batch offset (property of the METER'S runs
+      -- applies to experiments too, v0.9: same instrument, fresh batches).
+    - drift_per_batch + assign="driver_ramp": the HISTORICAL confound -- the
+      record's batches follow the era's driver ramp (rows sorted by the
+      decision variable + sort_noise before chunking) while calibration
+      drifted -> the pooled slope absorbs the drift. History-only:
+      experiments chunk by arrival and carry no drift (bypassed like
+      selection; the offsets they keep are the meter's).
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    column: str
+    id_column: str = "batch_id"
+    batch_size: int = Field(default=25, ge=2)
+    offset_sd: float = Field(ge=0)
+    drift_per_batch: float = 0.0
+    assign: Literal["arrival", "driver_ramp"] = "arrival"
+    sort_key: str | None = None      # decision column for driver_ramp
+    sort_noise: float = Field(default=0.0, ge=0)
+
+
 class SourceConfig(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
@@ -88,6 +116,9 @@ class SourceConfig(BaseModel):
     channel: MeasurementChannel | None = None
     # archival censoring (#7, ADR 0077): records-only, experiments bypass it
     censoring: CensoringRule | None = None
+    # per-batch meter offsets (#9, ADR 0078): offsets apply to experiments too
+    # (the meter's runs); the drift+ramp confound is history-only
+    batch: BatchEffect | None = None
     pipeline_order: Literal["select_then_measure", "measure_then_select"] = "select_then_measure"
 
 

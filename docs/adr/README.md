@@ -88,3 +88,4 @@
 | 0075 | v0.75 | 2026-07-05 | [Orden de trabajo (Lucas): ejecutar lo conocido primero; el diseño se piensa juntos, después](0075-v0.75-orden-de-trabajo-ejecutar-lo-conocido-primero.md) | Vigente |
 | 0076 | v0.76 | 2026-07-05 | [Hallazgo #12: la trampa de truncación requiere DEGENERACIÓN temprana — cascada lineal no certifica](0076-v0.76-hallazgo-12-la-trampa-de-truncacion-requiere-degeneracion.md) | Vigente |
 | 0077 | v0.77 | 2026-07-06 | [Mundo #7 (survivorship_censor_v0): capa ARCHIVAL nueva, certificado en dos coordenadas](0077-v0.77-mundo-7-survivorship-censor-v0-capa-archival-nueva.md) | Vigente |
+| 0078 | v0.78 | 2026-07-06 | [Mundo #9 (batch_confound_v0): deriva confundida con la rampa — maquinaria batch, dos coordenadas](0078-v0.78-mundo-9-batch-confound-v0-deriva-confundida-certificada.md) | Vigente |

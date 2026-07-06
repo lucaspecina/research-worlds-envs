@@ -107,6 +107,8 @@ class WorldServer:
         if ch is not None and ch.replicates > 1:
             i = cols.index(ch.column)
             cols[i : i + 1] = [f"{ch.column}__rep{r + 1}" for r in range(ch.replicates)]
+        if spec.batch is not None:  # the run id is part of the view (#9)
+            cols.append(spec.batch.id_column)
         return cols
 
     @property
@@ -122,6 +124,15 @@ class WorldServer:
                 "a source declares a measurement channel but meta.episode."
                 "experiment_meter is undeclared (v0.58-2: declared, not positional)"
             )
+        return None
+
+    @property
+    def _meter_batch(self):
+        """The meter's per-batch offset structure (#9, ADR 0078): applies to
+        experiments too (same instrument, fresh runs) -- the historical
+        drift/ramp confound is what randomization buys off."""
+        if self.config.experiment_meter is not None:
+            return self.config.observe_sources[self.config.experiment_meter].batch
         return None
 
     # --- verbs ---------------------------------------------------------
@@ -183,7 +194,7 @@ class WorldServer:
         # measurement channel (v0.9): the same imperfect meter reads the result.
         df = experiment_view(
             self.world_sample, _ns(design.to_regime()), self._meter,
-            design.n, self._next_seed(800_000),
+            design.n, self._next_seed(800_000), source_batch=self._meter_batch,
         )
         self._log("experiment", {"config": dict(design.config), "context": dict(design.context), "n": design.n}, cost)
         return df
