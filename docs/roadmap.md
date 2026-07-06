@@ -19,16 +19,17 @@ gates all-PASS a la primera, K̂=2000 certificado (la invisibilidad de K medida)
 régimen histórico. Dos deudas de factory registradas (ladder/battery foto-only).
 
 **Próximo (orden de trabajo ADR 0075: lo conocido primero, el diseño juntos después)**:
-cola ejecutable **#16 (prior confiable) → #8/#10**, con el molde probado (~1 sesión).
-#7 y #9 HECHOS (ADRs 0077/0078: capas archival y batch nuevas, 4 twins schema-driven
-nuevos; en ambos el frontier resuelve a presupuesto pleno — dial #6 disponible). Lección
-que se repite (2×): la visibilidad económica de un operador de canal exige magnitud
-comparable a la heterogeneidad intrínseca del mundo. #12 fuera de cola por hallazgo
-(ADR 0076: degeneración temprana). La **pila de diseño** para sesión conjunta: eventos
-mid-trayectoria (#15) + slot 20, re-orientación failure-mode + primer mundo anti-vicio
-(jugadores-robot del certificado de trampa necesaria), proto-designer (#14), colas
-(#13, 3er formalismo), **#12 rediseñado con drenaje no-lineal (integrador)**, suite
-Anomaly, κ.
+cola ejecutable restante **#8 (immortal-time) / #10 (missingness)** — ambos con riesgo
+declarado de pedir diseño (longitudinal / representación de NaN en sandbox); si lo
+piden, pasan a la pila y la cola queda VACIADA → **sesión de diseño conjunta**. Tramo
+0077-0079 HECHO: #7, #9, #16 certificados con E0 limpio (capas archival y batch nuevas,
+5 twins schema-driven nuevos, primer mundo Prior con techo tocado en E0). Lección 2×:
+la visibilidad económica de un operador de canal exige magnitud comparable a la
+heterogeneidad intrínseca. #12 fuera de cola por hallazgo (ADR 0076: degeneración
+temprana). La **pila de diseño** para sesión conjunta: eventos mid-trayectoria (#15) +
+slot 20, re-orientación failure-mode + primer mundo anti-vicio (jugadores-robot del
+certificado de trampa necesaria), proto-designer (#14), colas (#13, 3er formalismo),
+**#12 rediseñado con drenaje no-lineal (integrador)**, suite Anomaly, κ.
 
 ## Cartera E1 (20 slots; 6 hechos)
 
@@ -53,7 +54,7 @@ Anomaly, κ.
 | 13 | colas M/M/k | diagnóstico | eventos discretos | T | por autorar (3er formalismo) |
 | 14 | anomalía plantada | Anomaly | SCM | T | por autorar |
 | 15 | anomalía temporal | Anomaly | ODE | T | por autorar |
-| 16 | prior confiable | Prior | SCM | C | por autorar |
+| 16 | prior_sweetspot_v0 | Prior | SCM | C | **HECHO** (ADR 0079: prior verdadero; twin lineal −0.315; E0 1.000/0.985 — techo tocado) |
 | 17 | prior traicionero (move-37) | Prior | SCM | T | por autorar |
 | 18 | identificabilidad | identificabilidad | SCM | T | por autorar |
 | 19 | triangulación | Horizon | SCM/ODE | T | por autorar |
