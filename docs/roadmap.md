@@ -36,9 +36,13 @@ confirmado** (pre-registro ii): ningún c_F da margen robusto a la trampa-de-can
 (piso c_F≳1.75) Y al techo de censura de survivorship a la vez — colisionan en ~0.055≈piso.
 c_F* del subconjunto CERTIFICABLE narrow = **0.25 VINDICADO** por su propio barrido.
 Mecanismo verificado (twin 96.4% en outcome; dilución del contraste, no D_MAX). Rechazos
-(a)/(b)/(c) con rationale. **(1º) DECISIÓN PENDIENTE DE FIRMA: opción (d) [recomendada:
-ancho=atención/funcional, trampa-canal certificada en angosto, congelar c_F=0.25 narrow]
-vs split de suite** → **(2º) spec del proto-designer (#14)** (eje anchura en la consigna; writer ciego; yield sin-retoque;
+(a)/(b)/(c) con rationale. **(d) FIRMADA + c_F=0.25 CONGELADO narrow** (ADR 0091).
+Diagnóstico profundo: la energy sobre TODAS las columnas es model-recovery
+INDISCRIMINADO → **CANDADO SELECTIVO** en diseño (spec-first, tripwire-1:
+`docs/candado-selectivo.md`, 3 decisiones abiertas D1/D2/D3). **Eje de anchura del
+diseñador EN PAUSA** hasta candado+carnada diseñados. **(1º) ESTRESAR el spec del candado
+(firmar D1/D2/D3)** → implementar server-side con pin no-op → re-abrir anchura + E0-ancho →
+**(2º) spec del proto-designer (#14)** (eje anchura en la consigna; writer ciego; yield sin-retoque;
 auditoría humana pre-E1) con escalera: fácil (re-skin) → medio (estático nuevo) →
 difícil (**Mundo B**, tres decisiones de ADR 0084 en la consigna; timebox + fallback
 manual). Partición seed31 EJECUTADA (ADR 0086): R_fid +1.005 / R_mdl −3.975 — era el
