@@ -50,6 +50,10 @@ propone la edición del doc + un ADR nuevo en `docs/adr/`.
   **grep de la regla vieja en TODOS los docs** y enumera cada ubicación que edita. Principio **"una regla, una casa"**.
 - **Auditoría código-vs-docs por iniciativa propia**: ante una inconsistencia, **reportar con ubicación exacta +
   fix propuesto, nunca arreglar en silencio**; aplicar recién con aprobación.
+- **LEDGER DE PENDIENTES ABIERTOS** (ADR 0086, reclamo repetido → estructura): todo reporte de
+  cierre a Lucas TERMINA con el ledger — pre-registros firmados sin correr, autopsias sin
+  partir, GOs sin ejecutar — cada ítem tildado ✓ o explícitamente VIVO con su próximo paso.
+  Un pendiente que no aparece en el ledger es un pendiente caído en silencio.
 
 ## Referencia SREG — política de cuarentena
 

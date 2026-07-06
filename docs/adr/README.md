@@ -96,3 +96,4 @@
 | 0083 | v0.83 | 2026-07-06 | [Maquinaria de eventos D4: la noticia sellada funciona — certificado de incorporación ALL-PASS](0083-v0.83-maquinaria-de-eventos-d4-la-noticia-sellada-funciona.md) | Vigente |
 | 0084 | v0.84 | 2026-07-06 | [Mundo B: el corazón probado, tres decisiones de carpintería fina — entra como encargo difícil de la fábrica](0084-v0.84-mundo-b-el-corazon-probado-tres-decisiones-y-via-fabrica.md) | Vigente |
 | 0085 | v0.85 | 2026-07-06 | [Eje anchura/enmascaramiento para el diseñador + piloto ancho pre-registrado](0085-v0.85-eje-anchura-enmascaramiento-para-el-disenador-y-piloto-ancho.md) | Vigente |
+| 0086 | v0.86 | 2026-07-06 | [Piloto ancho fuera de la escalera + LEDGER de pendientes como regla + partición seed31 (retractación)](0086-v0.86-piloto-ancho-fuera-de-la-escalera-ledger-de-pendientes.md) | Vigente |

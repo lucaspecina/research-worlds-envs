@@ -24,16 +24,17 @@ prompt; certificado de incorporación ALL-PASS (ignora 0.0002 vs incorpora 0.989
 first_story completo en sus DOS variantes (pin no-op verificado byte-idéntico). E0 con
 noticia: 0.991 (incorporó y clavó) y 0.000/R_uncl −2.97 (incorporó PERO fabricó
 causalidad en señuelos + payload 59KB — otro vicio del catálogo preciado en vivo, dato
-para el mundo carnada-de-significancia). **Pila de diseño (ADRs 0084/0085)**: **PRÓXIMO = spec del proto-designer (#14)** con
-el eje ANCHURA/ENMASCARAMIENTO nuevo (perillas n_variables ≤ ~20 + nivel de
-enmascaramiento; distractores correlacionados con historia declarada; los gates no se
-relajan) y su escalera de encargos: **piloto ancho** (variante 15+ distractores de un
-saturado — pre-registro: la anchura sola re-abre headroom; chequeos de instrumento a
-20 columnas pre-registrados) → fácil (hermano/re-skin) → medio (estático nuevo) →
-difícil (**Mundo B**, consigna con las tres decisiones de ADR 0084; timebox + fallback
-manual). Después: colas (#13), #12 no-lineal, Anomaly (anfitrión ancho para
-carnada-de-significancia), κ. Cola conocida: #8/#10. Cartera 11/20 con #17
-doble-variante.
+para el mundo carnada-de-significancia). **Orden vigente (ADRs 0084/0085/0086)**: **(1º) PENDIENTE VIVO: A-escasa y
+A-escasa×noticia** (GO + pre-registro firmados; hermano escaso de first_story, receta
+#6) → **(2º) PILOTO ANCHO A MANO, fuera de la escalera del diseñador** (atribución
+limpia; variante 15+ distractores de first_story o #9; chequeos de instrumento a 20
+cols ANTES del E0; headroom pre-registrado; etiqueta PRELIMINAR) → **(3º) spec del
+proto-designer (#14)** (eje anchura en la consigna; writer ciego; yield sin-retoque;
+auditoría humana pre-E1) con escalera: fácil (re-skin) → medio (estático nuevo) →
+difícil (**Mundo B**, tres decisiones de ADR 0084 en la consigna; timebox + fallback
+manual). Partición seed31 EJECUTADA (ADR 0086): R_fid +1.005 / R_mdl −3.975 — era el
+gamble de payload; lecturas de ADR 0083/0085 sobre seed31 retractadas. Después: colas
+(#13), #12 no-lineal, Anomaly, κ; cola conocida #8/#10. Cartera 11/20.
 
 ## Cartera E1 (20 slots; 6 hechos)
 
