@@ -91,3 +91,4 @@
 | 0078 | v0.78 | 2026-07-06 | [Mundo #9 (batch_confound_v0): deriva confundida con la rampa — maquinaria batch, dos coordenadas](0078-v0.78-mundo-9-batch-confound-v0-deriva-confundida-certificada.md) | Vigente |
 | 0079 | v0.79 | 2026-07-06 | [Mundo #16 (prior_sweetspot_v0): control de prior-confiable — el frontier toca el techo](0079-v0.79-mundo-16-prior-sweetspot-v0-control-de-prior-confiable.md) | Vigente |
 | 0080 | v0.80 | 2026-07-06 | [Doctrina anti-vicio: molde unificador ACEPTADO con cuatro correcciones load-bearing](0080-v0.80-doctrina-anti-vicio-molde-unificador-con-cuatro-correcciones.md) | Vigente |
+| 0081 | v0.81 | 2026-07-06 | [Mundo A: decisiones D1-D5 firmadas + robots por el pipeline de episodio real](0081-v0.81-mundo-a-decisiones-d1-d5-firmadas-robots-por-episodio.md) | Vigente |

@@ -1,10 +1,16 @@
-# Mundo A — "La primera historia" (spec de trabajo, para estresar ANTES de construir)
+# Mundo A — "La primera historia" (spec de trabajo — DECISIONES FIRMADAS)
 
-> **Estado: BORRADOR EN SESIÓN DE DISEÑO (ADR 0080).** Primer mundo anti-vicio. Vicios
-> objetivo: *casarse con la primera hipótesis* (variante base) y *no incorporar
-> evidencia nueva* (variante con-noticia, estrena el mecanismo de eventos — en papel).
-> Las decisiones abiertas están marcadas **[DECIDIR]**. Ante conflicto con el repo,
-> manda el repo.
+> **Estado: APROBADO CON DECISIONES D1-D5 (ADR 0081; doctrina en ADR 0080).** Primer
+> mundo anti-vicio = **slot #17 de la cartera** (D5). Vicios objetivo: *casarse con la
+> primera hipótesis* (variante base) y *no incorporar evidencia nueva* (variante
+> con-noticia, D4). Resoluciones: D1 contrafáctica SÍ + guarda anti-cínico (batería
+> varía la ambiental real; rung negador-agnóstico); D2 reformulada (la ambiental está
+> AUSENTE del registro — timestamp presente; estratificar-por-tiempo es el escape
+> barato; menú de 3-4 perillas ambientales en experimentos; riesgo "satura por rutina"
+> pre-registrado); D3 sin número mágico (terco≈folklore-twin ±3×std; cuidadoso ≥ 0.85 ×
+> techo; distribucional); D4 disparador min(turno_k, 50% gasto), payload = datos
+> sellados + aviso fijo, no divulgado en brief; robots por el pipeline de EPISODIO
+> real. Ante conflicto con el repo, manda el repo.
 
 ## 1. La idea en una frase
 
