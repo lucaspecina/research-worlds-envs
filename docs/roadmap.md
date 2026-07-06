@@ -19,12 +19,14 @@ gates all-PASS a la primera, K̂=2000 certificado (la invisibilidad de K medida)
 régimen histórico. Dos deudas de factory registradas (ladder/battery foto-only).
 
 **Próximo (orden de trabajo ADR 0075: lo conocido primero, el diseño juntos después)**:
-cola ejecutable **#12 (2º ODE) → #7 (survivorship+censura) → #9 (batch-effect) → #16
-(prior confiable) → #8/#10**, cada uno con el molde de #11 (~1 sesión). La **pila de
+cola ejecutable **#7 (survivorship+censura) → #9 (batch-effect) → #16 (prior confiable)
+→ #8/#10**, cada uno con el molde de #11 (~1 sesión). #12 salió de la cola por hallazgo
+(ADR 0076: la trampa de truncación requiere DEGENERACIÓN temprana — regla de diseño
+nueva + test de viabilidad barato para futuros mundos de horizonte). La **pila de
 diseño** queda para sesión de dirección conjunta: eventos mid-trayectoria (#15) + slot
 20, re-orientación failure-mode + primer mundo anti-vicio (jugadores-robot del
 certificado de trampa necesaria), proto-designer (#14), colas (#13, 3er formalismo),
-suite Anomaly, κ.
+**#12 rediseñado con drenaje no-lineal (integrador)**, suite Anomaly, κ.
 
 ## Cartera E1 (20 slots; 6 hechos)
 
@@ -45,7 +47,7 @@ suite Anomaly, κ.
 | 9 | batch-effect confundido | canal | SCM | T | por autorar |
 | 10 | missingness informativo | canal | SCM | T | por autorar |
 | 11 | logistic_yield_v0 | Horizon | **ODE** | C→T | **HECHO** (formalismo validado, ADR 0074) |
-| 12 | compartimental 2-tanques | Horizon | ODE | T | por autorar |
+| 12 | twotank_clearance_v0 | Horizon | ODE | T | **BLOQUEADO por hallazgo** (ADR 0076: cascada lineal sin degeneración temprana → sin trampa; rediseño no-lineal en pila de diseño) |
 | 13 | colas M/M/k | diagnóstico | eventos discretos | T | por autorar (3er formalismo) |
 | 14 | anomalía plantada | Anomaly | SCM | T | por autorar |
 | 15 | anomalía temporal | Anomaly | ODE | T | por autorar |

@@ -1,0 +1,157 @@
+{
+  "case_id": "twotank_clearance_v0",
+  "suite": "horizon",
+  "columns": [
+    {
+      "name": "unit_id",
+      "dtype": "float",
+      "unit": null,
+      "description": "run identifier within the returned batch (0..n-1)"
+    },
+    {
+      "name": "t",
+      "dtype": "float",
+      "unit": "h",
+      "description": "elapsed process time of the reading"
+    },
+    {
+      "name": "y",
+      "dtype": "float",
+      "unit": "kg",
+      "description": "buffer-stage level of the run at time t"
+    }
+  ],
+  "operators": [
+    {
+      "name": "historico_truncado",
+      "layer": "sampling",
+      "knobs": {
+        "horizon": 6.0
+      },
+      "ablation": {
+        "horizon": 24.0
+      }
+    },
+    {
+      "name": "error_de_medicion",
+      "layer": "channel",
+      "knobs": {
+        "noise_sd": 2.5
+      },
+      "ablation": {
+        "noise_sd": 0.0
+      }
+    }
+  ],
+  "stakes": {
+    "narrative": "A two-stage line loads a batch upstream and hands over when the buffer stage has drained: a run whose buffer level is still above the clearance limit at the handover deadline delays the next batch. The historical records only cover the loading hours of past runs -- the level was still building -- and the line suspects that reading those records at face value is exactly the mistake it is paying to avoid.",
+    "decision_variables": [
+      "valve"
+    ],
+    "context_relevance": {},
+    "decision_relevance": {},
+    "functionals": [
+      {
+        "name": "exceedance",
+        "column": "y@20",
+        "threshold": 30.0,
+        "direction": "above",
+        "brief_clause": "a run whose buffer level is still above the clearance limit of 30 at the handover deadline of t=20 delays the next batch and is penalized"
+      }
+    ]
+  },
+  "scoring": {
+    "lambda_mdl": 0.00010128773858650133,
+    "lambda_provisional": true,
+    "c_f": 0.25,
+    "n_samples": 400,
+    "m_reps": 2,
+    "model_call_timeout_s": 10.0
+  },
+  "trajectory_protocol": {
+    "version": "traj.1",
+    "grid_key": "t_grid",
+    "format": "long",
+    "unit_column": "unit_id"
+  },
+  "episode": {
+    "budget": 20000,
+    "observe_sources": {
+      "registros_campanas": {
+        "cost_per_row": 0.5,
+        "config": {},
+        "context": {
+          "t_grid": [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
+        },
+        "channel": {
+          "column": "y",
+          "noise_sd": 2.5,
+          "replicates": 1
+        }
+      },
+      "replicas_calibracion": {
+        "cost_per_row": 5.0,
+        "config": {},
+        "context": {
+          "t_grid": [2.0, 4.0, 6.0]
+        },
+        "channel": {
+          "column": "y",
+          "noise_sd": 2.5,
+          "replicates": 2
+        }
+      }
+    },
+    "experiment": {
+      "cost_fixed": 100.0,
+      "cost_per_row": 1.0,
+      "cost_per_horizon": 50.0
+    },
+    "experiment_meter": "registros_campanas",
+    "smoke_regimes": [
+      {
+        "config": {
+          "valve": 2.0
+        },
+        "context": {
+          "t_grid": [0.0, 2.0, 4.0, 6.0]
+        },
+        "horizon": null
+      },
+      {
+        "config": {
+          "valve": 8.0
+        },
+        "context": {
+          "t_grid": [0.0, 6.0, 12.0, 20.0]
+        },
+        "horizon": null
+      },
+      {
+        "config": {},
+        "context": {
+          "t_grid": [0.0, 4.0, 8.0, 12.0]
+        },
+        "horizon": null
+      }
+    ],
+    "control_surface": {
+      "settable": {
+        "valve": {
+          "low": 0.0,
+          "high": 10.0,
+          "unit": "au"
+        }
+      },
+      "context": {
+        "t_grid": {
+          "description": "measurement schedule: the timestamps (hours) at which readings are taken; in experiments YOU choose it (each extra hour of horizon costs), and each evaluation regime declares the grid your model must report"
+        }
+      },
+      "instruments": {},
+      "experiment_note": "each experiment call launches n fresh runs at your valve setting and reads them at your t_grid; cost = fixed + per reading (n x len(t_grid)) + per hour of horizon (max of t_grid) -- letting runs go long is what costs",
+      "deliverable_note": "model(regime, n, seed) must return LONG format: one row per reading with columns exactly [unit_id, t, y]; n counts RUNS (units), and the table must contain each unit at exactly the timestamps in regime.context['t_grid'] (n x len(t_grid) rows). Model the PROCESS, not the meter: readings you observe include instrument error; your model should reproduce the process's true trajectories."
+    }
+  },
+  "prior_reliability": null
+}
