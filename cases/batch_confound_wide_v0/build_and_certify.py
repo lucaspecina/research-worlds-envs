@@ -1,0 +1,212 @@
+"""batch_confound_WIDE_v0 -- THE WIDE PILOT (ledger item 3; ADRs 0085/0086).
+
+Hand-built (clean attribution): #9's exact trap widened to 19 columns with 16
+correlated, story-bearing distractors that never enter the outcome. INSTRUMENT
+CHECKS RUN FIRST (before any E0, per ADR 0086-1):
+
+  (i)   column sanity at 19 cols: no degenerate scored column (the scale
+        family's 7th bite would live here);
+  (ii)  CV(R) mini-L2: one rival rescored over 10 model-side seed sets,
+        CV < 5%;
+  (iii) trap power at 19 cols: the drift twin must STILL separate >= 0.05 R
+        (the risk: the outcome-only distortion dilutes across 19 columns);
+  (iv)  recoverability at 19 cols (canonical with joint 18x18 residual
+        covariance) >= 0.95.
+
+PRE-REGISTERED (signed BEFORE running): same L1 order as #9; visibility of
+both batch operators; the reject second currency. The HEADROOM pre-registration
+for E0 lives in e0_episode.py and is signed before any episode.
+
+Run:  .venv/Scripts/python cases/batch_confound_wide_v0/build_and_certify.py
+"""
+
+import json
+import sys
+from pathlib import Path
+from types import SimpleNamespace
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+CASE = Path(__file__).parent
+sys.path.insert(0, str(CASE))
+
+import world  # noqa: E402
+
+from wager.contracts import Battery  # noqa: E402
+from wager.factory.battery_builder import build_battery  # noqa: E402
+from wager.factory.case_loader import load_meta, load_world_sample  # noqa: E402
+from wager.factory.derive_rivals import (  # noqa: E402
+    capacity_ladder, case_schema, experimental_grid, observational_pool,
+    rival_naive, source_layer_twins,
+)
+from wager.harness.source_view import source_view  # noqa: E402
+from wager.reward.functionals import functional_value  # noqa: E402
+from wager.reward.scorer import WorldSide, score_callable  # noqa: E402
+
+FLOOR = 0.05
+
+
+def null_model(pool, schema):
+    stats = {c: (float(pool[c].mean()), float(pool[c].std())) for c in schema.columns}
+
+    def sample(regime, n, seed):
+        rng = np.random.default_rng(seed)
+        out = {}
+        for c, (mu, sd) in stats.items():
+            v = rng.normal(mu, sd, n)
+            out[c] = np.clip(v, schema.lo, schema.hi) if c == schema.decision else v
+        import pandas as pd
+        return pd.DataFrame(out)
+
+    return sample
+
+
+def perturbed_truth(factor=1.15):
+    p = dict(world.PARAMS)
+    for k in ("driver_coef", "u_coef", "signal_coef"):
+        p[k] = p[k] * factor
+
+    def sample(regime, n, seed):
+        return world.mechanism(p, regime, n, seed)
+
+    return sample
+
+
+def canonical_with_replicas(meta, schema, world_sample, train):
+    """Headroom (a), #7 pattern: per-output means on (decision, context) +
+    sigma_med from replicas deconvolved from the outcome residual + JOINT
+    residual covariance (signal<->outcome share the latent quality). The
+    factory grid carries the meter noise but not batch offsets (declared:
+    mean-zero offsets leave the fits unbiased; the episode's experiments do
+    carry them and the fit stays achievable)."""
+    reps_name = next(n for n, s in meta.episode.observe_sources.items()
+                     if s.channel is not None and s.channel.replicates == 2)
+    reps = source_view(world_sample, meta.episode.observe_sources[reps_name], 3000, 61001)
+    ch_col = meta.episode.observe_sources[reps_name].channel.column
+    sigma_hat = float(np.sqrt((reps[f"{ch_col}__rep1"] - reps[f"{ch_col}__rep2"]).var() / 2.0))
+
+    outputs = [c for c in schema.columns if c != schema.decision]
+    X = np.column_stack([train[schema.decision].to_numpy(), train[schema.context].to_numpy()])
+    from sklearn.linear_model import LinearRegression
+    fits, resid = {}, {}
+    for c in outputs:
+        m = LinearRegression().fit(X, train[c].to_numpy())
+        fits[c] = m
+        resid[c] = train[c].to_numpy() - m.predict(X)
+    R = np.column_stack([resid[c] for c in outputs])
+    cov = np.cov(R, rowvar=False)
+    i_ch = outputs.index(ch_col)
+    cov[i_ch, i_ch] = max(cov[i_ch, i_ch] - sigma_hat ** 2, 1e-4)
+
+    def sample(regime, n, seed):
+        rng = np.random.default_rng(seed)
+        c = float(regime.context.get(schema.context, 0.0))
+        dd = (np.full(n, float(regime.config[schema.decision]))
+              if schema.decision in regime.config
+              else np.clip(rng.normal(world.PARAMS["driver_base"], world.PARAMS["driver_sd"], n),
+                           schema.lo, schema.hi))
+        Xq = np.column_stack([dd, np.full(n, c)])
+        eps = rng.multivariate_normal(np.zeros(len(outputs)), cov, n)
+        import pandas as pd
+        out = {schema.decision: dd}
+        for j, col in enumerate(outputs):
+            out[col] = fits[col].predict(Xq) + eps[:, j]
+        return pd.DataFrame(out)[list(schema.columns)]
+
+    sample.sigma_hat = sigma_hat
+    return sample
+
+
+def main():
+    meta = load_meta(CASE)
+    schema = case_schema(meta)
+    world_sample = load_world_sample(CASE)
+    source = list(meta.episode.observe_sources.values())[0]
+
+    pool = observational_pool(world_sample, source, 4000, 50001)
+    levels = list(range(int(schema.lo), int(schema.hi) + 1))
+    train = experimental_grid(world_sample, schema, levels, 400, 60001, channel=source.channel)
+    naive = rival_naive(pool, schema)
+    ladder = capacity_ladder(train, pool, schema)
+    twins = source_layer_twins(world_sample, meta, pool, schema)
+    null_fn = null_model(pool, schema)
+
+    rivals = [naive] + [fn for _, fn in ladder] + [fn for _, fn in twins]
+    battery = build_battery(world_sample, rivals, null_fn, list(schema.columns),
+                            meta.stakes, seed=314159)
+    Battery.model_validate(battery.model_dump()).to_json_file(CASE / "battery.json")
+
+    ws = WorldSide(world_sample, battery, meta.column_names, meta.scoring.n_samples,
+                   null_sample=null_fn, functionals=meta.stakes.functionals,
+                   c_f=meta.scoring.c_f)
+    s_truth = score_callable(world_sample, ws, meta.scoring)
+    s_naive = score_callable(naive, ws, meta.scoring)
+    den = s_truth - s_naive
+
+    def R(fn):
+        return (score_callable(fn, ws, meta.scoring) - s_naive) / den
+
+    rungs = {"perturbed_x1.15": perturbed_truth()}
+    rungs.update(dict(ladder))
+    rungs.update(dict(twins))
+    r = {k: R(fn) for k, fn in rungs.items()}
+    r["null"] = R(null_fn)
+    canonical = canonical_with_replicas(meta, schema, world_sample, train)
+    r_canon = R(canonical)
+
+    # --- INSTRUMENT CHECKS at 19 columns (ADR 0086-1: BEFORE any E0) ---------
+    # (i) column sanity: no degenerate scored column on any battery item
+    min_stds = []
+    for ts in ws.truth_sides:
+        # a clamped column reports std 1.0 exactly on a ~0-variance column;
+        # check the RAW spread instead: distance of each column's std from 0
+        min_stds.append(float(np.min(ts.std)))
+    col_sanity = all(s > 1e-3 for s in min_stds)
+    # (ii) CV(R) mini-L2: one rival over 10 model-side seed sets
+    pert = perturbed_truth()
+    rs = [(score_callable(pert, ws, meta.scoring, rep_offset=10 * k) - s_naive) / den
+          for k in range(10)]
+    cv_r = float(np.std(rs) / abs(np.mean(rs)))
+    instrument = {"min_col_std": round(min(min_stds), 4),
+                  "cv_r_mini_l2": round(cv_r, 4),
+                  "cv_r_per_offset": [round(v, 4) for v in rs]}
+
+    spec = meta.stakes.functionals[0]
+    claim = {}
+    for d in (2.0, 5.0, 8.0):
+        ns = SimpleNamespace(config={schema.decision: d}, context={schema.context: 0.0}, horizon=None)
+        claim[f"do{d:g}"] = {
+            "truth": round(functional_value(spec, world_sample(ns, 4000, 424242)), 4),
+            "naive": round(functional_value(spec, naive(ns, 4000, 424242)), 4),
+        }
+
+    report = {
+        "denom_raw": den, "R": {k: round(v, 4) for k, v in r.items()},
+        "R_canonical": round(r_canon, 4), "sigma_hat": round(canonical.sigma_hat, 4),
+        "battery_k": len(battery.items), "n_columns": len(schema.columns),
+        "reject_rate": claim,
+        "spurious_slope": getattr(dict(twins)["twin_deriva_calibracion"], "edge", None),
+        "instrument": instrument,
+        "gates": {},
+    }
+    g = report["gates"]
+    believers = {k: v for k, v in r.items() if k.startswith("twin_")}
+    g["instrument_columns_ok"] = col_sanity
+    g["instrument_cv_ok"] = cv_r < 0.05
+    g["naive_far"] = den > 0 and all(v < 1.0 - FLOOR for v in believers.values())
+    g["no_inversions"] = all(v <= 1.0 + 0.02 for v in r.values())
+    g["null_floor"] = r["null"] < 0.0
+    g["vis_deriva"] = (1.0 - r["twin_deriva_calibracion"]) >= FLOOR
+    g["vis_offsets"] = (1.0 - r["twin_offsets_por_tanda"]) >= FLOOR
+    g["recoverability"] = r_canon >= 1.0 - FLOOR
+    g["all"] = all(v for v in g.values())
+
+    print(json.dumps(report, indent=2))
+    (CASE / "certificates.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    print("-> battery.json + certificates.json")
+
+
+if __name__ == "__main__":
+    main()

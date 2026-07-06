@@ -27,10 +27,13 @@ causalidad en señuelos + payload 59KB — otro vicio del catálogo preciado en 
 para el mundo carnada-de-significancia). **Orden vigente (ADRs 0084-0087)**: A-escasa ✓ EJECUTADA (ADR 0087: los hábitos
 sobreviven a la escasez, la TERMINACIÓN no — R 0.925/0.000/0.308/0.088, 4/4 con
 investigación completa; mecanismo real por partición: rama histórica rota 2/4 +
-payload 1/4). **(1º) PILOTO ANCHO A MANO, fuera de la escalera del diseñador**
-(atribución limpia; variante 15+ distractores de first_story o #9; chequeos de
-instrumento a 20 cols ANTES del E0; headroom pre-registrado; etiqueta PRELIMINAR) →
-**(2º) spec del proto-designer (#14)** (eje anchura en la consigna; writer ciego; yield sin-retoque;
+payload 1/4). PILOTO ANCHO fase-instrumento ✓ EJECUTADA (ADR 0089: **LA ANCHURA
+DILUYE LOS DIENTES** — twin de deriva −0.115→0.874 a 19 cols, vis_offsets FALLA;
+CV(R) 0.18% y canonical 0.998 estables; la moneda-cliente NO se diluye; el mundo ancho
+NO certifica como está; E0 en suspenso). **(1º) DECISIÓN CONJUNTA pendiente: cómo
+mantiene dientes el examen a lo ancho** (c_F-por-anchura / distancia pesada por stakes
+/ sub-baterías por coordenada / anchura-solo-atencional — semántica de scoring,
+tripwire-1) → **(2º) spec del proto-designer (#14)** (eje anchura en la consigna; writer ciego; yield sin-retoque;
 auditoría humana pre-E1) con escalera: fácil (re-skin) → medio (estático nuevo) →
 difícil (**Mundo B**, tres decisiones de ADR 0084 en la consigna; timebox + fallback
 manual). Partición seed31 EJECUTADA (ADR 0086): R_fid +1.005 / R_mdl −3.975 — era el
