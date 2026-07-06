@@ -30,10 +30,15 @@ investigación completa; mecanismo real por partición: rama histórica rota 2/4
 payload 1/4). PILOTO ANCHO fase-instrumento ✓ EJECUTADA (ADR 0089: **LA ANCHURA
 DILUYE LOS DIENTES** — twin de deriva −0.115→0.874 a 19 cols, vis_offsets FALLA;
 CV(R) 0.18% y canonical 0.998 estables; la moneda-cliente NO se diluye; el mundo ancho
-NO certifica como está; E0 en suspenso). **(1º) DECISIÓN CONJUNTA pendiente: cómo
-mantiene dientes el examen a lo ancho** (c_F-por-anchura / distancia pesada por stakes
-/ sub-baterías por coordenada / anchura-solo-atencional — semántica de scoring,
-tripwire-1) → **(2º) spec del proto-designer (#14)** (eje anchura en la consigna; writer ciego; yield sin-retoque;
+NO certifica como está; E0 en suspenso). BARRIDO c_F sampling ✓ CORRIDO (ADR 0090:
+v0.55-2 disparó → NO es semántica nueva, es el barrido pre-firmado). **TECHO DE ANCHURA
+confirmado** (pre-registro ii): ningún c_F da margen robusto a la trampa-de-canal ancha
+(piso c_F≳1.75) Y al techo de censura de survivorship a la vez — colisionan en ~0.055≈piso.
+c_F* del subconjunto CERTIFICABLE narrow = **0.25 VINDICADO** por su propio barrido.
+Mecanismo verificado (twin 96.4% en outcome; dilución del contraste, no D_MAX). Rechazos
+(a)/(b)/(c) con rationale. **(1º) DECISIÓN PENDIENTE DE FIRMA: opción (d) [recomendada:
+ancho=atención/funcional, trampa-canal certificada en angosto, congelar c_F=0.25 narrow]
+vs split de suite** → **(2º) spec del proto-designer (#14)** (eje anchura en la consigna; writer ciego; yield sin-retoque;
 auditoría humana pre-E1) con escalera: fácil (re-skin) → medio (estático nuevo) →
 difícil (**Mundo B**, tres decisiones de ADR 0084 en la consigna; timebox + fallback
 manual). Partición seed31 EJECUTADA (ADR 0086): R_fid +1.005 / R_mdl −3.975 — era el

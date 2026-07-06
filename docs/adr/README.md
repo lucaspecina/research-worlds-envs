@@ -100,3 +100,4 @@
 | 0087 | v0.87 | 2026-07-06 | [Celda escasez×vicio corrida: los hábitos sobreviven — la terminación no](0087-v0.87-celda-escasez-vicio-corrida-los-habitos-sobreviven-la-terminacion-no.md) | Vigente |
 | 0088 | v0.88 | 2026-07-06 | [Retractación simétrica + re-lectura #6 (rushed_termination unánime en gpt) + firma nueva + vigilancia del cap](0088-v0.88-retractacion-simetrica-relectura-6-firma-rushed-termination.md) | Vigente |
 | 0089 | v0.89 | 2026-07-06 | [Piloto ancho, fase instrumento: la anchura DILUYE los dientes del examen (7ª mordida de escala, cazada pre-E0)](0089-v0.89-piloto-ancho-fase-instrumento-la-anchura-diluye-los-dientes.md) | Vigente |
+| 0090 | v0.90 | 2026-07-06 | [Barrido c_F sampling: TECHO DE ANCHURA confirmado; c_F* narrow=0.25 vindicado; decision d/split pendiente](0090-v0.90-barrido-cf-sampling-corrido-techo-de-anchura-confirmado.md) | Vigente |
