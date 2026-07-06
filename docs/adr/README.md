@@ -84,3 +84,4 @@
 | 0071 | v0.71 | 2026-07-05 | [Re-skin de casos a "línea de proceso" (neutral, anti-flag)](0071-v0.71-re-skin-a-linea-de-proceso.md) | Vigente |
 | 0072 | v0.72 | 2026-07-05 | [Consolidaciones finales de docs (ARCHITECTURE→reference, CURRENT_STATE→roadmap, REDTEAM→test)](0072-v0.72-consolidaciones-finales-de-docs.md) | Vigente |
 | 0073 | v0.73 | 2026-07-05 | [Auditoría post-reestructura y fixes (14 findings, método de dos frentes)](0073-v0.73-auditoria-post-reestructura-y-fixes.md) | Vigente |
+| 0074 | v0.74 | 2026-07-05 | [Mundo #11 (logistic_yield_v0): el formalismo 2 VALIDADO — una extensión trivial, dos deudas](0074-v0.74-mundo-11-logistic-yield-v0-el-formalismo-2-valida.md) | Vigente |

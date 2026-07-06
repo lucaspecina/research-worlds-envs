@@ -59,7 +59,11 @@ class FunctionalScorer:
         truth_std: np.ndarray,
         c_f: float | dict[str, float] = 1.0,
     ) -> None:
-        self.specs = list(specs)
+        # Trajectory worlds (spec docs/mundos-dinamicos.md 4.2): a time-indexed
+        # functional (column "y@16") prices exactly the items whose DECLARED
+        # grid carries that timestamp -- on other items it is inert, never a
+        # crash. Static worlds are unaffected (their columns always exist).
+        self.specs = [s for s in specs if s.column in columns]
         self.c_f = c_f
         self.col_std = {c: float(truth_std[i]) for i, c in enumerate(columns)}
         self.f_real = [functional_value(s, truth_df) for s in self.specs]

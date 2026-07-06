@@ -8,21 +8,21 @@
 ## Estado actual `[VOLÁTIL — mantener al día]`
 
 **Verde**: reward path (Slice 1) + harness (C1+C2+C3) + factory de derivación completos;
-`pytest` ~125 verdes. Infra de mundos-trayectoria lista (ADR 0068). Docs reestructurados
+`pytest` ~127 verdes. Infra de mundos-trayectoria lista (ADR 0068). Docs reestructurados
 (ADR 0070) + re-skin a "línea de proceso" (ADR 0071).
 
 **Hitos**: **v2 (trofeo)** — tríptico confirmado con solver real; en 10 episodios / 2
 familias nadie infiere composición por-lote, máx R=0.666 (falta juicio, no ejecución).
-**#6** — el presupuesto discrimina estilos. Detalle en ADRs 0064-0068.
+**#6** — el presupuesto discrimina estilos. **#11 (ADR 0074) — el formalismo 2 VALIDADO**:
+gates all-PASS a la primera, K̂=2000 certificado (la invisibilidad de K medida), E0
+0.763/0.894 con cero crashes en el contrato de trayectorias; residuo = triangulación del
+régimen histórico. Dos deudas de factory registradas (ladder/battery foto-only).
 
-**Próximo**: **#11 — primer mundo ODE** (logístico saturante, Horizon): valida el 2º
-formalismo. **Spec de trabajo: [`docs/mundos-dinamicos.md`](mundos-dinamicos.md)** (leerlo antes de
-arrancar). La infra de trayectorias (pivot R1, guardia R2, cronograma R3) ya está hecha (ADR 0068);
-lo que falta es el mundo. Orden: contrato de fuentes → world+meta → brief ciego → derivación →
-certificados → E0-probe. Vara: 1-2 sesiones.
-
-**Decisión pendiente de Lucas**: re-orientar los slots 7-20 de la cartera a cobertura de
-failure modes (`docs/open-questions.md` #16); prioridad del proto-designer (#14).
+**Próximo**: con el formalismo 2 validado, el pipeline sigue por **spec de eventos
+mid-trayectoria** (`docs/open-questions.md` #15 — prerequisito de la familia "no cambia
+de opinión") y/o **matriz failure-mode** (#16). **Decisión pendiente de Lucas**: GO
+explícito a las asignaciones failure-mode por slot (7-20) y prioridad del proto-designer
+(#14) vs seguir llenando cartera a mano (#12/#13: 2º ODE, colas M/M/k).
 
 ## Cartera E1 (20 slots; 6 hechos)
 
@@ -42,7 +42,7 @@ failure modes (`docs/open-questions.md` #16); prioridad del proto-designer (#14)
 | 8 | immortal-time | sampling | SCM longitudinal | T | por autorar |
 | 9 | batch-effect confundido | canal | SCM | T | por autorar |
 | 10 | missingness informativo | canal | SCM | T | por autorar |
-| 11 | **logístico saturante** | Horizon | **ODE** | C→T | **PRÓXIMO** (1er ODE) |
+| 11 | logistic_yield_v0 | Horizon | **ODE** | C→T | **HECHO** (formalismo validado, ADR 0074) |
 | 12 | compartimental 2-tanques | Horizon | ODE | T | por autorar |
 | 13 | colas M/M/k | diagnóstico | eventos discretos | T | por autorar (3er formalismo) |
 | 14 | anomalía plantada | Anomaly | SCM | T | por autorar |
