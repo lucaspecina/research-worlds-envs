@@ -37,12 +37,13 @@ confirmado** (pre-registro ii): ningún c_F da margen robusto a la trampa-de-can
 c_F* del subconjunto CERTIFICABLE narrow = **0.25 VINDICADO** por su propio barrido.
 Mecanismo verificado (twin 96.4% en outcome; dilución del contraste, no D_MAX). Rechazos
 (a)/(b)/(c) con rationale. **(d) FIRMADA + c_F=0.25 CONGELADO narrow** (ADR 0091).
-Diagnóstico profundo: la energy sobre TODAS las columnas es model-recovery
-INDISCRIMINADO → **CANDADO SELECTIVO** en diseño (spec-first, tripwire-1:
-`docs/candado-selectivo.md`, 3 decisiones abiertas D1/D2/D3). **Eje de anchura del
-diseñador EN PAUSA** hasta candado+carnada diseñados. **(1º) ESTRESAR el spec del candado
-(firmar D1/D2/D3)** → implementar server-side con pin no-op → re-abrir anchura + E0-ancho →
-**(2º) spec del proto-designer (#14)** (eje anchura en la consigna; writer ciego; yield sin-retoque;
+**CANDADO SELECTIVO — COMPUERTA CERRADA (ADR 0092)**: el ajuste-tramposo más fuerte
+(funcional PERFECTO, cero joint) saca R=−0.53 → la energía caza la ceguera de mecanismo
+global sin candado → **NO se implementa; (d) puro + funcional**. Hallazgo colateral: c_F
+alto haría gameable el funcional (oracle-gamer→1) → el freeze de 0.25 es doblemente
+correcto (techo de ruido ∧ no-gameabilidad → mismo c_F). Anchura = dial de ATENCIÓN.
+**(1º) proto-designer arranca por su escalera fácil (re-skin → estático medio → Mundo B),
+no toca anchura** → resto de la cartera. (eje anchura en la consigna; writer ciego; yield sin-retoque;
 auditoría humana pre-E1) con escalera: fácil (re-skin) → medio (estático nuevo) →
 difícil (**Mundo B**, tres decisiones de ADR 0084 en la consigna; timebox + fallback
 manual). Partición seed31 EJECUTADA (ADR 0086): R_fid +1.005 / R_mdl −3.975 — era el

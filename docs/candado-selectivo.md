@@ -1,11 +1,44 @@
-# Candado selectivo — spec de trabajo (a estresar ANTES de tocar el reward path)
+# Candado selectivo — spec de trabajo (COMPUERTA CERRADA: NO se implementa)
 
-> **Estado: BORRADOR DE DISEÑO (ADR 0091).** Ajuste a la semántica de scoring
-> (tripwire-1) → SPEC-FIRST, cero código en el reward path hasta firma. Las decisiones
-> abiertas están marcadas **[D1]/[D2]/[D3]**; cada una lleva mi análisis + un candidato
-> recomendado + las tensiones reales que encontré. Formato: como `docs/mundos-dinamicos.md`
-> (#11) y `docs/mundo-a-primera-historia.md` (Mundo A). Ante conflicto con el repo, manda
-> el repo.
+> **Estado: CERRADO POR LA COMPUERTA (ADR 0092).** La compuerta de necesidad (Lucas,
+> pre-build, antes de tocar el reward path) probó que **el candado NO hace falta**: en el
+> mundo ancho, el ajuste-tramposo de referencia más fuerte (funcional PERFECTO |ΔP|≈0,
+> cero mecanismo conjunto) saca **R = −0.53** — la energía, aun diluida, caza la ceguera de
+> mecanismo GLOBAL. La dilución solo esconde el error QUIRÚRGICO de una relación (el
+> confound), que la opción (d) ya certifica en la variante angosta. **Resultado: (d) puro +
+> funcional. El candado NO se implementa.** Este doc queda como registro del diseño y de la
+> compuerta que lo frenó (con las correcciones de D1 de Lucas archivadas abajo, §5). Nada
+> de esto tocó el reward path.
+>
+> **Por qué el freeze de c_F=0.25 es doblemente correcto (hallazgo de la compuerta)**: a
+> c_F alto (el ×7 que el techo de anchura rechazó) el funcional dominaría y el
+> oracle-gamer ganaría (|ΔP|=0 → R→1). c_F=0.25 bajo mantiene la energía al mando → el
+> funcional NO es gameable. El techo de anchura y la no-gameabilidad apuntan al mismo c_F.
+
+---
+
+## COMPUERTA (ADR 0092) — el registro
+
+Reference gamers en el mundo ancho, c_F=0.25 frozen (scratchpad/gate_wide.py):
+
+| player | R_combinado | R_energía | \|ΔP\| do2/do5/do8 |
+|---|---|---|---|
+| naive_record | +0.000 | +0.000 | 0.220/0.108/0.000 |
+| **oracle_functional_gamer** (perfecto funcional, cero joint) | **−0.529** | −0.598 | 0.018/0.005/0.000 |
+| twin_deriva (confound-blind, joint OK) | +0.874 | +0.895 | 0.285/0.003/0.007 |
+| canonical_understander | +1.000 | +1.000 | 0.022/0.002/0.001 |
+
+Lectura: el gamer con funcional PERFECTO y cero mecanismo saca −0.53 → **no se puede sacar
+nota alta sin entender el mecanismo** → compuerta cerrada. (twin_deriva alto = el confound
+quirúrgico diluido = la trampa-de-canal, resuelta por (d) en el angosto, no por el candado.)
+
+---
+
+## Diseño archivado (lo que el candado HABRÍA sido)
+
+> Todo lo de abajo es el diseño que la compuerta volvió innecesario. Se conserva por si un
+> mundo futuro reabre la pregunta con un mecanismo que la compuerta NO cierre. Ante
+> conflicto con el repo, manda el repo.
 
 ## 1. La idea en una frase
 
@@ -91,13 +124,19 @@ criterio EXACTO de "aguas arriba", y encontré que no es obvio.
   hijo-de-causa-sin-efecto (afuera). Esto encaja con la cultura declarar+verificar de todo
   el proyecto.
 
-**Mi recomendación**: (C), con el criterio "cond. dependiente del outcome dado decision"
-como definición y el do-test como segunda red (D2). **Consecuencia a aceptar
-explícitamente**: en un mundo con distractoras que comparten latente con el outcome (grain),
-esas entran a S — lo cual es CORRECTO (son informativas del mecanismo), y significa que el
-diseñador de mundos anchos debe construir sus distractoras sobre latentes DISJUNTOS del
-outcome (el cluster w) si quiere que sean mudas. Esa es una regla de diseño limpia y
-verificable, no una limitación. **[D1: firmar el criterio de "aguas arriba".]**
+**CRITERIO FIRMADO (correcciones de Lucas, ADR 0092)** — reemplaza mi "latentes disjuntos"
+(que mataba la carnada más realista):
+- **El "tercer tipo" NO se prohíbe por regla de diseño.** Si una columna lleva información
+  GENUINA y NO-REDUNDANTE sobre el outcome, va ADENTRO del candado (es mecanismo, aunque
+  incómodo). Su rol de carnada se cumple igual: **tienta porque PARECE más conectada de lo
+  que su peso justifica**. El diseñador NO queda obligado a latentes disjuntos.
+- **La línea limpia**: el candado cubre **todo lo que lleva información no-redundante sobre
+  el outcome** (proxies incluidos), y deja afuera **solo lo condicionalmente independiente
+  del outcome dado {ese conjunto}**. El do-test se RETIRA como criterio primario (excluye
+  proxies buenos — hallazgo correcto) y queda como **diagnóstico secundario, no definición**.
+- **Compuerta de viabilidad** (habría aplicado): si "información no-redundante" no se
+  computa limpio y estable → no se implementa, (d) puro. (Moot: la compuerta de necesidad
+  cerró antes.)
 
 ### [D2] — VERIFICABILIDAD DE LA DECLARACIÓN (cero-confianza)
 
