@@ -18,16 +18,15 @@ gates all-PASS a la primera, K̂=2000 certificado (la invisibilidad de K medida)
 0.763/0.894 con cero crashes en el contrato de trayectorias; residuo = triangulación del
 régimen histórico. Dos deudas de factory registradas (ladder/battery foto-only).
 
-**Próximo — SESIÓN DE DISEÑO EN CURSO (ADR 0080)**: doctrina anti-vicio ACEPTADA con
-cuatro correcciones de Lucas (robot vicioso distribucional; equivalencia de B =
-supuesto heroico a verificar con el test de ADR 0076 — candidato: la degeneración ya
-certificada del logístico; el pozo con justicia-de-curiosidad y perilla
-costo-de-darse-cuenta; "reutilizable para la fábrica" degradado a aspiración). **Orden
-firmado: spec de trabajo del MUNDO A ("la primera historia") con par de robots
-distribucional → estresarlo en sesión → build.** El spec de eventos sigue en papel;
-Mundo B espera su mecanismo verificado. Cola conocida restante: #8/#10 (riesgo de
-diseño declarado). Pila restante: proto-designer (#14), colas (#13), #12 no-lineal,
-Anomaly, κ. Tramo 0077-0079: #7/#9/#16 certificados con E0 limpio (cartera 10/20).
+**Próximo**: **MUNDO A HECHO (ADR 0082)** — primer certificado de trampa necesaria
+inaugurado (terco 0.005 vs cuidadoso 0.960, robots por el pipeline real; E0: rama
+seducido VACÍA, el frontier rompe su hipótesis de rutina → claim anti-vicio degradado a
+control para frontier-a-presupuesto-pleno, según la rama de riesgo pre-registrada D2;
+la celda escasez×vicio queda para E1). La línea anti-vicio tiene molde validado punta a
+punta. **Siguiente en la pila de diseño (juntos)**: maquinaria de eventos D4 (la
+variante con-noticia de #17 la estrena) o Mundo B (espera mecanismo de equivalencia
+verificado, candidato: degeneración certificada del logístico), o proto-designer (#14).
+Cola conocida restante: #8/#10 (riesgo de diseño declarado). Cartera 11/20.
 
 ## Cartera E1 (20 slots; 6 hechos)
 
@@ -53,7 +52,7 @@ Anomaly, κ. Tramo 0077-0079: #7/#9/#16 certificados con E0 limpio (cartera 10/2
 | 14 | anomalía plantada | Anomaly | SCM | T | por autorar |
 | 15 | anomalía temporal | Anomaly | ODE | T | por autorar |
 | 16 | prior_sweetspot_v0 | Prior | SCM | C | **HECHO** (ADR 0079: prior verdadero; twin lineal −0.315; E0 1.000/0.985 — techo tocado) |
-| 17 | prior traicionero (move-37) | Prior | SCM | T | por autorar |
+| 17 | first_story_v0 (Mundo A anti-vicio) | Prior | SCM | T | **HECHO** (ADR 0082: 1er certificado de trampa necesaria — terco 0.005 vs cuidadoso 0.960; E0 0.804/0.953, frontier rompe su hipótesis de rutina) |
 | 18 | identificabilidad | identificabilidad | SCM | T | por autorar |
 | 19 | triangulación | Horizon | SCM/ODE | T | por autorar |
 | 20 | revelación secuencial | causal-cliente | SCM | T | por autorar |
