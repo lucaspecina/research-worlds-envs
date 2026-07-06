@@ -18,18 +18,16 @@ gates all-PASS a la primera, K̂=2000 certificado (la invisibilidad de K medida)
 0.763/0.894 con cero crashes en el contrato de trayectorias; residuo = triangulación del
 régimen histórico. Dos deudas de factory registradas (ladder/battery foto-only).
 
-**Próximo (orden de trabajo ADR 0075: lo conocido primero, el diseño juntos después)**:
-cola ejecutable restante **#8 (immortal-time) / #10 (missingness)** — ambos con riesgo
-declarado de pedir diseño (longitudinal / representación de NaN en sandbox); si lo
-piden, pasan a la pila y la cola queda VACIADA → **sesión de diseño conjunta**. Tramo
-0077-0079 HECHO: #7, #9, #16 certificados con E0 limpio (capas archival y batch nuevas,
-5 twins schema-driven nuevos, primer mundo Prior con techo tocado en E0). Lección 2×:
-la visibilidad económica de un operador de canal exige magnitud comparable a la
-heterogeneidad intrínseca. #12 fuera de cola por hallazgo (ADR 0076: degeneración
-temprana). La **pila de diseño** para sesión conjunta: eventos mid-trayectoria (#15) +
-slot 20, re-orientación failure-mode + primer mundo anti-vicio (jugadores-robot del
-certificado de trampa necesaria), proto-designer (#14), colas (#13, 3er formalismo),
-**#12 rediseñado con drenaje no-lineal (integrador)**, suite Anomaly, κ.
+**Próximo — SESIÓN DE DISEÑO EN CURSO (ADR 0080)**: doctrina anti-vicio ACEPTADA con
+cuatro correcciones de Lucas (robot vicioso distribucional; equivalencia de B =
+supuesto heroico a verificar con el test de ADR 0076 — candidato: la degeneración ya
+certificada del logístico; el pozo con justicia-de-curiosidad y perilla
+costo-de-darse-cuenta; "reutilizable para la fábrica" degradado a aspiración). **Orden
+firmado: spec de trabajo del MUNDO A ("la primera historia") con par de robots
+distribucional → estresarlo en sesión → build.** El spec de eventos sigue en papel;
+Mundo B espera su mecanismo verificado. Cola conocida restante: #8/#10 (riesgo de
+diseño declarado). Pila restante: proto-designer (#14), colas (#13), #12 no-lineal,
+Anomaly, κ. Tramo 0077-0079: #7/#9/#16 certificados con E0 limpio (cartera 10/20).
 
 ## Cartera E1 (20 slots; 6 hechos)
 
