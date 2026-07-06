@@ -69,9 +69,23 @@ def source_view(world_sample: Callable, source: SourceConfig, n: int, seed: int)
         }, index=df.index)
         return df.loc[apply_selection(scored, sel).index]
 
+    def archived(df):
+        # archival censoring (#7, ADR 0077): the RECORD format clips one column
+        # at the old bench's limit -- applied last (post-channel: what gets
+        # clipped is the recorded value; with replicates, every rep). Records
+        # only: experiment_view never calls this (fresh logging).
+        cen = source.censoring
+        if cen is None:
+            return df
+        cols = [c for c in df.columns if c == cen.column or c.startswith(f"{cen.column}__rep")]
+        out = df.copy()
+        for c in cols:
+            out[c] = out[c].clip(upper=cen.limit) if cen.side == "above" else out[c].clip(lower=cen.limit)
+        return out
+
     if source.selection is None and not measure_first:
         df = measured(world_sample(ns, n, seed), np.random.default_rng(derive_seed(seed, _CH_TAG)))
-        return df.reset_index(drop=True)
+        return archived(df).reset_index(drop=True)
 
     frames, got, s = [], 0, seed
     for _ in range(_MAX_TRIES):
@@ -93,7 +107,7 @@ def source_view(world_sample: Callable, source: SourceConfig, n: int, seed: int)
     if not measure_first and source.channel is not None:
         rng = np.random.default_rng(derive_seed(seed, _CH_TAG))
         df = apply_channel(df, source.channel, rng)
-    return df.reset_index(drop=True)
+    return archived(df).reset_index(drop=True)
 
 
 def experiment_view(world_sample: Callable, regime, source_channel: MeasurementChannel | None,

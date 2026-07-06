@@ -449,6 +449,27 @@ def source_layer_twins(world_sample: Callable, meta, pool: pd.DataFrame,
         if op.layer == "sampling" and source.selection is not None:
             sel_cols = [c for c in source.selection.weights if c != schema.decision]
             if len(sel_cols) < 2:
+                # single-column selection (#7 survivorship, ADR 0077): the
+                # collider edge-twin shape needs two filtered columns; the
+                # innocent belief here is 'the record's population IS the
+                # population' -- the truth mechanism restricted to the
+                # SELECTED stratum (oversample + the declared filter).
+                from wager.harness.source_view import apply_selection
+
+                def sample_stratum(regime, n, seed, _sel=source.selection):
+                    frames, got, s = [], 0, seed
+                    for _ in range(8):
+                        draw = world_sample(regime, n * 4, s)
+                        kept = apply_selection(draw, _sel)
+                        frames.append(kept)
+                        got += len(kept)
+                        if got >= n:
+                            break
+                        s = _ds(s, 811)
+                    return pd.concat(frames, ignore_index=True).head(n).reset_index(drop=True)
+
+                sample_stratum.stratum = dict(source.selection.weights)  # audit surface
+                twins.append((f"twin_{op.name}", sample_stratum))
                 continue
             a, b = sel_cols[0], sel_cols[1]
             d = pool[schema.decision].to_numpy()
@@ -477,6 +498,20 @@ def source_layer_twins(world_sample: Callable, meta, pool: pd.DataFrame,
 
             sample_ch.absorbed_sd = ch.noise_sd
             twins.append((f"twin_{op.name}", sample_ch))
+        elif op.layer == "archival" and source.censoring is not None:
+            # 'the pile-up at the limit is REAL' (#7, ADR 0077): believes the
+            # quantity physically caps at the old bench's limit.
+            cen = source.censoring
+
+            def sample_cen(regime, n, seed, _cen=cen):
+                df = world_sample(regime, n, seed).copy()
+                df[_cen.column] = (df[_cen.column].clip(upper=_cen.limit)
+                                   if _cen.side == "above"
+                                   else df[_cen.column].clip(lower=_cen.limit))
+                return df
+
+            sample_cen.cap = (cen.column, cen.limit, cen.side)  # audit surface
+            twins.append((f"twin_{op.name}", sample_cen))
     return twins
 
 

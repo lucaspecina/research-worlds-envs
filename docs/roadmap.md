@@ -19,14 +19,15 @@ gates all-PASS a la primera, K̂=2000 certificado (la invisibilidad de K medida)
 régimen histórico. Dos deudas de factory registradas (ladder/battery foto-only).
 
 **Próximo (orden de trabajo ADR 0075: lo conocido primero, el diseño juntos después)**:
-cola ejecutable **#7 (survivorship+censura) → #9 (batch-effect) → #16 (prior confiable)
-→ #8/#10**, cada uno con el molde de #11 (~1 sesión). #12 salió de la cola por hallazgo
-(ADR 0076: la trampa de truncación requiere DEGENERACIÓN temprana — regla de diseño
-nueva + test de viabilidad barato para futuros mundos de horizonte). La **pila de
-diseño** queda para sesión de dirección conjunta: eventos mid-trayectoria (#15) + slot
-20, re-orientación failure-mode + primer mundo anti-vicio (jugadores-robot del
-certificado de trampa necesaria), proto-designer (#14), colas (#13, 3er formalismo),
-**#12 rediseñado con drenaje no-lineal (integrador)**, suite Anomaly, κ.
+cola ejecutable **#9 (batch-effect) → #16 (prior confiable) → #8/#10**, cada uno con el
+molde probado (~1 sesión). #7 HECHO (ADR 0077: capa archival + twins nuevos schema-driven;
+el frontier lo resuelve a presupuesto pleno — dial #6 disponible para endurecerlo). #12
+salió de la cola por hallazgo (ADR 0076: la trampa de truncación requiere DEGENERACIÓN
+temprana — regla de diseño nueva + test de viabilidad barato). La **pila de diseño**
+queda para sesión de dirección conjunta: eventos mid-trayectoria (#15) + slot 20,
+re-orientación failure-mode + primer mundo anti-vicio (jugadores-robot del certificado
+de trampa necesaria), proto-designer (#14), colas (#13, 3er formalismo), **#12
+rediseñado con drenaje no-lineal (integrador)**, suite Anomaly, κ.
 
 ## Cartera E1 (20 slots; 6 hechos)
 
@@ -42,7 +43,7 @@ certificado de trampa necesaria), proto-designer (#14), colas (#13, 3er formalis
 | 4 | selection_bias_v0 | sampling | SCM | C | HECHO (saturado) |
 | 5 | latent_mix_v2 | Latent | SCM | T | HECHO (tríptico confirmado) |
 | 6 | selection_bias_scarce_v0 | sampling | SCM | T | HECHO (presupuesto discrimina) |
-| 7 | survivorship+censura | sampling | SCM | T | por autorar |
+| 7 | survivorship_censor_v0 | sampling | SCM | T | **HECHO** (ADR 0077: capa archival nueva; naive malaprecia reclamos 5×; E0 0.975/0.818) |
 | 8 | immortal-time | sampling | SCM longitudinal | T | por autorar |
 | 9 | batch-effect confundido | canal | SCM | T | por autorar |
 | 10 | missingness informativo | canal | SCM | T | por autorar |

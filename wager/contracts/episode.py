@@ -54,6 +54,22 @@ class MeasurementChannel(BaseModel):
     replicates: int = Field(default=1, ge=1, le=2)
 
 
+class CensoringRule(BaseModel):
+    """ARCHIVAL censoring of a source's recorded values (sampling layer, #7 --
+    ADR 0077): the historical record format clips one column at a limit (the
+    old bench's range), producing the classic pile-up at the limit. It is a
+    property of how records were KEPT, not of the meter: experiments (fresh
+    logging) bypass it exactly like they bypass selection, and the v0.9 rule
+    keeps protecting only the CHANNEL. Applied AFTER the channel (the recorded
+    value is what gets clipped; with replicates, every rep)."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    column: str
+    limit: float
+    side: Literal["above", "below"] = "above"  # above: values > limit recorded AS limit
+
+
 class SourceConfig(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
@@ -70,6 +86,8 @@ class SourceConfig(BaseModel):
     # de-biasing structure, future worlds declare it.
     selection: SelectionFilter | None = None
     channel: MeasurementChannel | None = None
+    # archival censoring (#7, ADR 0077): records-only, experiments bypass it
+    censoring: CensoringRule | None = None
     pipeline_order: Literal["select_then_measure", "measure_then_select"] = "select_then_measure"
 
 

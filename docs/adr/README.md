@@ -87,3 +87,4 @@
 | 0074 | v0.74 | 2026-07-05 | [Mundo #11 (logistic_yield_v0): el formalismo 2 VALIDADO — una extensión trivial, dos deudas](0074-v0.74-mundo-11-logistic-yield-v0-el-formalismo-2-valida.md) | Vigente |
 | 0075 | v0.75 | 2026-07-05 | [Orden de trabajo (Lucas): ejecutar lo conocido primero; el diseño se piensa juntos, después](0075-v0.75-orden-de-trabajo-ejecutar-lo-conocido-primero.md) | Vigente |
 | 0076 | v0.76 | 2026-07-05 | [Hallazgo #12: la trampa de truncación requiere DEGENERACIÓN temprana — cascada lineal no certifica](0076-v0.76-hallazgo-12-la-trampa-de-truncacion-requiere-degeneracion.md) | Vigente |
+| 0077 | v0.77 | 2026-07-06 | [Mundo #7 (survivorship_censor_v0): capa ARCHIVAL nueva, certificado en dos coordenadas](0077-v0.77-mundo-7-survivorship-censor-v0-capa-archival-nueva.md) | Vigente |

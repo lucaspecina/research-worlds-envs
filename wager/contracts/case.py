@@ -62,7 +62,10 @@ class OperatorInstance(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     name: str
-    layer: Literal["mechanism", "channel", "sampling", "meta"]
+    # archival (#7, ADR 0077): record-keeping corruption (censoring at the old
+    # bench's limit) -- distinct from sampling (who enters the record) and from
+    # channel (the meter): experiments bypass it, the meter they never bypass.
+    layer: Literal["mechanism", "channel", "sampling", "archival", "meta"]
     knobs: dict[str, float] = Field(default_factory=dict)
     # mechanism-layer operators declare param overrides that ABLATE them, so the
     # factory can render the world with this operator off (derived twins / ladder)
