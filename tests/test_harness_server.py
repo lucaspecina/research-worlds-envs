@@ -110,9 +110,13 @@ def test_server_serves_views_and_split_schemas_on_source_trap_worlds():
     d = server.describe()
     assert d["schema"] == ["driver", "signal", "outcome", "ambient"]  # deliverable
     assert d["sources"]["registros_linea"]["columns"] == d["schema"]  # measured in place
-    assert d["sources"]["replicas_calibracion"]["columns"] == [
+    # view schemas are EMPIRICAL since D2/D4 (drawn through the real view):
+    # the replicate columns sit where the channel actually puts them -- what
+    # the agent truly receives, order included.
+    assert set(d["sources"]["replicas_calibracion"]["columns"]) == {
         "driver", "signal", "outcome__rep1", "outcome__rep2", "ambient",
-    ]
+    }
+    assert "outcome" not in d["sources"]["replicas_calibracion"]["columns"]
     assert "threshold" not in json.dumps(d) and "selection" not in json.dumps(d)
 
     reps = server.observe("replicas_calibracion", 300)

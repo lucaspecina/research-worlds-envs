@@ -83,7 +83,12 @@ def mechanism(params, regime, n, seed):
                  + rng.normal(0.0, p["f_noise"], n))
     outcome = (p["y_base"] - p["y_amb_coef"] * (ambient - p["amb_center"])
                + p["u_coef"] * u + rng.normal(0.0, p["y_noise"], n))
-    return pd.DataFrame({"t": t, "feedstock": feedstock, "outcome": outcome})
+    # `ambient` is exposed as a MECHANISM column for the D4 event source (the
+    # HVAC log view = t + ambient); every regular view HIDES it via declared
+    # hidden_columns (D2: the hall was never logged). No new RNG draws --
+    # certified quantities are byte-identical (pin no-op, verified).
+    return pd.DataFrame({"t": t, "ambient": ambient, "feedstock": feedstock,
+                         "outcome": outcome})
 
 
 def sample(regime, n, seed):

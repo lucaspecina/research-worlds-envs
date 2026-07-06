@@ -18,15 +18,16 @@ gates all-PASS a la primera, K̂=2000 certificado (la invisibilidad de K medida)
 0.763/0.894 con cero crashes en el contrato de trayectorias; residuo = triangulación del
 régimen histórico. Dos deudas de factory registradas (ladder/battery foto-only).
 
-**Próximo**: **MUNDO A HECHO (ADR 0082)** — primer certificado de trampa necesaria
-inaugurado (terco 0.005 vs cuidadoso 0.960, robots por el pipeline real; E0: rama
-seducido VACÍA, el frontier rompe su hipótesis de rutina → claim anti-vicio degradado a
-control para frontier-a-presupuesto-pleno, según la rama de riesgo pre-registrada D2;
-la celda escasez×vicio queda para E1). La línea anti-vicio tiene molde validado punta a
-punta. **Siguiente en la pila de diseño (juntos)**: maquinaria de eventos D4 (la
-variante con-noticia de #17 la estrena) o Mundo B (espera mecanismo de equivalencia
-verificado, candidato: degeneración certificada del logístico), o proto-designer (#14).
-Cola conocida restante: #8/#10 (riesgo de diseño declarado). Cartera 11/20.
+**Próximo**: **EVENTOS D4 HECHOS (ADR 0083)** — la noticia sellada funciona punta a
+punta: contrato `EpisodeEvent` + `hidden_columns` + fuentes desbloqueables + aviso en
+prompt; certificado de incorporación ALL-PASS (ignora 0.0002 vs incorpora 0.989);
+first_story completo en sus DOS variantes (pin no-op verificado byte-idéntico). E0 con
+noticia: 0.991 (incorporó y clavó) y 0.000/R_uncl −2.97 (incorporó PERO fabricó
+causalidad en señuelos + payload 59KB — otro vicio del catálogo preciado en vivo, dato
+para el mundo carnada-de-significancia). **Pila de diseño restante (juntos)**: Mundo B
+(equivalencia verificable con la degeneración del logístico), proto-designer (#14),
+colas (#13), #12 no-lineal, Anomaly, κ. Cola conocida: #8/#10 (riesgo declarado).
+Cartera 11/20 con #17 doble-variante.
 
 ## Cartera E1 (20 slots; 6 hechos)
 

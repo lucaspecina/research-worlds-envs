@@ -94,6 +94,14 @@ def run_episode(
 
     with KernelClient(server, cell_timeout_s=cell_timeout_s) as kernel:
         for turn_idx in range(1, max_turns + 1):
+            # sealed mid-episode events (D4, ADR 0081): fired notices arrive
+            # PREPENDED to this turn's prompt; the unlocked source is already
+            # observable when the model's cell runs.
+            notices = server.begin_turn(turn_idx)
+            if notices:
+                prompt = ("\n".join(f"[NOTICE] {n}" for n in notices)
+                          + "\n(env.describe() now lists any newly available source.)\n\n"
+                          + prompt)
             traj_before = len(server.trajectory)
             reply = chat.ask(prompt)
             cell = extract_cell(reply.content)

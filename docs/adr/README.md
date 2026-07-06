@@ -93,3 +93,4 @@
 | 0080 | v0.80 | 2026-07-06 | [Doctrina anti-vicio: molde unificador ACEPTADO con cuatro correcciones load-bearing](0080-v0.80-doctrina-anti-vicio-molde-unificador-con-cuatro-correcciones.md) | Vigente |
 | 0081 | v0.81 | 2026-07-06 | [Mundo A: decisiones D1-D5 firmadas + robots por el pipeline de episodio real](0081-v0.81-mundo-a-decisiones-d1-d5-firmadas-robots-por-episodio.md) | Vigente |
 | 0082 | v0.82 | 2026-07-06 | [Mundo #17 (first_story_v0): el PRIMER certificado de trampa necesaria — terco 0.005 vs cuidadoso 0.960](0082-v0.82-mundo-17-first-story-v0-primer-certificado-de-trampa-necesaria.md) | Vigente |
+| 0083 | v0.83 | 2026-07-06 | [Maquinaria de eventos D4: la noticia sellada funciona — certificado de incorporación ALL-PASS](0083-v0.83-maquinaria-de-eventos-d4-la-noticia-sellada-funciona.md) | Vigente |

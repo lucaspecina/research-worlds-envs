@@ -119,6 +119,10 @@ class SourceConfig(BaseModel):
     # per-batch meter offsets (#9, ADR 0078): offsets apply to experiments too
     # (the meter's runs); the drift+ramp confound is history-only
     batch: BatchEffect | None = None
+    # columns the instrument/record NEVER reports (D2 of ADR 0081: the world's
+    # mechanism may expose internals -- e.g. the unlogged ambient -- that no
+    # view shows; applied LAST, records and experiments alike)
+    hidden_columns: tuple[str, ...] = ()
     pipeline_order: Literal["select_then_measure", "measure_then_select"] = "select_then_measure"
 
 
@@ -133,12 +137,34 @@ class ExperimentCost(BaseModel):
     cost_per_horizon: float = Field(default=0.0, ge=0)
 
 
+class EpisodeEvent(BaseModel):
+    """A SEALED mid-episode event (D4, ADR 0081; open question #15): the world
+    interrupts the solver with pre-written DATA -- never narrated
+    interpretation. Fires at the START of turn `trigger_turn` OR as soon as
+    spent/budget >= trigger_spend_frac, whichever comes FIRST (a pure spend
+    threshold is dodgeable at 49% and flunks whoever never saw the news).
+    On firing: `notice` (a fixed 2-liner) is prepended to the solver's next
+    prompt and `source` becomes observable under `source_name`. NOT disclosed
+    in the brief (realistic: the exam prices not-incorporating, never
+    not-guessing). Authored sealed, alongside the brief."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    trigger_turn: int = Field(ge=1)
+    trigger_spend_frac: float = Field(default=0.5, ge=0.0, le=1.0)
+    notice: str
+    source_name: str
+    source: SourceConfig
+
+
 class EpisodeConfig(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     budget: float = Field(gt=0)
     observe_sources: dict[str, SourceConfig]
     experiment: ExperimentCost
+    # sealed mid-episode events (D4); empty for every event-less world (inert)
+    events: list[EpisodeEvent] = Field(default_factory=list)
     # the DECLARED instrument experiments read (v0.58-2: positional conventions
     # are dummy-ism seeds -- two sources with different channels would bite
     # silently). Names the source whose channel is the case's meter; None only

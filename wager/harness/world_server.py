@@ -82,6 +82,31 @@ class WorldServer:
         self.trajectory: list[VerbEvent] = []
         self.terminal = False
         self.result: dict | None = None  # server-side: includes R
+        self._unlocked: dict = {}        # sources revealed by fired events (D4)
+        self._fired_events: set = set()
+
+    # --- sealed mid-episode events (D4, ADR 0081) -----------------------
+    def begin_turn(self, turn_idx: int) -> list[str]:
+        """Called by the episode loop (and scripted robots) at the START of
+        each turn. Fires every pending event whose trigger is met -- turn
+        reached OR spend fraction reached, whichever FIRST -- unlocking its
+        source and returning the sealed notices to prepend to the prompt."""
+        notices = []
+        frac = self._spent / self.config.budget if self.config.budget else 0.0
+        for i, ev in enumerate(self.config.events):
+            if i in self._fired_events or self.terminal:
+                continue
+            if turn_idx >= ev.trigger_turn or frac >= ev.trigger_spend_frac:
+                self._fired_events.add(i)
+                self._unlocked[ev.source_name] = ev.source
+                notices.append(ev.notice)
+                self._log("event", {"source": ev.source_name, "turn": turn_idx}, 0.0,
+                          note=ev.notice[:120])
+        return notices
+
+    @property
+    def _sources(self) -> dict:
+        return {**self.config.observe_sources, **self._unlocked}
 
     # --- ledger --------------------------------------------------------
     @property
@@ -102,14 +127,13 @@ class WorldServer:
     # --- source views (v0.54-2/v0.56: the agent sees VIEWS, the exam grades
     # the PROCESS; first implemented for source-trap worlds) ----------------
     def _source_view_columns(self, spec) -> list[str]:
-        cols = list(self.columns)
-        ch = spec.channel
-        if ch is not None and ch.replicates > 1:
-            i = cols.index(ch.column)
-            cols[i : i + 1] = [f"{ch.column}__rep{r + 1}" for r in range(ch.replicates)]
-        if spec.batch is not None:  # the run id is part of the view (#9)
-            cols.append(spec.batch.id_column)
-        return cols
+        # EMPIRICAL view schema (D2/D4 worlds broke the reconstruct-from-
+        # deliverable logic: views may carry extra world columns like the era
+        # timestamp, hide others, or belong to an unlocked event source): draw
+        # a tiny fixed-seed sample through the REAL view and report its
+        # columns -- always truthful by construction.
+        tiny = source_view(self.world_sample, spec, 5, 424242)
+        return list(tiny.columns)
 
     @property
     def _meter(self):
@@ -150,7 +174,7 @@ class WorldServer:
                     "cost_per_row": s.cost_per_row,
                     "columns": self._source_view_columns(s),
                 }
-                for name, s in self.config.observe_sources.items()
+                for name, s in self._sources.items()
             },
             "experiment_cost": {
                 "cost_fixed": self.config.experiment.cost_fixed,
@@ -163,11 +187,11 @@ class WorldServer:
 
     def observe(self, source: str, n: int) -> pd.DataFrame:
         self._guard_open()
-        if source not in self.config.observe_sources:
-            raise KeyError(f"unknown source {source!r}; available: {list(self.config.observe_sources)}")
+        if source not in self._sources:
+            raise KeyError(f"unknown source {source!r}; available: {list(self._sources)}")
         if n <= 0 or n > 5000:
             raise ValueError("n must be in 1..5000")
-        spec = self.config.observe_sources[source]
+        spec = self._sources[source]
         cost = spec.cost_per_row * n
         self._charge(cost, f"observe({source!r}, {n})")
         # the agent receives the SOURCE VIEW (selection + channel per the
@@ -192,9 +216,12 @@ class WorldServer:
         # The experiment runs the MECHANISM fresh under the chosen assignment --
         # randomization bypasses the historical SELECTION, but NEVER the
         # measurement channel (v0.9): the same imperfect meter reads the result.
+        meter_hidden = (self.config.observe_sources[self.config.experiment_meter].hidden_columns
+                        if self.config.experiment_meter is not None else ())
         df = experiment_view(
             self.world_sample, _ns(design.to_regime()), self._meter,
             design.n, self._next_seed(800_000), source_batch=self._meter_batch,
+            hidden_columns=meter_hidden,
         )
         self._log("experiment", {"config": dict(design.config), "context": dict(design.context), "n": design.n}, cost)
         return df

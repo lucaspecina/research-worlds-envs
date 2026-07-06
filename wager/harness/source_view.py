@@ -108,12 +108,12 @@ def source_view(world_sample: Callable, source: SourceConfig, n: int, seed: int)
                              historical=True)
         cen = source.censoring
         if cen is None:
-            return df
+            return _visible(df, source)
         cols = [c for c in df.columns if c == cen.column or c.startswith(f"{cen.column}__rep")]
         out = df.copy()
         for c in cols:
             out[c] = out[c].clip(upper=cen.limit) if cen.side == "above" else out[c].clip(lower=cen.limit)
-        return out
+        return _visible(out, source)
 
     if source.selection is None and not measure_first:
         df = measured(world_sample(ns, n, seed), np.random.default_rng(derive_seed(seed, _CH_TAG)))
@@ -142,8 +142,16 @@ def source_view(world_sample: Callable, source: SourceConfig, n: int, seed: int)
     return archived(df).reset_index(drop=True)
 
 
+def _visible(df: pd.DataFrame, source: SourceConfig) -> pd.DataFrame:
+    """Drop the columns the instrument/record never reports (D2, ADR 0081) --
+    the LAST step of every view."""
+    hidden = [c for c in source.hidden_columns if c in df.columns]
+    return df.drop(columns=hidden) if hidden else df
+
+
 def experiment_view(world_sample: Callable, regime, source_channel: MeasurementChannel | None,
-                    n: int, seed: int, source_batch: BatchEffect | None = None) -> pd.DataFrame:
+                    n: int, seed: int, source_batch: BatchEffect | None = None,
+                    hidden_columns: tuple[str, ...] = ()) -> pd.DataFrame:
     """Experimental draw: randomization bypasses the historical SELECTION (that
     is what it buys) but NEVER the measurement channel (v0.9 rule -- the
     thermometer is still the same thermometer; test asserts this). The meter's
@@ -157,4 +165,7 @@ def experiment_view(world_sample: Callable, regime, source_channel: MeasurementC
         df = apply_batch(df, source_batch,
                          np.random.default_rng(derive_seed(seed, _BATCH_TAG)),
                          historical=False)
+    hidden = [c for c in hidden_columns if c in df.columns]
+    if hidden:
+        df = df.drop(columns=hidden)
     return df.reset_index(drop=True)

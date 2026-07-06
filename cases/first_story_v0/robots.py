@@ -142,11 +142,92 @@ def model(regime, n, seed):
     server.submit(code)
 
 
+def run_terco_noticia(server) -> None:
+    """The stubborn under NEWS (D4 pair): same seduced policy, but it PLAYS
+    THROUGH the event turn -- the notice fires, the HVAC log is available, and
+    it ignores both (declared: not-incorporating is the vice under test)."""
+    server.begin_turn(1)
+    df = server.observe("registros_linea", 1500)
+    for turn in (2, 3, 4):
+        server.begin_turn(turn)  # turn 4: the notice fires; ignored
+    f, y = df["feedstock"].to_numpy(float), df["outcome"].to_numpy(float)
+    a, b = _fit_line(f, y)
+    resid = float(np.std(y - (a + b * f)))
+    f_mean, f_sd = float(f.mean()), float(f.std())
+    code = f'''
+import numpy as np
+import pandas as pd
+
+def model(regime, n, seed):
+    rng = np.random.default_rng(seed)
+    g = float(regime.config.get("feedstock_grade", {GBAR}))
+    f = {f_mean} + (g - {GBAR}) + rng.normal(0.0, {f_sd}, n)
+    y = {a} + {b} * f + rng.normal(0.0, {resid}, n)
+    return pd.DataFrame({{"feedstock": f, "outcome": y}})
+'''
+    server.submit(code)
+
+
+def run_cuidadoso_noticia(server) -> None:
+    """Incorporates the news (D4 pair): headed to Historia X (it did NOT
+    stratify on its own -- this robot isolates pure incorporation), the turn-4
+    notice fires, it reads the HVAC log, maps the record's time trends into
+    ambient space, re-estimates, and ships Historia Y with what remains."""
+    server.begin_turn(1)
+    df = server.observe("registros_linea", 1500)
+    f, y, t = (df["feedstock"].to_numpy(float), df["outcome"].to_numpy(float),
+               df["t"].to_numpy(float))
+    server.begin_turn(2)
+    server.begin_turn(3)
+    notices = server.begin_turn(4)
+    if not notices:
+        raise RuntimeError("expected the sealed notice at turn 4")
+    log = server.observe("log_hvac", 800)
+    a_amb, b_amb = _fit_line(log["t"].to_numpy(float), log["ambient"].to_numpy(float))
+    amb_rec = a_amb + b_amb * t                      # the record rows' implied ambient
+    ay, by = _fit_line(amb_rec, y)                   # y in AMBIENT space (Historia Y)
+    af, bf = _fit_line(amb_rec, f)
+    reps = server.observe("replicas_calibracion", 60)
+    sigma = float(np.sqrt(max((reps["outcome__rep1"] - reps["outcome__rep2"]).var() / 2.0, 1e-4)))
+    y_res = float(np.sqrt(max(np.var(y - (ay + by * amb_rec)) - sigma ** 2, 0.25)))
+    f_res_all = float(np.std(f - (af + bf * amb_rec)))
+    lo_g = server.experiment(ExperimentDesign(config={"feedstock_grade": 2.0, "humidity": 5.0}, n=60))
+    hi_g = server.experiment(ExperimentDesign(config={"feedstock_grade": 8.0, "humidity": 5.0}, n=60))
+    g_coef = float((hi_g["feedstock"].mean() - lo_g["feedstock"].mean()) / 6.0)
+    amb_sd_hist = float(np.std(amb_rec))
+    code = f'''
+import numpy as np
+import pandas as pd
+
+def model(regime, n, seed):
+    rng = np.random.default_rng(seed)
+    g = regime.config.get("feedstock_grade")
+    h = regime.config.get("humidity")
+    if h is None:
+        amb = rng.uniform({float(a_amb)}, {float(a_amb + b_amb)}, n) + rng.normal(0.0, 0.4, n)
+    else:
+        amb = float(h) + rng.normal(0.0, 0.5, n)
+    gg = {GBAR} if g is None else float(g)
+    f = {af} + {bf} * amb + {g_coef} * (gg - {GBAR}) + rng.normal(0.0, {f_res_all}, n)
+    y = {ay} + {by} * amb + rng.normal(0.0, {y_res}, n)
+    return pd.DataFrame({{"feedstock": f, "outcome": y}})
+'''
+    server.submit(code)
+
+
+ROBOTS = {
+    "terco": run_terco,
+    "cuidadoso": run_cuidadoso,
+    "terco_noticia": run_terco_noticia,
+    "cuidadoso_noticia": run_cuidadoso_noticia,
+}
+
+
 def run_robot(case_dir, robot: str, seed_offset: int) -> dict:
     from wager.harness.case_episode import build_world_server
 
     server = build_world_server(case_dir, seed_offset=seed_offset)
-    (run_terco if robot == "terco" else run_cuidadoso)(server)
+    ROBOTS[robot](server)
     if server.result is None:
         raise RuntimeError(f"robot {robot} (seed {seed_offset}): submission rejected by smoke")
     return {"robot": robot, "seed_offset": seed_offset,
