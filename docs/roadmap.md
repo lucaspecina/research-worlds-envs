@@ -24,12 +24,13 @@ prompt; certificado de incorporación ALL-PASS (ignora 0.0002 vs incorpora 0.989
 first_story completo en sus DOS variantes (pin no-op verificado byte-idéntico). E0 con
 noticia: 0.991 (incorporó y clavó) y 0.000/R_uncl −2.97 (incorporó PERO fabricó
 causalidad en señuelos + payload 59KB — otro vicio del catálogo preciado en vivo, dato
-para el mundo carnada-de-significancia). **Orden vigente (ADRs 0084/0085/0086)**: **(1º) PENDIENTE VIVO: A-escasa y
-A-escasa×noticia** (GO + pre-registro firmados; hermano escaso de first_story, receta
-#6) → **(2º) PILOTO ANCHO A MANO, fuera de la escalera del diseñador** (atribución
-limpia; variante 15+ distractores de first_story o #9; chequeos de instrumento a 20
-cols ANTES del E0; headroom pre-registrado; etiqueta PRELIMINAR) → **(3º) spec del
-proto-designer (#14)** (eje anchura en la consigna; writer ciego; yield sin-retoque;
+para el mundo carnada-de-significancia). **Orden vigente (ADRs 0084-0087)**: A-escasa ✓ EJECUTADA (ADR 0087: los hábitos
+sobreviven a la escasez, la TERMINACIÓN no — R 0.925/0.000/0.308/0.088, 4/4 con
+investigación completa; mecanismo real por partición: rama histórica rota 2/4 +
+payload 1/4). **(1º) PILOTO ANCHO A MANO, fuera de la escalera del diseñador**
+(atribución limpia; variante 15+ distractores de first_story o #9; chequeos de
+instrumento a 20 cols ANTES del E0; headroom pre-registrado; etiqueta PRELIMINAR) →
+**(2º) spec del proto-designer (#14)** (eje anchura en la consigna; writer ciego; yield sin-retoque;
 auditoría humana pre-E1) con escalera: fácil (re-skin) → medio (estático nuevo) →
 difícil (**Mundo B**, tres decisiones de ADR 0084 en la consigna; timebox + fallback
 manual). Partición seed31 EJECUTADA (ADR 0086): R_fid +1.005 / R_mdl −3.975 — era el
