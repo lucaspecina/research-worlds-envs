@@ -47,8 +47,13 @@ generador LLM → certificación cero-LLM → yield; 4 decisiones A/B/C/D). **Pe
 (re-skin) corrido: yield 1/1** — gpt-5.4 re-skineó #16 a un dominio de secado
 (`dryer_setting/moisture_probe/shelf_life`) con R byte-idénticos + gates PASS a la primera
 (`wager/factory/proto_designer.py`; `cases/reskin_pilot_v0` = artefacto de yield, no slot
-nuevo). **(1º) firmar A/B → peldaño MEDIO (estático nuevo, composición desde la librería)**
-→ difícil (Mundo B, timebox) → resto de la cartera. (eje anchura en la consigna; writer ciego; yield sin-retoque;
+nuevo). **Peldaño MEDIO INTENTADO (ADR 0094)**: A/B firmados; gpt-5.4 generó un mundo confundido
+válido (injection-molding) — **el generador ANDA**; el verificador genérico
+(`wager/factory/generic_certify.py`, nuevo) destapó una cadena de deudas: canónico grado-2
+✓, visibilidad sub-batería ✓, cupo observacional ✓, **canónico estructural PENDIENTE**
+(de-confunde do() pero no reproduce la asignación confundida → recov 0.89). **Freno antes
+del rabbit-hole** (nuestro propio vicio-objetivo). **(1º) completar `_canonical` a
+estimador estructural → re-correr medio → yield** → difícil (Mundo B) → resto de cartera. (eje anchura en la consigna; writer ciego; yield sin-retoque;
 auditoría humana pre-E1) con escalera: fácil (re-skin) → medio (estático nuevo) →
 difícil (**Mundo B**, tres decisiones de ADR 0084 en la consigna; timebox + fallback
 manual). Partición seed31 EJECUTADA (ADR 0086): R_fid +1.005 / R_mdl −3.975 — era el
