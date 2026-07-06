@@ -35,7 +35,7 @@ auditoría humana pre-E1) con escalera: fácil (re-skin) → medio (estático nu
 difícil (**Mundo B**, tres decisiones de ADR 0084 en la consigna; timebox + fallback
 manual). Partición seed31 EJECUTADA (ADR 0086): R_fid +1.005 / R_mdl −3.975 — era el
 gamble de payload; lecturas de ADR 0083/0085 sobre seed31 retractadas. Después: colas
-(#13), #12 no-lineal, Anomaly, κ; cola conocida #8/#10. Cartera 11/20.
+(#13), #12 no-lineal, Anomaly, κ (7 casos); cola conocida #8/#10. Cartera 11/20. Re-lectura #6 (ADR 0088): bought_unused_evidence re-etiquetada rushed_termination (gpt 4/4 compró Y midió, jamás integró); firma nueva al catálogo; corrección a ADR 0067 (DS-seed3 sí compró 20 filas — chequeo-de-valor pendiente).
 
 ## Cartera E1 (20 slots; 6 hechos)
 

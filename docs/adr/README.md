@@ -98,3 +98,4 @@
 | 0085 | v0.85 | 2026-07-06 | [Eje anchura/enmascaramiento para el diseñador + piloto ancho pre-registrado](0085-v0.85-eje-anchura-enmascaramiento-para-el-disenador-y-piloto-ancho.md) | Vigente |
 | 0086 | v0.86 | 2026-07-06 | [Piloto ancho fuera de la escalera + LEDGER de pendientes como regla + partición seed31 (retractación)](0086-v0.86-piloto-ancho-fuera-de-la-escalera-ledger-de-pendientes.md) | Vigente |
 | 0087 | v0.87 | 2026-07-06 | [Celda escasez×vicio corrida: los hábitos sobreviven — la terminación no](0087-v0.87-celda-escasez-vicio-corrida-los-habitos-sobreviven-la-terminacion-no.md) | Vigente |
+| 0088 | v0.88 | 2026-07-06 | [Retractación simétrica + re-lectura #6 (rushed_termination unánime en gpt) + firma nueva + vigilancia del cap](0088-v0.88-retractacion-simetrica-relectura-6-firma-rushed-termination.md) | Vigente |
