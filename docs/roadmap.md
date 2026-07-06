@@ -18,11 +18,13 @@ gates all-PASS a la primera, K̂=2000 certificado (la invisibilidad de K medida)
 0.763/0.894 con cero crashes en el contrato de trayectorias; residuo = triangulación del
 régimen histórico. Dos deudas de factory registradas (ladder/battery foto-only).
 
-**Próximo**: con el formalismo 2 validado, el pipeline sigue por **spec de eventos
-mid-trayectoria** (`docs/open-questions.md` #15 — prerequisito de la familia "no cambia
-de opinión") y/o **matriz failure-mode** (#16). **Decisión pendiente de Lucas**: GO
-explícito a las asignaciones failure-mode por slot (7-20) y prioridad del proto-designer
-(#14) vs seguir llenando cartera a mano (#12/#13: 2º ODE, colas M/M/k).
+**Próximo (orden de trabajo ADR 0075: lo conocido primero, el diseño juntos después)**:
+cola ejecutable **#12 (2º ODE) → #7 (survivorship+censura) → #9 (batch-effect) → #16
+(prior confiable) → #8/#10**, cada uno con el molde de #11 (~1 sesión). La **pila de
+diseño** queda para sesión de dirección conjunta: eventos mid-trayectoria (#15) + slot
+20, re-orientación failure-mode + primer mundo anti-vicio (jugadores-robot del
+certificado de trampa necesaria), proto-designer (#14), colas (#13, 3er formalismo),
+suite Anomaly, κ.
 
 ## Cartera E1 (20 slots; 6 hechos)
 

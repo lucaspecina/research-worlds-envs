@@ -85,3 +85,4 @@
 | 0072 | v0.72 | 2026-07-05 | [Consolidaciones finales de docs (ARCHITECTURE→reference, CURRENT_STATE→roadmap, REDTEAM→test)](0072-v0.72-consolidaciones-finales-de-docs.md) | Vigente |
 | 0073 | v0.73 | 2026-07-05 | [Auditoría post-reestructura y fixes (14 findings, método de dos frentes)](0073-v0.73-auditoria-post-reestructura-y-fixes.md) | Vigente |
 | 0074 | v0.74 | 2026-07-05 | [Mundo #11 (logistic_yield_v0): el formalismo 2 VALIDADO — una extensión trivial, dos deudas](0074-v0.74-mundo-11-logistic-yield-v0-el-formalismo-2-valida.md) | Vigente |
+| 0075 | v0.75 | 2026-07-05 | [Orden de trabajo (Lucas): ejecutar lo conocido primero; el diseño se piensa juntos, después](0075-v0.75-orden-de-trabajo-ejecutar-lo-conocido-primero.md) | Vigente |
