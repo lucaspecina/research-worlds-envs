@@ -42,8 +42,13 @@ Mecanismo verificado (twin 96.4% en outcome; dilución del contraste, no D_MAX).
 global sin candado → **NO se implementa; (d) puro + funcional**. Hallazgo colateral: c_F
 alto haría gameable el funcional (oracle-gamer→1) → el freeze de 0.25 es doblemente
 correcto (techo de ruido ∧ no-gameabilidad → mismo c_F). Anchura = dial de ATENCIÓN.
-**(1º) proto-designer arranca por su escalera fácil (re-skin → estático medio → Mundo B),
-no toca anchura** → resto de la cartera. (eje anchura en la consigna; writer ciego; yield sin-retoque;
+**PROTO-DESIGNER arrancado (ADRs 0093)**: spec `docs/proto-designer.md` (consigna →
+generador LLM → certificación cero-LLM → yield; 4 decisiones A/B/C/D). **Peldaño FÁCIL
+(re-skin) corrido: yield 1/1** — gpt-5.4 re-skineó #16 a un dominio de secado
+(`dryer_setting/moisture_probe/shelf_life`) con R byte-idénticos + gates PASS a la primera
+(`wager/factory/proto_designer.py`; `cases/reskin_pilot_v0` = artefacto de yield, no slot
+nuevo). **(1º) firmar A/B → peldaño MEDIO (estático nuevo, composición desde la librería)**
+→ difícil (Mundo B, timebox) → resto de la cartera. (eje anchura en la consigna; writer ciego; yield sin-retoque;
 auditoría humana pre-E1) con escalera: fácil (re-skin) → medio (estático nuevo) →
 difícil (**Mundo B**, tres decisiones de ADR 0084 en la consigna; timebox + fallback
 manual). Partición seed31 EJECUTADA (ADR 0086): R_fid +1.005 / R_mdl −3.975 — era el

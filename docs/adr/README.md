@@ -103,3 +103,4 @@
 | 0090 | v0.90 | 2026-07-06 | [Barrido c_F sampling: TECHO DE ANCHURA confirmado; c_F* narrow=0.25 vindicado; decision d/split pendiente](0090-v0.90-barrido-cf-sampling-corrido-techo-de-anchura-confirmado.md) | Vigente |
 | 0091 | v0.91 | 2026-07-06 | [Opcion (d) firmada + c_F=0.25 congelado + diagnostico profundo (energy=model-recovery indiscriminado) + candado selectivo](0091-v0.91-opcion-d-firmada-cf-congelado-diagnostico-profundo-candado-selectivo.md) | Vigente |
 | 0092 | v0.92 | 2026-07-06 | [Compuerta del candado CERRADA: el funcional no es gameable (oracle-gamer R=-0.53); (d) puro; freeze c_F doblemente correcto](0092-v0.92-compuerta-del-candado-cerrada-el-funcional-no-es-gameable.md) | Vigente |
+| 0093 | v0.93 | 2026-07-06 | [Proto-designer: spec de trabajo de la fabrica automatica (consigna->generador->certificacion->yield); escalera facil/medio/Mundo B](0093-v0.93-proto-designer-spec-de-trabajo.md) | Vigente |
