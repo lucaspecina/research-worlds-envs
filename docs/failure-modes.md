@@ -115,8 +115,11 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
 > **Cosecha de la investigación dirigida (deep-research, 2026-07-07)** — corrida de 5 ángulos, 26
 > fuentes, 117 claims → 25 verificadas por voto adversarial → **19 confirmadas (3-0/2-1)** + 6 sin
 > verificar (el paso de síntesis se cayó por límite de API; la curaduría la completé desde los
-> claims verificados). Los ítems marcados **`[dr ✓]`** salieron de ahí, con cita. **Todos pasaron
-> el triage §0.5 = JUICIO** (blanco de WAGER), no operación.
+> claims verificados). **Marcas de estado de verificación** (honestidad de precisión — no marcar lo
+> que no se midió): **`[dr ✓]`** = pasó el voto adversarial 3-0/2-1; **`[dr ·]`** = extraído con
+> CITA TEXTUAL de la fuente pero NO llegó al voto (el presupuesto de verificación se cortó);
+> **`[dr ~]`** = candidato cuyos 3 votos erroraron por el límite. **Todos pasaron el triage §0.5 =
+> JUICIO** (blanco de WAGER), no operación.
 
 ### A — Actualización de creencias
 - **Fijación de hipótesis / sesgo de confirmación** — cog-sci clásico (Wason 2-4-6; Klayman &
@@ -128,7 +131,7 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
   sellados. *Estado: maquinaria lista (D4), certificado de robots ✓ (0.0002 vs 0.989), sin
   correr con modelos.*
 - **Anclaje** — Tversky & Kahneman: la primera estimación fija el resto. → primer dato sesgado.
-- **`[dr ✓]` Respuestas a datos anómalos — Chinn & Brewer 1993** (Review of Educational Research):
+- **`[dr ·]` Respuestas a datos anómalos — Chinn & Brewer 1993** (Review of Educational Research):
   de **7 respuestas** a evidencia que contradice la teoría, SOLO 1 es "aceptar y cambiar"; las otras
   6 la descartan (ignorar · rechazar · excluir del dominio · dejar en suspenso · reinterpretar ·
   parche periférico) + una 8ª "dudar de la validez del dato". *La taxonomía exacta de las jugadas
@@ -145,7 +148,7 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
   los científicos ignoran el hallazgo inesperado cuando es TEMPRANO y sobre una hipótesis auxiliar;
   le prestan atención si contradice supuestos centrales o llega TARDE. *Da el RÉGIMEN exacto donde
   el vicio bite → parametriza el timing del evento sellado (D4).*
-- **`[dr ✓]` Perseverancia tras el desmentido — Anderson & Lepper 1980; Mitroff 1974 (Apollo)**: la
+- **`[dr ·]` Perseverancia tras el desmentido — Anderson & Lepper 1980; Mitroff 1974 (Apollo)**: la
   creencia sobrevive al descrédito TOTAL de la evidencia que la fundó; los 42 científicos de élite
   del Apollo no movieron sus "pet hypotheses" con los datos lunares. → *mundo donde la evidencia
   comprada se RETRACTA a mitad (D4 invalida un dato ya pagado): ¿revierte la creencia? El inverso,
@@ -199,7 +202,7 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
   restricción produce preguntas factibles solo el **41%** de las veces vs **87%** si se la ancla a la
   estructura del dataset (≈59% alucinadas). *Cuantifica el lado generativo del research taste — y
   sugiere el dial: cuánta estructura se le da de entrada.*
-- **`[dr ✓]` La analogía de descubrimiento es CERCANA, no lejana — Dunbar 1997**: de 99 analogías en
+- **`[dr ·]` La analogía de descubrimiento es CERCANA, no lejana — Dunbar 1997**: de 99 analogías en
   16 lab meetings, solo **2** lejanas/no-biológicas; el descubrimiento real corre sobre analogías
   *near*, basadas en homología (40 mismo-organismo, 57 otro-organismo). *Dato de diseño para D:
   premiar la analogía estructural CERCANA correcta, no el salto vistoso — el mito del "insight
@@ -222,7 +225,7 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
 fuerte" — y ya tenemos maquinaria (`confounded_gen_v0`, `generic_certify`). Solapa con C (respuesta
 barata falsa) pero el eje es distinto: la trampa es la asignación observacional, no la significancia.
 Todos JUICIO. Toca la taxonomía de ADR 0099 → por eso se propone, no se impone.*
-- **`[dr ✓]` Correlación ≠ causación — Corr2Cause, Jin et al. 2023**: 17 LLMs (hasta GPT-4) puntúan
+- **`[dr ·]` Correlación ≠ causación — Corr2Cause, Jin et al. 2023**: 17 LLMs (hasta GPT-4) puntúan
   al **NIVEL DEL AZAR** infiriendo causalidad desde correlación (dataset 200K). *El ancla dura del
   vicio.* → mundo observacional confundido donde solo `do()` revela la verdad.
 - **`[dr ✓]` Leakage / distribution-mismatch — Kapoor & Narayanan 2023** (taxonomía de 8 tipos): el
