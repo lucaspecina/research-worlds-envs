@@ -16,6 +16,34 @@ perdedora** — la conducta se OBSERVA (firma de trace), jamás se premia; el mu
 vicio produzca un modelo final peor y el examen cero-LLM cobra la consecuencia. Cada failure
 mode bien documentado que encontramos **es una especificación para un mundo**.
 
+## 0.5. El corte primario: OPERACIÓN vs JUICIO (define el ALCANCE de WAGER)
+
+Antes de la taxonomía por dinámica de mundo (§3) hay un corte **más importante**, porque define
+qué mide WAGER y qué NO. Todo failure mode cae en una de dos clases:
+
+- **OPERACIÓN** — el agente es un trabajador desprolijo que **pierde el hilo**: pierde
+  restricciones, no registra info que llegó a mitad de camino, adivina en vez de preguntar,
+  repite una acción que ya falló, olvida verificar. **Lo arregla mejor andamiaje: memoria,
+  checklists, planners, loops de reparación. Medio mundo ya trabaja en esto** (OSWorld,
+  computer-use, memoria/reflexion). **NO es blanco de WAGER.**
+- **JUICIO** — el agente **TIENE la info en contexto**, ve la contradicción, y aun así hace la
+  jugada epistémica equivocada: ignora la evidencia (68%), no revisa la creencia refutada (26%),
+  no triangula, se casa con la 1ª hipótesis, retrocede al modelo familiar, fabrica precisión.
+  **El andamiaje NO lo arregla** (el base model explica el 41.4% de la varianza; el scaffold el
+  1.5% — §4-ter). **Esta es la razón de ser de WAGER — lo que ningún otro entorno mide bien.**
+
+**El discriminador** (afilado, de Lucas): *¿lo arreglaría un mejor andamiaje/memoria/checklist?*
+**Sí → operación** (no es nuestro). **No → juicio** (es nuestro). **Heurística de fuente** (guía,
+NO ley): un benchmark de operación/computer-use (OSWorld) tiende a reportar operación; un
+análisis de TRAZA/epistémico (grafos H/T/E/J/U/C, §4-ter) reporta juicio. *Pero la fuente es
+pista, no veredicto*: OSWorld —benchmark de operación— reporta "se hunde recuperando un estado
+oculto", que es JUICIO puro (inferir lo latente = familia D/v2). **Siempre manda el
+discriminador, no el origen.**
+
+Las seis familias de §3 son la **sub-taxonomía de la columna JUICIO** — organizan cómo volver
+puntuable un vicio de juicio. Los vicios de operación se registran y se **bracketean** (§4-bis),
+nunca se mezclan con los de juicio: mezclarlos diluye el foco que es toda la tesis del proyecto.
+
 ## 1. Qué ya sabemos (no arrancamos de cero)
 
 - **El instrumento SÍ captura vicios, medidos** (no es aspiracional): comprar-evidencia-y-no-
@@ -50,6 +78,12 @@ mode bien documentado que encontramos **es una especificación para un mundo**.
    siempre es "descubrí el mecanismo oculto investigando".
 7. **Altura de la trampa/pista**: se nombra la CONDUCTA, nunca la RESPUESTA. Test: un modelo
    que nunca vio el mundo, tras leer la pista, sigue sin saber la respuesta.
+8. **Aislá el JUICIO de la OPERACIÓN** (el corte de §0.5, lado diseño): el mundo debe REMOVER la
+   excusa operacional —info relevante siempre en contexto o recuperable barato, restricciones
+   explícitas, sin trampa de memoria/horizonte— para que la ÚNICA falla posible sea de juicio. Si
+   el agente puede fallar por perder el hilo, estás midiendo operación (lo que el campo ya mide).
+   Es el lado-DISEÑO de la separación ejecución-vs-juicio que ya validamos en la MEDICIÓN (ADR
+   0098): allá separamos los ceros de ejecución de los de juicio; acá los diseñamos-afuera.
 
 ## 3. La taxonomía por DINÁMICA DE MUNDO (el organizador clave)
 
@@ -64,6 +98,13 @@ fuerza a manifestarse de forma puntuable** — porque esa dinámica ES el diseñ
 | **D. Representación / creatividad** | retirada a lo familiar; no inventar la estructura necesaria; sobre-simplificar | **INVENTAR LA ESTRUCTURA** (v2): el ganador formula una hipótesis latente/estructural | fidelidad al mecanismo que solo la estructura correcta reproduce |
 | **E. Memoria / consistencia (largo plazo)** | perder restricciones; trabajo redundante; recuperación que se degrada en trayectorias largas | **HORIZONTE LARGO + restricción de enlace tardío** (declarada temprano, cobrada al final) | parcialmente límite del harness → se MIDE, no se diseña-en-contra |
 | **F. Interacción / preguntar** | adivinar en vez de averiguar; no registrar info que llega a mitad de camino; saltear la verificación disponible | **CONSULTABLE + evidencia mid-way**: lo faltante tiene precio conocido y accesible | diferencia de suposición-vs-consulta |
+
+> **Las seis familias sub-clasifican la columna JUICIO** (§0.5), no la de operación. Cada familia
+> tiene una CARA operacional que el diseño debe **engañar-afuera** para no medir operación por
+> error: **E (memoria) es la más peligrosa** — la info debe quedar EN contexto para que la falla
+> sea "no lo conectó" (juicio) y no "lo perdió" (operación); por eso E "se mide, no se
+> diseña-en-contra". **F straddlea**: "adivinar en vez de preguntar" es operación, pero *saber que
+> necesitás preguntar* (reconocer que hay algo que no sabés) es juicio — ese es el lado nuestro.
 
 ## 4. El catálogo (seed inicial — a completar con la literatura)
 
@@ -115,40 +156,49 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
 - **Adivinar en vez de averiguar** — evals de agentes interactivos. → info faltante con precio
   accesible. *Estado: el inverso (comprar-y-no-usar) CONFIRMADO (#6); el directo por diseñar.*
 
-## 4-bis. Corpus compilado (Lucas) — hallazgos CITADOS y CUANTIFICADOS
+## 4-bis. Corpus compilado (Lucas) — ruteado por el corte OPERACIÓN/JUICIO (§0.5)
 
-Recopilación de Lucas de fuentes reales (2025-2026). Lo que estas fuentes aportan de único:
-**números** y una **metodología externa que valida nuestro enfoque**. Cada ítem → su familia
-de §3.
+Recopilación de Lucas de fuentes reales (2025-2026). Lo que aportan de único: **números**. Pero
+—corrección de Lucas— NO van todos en la misma tabla: primero se **rutean por §0.5**, porque los
+de operación no son blanco de WAGER y mezclarlos diluye el foco que es toda la tesis.
 
-**Cuantificados (los que dan la vara empírica)** — de un análisis por grafo epistémico
-(arxiv 2604.18805 y afines) y de SciAgentGym:
-- **Evidencia IGNORADA en el 68% de los traces** (A): ve un resultado que contradice su
-  hipótesis y sigue como si nada.
+### JUICIO — el blanco de WAGER (el andamiaje NO los arregla)
+Cuantificados (la vara empírica que nos faltaba), del análisis por grafo epistémico
+(arxiv 2604.18805) y afines:
+- **Evidencia IGNORADA en el 68% de los traces** (A): tiene en contexto un resultado que
+  contradice su hipótesis y sigue como si nada. *Juicio puro — la info está, la jugada no.*
 - **Revisión de creencia refutada solo en el 26%** (A): ante evidencia contraria, casi nunca
   actualiza.
-- **Error-signal blindness: 67%** repite exactamente la misma acción fallida sin cambiar nada
-  (SciAgentGym) (A/F). Cascada: no detecta → no diagnostica → no pivotea → repite.
-- **Convergent multi-test RARO** (~6-13% según modelo) (C): no triangula con tests
-  independientes.
-- **Degradación irreversible de resiliencia** (E): la recuperación de errores baja monótono en
-  trayectorias largas (modelos débiles ~30%→~10% sin rebotar); los fuertes muestran
-  Rise-Fall-Rise → **la resiliencia es entrenable** (implicación para E2).
-- **<7% del presupuesto en detectar/reparar sus propios errores** (OSWorld-V2) (C/B); se hunden
-  donde la tarea depende de **recuperar un estado oculto** (D — la familia v2).
+- **Convergent multi-test RARO** (~6-13% según modelo) (C): pudiendo triangular con tests
+  independientes, no lo hace.
+- **Retirada a defaults/convenciones** (D): con una convención no-estándar que él mismo escribió,
+  vuelve al default de manual (vibe-physics). *Abandona la estructura correcta que ya tenía.*
+- **Sycophancy bajo presión** (C): cede el juicio a la presión social y da la respuesta que
+  parecés querer. *La presión no solo expone el vicio — puede CREAR el de complacer.* Dato de
+  diseño: cuidá que la "pista" no induzca complacencia.
+- **No actuar sobre la propia anomalía** (C/A): no ve lo interesante/anómalo en sus resultados.
+- **Hundirse recuperando un estado OCULTO** (D/v2): aunque lo reporte OSWorld —benchmark de
+  operación— esto es juicio: exige inferir lo latente, la familia de nuestro trofeo. *El ejemplo
+  de por qué el discriminador manda sobre la fuente (§0.5).*
 
-**Vicios distintos que suman al catálogo (§4)**:
-- **Analysis-decision disconnect** (F/nuevo): identifica correctamente el edge y aun así NO
-  actúa (o dimensiona mal) — desconexión entre el módulo analítico y el de decisión (benchmark
-  de apuestas por temporada). *No lo teníamos: el juicio correcto que no se traduce en acción.*
-- **Sycophancy bajo presión** (C/F): si lo presionás, termina dando la respuesta que parecés
-  querer aunque no esté justificada (Anthropic vibe-physics). *La presión no solo expone el
-  vicio — puede CREAR uno (complacer).* Dato de diseño: cuidado con que la "pista" no induzca
-  complacencia.
-- **Reversión a convenciones/defaults** (D): con convenciones no-estándar, vuelve a los
-  defaults de manual aunque lo obligues a escribir la convención y sostenerla (vibe-physics).
-- **No actuar sobre la propia anomalía** (C/A): no ve lo interesante/anómalo en sus propios
-  resultados (varias fuentes).
+Vicio nuevo, de frontera:
+- **Analysis-decision disconnect** (juicio→acción): identifica bien el edge y aun así NO actúa /
+  dimensiona mal (benchmark de apuestas). *Es juicio correcto que no se traduce en decisión — un
+  tercer tipo. Nuestros mundos actuales no lo testean (el análisis ES el entregable, no hay paso
+  de "apostar" separado); anotado como frente futuro.*
+
+### OPERACIÓN — NO es blanco de WAGER (lo resuelve el andamiaje; el campo ya está en esto)
+Se listan para **NO confundirlos** con los de juicio, no para construir mundos:
+- **Perder restricciones · no registrar info mid-way · adivinar en vez de preguntar · saltear
+  verificación · <7% del presupuesto en auto-repararse** (OSWorld-V2): el trabajador desprolijo.
+  Memoria / checklists / planners / loops de reparación → territorio de ingeniería de agentes.
+
+Straddle (parte operación, parte juicio — se anota el corte, no se mezcla):
+- **Error-signal blindness: 67% repite la misma acción fallida** (SciAgentGym): *rastrear que
+  falló* es operación (un loop de reflexion lo tapa); *diagnosticar por qué y pivotear* es juicio.
+- **Degradación de resiliencia en trayectorias largas** (E): la robustez cae monótona en
+  horizonte (débiles ~30%→~10%); *que sea entrenable* (Rise-Fall-Rise en los fuertes) es la parte
+  de juicio/modelo → insumo E2. El horizonte en sí es la cara operacional de E (§3).
 
 ## 4-ter. Metodología externa que VALIDA nuestro enfoque (no un vicio — una confirmación)
 
@@ -189,8 +239,10 @@ de fuentes y sacando failure modes CONCRETOS con su cita:
 - **Metaciencia**: crisis de replicación, p-hacking, garden of forking paths (Gelman & Loken).
 
 > **Acción concreta**: correr una investigación dirigida (skill `deep-research` o WebSearch) por
-> cada familia de §3, extrayendo failure modes con cita + evidencia, y volcarlos a §4 con su
-> dinámica de mundo asignada. Paciencia: uno por uno.
+> cada familia, extrayendo failure modes con cita + evidencia. **Triage obligatorio (§0.5) ANTES
+> de asignar familia**: por cada vicio preguntá primero *¿lo arregla el andamiaje?* — si sí es
+> OPERACIÓN (se anota bracketeado, no es mundo WAGER); si no es JUICIO y recién ahí se le asigna
+> su dinámica de §3. La heurística de fuente ayuda a rutear pero no decide. Paciencia: uno por uno.
 
 ## 6. El proceso (de un vicio a un mundo)
 
