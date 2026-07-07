@@ -84,6 +84,16 @@ nunca se mezclan con los de juicio: mezclarlos diluye el foco que es toda la tes
    el agente puede fallar por perder el hilo, estás midiendo operación (lo que el campo ya mide).
    Es el lado-DISEÑO de la separación ejecución-vs-juicio que ya validamos en la MEDICIÓN (ADR
    0098): allá separamos los ceros de ejecución de los de juicio; acá los diseñamos-afuera.
+9. **Diversidad de ESTRUCTURAS, no solo de disfraz** (anti-overfitting; precisión de Lucas,
+   2026-07-07): un mismo vicio aparece en varias ESTRUCTURAS distintas —mecanismos/situaciones que
+   lo fuerzan—, no en un solo mecanismo con el disfraz cambiado. Ej.: "no actualizar" = evidencia
+   que llega a mitad de camino ∨ hipótesis-encajada-que-no-se-puede-refutar (Wason/Klayman-Ha) ∨
+   evidencia retractada (perseverancia) ∨ anclaje — cuatro mecanismos, no cuatro pieles de uno. La
+   cartera de un vicio DEBE cubrir esas estructuras distintas; si todos sus mundos comparten
+   estructura, un modelo entrenado overfitea a la estructura (el "truco de la fábrica"), no aprende
+   el juicio. Dos niveles: (1) estructuras distintas —lo fundamental—; (2) disfraces sobre cada
+   estructura —superficie, el re-skin ya existente—. El minado de semillas (§5) apunta PRIMERO a la
+   variedad estructural.
 
 ## 3. La taxonomía por DINÁMICA DE MUNDO (el organizador clave)
 
@@ -333,6 +343,9 @@ de fuentes y sacando failure modes CONCRETOS con su cita:
 > de asignar familia**: por cada vicio preguntá primero *¿lo arregla el andamiaje?* — si sí es
 > OPERACIÓN (se anota bracketeado, no es mundo WAGER); si no es JUICIO y recién ahí se le asigna
 > su dinámica de §3. La heurística de fuente ayuda a rutear pero no decide. Paciencia: uno por uno.
+> **Y buscar EJEMPLOS/casos concretos por vicio, agrupados por TIPO de estructura** (no solo dominios
+> distintos): la cartera necesita variedad ESTRUCTURAL para no overfitear en el entrenamiento
+> (principio 9). Búsqueda de casos lanzada 2026-07-07 con ese foco.
 
 ## 6. El proceso (de un vicio a un mundo)
 
