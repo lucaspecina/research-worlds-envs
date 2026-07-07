@@ -55,8 +55,7 @@ específico (alarma pre-registrada). Subpotenciado (n=3, R bimodal); los ceros c
 ejecución con juicio. Se sostuvieron las 2 predicciones "el cuidado no ayuda acá" (v2
 profundo ≈0, first_story sin brecha). NO es doom (v2 se comportó como se predijo; la
 disciplina funcionó) — empuja hacia la pista ESPECÍFICA de Lucas sobre el prompt general.
-**Próximo (decidir con Lucas)**: separar ejecución/juicio + más seeds, o pivotear a
-pista-específica, o cambiar la manipulación. Detalle en ADR 0096.
+**→ RESUELTO del lado SEGUIR (ADRs 0097/0098) — ver el cierre "LÍDER DE ESTADO" al final de esta sección.**
 
 **Peldaño MEDIO INTENTADO (ADR 0094)**: A/B firmados; gpt-5.4 generó un mundo confundido
 válido (injection-molding) — **el generador ANDA**; el verificador genérico
@@ -70,6 +69,33 @@ difícil (**Mundo B**, tres decisiones de ADR 0084 en la consigna; timebox + fal
 manual). Partición seed31 EJECUTADA (ADR 0086): R_fid +1.005 / R_mdl −3.975 — era el
 gamble de payload; lecturas de ADR 0083/0085 sobre seed31 retractadas. Después: colas
 (#13), #12 no-lineal, Anomaly, κ (7 casos); cola conocida #8/#10. Cartera 11/20. Re-lectura #6 (ADR 0088): bought_unused_evidence re-etiquetada rushed_termination (gpt 4/4 compró Y midió, jamás integró); firma nueva al catálogo; corrección a ADR 0067 (DS-seed3 sí compró 20 filas — chequeo-de-valor pendiente).
+
+**LÍDER DE ESTADO (2026-07-07) — el corazón documentado.** Cerrado el chequeo de ciencia del
+lado SEGUIR y documentado el catálogo (evolución, no refundación):
+- **Validez de constructo (ADRs 0097/0098)**: pista ESPECÍFICA por vicio (idea de Lucas) +
+  mediana + separar ceros de ejecución/juicio → la pista dirigida AÍSLA el vicio (first_story
+  escaso mediana 0.00→0.87; ≈0 en el control y a presupuesto pleno). **Señal POSITIVA.** Hallazgo
+  que ordena el diseño: **la presión expone el vicio** (no bite a presupuesto pleno). Caveat:
+  n=5, un modelo → replicar con DeepSeek (VIVO).
+- **El catálogo = el corazón (ADR 0099)**: `docs/failure-modes.md`, vivo — de un failure mode
+  documentado → mundo puntuable; taxonomía por **DINÁMICA DE MUNDO** (6 familias) + 7 principios
+  + scaffold de diseño.
+- **Corte primario (ADR 0100, corrección de Lucas)**: **OPERACIÓN** (la arregla el andamiaje →
+  NO es blanco de WAGER) **vs JUICIO** (la razón de ser). Principio 8 (aislar juicio de operación)
+  + triage obligatorio §0.5. Respaldado por base-42%/scaffold-1.5%: el scaffold no mueve el juicio.
+- **Cosecha deep-research integrada (ADR 0101)**: 26 fuentes → **19 claims verificados** (voto
+  adversarial) + 4 con cita textual; **todo JUICIO**, integrado a §4. Recetas buildables
+  destacadas: **Klayman-Ha embedding** (H⊂T ⇒ el test positivo NUNCA falsa → confirmar pierde
+  garantizado), **7 respuestas a datos anómalos de Chinn-Brewer**, **perseverancia-tras-retracción**
+  (evento D4 que invalida evidencia YA comprada). **Familia G (razonamiento causal) PROPUESTA —
+  pendiente OK de Lucas** (toca la taxonomía de 0099; ya hay maquinaria: `confounded_gen_v0`).
+- **PRÓXIMO**: (a) **decisión de Lucas**: familia G ¿7ª familia o sub-caso de C?; (b) **primer
+  mundo dinámico de familia A** con las recetas nuevas (Klayman-Ha / Chinn-Brewer / perseverancia);
+  (c) réplica de 0098 (DeepSeek). Deudas VIVAS: `_canonical` estructural (0094) — la familia G lo
+  vuelve más relevante; κ; DS-seed3 σ; variante dominio pareado #16/#17; rival (c).
+- **NOTA INFRA**: **límite de gasto mensual de API GOLPEADO** (lo reportó el workflow deep-research)
+  → toda corrida con modelos (réplica 0098, proto-designer medio) bloqueada hasta subirlo en
+  claude.ai/settings/usage.
 
 ## Cartera E1 (20 slots; 6 hechos)
 
