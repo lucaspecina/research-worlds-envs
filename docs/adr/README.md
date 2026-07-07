@@ -106,3 +106,4 @@
 | 0093 | v0.93 | 2026-07-06 | [Proto-designer: spec de trabajo de la fabrica automatica (consigna->generador->certificacion->yield); escalera facil/medio/Mundo B](0093-v0.93-proto-designer-spec-de-trabajo.md) | Vigente |
 | 0094 | v0.94 | 2026-07-06 | [Proto-designer MEDIO: el generador anda, el verificador generico necesita completarse (cadena de deudas); freno antes del rabbit-hole](0094-v0.94-proto-designer-medio-el-generador-anda-el-verificador-generico-necesita-completarse.md) | Vigente |
 | 0095 | v0.95 | 2026-07-06 | [Experimento de validez libre vs cuidadoso (trampas vs controles): PRE-REGISTRO firmado antes de mirar](0095-v0.95-experimento-de-validez-libre-vs-cuidadoso-preregistro-firmado.md) | Vigente |
+| 0096 | v0.96 | 2026-07-06 | [Experimento de validez CORRIDO: la prediccion primaria FALLO -- el cuidado mueve fiabilidad general, no un vicio; subpotenciado](0096-v0.96-experimento-de-validez-corrido-la-prediccion-primaria-fallo.md) | Vigente |

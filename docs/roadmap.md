@@ -47,7 +47,18 @@ generador LLM → certificación cero-LLM → yield; 4 decisiones A/B/C/D). **Pe
 (re-skin) corrido: yield 1/1** — gpt-5.4 re-skineó #16 a un dominio de secado
 (`dryer_setting/moisture_probe/shelf_life`) con R byte-idénticos + gates PASS a la primera
 (`wager/factory/proto_designer.py`; `cases/reskin_pilot_v0` = artefacto de yield, no slot
-nuevo). **Peldaño MEDIO INTENTADO (ADR 0094)**: A/B firmados; gpt-5.4 generó un mundo confundido
+nuevo). **CHEQUEO DE CIENCIA — 1er experimento de validez CORRIDO (ADRs 0095/0096)**: libre vs
+cuidadoso, trampas vs controles, pre-registro firmado antes de mirar. **La predicción
+primaria FALLÓ**: el control mostró la MISMA brecha que las trampas (resta de diferencias
+−0.02, se firmó ≥0.15) → el cuidado mueve fiabilidad de ejecución GENERAL, no un vicio
+específico (alarma pre-registrada). Subpotenciado (n=3, R bimodal); los ceros confunden
+ejecución con juicio. Se sostuvieron las 2 predicciones "el cuidado no ayuda acá" (v2
+profundo ≈0, first_story sin brecha). NO es doom (v2 se comportó como se predijo; la
+disciplina funcionó) — empuja hacia la pista ESPECÍFICA de Lucas sobre el prompt general.
+**Próximo (decidir con Lucas)**: separar ejecución/juicio + más seeds, o pivotear a
+pista-específica, o cambiar la manipulación. Detalle en ADR 0096.
+
+**Peldaño MEDIO INTENTADO (ADR 0094)**: A/B firmados; gpt-5.4 generó un mundo confundido
 válido (injection-molding) — **el generador ANDA**; el verificador genérico
 (`wager/factory/generic_certify.py`, nuevo) destapó una cadena de deudas: canónico grado-2
 ✓, visibilidad sub-batería ✓, cupo observacional ✓, **canónico estructural PENDIENTE**
