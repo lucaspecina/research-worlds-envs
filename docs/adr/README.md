@@ -114,3 +114,4 @@
 | 0101 | v1.01 | 2026-07-07 | [Cosecha deep-research integrada al catalogo (19 claims verificadas); familia G (causal) PROPUESTA pendiente OK](0101-v1.01-cosecha-deep-research-integrada-familia-causal-propuesta.md) | Vigente |
 | 0102 | v1.02 | 2026-07-07 | [Familia G (razonamiento causal) ADOPTADA como grupo propio del catalogo (decision de Lucas)](0102-v1.02-familia-g-causal-adoptada.md) | Vigente |
 | 0103 | v1.03 | 2026-07-07 | [Diversidad ESTRUCTURAL por vicio (no solo de disfraz) como requisito anti-overfitting (precision de Lucas)](0103-v1.03-diversidad-estructural-por-vicio.md) | Vigente |
+| 0104 | v1.04 | 2026-07-07 | [Case-search: mapa de estructuras rebuildables por vicio; puntos ciegos #4/#5/#2 identificados](0104-v1.04-case-search-mapa-de-estructuras-por-vicio.md) | Vigente |

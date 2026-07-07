@@ -90,12 +90,17 @@ lado SEGUIR y documentado el catálogo (evolución, no refundación):
   (evento D4 que invalida evidencia YA comprada). **Familia G (razonamiento causal) ADOPTADA como
   grupo propio (Lucas, 2026-07-07 — ADR 0102)**: la cura es una movida distinta (intervenir), no
   verificar más; ya hay maquinaria (`confounded_gen_v0`). Ahora son 7 familias (A-G).
-- **PRÓXIMO**: (a) diseñar el primer **mundo-trampa de causa-efecto** (familia G recién adoptada) —
-  correlación confundida donde solo intervenir revela la verdad; ya hay maquinaria
-  (`confounded_gen_v0`; deuda del verificador estructural `_canonical` en 0094, que esto vuelve
-  prioritaria). (b) primer **mundo dinámico de familia A** con las recetas nuevas (Klayman-Ha /
-  Chinn-Brewer / perseverancia). (c) réplica de 0098 (DeepSeek). Deudas VIVAS: κ; DS-seed3 σ;
-  variante dominio pareado #16/#17; rival (c).
+- **Diversidad ESTRUCTURAL — principio 9 + mapa (ADRs 0103/0104, precisión de Lucas)**: un vicio se
+  fractura en estructuras distintas (no en disfraces); la cartera debe cubrirlas o el entrenamiento
+  overfitea. La 2ª búsqueda (case-search, completa: 112 agentes, 23 claims verificados) mapeó las
+  estructuras por vicio: **1≈8, 6=4, 3=4, 7=2**; **puntos ciegos con 0 casos: vicio 4 (pero es el
+  trofeo v2, ya construido) y vicio 5; vicio 2 con 1 solo caso**. Ver ★ Mapa de estructuras en §4.
+- **PRÓXIMO**: (a) primer build recomendado — el **par 1a/1b de Klayman-Ha** (subset vs superset):
+  dos estructuras OPUESTAS del vicio "no actualizar" donde un modelo que memoriza "buscá refutar"
+  gana una y pierde la otra → demuestra el principio 9 en vivo. (b) **mundo-trampa de causa-efecto**
+  (familia G; ya hay `confounded_gen_v0`; deuda `_canonical` en 0094). (c) **3ª búsqueda a los puntos
+  ciegos** (#4/#5/#2, y colisionador para #7). (d) réplica de 0098 (DeepSeek). Deudas VIVAS: κ;
+  DS-seed3 σ; variante dominio pareado #16/#17; rival (c).
 
 ## Cartera E1 (20 slots; 6 hechos)
 

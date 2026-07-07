@@ -248,6 +248,69 @@ observacionales, no en la significancia. Todos JUICIO. Ya hay maquinaria: `confo
   la intervención (o modelar la asignación) recupera. *Estado: YA tenemos el mundo
   (`confounded_gen_v0`); el candado del verificador estructural es la deuda registrada en ADR 0094.*
 
+### ★ Mapa de estructuras rebuildables por vicio (case-search, 2026-07-07)
+*Segunda búsqueda dirigida (deep-research, 112 agentes, **23 claims verificados 3-0/2-1**), buscando
+CASOS por vicio agrupados por TIPO de estructura (principio 9). **Confirma empíricamente que un vicio
+se fractura en estructuras distintas** — no es un mecanismo con disfraces. Cada estructura = un mundo
+rebuildable; el label en negrita es el gancho.*
+
+**Vicio 1 — no actualizar creencias: ~8 estructuras (el más rico).**
+- 1a **subset / hipótesis-encajada** (Klayman-Ha 1987): H ⊂ T → el test positivo NUNCA falsa; solo
+  el negativo (Wason 2-4-6).
+- 1b **superset / hipótesis-que-envuelve** (el ESPEJO): H ⊃ T → ahora SOLO el positivo falsa y buscar
+  disconfirmación ENGAÑA. *Par anti-overfitting con 1a: un modelo que memoriza "siempre buscá
+  refutar" gana 1a y PIERDE 1b → lo obliga a juicio, no a truco.*
+- 1c **perseverancia tras desmentido total** (Anderson-Lepper-Ross 1980): la creencia sobrevive a que
+  le digan que la evidencia era ficticia; mecanismo — pedirle que EXPLIQUE por qué la inmuniza (los
+  que no explicaron, SÍ actualizaron).
+- 1d **anclaje / ajuste insuficiente** (Teovanovic 2019): arranca de un valor y se queda corto; tirón
+  medido del 21.4%.
+- 1e **buscar-confirmar-no-refutar** (Elton-Spencer 2020, "pathological water science").
+- 1f **motte-and-bailey / blanco mal definido**: fenómeno definido impreciso → afirmación fuerte que
+  se repliega a una trivial bajo presión → infalsificable.
+- 1g **referencia-de-validación-corrupta** (ozono; Bhartia-McPeters 2018): la anomalía real parece
+  error de instrumento porque el patrón de referencia estaba mal.
+- 1h **doble-estándar-por-compromiso-previo** (deriva continental; Seselja-Weber 2012): vara estricta
+  para la hipótesis rival, laxa para la propia.
+- *+ 2 ejes que ordenan el espacio: 6 formas de procesamiento (Oeberst-Imhoff 2023), 5 etapas del
+  pipeline. Caveat: esos dos son "manifestaciones de UN mecanismo", no 6 mecanismos — pero a nivel
+  de construir mundos son mecánicas distintas.*
+- *OJO: la estructura "evidencia contradictoria que llega a MITAD de camino" (la que YA tenemos con
+  los eventos D4) está poco representada en la literatura — pero la tenemos construida.*
+
+**Vicio 6 — adivinar en vez de averiguar: 4 estructuras (el más fuerte en IA, medido).**
+- 6a **reconoce-pero-no-actúa** (Su-Cardie 2026): detecta la ambigüedad (~60-80%) pero pregunta <5%;
+  la falla es de ACCIÓN, no de detección.
+- 6b **el contexto inyectado apaga la pregunta**: darle contexto lo hace preguntar MENOS ("el
+  contexto es una trampa").
+- 6c **muestrea hipótesis incompatibles + se sobre-confía** (BED-LLM 2025): empeora a medida que
+  crece la historia.
+- 6d **preguntas no-adaptativas**: no elige la pregunta más discriminante (45% vs 93%).
+
+**Vicio 3 — no verificar / p-hacking: 4 sub-estructuras, CON número.**
+Explotar los 4 grados de libertad juntos sube el falso-positivo del **5% al 60.7%** (Simmons et al.
+2011). 3a elegir la variable-dependiente que dio · 3b parar cuando conviene (optional stopping) ·
+3c meter/sacar covariables · 3d reportar solo las condiciones que "funcionaron".
+
+**Vicio 7 — causa/efecto: 2 estructuras.**
+- 7a **confusor mal removido** (Elton-Spencer 2020, replicado 4 veces: polywater, Mpemba, EZ water,
+  agua magnetizada): un tercer factor sigue a la manipulación y produce el "efecto".
+- 7b **referencia corrupta** (comparte estructura con 1g).
+- *Faltan por confirmar: colisionador / sesgo-de-selección y "hay-que-intervenir-sí-o-sí".*
+
+**PUNTOS CIEGOS (lo honesto — la búsqueda no trajo casos):**
+- **Vicio 4 (inventar la estructura escondida): 0 casos** — PERO es nuestro trofeo, ya construido
+  (v2). Es hueco de la BÚSQUEDA, no de capacidad. (Los casos de agua son el error OPUESTO: inventar
+  estructura exótica donde bastaba un confusor mundano.)
+- **Vicio 5 (perder el hilo largo): 0 casos** (es el más "operación" igual — al borde de nuestro
+  alcance).
+- **Vicio 2 (atención / pozo): 1 solo episodio** (deriva continental) → 2a "no-perseguir-lo-no-
+  probado", 2b "un-solo-hueco-vetó-todo". Faltan sunk-cost, rabbit-holing, loops de agente.
+
+**NO reconstruir (estructuras refutadas):** el "filtro de calidad se comió el descubrimiento" del
+ozono (los propios autores de NASA lo desmienten → usar 1g); el genérico "deriva continental = error"
+(usar las estructuras finas 1h / 2a / 2b).
+
 ## 4-bis. Corpus compilado (Lucas) — ruteado por el corte OPERACIÓN/JUICIO (§0.5)
 
 Recopilación de Lucas de fuentes reales (2025-2026). Lo que aportan de único: **números**. Pero
@@ -334,9 +397,14 @@ de fuentes y sacando failure modes CONCRETOS con su cita:
 > (Chinn & Brewer 1993; Klayman & Ha 1987; Dunbar 1997; Anderson & Lepper 1980; Mitroff 1974) ·
 > metaciencia (Gelman & Loken; Stefan & Schönbrodt 2023; Nagy et al. 2025; Vaccaro 2026) · causal
 > (Corr2Cause/Jin 2023; Kapoor & Narayanan 2023) · newest evals (MLR-Bench NeurIPS 2025; HLER 2026).
-> **Pendiente de minar**: METR/task-horizon con cita fina · agentes-científicos (AI Scientist y sus
-> críticas) · calibración/superforecasting (Tetlock) · benchmarks de descubrimiento (DiscoveryWorld,
-> BoxingGym). *Y re-correr los 6 claims sin verificar cuando vuelva el presupuesto de API.*
+> **2ª búsqueda — casos por ESTRUCTURA (case-search, 2026-07-07, completa)**: ver el ★ Mapa de
+> estructuras por vicio en §4. Confirmó que los vicios se fracturan en estructuras distintas (1 tiene
+> ~8, 6 tiene 4, 3 tiene 4, 7 tiene 2).
+> **Pendiente de minar — los PUNTOS CIEGOS del mapa (prioridad)**: vicio 4 (inventar-la-estructura:
+> Dunbar analogías, "retirada al modelo de manual") · vicio 5 (horizonte largo: SWE-bench, GAIA,
+> tau-bench, WebArena — drift de objetivo/restricción) · vicio 2 con diversidad más allá de la deriva
+> continental (sunk-cost, rabbit-holing, loops de agente) · para el vicio 7, colisionador/sesgo-de-
+> selección (Berkson) e "intervenir-o-fallar". Además: METR · AI-Scientist · Tetlock.
 
 > **Acción concreta**: correr una investigación dirigida (skill `deep-research` o WebSearch) por
 > cada familia, extrayendo failure modes con cita + evidencia. **Triage obligatorio (§0.5) ANTES
