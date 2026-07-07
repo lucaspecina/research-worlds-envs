@@ -108,3 +108,4 @@
 | 0095 | v0.95 | 2026-07-06 | [Experimento de validez libre vs cuidadoso (trampas vs controles): PRE-REGISTRO firmado antes de mirar](0095-v0.95-experimento-de-validez-libre-vs-cuidadoso-preregistro-firmado.md) | Vigente |
 | 0096 | v0.96 | 2026-07-06 | [Experimento de validez CORRIDO: la prediccion primaria FALLO -- el cuidado mueve fiabilidad general, no un vicio; subpotenciado](0096-v0.96-experimento-de-validez-corrido-la-prediccion-primaria-fallo.md) | Vigente |
 | 0097 | v0.97 | 2026-07-06 | [Experimento de pista ESPECIFICA por vicio (idea original de Lucas): pre-registro firmado antes de mirar](0097-v0.97-experimento-pista-especifica-por-vicio-preregistro.md) | Vigente |
+| 0098 | v0.98 | 2026-07-06 | [Experimento de pista especifica CORRIDO: con mediana + ejecucion-vs-juicio, la pista dirigida AISLA el vicio -- senal positiva de validez](0098-v0.98-experimento-de-pista-especifica-la-pista-dirigida-aisla-el-vicio.md) | Vigente |
