@@ -75,8 +75,14 @@ def run_episode(
     max_turns: int = MAX_TURNS,
     max_tokens: int = MAX_TOKENS,
     cell_timeout_s: float = CELL_TIMEOUT_S,
+    system_suffix: str = "",
 ) -> dict:
-    chat = FoundryChat(system=SYSTEM, model=model, max_completion_tokens=MAX_COMPLETION_TOKENS)
+    # system_suffix (ADR 0095): appended to the base SYSTEM to activate a
+    # general good-conduct DISPOSITION (careful/skeptical scientist) WITHOUT
+    # leaking any world's specific answer -- the construct-validity manipulation.
+    # Empty = the standard "free" condition every prior E0 used.
+    chat = FoundryChat(system=SYSTEM + system_suffix, model=model,
+                       max_completion_tokens=MAX_COMPLETION_TOKENS)
     sheet = server.describe()
     prompt = (
         "Here is the brief:\n\n" + sheet["brief"]
