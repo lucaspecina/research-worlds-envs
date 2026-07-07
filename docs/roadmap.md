@@ -96,9 +96,6 @@ lado SEGUIR y documentado el catálogo (evolución, no refundación):
   prioritaria). (b) primer **mundo dinámico de familia A** con las recetas nuevas (Klayman-Ha /
   Chinn-Brewer / perseverancia). (c) réplica de 0098 (DeepSeek). Deudas VIVAS: κ; DS-seed3 σ;
   variante dominio pareado #16/#17; rival (c).
-- **NOTA INFRA**: **límite de gasto mensual de API GOLPEADO** (lo reportó el workflow deep-research)
-  → toda corrida con modelos (réplica 0098, proto-designer medio) bloqueada hasta subirlo en
-  claude.ai/settings/usage.
 
 ## Cartera E1 (20 slots; 6 hechos)
 
