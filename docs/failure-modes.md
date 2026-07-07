@@ -115,7 +115,64 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
 - **Adivinar en vez de averiguar** — evals de agentes interactivos. → info faltante con precio
   accesible. *Estado: el inverso (comprar-y-no-usar) CONFIRMADO (#6); el directo por diseñar.*
 
-## 5. Fuentes a minar (la investigación concreta — próximo paso)
+## 4-bis. Corpus compilado (Lucas) — hallazgos CITADOS y CUANTIFICADOS
+
+Recopilación de Lucas de fuentes reales (2025-2026). Lo que estas fuentes aportan de único:
+**números** y una **metodología externa que valida nuestro enfoque**. Cada ítem → su familia
+de §3.
+
+**Cuantificados (los que dan la vara empírica)** — de un análisis por grafo epistémico
+(arxiv 2604.18805 y afines) y de SciAgentGym:
+- **Evidencia IGNORADA en el 68% de los traces** (A): ve un resultado que contradice su
+  hipótesis y sigue como si nada.
+- **Revisión de creencia refutada solo en el 26%** (A): ante evidencia contraria, casi nunca
+  actualiza.
+- **Error-signal blindness: 67%** repite exactamente la misma acción fallida sin cambiar nada
+  (SciAgentGym) (A/F). Cascada: no detecta → no diagnostica → no pivotea → repite.
+- **Convergent multi-test RARO** (~6-13% según modelo) (C): no triangula con tests
+  independientes.
+- **Degradación irreversible de resiliencia** (E): la recuperación de errores baja monótono en
+  trayectorias largas (modelos débiles ~30%→~10% sin rebotar); los fuertes muestran
+  Rise-Fall-Rise → **la resiliencia es entrenable** (implicación para E2).
+- **<7% del presupuesto en detectar/reparar sus propios errores** (OSWorld-V2) (C/B); se hunden
+  donde la tarea depende de **recuperar un estado oculto** (D — la familia v2).
+
+**Vicios distintos que suman al catálogo (§4)**:
+- **Analysis-decision disconnect** (F/nuevo): identifica correctamente el edge y aun así NO
+  actúa (o dimensiona mal) — desconexión entre el módulo analítico y el de decisión (benchmark
+  de apuestas por temporada). *No lo teníamos: el juicio correcto que no se traduce en acción.*
+- **Sycophancy bajo presión** (C/F): si lo presionás, termina dando la respuesta que parecés
+  querer aunque no esté justificada (Anthropic vibe-physics). *La presión no solo expone el
+  vicio — puede CREAR uno (complacer).* Dato de diseño: cuidado con que la "pista" no induzca
+  complacencia.
+- **Reversión a convenciones/defaults** (D): con convenciones no-estándar, vuelve a los
+  defaults de manual aunque lo obligues a escribir la convención y sostenerla (vibe-physics).
+- **No actuar sobre la propia anomalía** (C/A): no ve lo interesante/anómalo en sus propios
+  resultados (varias fuentes).
+
+## 4-ter. Metodología externa que VALIDA nuestro enfoque (no un vicio — una confirmación)
+
+- **La evaluación por OUTCOME no detecta estas fallas** (arxiv 2604.18805): un agente puede
+  sacar 80% de accuracy en CLadder/QRData/DiscoveryBench y tener un proceso de razonamiento
+  basura. **Por eso hay que analizar la TRAZA, no solo el resultado** — exactamente nuestra
+  doctrina "conducta observada" (§2.1) y las firmas de trace. Confirmación externa fuerte.
+- **El grafo epistémico como vocabulario listo** (mismo paper): anota cada paso de la traza
+  con 6 nodos — **H**ypothesis, **T**est, **E**vidence, **J**udgment, **U**pdate,
+  **C**ommitment — y aristas (testing, observing, contradicting, updating…), y matchea contra
+  *productive motifs* (falsación popperiana, reranking de hipótesis, revisión por refutación,
+  evidencia convergente) vs *reasoning breakdowns* (untested claim, contradiction-without-repair,
+  premature commitment, evidence non-uptake, fixed-belief-trace, precommitted-test-plan,
+  stalled-revision). **Podemos ADOPTAR este vocabulario para nuestras firmas de trace** — es
+  una taxonomía publicada de exactamente lo que medimos.
+- **El base model explica el 41.4% de la varianza; el scaffold solo 1.5%** (mismo paper):
+  cambiar el prompt/arquitectura casi no mueve la aguja — el vicio vive en el MODELO, no en el
+  prompt. **Confirma nuestra tesis de ADR 0096/0098**: el "sé cuidadoso" genérico no arregla el
+  vicio (mueve ejecución); el vicio es una propiedad del modelo que hay que ENTRENAR (E2), no
+  promptear. Y confirma que el instrumento debe medir algo que el prompt no puede fingir.
+- **In-context learning NO lo arregla** (mismo paper): el patrón persiste aun dándole un ejemplo
+  casi-completo de buen razonamiento en contexto → refuerza que es entrenable, no prompteable.
+
+## 5. Fuentes a minar (la investigación concreta — en curso)
 
 El seed de §4 sale de conocimiento general; la versión rigurosa se arma yendo a estas familias
 de fuentes y sacando failure modes CONCRETOS con su cita:
