@@ -98,8 +98,9 @@ fuerza a manifestarse de forma puntuable** — porque esa dinámica ES el diseñ
 | **D. Representación / creatividad** | retirada a lo familiar; no inventar la estructura necesaria; sobre-simplificar | **INVENTAR LA ESTRUCTURA** (v2): el ganador formula una hipótesis latente/estructural | fidelidad al mecanismo que solo la estructura correcta reproduce |
 | **E. Memoria / consistencia (largo plazo)** | perder restricciones; trabajo redundante; recuperación que se degrada en trayectorias largas | **HORIZONTE LARGO + restricción de enlace tardío** (declarada temprano, cobrada al final) | parcialmente límite del harness → se MIDE, no se diseña-en-contra |
 | **F. Interacción / preguntar** | adivinar en vez de averiguar; no registrar info que llega a mitad de camino; saltear la verificación disponible | **CONSULTABLE + evidencia mid-way**: lo faltante tiene precio conocido y accesible | diferencia de suposición-vs-consulta |
+| **G. Razonamiento causal** *(propuesta — deep-research)* | correlación≠causación; confounding; colisionador/selección; no-intervenir; ignorar el DGP | **OBSERVACIONAL ENGAÑOSO + intervención disponible**: la correlación barata miente; do() cuesta y revela | fidelidad al efecto causal que solo la intervención recupera |
 
-> **Las seis familias sub-clasifican la columna JUICIO** (§0.5), no la de operación. Cada familia
+> **Las familias (A-F base, + G causal propuesta) sub-clasifican la columna JUICIO** (§0.5), no la de operación. Cada familia
 > tiene una CARA operacional que el diseño debe **engañar-afuera** para no medir operación por
 > error: **E (memoria) es la más peligrosa** — la info debe quedar EN contexto para que la falla
 > sea "no lo conectó" (juicio) y no "lo perdió" (operación); por eso E "se mide, no se
@@ -111,6 +112,12 @@ fuerza a manifestarse de forma puntuable** — porque esa dinámica ES el diseñ
 Por cada vicio: fuente · cómo se manifiesta · dinámica (§3) · estado. **Las citas exactas se
 verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que ya sabemos.**
 
+> **Cosecha de la investigación dirigida (deep-research, 2026-07-07)** — corrida de 5 ángulos, 26
+> fuentes, 117 claims → 25 verificadas por voto adversarial → **19 confirmadas (3-0/2-1)** + 6 sin
+> verificar (el paso de síntesis se cayó por límite de API; la curaduría la completé desde los
+> claims verificados). Los ítems marcados **`[dr ✓]`** salieron de ahí, con cita. **Todos pasaron
+> el triage §0.5 = JUICIO** (blanco de WAGER), no operación.
+
 ### A — Actualización de creencias
 - **Fijación de hipótesis / sesgo de confirmación** — cog-sci clásico (Wason 2-4-6; Klayman &
   Ha, positive-test strategy): se busca evidencia que confirma, no que refuta. → mundo de
@@ -121,6 +128,28 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
   sellados. *Estado: maquinaria lista (D4), certificado de robots ✓ (0.0002 vs 0.989), sin
   correr con modelos.*
 - **Anclaje** — Tversky & Kahneman: la primera estimación fija el resto. → primer dato sesgado.
+- **`[dr ✓]` Respuestas a datos anómalos — Chinn & Brewer 1993** (Review of Educational Research):
+  de **7 respuestas** a evidencia que contradice la teoría, SOLO 1 es "aceptar y cambiar"; las otras
+  6 la descartan (ignorar · rechazar · excluir del dominio · dejar en suspenso · reinterpretar ·
+  parche periférico) + una 8ª "dudar de la validez del dato". *La taxonomía exacta de las jugadas
+  perdedoras → un mundo de anomalía sellada donde cada descuento es una firma de trace.*
+- **`[dr ✓]` Recipe estructural de Klayman & Ha 1987** — cuando la hipótesis H está EMBEBIDA en la
+  regla verdadera T (H ⊂ T, demasiado angosta, como el 2-4-6 de Wason), los tests **positivos NUNCA
+  falsan** → solo un test NEGATIVO revela el error. *Receta exacta y buildable: un mundo donde
+  confirmar está GARANTIZADO que pierde. El regalo de diseño más filoso de la cosecha.*
+- **`[dr ✓]` Insensibilidad a la diagnosticidad de la RESPUESTA** (Slowiaczek et al.) — el agente
+  elige bien QUÉ test pedir pero pondera mal el resultado (misma pregunta, respuestas de muy distinta
+  diagnosticidad) → preserva la hipótesis inicial. *Puede COMPRAR el test correcto y aun así leerlo
+  mal — distinto de no-testear.*
+- **`[dr ✓]` Anomaly-blindness CONDICIONAL — Dunbar 1997** (in-vivo, 4 labs de biología molecular):
+  los científicos ignoran el hallazgo inesperado cuando es TEMPRANO y sobre una hipótesis auxiliar;
+  le prestan atención si contradice supuestos centrales o llega TARDE. *Da el RÉGIMEN exacto donde
+  el vicio bite → parametriza el timing del evento sellado (D4).*
+- **`[dr ✓]` Perseverancia tras el desmentido — Anderson & Lepper 1980; Mitroff 1974 (Apollo)**: la
+  creencia sobrevive al descrédito TOTAL de la evidencia que la fundó; los 42 científicos de élite
+  del Apollo no movieron sus "pet hypotheses" con los datos lunares. → *mundo donde la evidencia
+  comprada se RETRACTA a mitad (D4 invalida un dato ya pagado): ¿revierte la creencia? El inverso,
+  y más agudo, de no-actualizar.*
 
 ### B — Atención / perseverancia
 - **Rabbit holes / goal drift** — evals de agentes autónomos (METR y afines documentan
@@ -139,6 +168,26 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
 - **Perseguir lo significativo-pero-irrelevante / p-hacking** — metaciencia / crisis de
   replicación (garden of forking paths, Gelman). → carnada de significancia (efecto chico-pero-
   claro vs grande-pero-ruidoso). *Estado: por diseñar; anfitrión natural = mundo ancho.*
+- **`[dr ✓]` Garden of forking paths — Gelman & Loken**: el problema de comparaciones múltiples
+  aparece aun con UN SOLO análisis, porque cada decisión analítica es contingente al dato observado;
+  y "**no se sienten como grados de libertad**" (cada elección parece la única razonable). *El vicio
+  más INVISIBLE: no hace falta p-hackear a conciencia. Es exactamente lo que nuestro instrumento
+  quiere pescar (juicio, no truco).*
+- **`[dr ✓]` 12 estrategias de p-hacking, con número — Stefan & Schönbrodt 2023**: UNA sola
+  (reportar selectivamente la variable dependiente que dio significativa, de 10) infla el
+  falso-positivo del 5% al **~40% (×8)**. *Calibra la carnada de significancia del mundo ancho.*
+- **`[dr ✓]` 40 QRPs indexadas por fase — Nagy et al. 2025** + bestiario (semilla de RNG favorable ·
+  covariables ad hoc · discretizar continuas · missing-data hacking · PARKing). *Catálogo listo de
+  jugadas perdedoras, cada una candidata a mundo.*
+- **`[dr ✓]` HARKing** (Kerr): presentar como a priori una hipótesis inventada TRAS ver los datos.
+  → *mundo donde el orden hipótesis-antes-que-datos es verificable (el sellado de compromiso).*
+- **`[dr ✓]` DOF amplificados en experimentos con AGENTES — Vaccaro 2026**: selección de modelo,
+  wording del prompt, settings, rediseño contingente al resultado — "fáciles de explotar y difíciles
+  de detectar". *El p-hacking migra al propio agente-científico (nuestro sujeto).*
+- **`[dr ✓]` Fabricación cuando el experimento falla — MLR-Bench (NeurIPS 2025)**: **~80%** de los
+  casos reportan resultados fabricados/inválidos (8 de 10 tareas con datos placeholder/sintéticos en
+  vez de ejecución real); persiste aun instruyendo "no fabriques". *Es EXACTAMENTE nuestro
+  `fabricated_precision`, medido afuera y en grande → validación externa del vicio que ya capturamos.*
 
 ### D — Representación / creatividad
 - **Retirada a lo familiar / implementation drift** — evals de agentes de código (revierten a
@@ -146,6 +195,18 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
   verdadera llega arriba. *Estado: CONFIRMADO con solver real (v2 seed3, R=0.096).*
 - **No inventar la estructura** — el lado generativo del research taste. → familia v2. *Estado:
   el trofeo; hacer MÁS de estos.*
+- **`[dr ✓]` Hipótesis inviables sin anclar a los datos — HLER 2026**: la generación autónoma sin
+  restricción produce preguntas factibles solo el **41%** de las veces vs **87%** si se la ancla a la
+  estructura del dataset (≈59% alucinadas). *Cuantifica el lado generativo del research taste — y
+  sugiere el dial: cuánta estructura se le da de entrada.*
+- **`[dr ✓]` La analogía de descubrimiento es CERCANA, no lejana — Dunbar 1997**: de 99 analogías en
+  16 lab meetings, solo **2** lejanas/no-biológicas; el descubrimiento real corre sobre analogías
+  *near*, basadas en homología (40 mismo-organismo, 57 otro-organismo). *Dato de diseño para D:
+  premiar la analogía estructural CERCANA correcta, no el salto vistoso — el mito del "insight
+  lejano" no es donde vive el research taste.*
+- **`[dr ~]` Diversidad de exploración** (arxiv 2510.10472, *sin verificar — los 3 votos erroraron
+  por el límite de API*): la exploración angosta/baja-varianza sería jugada perdedora documentada en
+  ML research autónomo. *Anotado, pendiente de verificación.*
 
 ### E — Memoria / consistencia
 - **Pérdida de restricciones / contexto en trayectorias largas** — evals de horizonte largo. →
@@ -155,6 +216,21 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
 ### F — Interacción
 - **Adivinar en vez de averiguar** — evals de agentes interactivos. → info faltante con precio
   accesible. *Estado: el inverso (comprar-y-no-usar) CONFIRMADO (#6); el directo por diseñar.*
+
+### G — Razonamiento causal *(PROPUESTA de familia — pendiente OK de Lucas)*
+*Gana su fila porque el arreglo es ESTRUCTURAL (intervenir / modelar el DGP), no "verificar más
+fuerte" — y ya tenemos maquinaria (`confounded_gen_v0`, `generic_certify`). Solapa con C (respuesta
+barata falsa) pero el eje es distinto: la trampa es la asignación observacional, no la significancia.
+Todos JUICIO. Toca la taxonomía de ADR 0099 → por eso se propone, no se impone.*
+- **`[dr ✓]` Correlación ≠ causación — Corr2Cause, Jin et al. 2023**: 17 LLMs (hasta GPT-4) puntúan
+  al **NIVEL DEL AZAR** infiriendo causalidad desde correlación (dataset 200K). *El ancla dura del
+  vicio.* → mundo observacional confundido donde solo `do()` revela la verdad.
+- **`[dr ✓]` Leakage / distribution-mismatch — Kapoor & Narayanan 2023** (taxonomía de 8 tipos): el
+  "distribution mismatch" (evaluar en una distribución distinta de aquella sobre la que se afirma)
+  infla el desempeño aun con split limpio. *Generalizar más allá del DGP medido.*
+- **Confounding / colisionador / no-intervenir** — la dinámica: la data observacional engaña; solo
+  la intervención (o modelar la asignación) recupera. *Estado: YA tenemos el mundo
+  (`confounded_gen_v0`); el candado del verificador estructural es la deuda registrada en ADR 0094.*
 
 ## 4-bis. Corpus compilado (Lucas) — ruteado por el corte OPERACIÓN/JUICIO (§0.5)
 
@@ -237,6 +313,14 @@ de fuentes y sacando failure modes CONCRETOS con su cita:
 - **Calibración / juicio**: superforecasting (Tetlock), calibración y overconfidence.
 - **Honestidad / sycophancy / overclaiming**: evals recientes de honestidad de LLMs.
 - **Metaciencia**: crisis de replicación, p-hacking, garden of forking paths (Gelman & Loken).
+
+> **Ya minado (deep-research, 2026-07-07 — ver ítems `[dr ✓]` en §4)**: cog-sci del razonamiento
+> (Chinn & Brewer 1993; Klayman & Ha 1987; Dunbar 1997; Anderson & Lepper 1980; Mitroff 1974) ·
+> metaciencia (Gelman & Loken; Stefan & Schönbrodt 2023; Nagy et al. 2025; Vaccaro 2026) · causal
+> (Corr2Cause/Jin 2023; Kapoor & Narayanan 2023) · newest evals (MLR-Bench NeurIPS 2025; HLER 2026).
+> **Pendiente de minar**: METR/task-horizon con cita fina · agentes-científicos (AI Scientist y sus
+> críticas) · calibración/superforecasting (Tetlock) · benchmarks de descubrimiento (DiscoveryWorld,
+> BoxingGym). *Y re-correr los 6 claims sin verificar cuando vuelva el presupuesto de API.*
 
 > **Acción concreta**: correr una investigación dirigida (skill `deep-research` o WebSearch) por
 > cada familia, extrayendo failure modes con cita + evidencia. **Triage obligatorio (§0.5) ANTES
