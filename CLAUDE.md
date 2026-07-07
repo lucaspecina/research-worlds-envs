@@ -11,6 +11,8 @@ Mapa de docs (abrí el que la tarea pida, no todos):
 - **`WIKI.md`** — entender de cero, sin jerga: qué es, cómo funciona, dónde estamos.
 - **`ARCHITECTURE.md`** — índice de la referencia técnica → **`docs/reference/`** (contratos, operadores, rivales, batería, scoring, harness; abrí el archivo del tema).
 - **`docs/roadmap.md`** — estado vivo + cartera E1 + programa E1→E4 (dónde estamos, qué falta, el plan).
+- **`docs/failure-modes.md`** — catálogo de vicios de juicio investigativo + scaffold de diseño
+  (de un failure mode documentado → un mundo puntuable; taxonomía por dinámica de mundo). El corazón.
 - **`docs/adr/`** — decisiones (una por archivo, append-only)
   · **`docs/open-questions.md`** (lo sin decidir) · **`docs/red-team.md`** (amenazas del proyecto)
   · **`docs/archived/`** (histórico; el `NORTH_STAR_full.md` original vive acá — citas "NORTH_STAR §N" resuelven ahí).
