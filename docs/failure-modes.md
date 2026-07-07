@@ -98,9 +98,9 @@ fuerza a manifestarse de forma puntuable** — porque esa dinámica ES el diseñ
 | **D. Representación / creatividad** | retirada a lo familiar; no inventar la estructura necesaria; sobre-simplificar | **INVENTAR LA ESTRUCTURA** (v2): el ganador formula una hipótesis latente/estructural | fidelidad al mecanismo que solo la estructura correcta reproduce |
 | **E. Memoria / consistencia (largo plazo)** | perder restricciones; trabajo redundante; recuperación que se degrada en trayectorias largas | **HORIZONTE LARGO + restricción de enlace tardío** (declarada temprano, cobrada al final) | parcialmente límite del harness → se MIDE, no se diseña-en-contra |
 | **F. Interacción / preguntar** | adivinar en vez de averiguar; no registrar info que llega a mitad de camino; saltear la verificación disponible | **CONSULTABLE + evidencia mid-way**: lo faltante tiene precio conocido y accesible | diferencia de suposición-vs-consulta |
-| **G. Razonamiento causal** *(propuesta — deep-research)* | correlación≠causación; confounding; colisionador/selección; no-intervenir; ignorar el DGP | **OBSERVACIONAL ENGAÑOSO + intervención disponible**: la correlación barata miente; do() cuesta y revela | fidelidad al efecto causal que solo la intervención recupera |
+| **G. Razonamiento causal** | correlación≠causación; confounding; colisionador/selección; no-intervenir; ignorar el DGP | **OBSERVACIONAL ENGAÑOSO + intervención disponible**: la correlación barata miente; do() cuesta y revela | fidelidad al efecto causal que solo la intervención recupera |
 
-> **Las familias (A-F base, + G causal propuesta) sub-clasifican la columna JUICIO** (§0.5), no la de operación. Cada familia
+> **Las siete familias (A-G) sub-clasifican la columna JUICIO** (§0.5), no la de operación. Cada familia
 > tiene una CARA operacional que el diseño debe **engañar-afuera** para no medir operación por
 > error: **E (memoria) es la más peligrosa** — la info debe quedar EN contexto para que la falla
 > sea "no lo conectó" (juicio) y no "lo perdió" (operación); por eso E "se mide, no se
@@ -220,11 +220,14 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
 - **Adivinar en vez de averiguar** — evals de agentes interactivos. → info faltante con precio
   accesible. *Estado: el inverso (comprar-y-no-usar) CONFIRMADO (#6); el directo por diseñar.*
 
-### G — Razonamiento causal *(PROPUESTA de familia — pendiente OK de Lucas)*
-*Gana su fila porque el arreglo es ESTRUCTURAL (intervenir / modelar el DGP), no "verificar más
-fuerte" — y ya tenemos maquinaria (`confounded_gen_v0`, `generic_certify`). Solapa con C (respuesta
-barata falsa) pero el eje es distinto: la trampa es la asignación observacional, no la significancia.
-Todos JUICIO. Toca la taxonomía de ADR 0099 → por eso se propone, no se impone.*
+### G — Razonamiento causal
+*Grupo propio, **aprobado por Lucas (2026-07-07)**. Gana su fila porque la CURA es una MOVIDA
+DISTINTA: intervenir, o modelar la causa escondida — NO "verificar más fuerte" sobre los mismos
+datos. Fijarse mejor en una correlación confundida no revela nunca el tercer factor (el calor
+detrás del helado y los ahogados); solo cambiar de movida lo hace. Solapa con C en la superficie
+(una respuesta barata que resulta falsa) pero el eje es otro: la trampa está METIDA en los datos
+observacionales, no en la significancia. Todos JUICIO. Ya hay maquinaria: `confounded_gen_v0`,
+`generic_certify`.*
 - **`[dr ·]` Correlación ≠ causación — Corr2Cause, Jin et al. 2023**: 17 LLMs (hasta GPT-4) puntúan
   al **NIVEL DEL AZAR** infiriendo causalidad desde correlación (dataset 200K). *El ancla dura del
   vicio.* → mundo observacional confundido donde solo `do()` revela la verdad.

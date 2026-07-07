@@ -87,12 +87,15 @@ lado SEGUIR y documentado el catálogo (evolución, no refundación):
   adversarial) + 4 con cita textual; **todo JUICIO**, integrado a §4. Recetas buildables
   destacadas: **Klayman-Ha embedding** (H⊂T ⇒ el test positivo NUNCA falsa → confirmar pierde
   garantizado), **7 respuestas a datos anómalos de Chinn-Brewer**, **perseverancia-tras-retracción**
-  (evento D4 que invalida evidencia YA comprada). **Familia G (razonamiento causal) PROPUESTA —
-  pendiente OK de Lucas** (toca la taxonomía de 0099; ya hay maquinaria: `confounded_gen_v0`).
-- **PRÓXIMO**: (a) **decisión de Lucas**: familia G ¿7ª familia o sub-caso de C?; (b) **primer
-  mundo dinámico de familia A** con las recetas nuevas (Klayman-Ha / Chinn-Brewer / perseverancia);
-  (c) réplica de 0098 (DeepSeek). Deudas VIVAS: `_canonical` estructural (0094) — la familia G lo
-  vuelve más relevante; κ; DS-seed3 σ; variante dominio pareado #16/#17; rival (c).
+  (evento D4 que invalida evidencia YA comprada). **Familia G (razonamiento causal) ADOPTADA como
+  grupo propio (Lucas, 2026-07-07 — ADR 0102)**: la cura es una movida distinta (intervenir), no
+  verificar más; ya hay maquinaria (`confounded_gen_v0`). Ahora son 7 familias (A-G).
+- **PRÓXIMO**: (a) diseñar el primer **mundo-trampa de causa-efecto** (familia G recién adoptada) —
+  correlación confundida donde solo intervenir revela la verdad; ya hay maquinaria
+  (`confounded_gen_v0`; deuda del verificador estructural `_canonical` en 0094, que esto vuelve
+  prioritaria). (b) primer **mundo dinámico de familia A** con las recetas nuevas (Klayman-Ha /
+  Chinn-Brewer / perseverancia). (c) réplica de 0098 (DeepSeek). Deudas VIVAS: κ; DS-seed3 σ;
+  variante dominio pareado #16/#17; rival (c).
 - **NOTA INFRA**: **límite de gasto mensual de API GOLPEADO** (lo reportó el workflow deep-research)
   → toda corrida con modelos (réplica 0098, proto-designer medio) bloqueada hasta subirlo en
   claude.ai/settings/usage.
