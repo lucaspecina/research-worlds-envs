@@ -298,18 +298,43 @@ Explotar los 4 grados de libertad juntos sube el falso-positivo del **5% al 60.7
 - 7b **referencia corrupta** (comparte estructura con 1g).
 - *Faltan por confirmar: colisionador / sesgo-de-selección y "hay-que-intervenir-sí-o-sí".*
 
-**PUNTOS CIEGOS (lo honesto — la búsqueda no trajo casos):**
-- **Vicio 4 (inventar la estructura escondida): 0 casos** — PERO es nuestro trofeo, ya construido
-  (v2). Es hueco de la BÚSQUEDA, no de capacidad. (Los casos de agua son el error OPUESTO: inventar
-  estructura exótica donde bastaba un confusor mundano.)
-- **Vicio 5 (perder el hilo largo): 0 casos** (es el más "operación" igual — al borde de nuestro
-  alcance).
-- **Vicio 2 (atención / pozo): 1 solo episodio** (deriva continental) → 2a "no-perseguir-lo-no-
-  probado", 2b "un-solo-hueco-vetó-todo". Faltan sunk-cost, rabbit-holing, loops de agente.
+**PUNTOS CIEGOS → LLENADOS (3ª búsqueda, case-search 2026-07-07: 113 agentes, 22 claims verif.):**
+
+**Vicio 4 — inventar la estructura escondida: 6 estructuras** (ancladas en Dunbar). 4a analogía
+CERCANA (no el salto lejano: 99 analogías, solo 2 lejanas) · 4b **partir un modelo unitario en DOS
+mecanismos latentes** (una anomalía fuerza a decouplear) · 4c anomalía atendida según
+centralidad×timing (= nuestra "ceguera condicional", ahora con perilla 2×2) · 4d analogía guiada por
+el objetivo · 4e moderador generación-vs-recepción × complejidad · 4f **Einstellung** (una solución
+de manual cebada BLOQUEA una mejor disponible). *Y sigue siendo nuestro trofeo ya construido (v2).*
+
+**Vicio 5 — perder el hilo largo: 7 estructuras** (benchmarks de agentes 2025-26, con número). 5a
+caída monótona con el largo (METR) · 5b colapso por umbral/transición de fase (HORIZON) · 5c
+**restricción-EN-contexto-pero-no-atendida** (la regla sigue ahí y aun así la viola — "inatención,
+no olvido"; replicado en web y en base de datos) *← ojo: ESTA es de JUICIO, no operación (la info
+está delante)* · 5d loop de acción-fallida-repetida (comparte con vicio 2) · 5e deriva fuera del
+camino correcto que se auto-refuerza (+22.7pp por paso) · 5f pass^k (fiabilidad entre corridas) · 5g
+incumplir la política declarada. *5c rescata parcialmente al vicio 5 hacia el juicio.*
+
+**Vicio 2 — atención / pozo: 5 estructuras** (antes 1). 2a no-perseguir-lo-no-probado · 2b
+un-hueco-vetó-todo · 2c **sunk-cost** continuar-vs-abandonar (Arkes-Blumer; meta-análisis ES≈0.50) ·
+2d **blueprint de escalada** (inversión previa + señal negativa + punto de decisión seguir/pivotear)
+· 2e **inaction-effect** (la señal negativa empuja a ACTUAR sin importar qué; reformular invierte el
+sesgo — palanca NUEVA, ortogonal al sunk-cost) · 2f loop de acción-fallida (comparte con 5).
+- *CAVEAT DE DISEÑO (fósforo/phlogiston, Chang 2010): persistir es vicio SOLO si la alternativa es
+  decididamente superior. Si las dos teorías empatan en evidencia, aferrarse es RACIONAL, no vicio.
+  Regla para los mundos de no-pivotear/perseverancia: la respuesta correcta tiene que ser
+  decididamente mejor, o estás castigando prudencia.*
+
+**NUEVO punto ciego (0 casos → prioridad de la próxima búsqueda):** vicio 7, sub-estructuras
+**colisionador / sesgo de selección** (Berkson) y **"hay que intervenir sí o sí"** (donde lo
+observacional no alcanza ni en principio). Por confirmar caso-por-caso: los clásicos de
+visión-de-túnel (N-rays de Blondlot, fusión fría, canales marcianos) — pueden disolverse como el
+fósforo al mirarlos de cerca; requieren historiografía antes de usarlos.
 
 **NO reconstruir (estructuras refutadas):** el "filtro de calidad se comió el descubrimiento" del
 ozono (los propios autores de NASA lo desmienten → usar 1g); el genérico "deriva continental = error"
-(usar las estructuras finas 1h / 2a / 2b).
+(usar 1h / 2a / 2b); la ley "exponencial / vida-media" del horizonte y la "cadena donde un paso caído
+mata todo" (refutadas); el número "pass^8 <25%".
 
 ## 4-bis. Corpus compilado (Lucas) — ruteado por el corte OPERACIÓN/JUICIO (§0.5)
 
@@ -397,14 +422,13 @@ de fuentes y sacando failure modes CONCRETOS con su cita:
 > (Chinn & Brewer 1993; Klayman & Ha 1987; Dunbar 1997; Anderson & Lepper 1980; Mitroff 1974) ·
 > metaciencia (Gelman & Loken; Stefan & Schönbrodt 2023; Nagy et al. 2025; Vaccaro 2026) · causal
 > (Corr2Cause/Jin 2023; Kapoor & Narayanan 2023) · newest evals (MLR-Bench NeurIPS 2025; HLER 2026).
-> **2ª búsqueda — casos por ESTRUCTURA (case-search, 2026-07-07, completa)**: ver el ★ Mapa de
-> estructuras por vicio en §4. Confirmó que los vicios se fracturan en estructuras distintas (1 tiene
-> ~8, 6 tiene 4, 3 tiene 4, 7 tiene 2).
-> **Pendiente de minar — los PUNTOS CIEGOS del mapa (prioridad)**: vicio 4 (inventar-la-estructura:
-> Dunbar analogías, "retirada al modelo de manual") · vicio 5 (horizonte largo: SWE-bench, GAIA,
-> tau-bench, WebArena — drift de objetivo/restricción) · vicio 2 con diversidad más allá de la deriva
-> continental (sunk-cost, rabbit-holing, loops de agente) · para el vicio 7, colisionador/sesgo-de-
-> selección (Berkson) e "intervenir-o-fallar". Además: METR · AI-Scientist · Tetlock.
+> **2ª búsqueda — casos por ESTRUCTURA (case-search, 2026-07-07, completa)**: ver el ★ Mapa en §4
+> (1≈8, 6=4, 3=4, 7=2). **3ª búsqueda — puntos ciegos (completa)**: LLENÓ vicio 4 (6 estructuras),
+> vicio 5 (7) y vicio 2 (5). Ver el ★ Mapa.
+> **Pendiente de minar (prioridad = el hueco que queda)**: vicio 7 sub-estructuras
+> **colisionador / sesgo-de-selección** (Berkson) e **"intervenir-o-fallar"** (0 casos aún) ·
+> historiografía caso-por-caso de los clásicos de visión-de-túnel (Blondlot, fusión fría, canales
+> marcianos) antes de usarlos · fuentes generales sin tocar: METR fino · AI-Scientist · Tetlock.
 
 > **Acción concreta**: correr una investigación dirigida (skill `deep-research` o WebSearch) por
 > cada familia, extrayendo failure modes con cita + evidencia. **Triage obligatorio (§0.5) ANTES

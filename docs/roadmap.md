@@ -90,11 +90,12 @@ lado SEGUIR y documentado el catálogo (evolución, no refundación):
   (evento D4 que invalida evidencia YA comprada). **Familia G (razonamiento causal) ADOPTADA como
   grupo propio (Lucas, 2026-07-07 — ADR 0102)**: la cura es una movida distinta (intervenir), no
   verificar más; ya hay maquinaria (`confounded_gen_v0`). Ahora son 7 familias (A-G).
-- **Diversidad ESTRUCTURAL — principio 9 + mapa (ADRs 0103/0104, precisión de Lucas)**: un vicio se
-  fractura en estructuras distintas (no en disfraces); la cartera debe cubrirlas o el entrenamiento
-  overfitea. La 2ª búsqueda (case-search, completa: 112 agentes, 23 claims verificados) mapeó las
-  estructuras por vicio: **1≈8, 6=4, 3=4, 7=2**; **puntos ciegos con 0 casos: vicio 4 (pero es el
-  trofeo v2, ya construido) y vicio 5; vicio 2 con 1 solo caso**. Ver ★ Mapa de estructuras en §4.
+- **Diversidad ESTRUCTURAL — principio 9 + mapa (ADRs 0103/0104/0105, precisión de Lucas)**: un
+  vicio se fractura en estructuras distintas (no en disfraces); la cartera debe cubrirlas o el
+  entrenamiento overfitea. TRES búsquedas mapearon las estructuras por vicio: **1≈8, 2=5, 3=4, 4=6,
+  5=7, 6=4, 7=2** (6 de 7 vicios con variedad). Puntos ciegos ya LLENADOS (4/5/2); **único hueco:
+  vicio 7 sub-tipos colisionador/selección (0 casos)**. Caveat de diseño (phlogiston): persistir es
+  vicio solo si la alternativa es decididamente superior. Ver ★ Mapa en §4.
 - **PRÓXIMO**: (a) primer build recomendado — el **par 1a/1b de Klayman-Ha** (subset vs superset):
   dos estructuras OPUESTAS del vicio "no actualizar" donde un modelo que memoriza "buscá refutar"
   gana una y pierde la otra → demuestra el principio 9 en vivo. **SPEC ESCRITA**:
