@@ -97,7 +97,9 @@ lado SEGUIR y documentado el catálogo (evolución, no refundación):
   trofeo v2, ya construido) y vicio 5; vicio 2 con 1 solo caso**. Ver ★ Mapa de estructuras en §4.
 - **PRÓXIMO**: (a) primer build recomendado — el **par 1a/1b de Klayman-Ha** (subset vs superset):
   dos estructuras OPUESTAS del vicio "no actualizar" donde un modelo que memoriza "buscá refutar"
-  gana una y pierde la otra → demuestra el principio 9 en vivo. (b) **mundo-trampa de causa-efecto**
+  gana una y pierde la otra → demuestra el principio 9 en vivo. **SPEC ESCRITA**:
+  `docs/mundo-espejo-klayman-ha.md` (SCM de intervalo, certificado de 2 robots, presión = queries
+  escasas). Pendiente: decidir 1a-solo vs par junto, y la piel/prior. (b) **mundo-trampa de causa-efecto**
   (familia G; ya hay `confounded_gen_v0`; deuda `_canonical` en 0094). (c) **3ª búsqueda a los puntos
   ciegos** (#4/#5/#2, y colisionador para #7). (d) réplica de 0098 (DeepSeek). Deudas VIVAS: κ;
   DS-seed3 σ; variante dominio pareado #16/#17; rival (c).
