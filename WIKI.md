@@ -21,6 +21,18 @@ Para eso fabricamos **mundos sintéticos**: pequeños universos ejecutables con 
 oculta adentro y trampas realistas. Una IA los juega; un juez **puramente matemático** (jamás
 otra IA opinando) le pone una nota. Esa nota puede usarse para entrenar.
 
+**Y una definición más precisa de "juicio", que ganamos con el tiempo** (porque "juicio" a secas es
+vago): lo medimos como dos caras de una misma habilidad. Una cara **defensiva** — *no caer* en los
+errores típicos donde los investigadores, humanos y IA, tropiezan una y otra vez (casarse con la
+primera idea, no cambiar de opinión ante la evidencia, confundir correlación con causa). Una cara
+**creativa** — *dar el salto* que hace un descubrimiento (ver que dos cosas muy distintas comparten
+la misma estructura de fondo, inventar algo que no se ve para explicar los datos). Y lo que une a las
+dos: **saber cuándo** — porque la misma jugada es genialidad en una situación y macana en otra
+(unir dos cosas es Newton si de verdad son lo mismo, y delirio si no), así que el buen investigador
+**gasta un poco averiguando en cuál está** antes de decidir. Una honestidad importante: esta lista de
+errores y saltos es *nuestra forma de medir* el juicio, no el juicio entero — pasar nuestro examen es
+pasar nuestro examen, no la última palabra. Por eso el examen tiene que poder crecer.
+
 ## 2. El problema que ataca (y por qué nadie lo mide bien)
 
 Las IAs de hoy se evalúan sobre todo con problemas que **tienen respuesta**: matemática,
@@ -152,23 +164,48 @@ con la plata recortada a un cuarto, la escasez no bloquea el premio — **separa
 modelo compró la evidencia clave y no la usó (se apuró); otro, pensando el doble, la cobró
 gastando un tercio del presupuesto.
 
-## 8. Los vicios que cazamos 🔨
+## 8. Los dos polos: los vicios que cazamos y los saltos que exigimos 🔨
 
-La dirección más nueva del proyecto: diseñar mundos **a propósito contra los modos de falla
-conocidos** de los investigadores-IA. La regla de oro se respeta — **el vicio no se castiga
-con una opinión; se construye el mundo para que caer en el vicio sea la jugada perdedora**, y
-el juez matemático cobra la consecuencia. Ejemplos de vicios de la lista:
+La dirección más fuerte del proyecto: en vez de "medir juicio" a lo vago, bajarlo a dos listas
+concretas y documentadas, y construir mundos que las vuelvan medibles. La regla de oro se respeta
+siempre — **nada se castiga ni premia con una opinión; se construye el mundo para que la mala jugada
+prediga peor**, y el juez matemático cobra la consecuencia sola.
 
+**Polo defensivo — los vicios (no caer).** Fuimos a la literatura (psicología del razonamiento,
+historia de la ciencia, análisis de fallas de agentes reales) y sacamos una lista con fuentes de los
+errores donde los investigadores tropiezan. Ejemplos:
 - No cambiar de idea ante evidencia que contradice la hipótesis.
 - Meterse en un pozo (rabbit hole) y no salir; encontrar un error y darse por satisfecho.
 - Comprar evidencia y no usarla; inventar números que no midió.
 - Refugiarse en la arquitectura familiar cuando la correcta es más incómoda.
-- Perseguir lo estadísticamente vistoso pero irrelevante.
+- Confundir "estas dos cosas pasan juntas" con "una causa la otra".
 
-Ya vimos varios de estos pasar en vivo con modelos reales (el trofeo del §7 *es* "refugiarse
-en lo familiar"). El plan es tener un mundo por vicio, cada uno con un **certificado de trampa
-necesaria**: se scriptea el mejor jugador que *comete* el vicio y se demuestra que queda lejos
-del techo — así "solo se gana pivoteando" deja de ser deseo y pasa a ser propiedad probada.
+**Polo creativo — los saltos / "aha moments" (descubrir).** El otro lado: las operaciones creativas
+del descubrimiento, también tipificadas en la literatura. El mundo se arma para que el único camino a
+la nota alta *pase por* hacer ese salto. Ejemplos: ver que dos sistemas distintos comparten la misma
+estructura y traer el mecanismo de uno al otro (lo que hizo Darwin); postular algo invisible para
+explicar los datos (así se descubrió Neptuno); reencuadrar las variables de una forma nueva que
+destapa un patrón invisible. La regla de admisión es dura: **el salto solo cuenta si se paga en una
+predicción medible** (si el premio es solo "qué elegante", no lo sabemos puntuar sin un juez, y queda
+afuera).
+
+**La pieza que une los dos — los pares.** El descubrimiento más lindo: el vicio y el salto suelen ser
+*la misma jugada* vista de los dos lados. "Unir dos cosas en una" es Newton si de verdad son lo mismo,
+y delirio (ver patrones que no están) si no. Entonces no alcanza con "saber unir" ni con "saber
+desconfiar" — hay que saber **cuándo**. Por eso construimos de a **pares**: dos mundos que se ven
+iguales por fuera, en uno la jugada gana y en el gemelo pierde. Un modelo que aprendió el reflejo
+"uní siempre" gana uno y pierde el otro; solo el que **paga por averiguar en cuál está** gana los dos.
+El par es lo que impide que el examen se pueda trampear con un truco.
+
+Cada mundo (y cada par) lleva un **certificado**: se scriptean jugadores-robot — uno que comete el
+vicio, uno cuidadoso, y para los pares uno que aplica la jugada a lo bruto — y se demuestra con
+números que el bruto pierde el gemelo y el cuidadoso gana ambos. Así "solo se gana con juicio" deja
+de ser deseo y pasa a ser propiedad probada. Ya vimos varios vicios pasar en vivo con modelos reales
+(el trofeo del §7 *es* "refugiarse en lo familiar" — y a la vez el polo bueno de un par: "inventar la
+estructura escondida").
+
+**Y la honestidad de fondo** (§1): estas dos listas son *nuestra forma de medir* el juicio, no el
+juicio entero. Crecen, y nunca lo cubren del todo.
 
 ## 9. Dónde estamos hoy ✅
 
@@ -185,30 +222,38 @@ del techo — así "solo se gana pivoteando" deja de ser deseo y pasa a ser prop
 
 **Lo que todavía no:**
 - No entrenamos nada aún (la fase de RL — la apuesta grande, no un hecho).
-- No corrimos la evaluación multi-modelo en serio (hasta ahora, puñados de partidas con uno o
-  dos modelos — prueba que los mundos muerden, no rankea IAs).
-- Casi todos los mundos son del mismo tipo (causales estáticos); el primer mundo *dinámico*
-  (con tiempo) es el próximo paso 🔨.
+- **No validamos en serio todavía**: la evaluación multi-modelo (varias IAs sobre los mismos mundos)
+  casi no arrancó — hasta ahora, puñados de partidas con uno o dos modelos, que prueban que los
+  mundos muerden pero no rankean IAs ni confirman del todo que la nota mide juicio. **Es hoy la
+  prioridad número uno** (ver `docs/roadmap.md`).
+- Los mundos difíciles todavía son **artesanales**: la fábrica automática anda en lo fácil y se traba
+  en lo medio.
 
 ## 10. Qué falta y qué no está decidido ❓
 
-Las preguntas grandes, abiertas de verdad:
+Las preguntas grandes, abiertas de verdad — y algunas necesitan un salto creativo **nuestro**:
 
-- **El diseñador automático de mundos** ❓ — *la pieza existencial*. Hoy los mundos se autoran
-  a mano. El valor a escala está en generarlos automáticamente (una IA del lado de la fábrica
+- **El diseñador automático de mundos** ❓ — *la pieza existencial*. Hoy los mundos difíciles se
+  autoran a mano. El valor a escala está en generarlos automáticamente (una IA del lado de la fábrica
   los escribe, la certificación mecánica los filtra). La mitad verificadora ya existe; falta la
   generadora. Sin esto, el proyecto no escala.
-- **Eventos a mitad de partida** ❓ — hoy el mundo solo responde; nunca *empuja* información. La
-  habilidad de pivotear ante una sorpresa necesita que el mundo pueda interrumpir con un dato
-  nuevo a mitad de camino. Diseño pendiente.
+- **¿Los modelos tienen vicios y saltos PROPIOS?** ❓ — casi toda nuestra lista viene de humanos.
+  Un modelo no es un humano: puede no fallar donde un humano falla, y puede tener modos de fallar (o
+  de acertar) que ningún psicólogo catalogó, porque los humanos no los tienen. Si nuestros mundos
+  revelan eso, es el descubrimiento más original que el proyecto puede dar — y nadie más está parado ahí.
+- **¿Cómo se diseña una frontera "descubrible pero no obvia"?** ❓ — para los pares (§8) hace falta
+  que la evidencia que separa los dos mundos gemelos exista, tenga precio justo, y no sea ni gratis
+  ni imposible. Sabemos *verificar* si una frontera dada funciona; no tenemos la *teoría* de cómo
+  construirlas. Hoy es artesanía.
+- **Puntuar EXPLICACIONES sin un juez** ❓ — nuestro truco siempre termina en "predecí el sistema" →
+  un número. Pero parte del juicio entrega explicaciones, no predicciones. Cómo cobrar eso sin una IA
+  opinando es nuestro muro más viejo (retrocedió, no cayó).
 - **La moneda del reward (la "pregunta κ")** ❓ — vimos varias veces que la nota R y el error
-  económico del cliente **divergen**. ¿Es R la moneda correcta para entrenar, o hay que
-  incorporar el costo del cliente? En espera, juntando evidencia.
-- **Re-orientar la cartera a vicios** ❓ — decidir si los mundos que faltan apuntan cada uno a
-  un modo de falla de la lista (§8).
-- **La escalera experimental E1→E4** ❓ — el plan de validación: primero evaluar modelos (E1),
-  después entrenar (E2), después probar transferencia a ciencia real (E4). Es el norte, no algo
-  hecho.
+  económico del cliente **divergen**. ¿Es R la moneda correcta para entrenar, o hay que incorporar el
+  costo del cliente? En espera, juntando evidencia.
+- **La apuesta grande (la escalera E1→E4)** ❓ — que entrenar en estos mundos produzca juicio que
+  *generalice* a problemas nunca vistos sigue siendo una **hipótesis**, con su experimento y su
+  criterio de muerte escritos. Es el norte, no un hecho.
 
 ## 11. Glosario (en llano)
 

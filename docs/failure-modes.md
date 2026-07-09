@@ -9,12 +9,33 @@
 
 ---
 
-## 0. La tesis en una frase
+## 0. La tesis y la definición operativa
 
-Medimos juicio investigativo construyendo mundos donde **cada vicio documentado es la jugada
-perdedora** — la conducta se OBSERVA (firma de trace), jamás se premia; el mundo hace que el
-vicio produzca un modelo final peor y el examen cero-LLM cobra la consecuencia. Cada failure
-mode bien documentado que encontramos **es una especificación para un mundo**.
+**La tesis en una frase**: medimos juicio investigativo construyendo mundos donde la conducta se
+OBSERVA (firma de trace) pero jamás se premia — el mundo hace que el vicio produzca un modelo final
+peor y el examen cero-LLM cobra la consecuencia. Cada failure mode (y cada operación de aha) bien
+documentado es una especificación para un mundo.
+
+**La definición operativa (vigente — Lucas, 2026-07-09; ADR 0109)** — dos polos, una habilidad:
+
+> **Buen juicio investigativo, TAL COMO LO MEDIMOS, es: no caer donde los agentes documentadamente
+> caen (los vicios), saltar donde el descubrimiento documentadamente salta (los ahas), y —lo que une
+> a los dos— saber CUÁNDO: discriminar activamente (pagando por la evidencia que separa los polos) en
+> qué situación estás, y en consecuencia aplicar la operación o abstenerte.**
+
+Tres precisiones que la hacen honesta:
+1. **La lista NO es el juicio — es nuestra muestra MEDIBLE de él** (el termómetro no es la fiebre).
+   Siempre incompleta, siempre creciendo (por eso la regla del residuo y las semillas de la realidad).
+   Si un agente saca reward perfecto en toda la cartera, la conclusión correcta es **"pasó nuestro
+   examen actual"**, NO "tiene buen juicio, punto" — y el examen tiene que poder crecer. Confundir la
+   lista con el juicio sería confundir el termómetro con la fiebre.
+2. **El vicio y el aha son los DOS POLOS de la misma operación**, no dos listas
+   (unificar↔apofenia, postular-entidad↔parchar). Por eso la unidad de diseño es el PAR (principio
+   10): un agente puede aprender el reflejo "siempre desconfiá" o "siempre postulá" y ganar los
+   mundos de UN polo — el par es lo que impide que el conjunto se pueda trampear, porque solo el que
+   discrimina gana AMBOS.
+3. **El reward nunca sabe del vicio ni del aha**: la nota es siempre "¿qué tan bien predice tu
+   modelo?"; el diseño hace que la mala jugada prediga peor. La consecuencia se cobra sola.
 
 ## 0.5. El corte primario: OPERACIÓN vs JUICIO (define el ALCANCE de WAGER)
 

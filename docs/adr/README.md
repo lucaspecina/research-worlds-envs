@@ -119,3 +119,4 @@
 | 0106 | v1.06 | 2026-07-09 | [Catalogo espejo de AHAs + doctrina de PARES (certificado y metrica) + decision de construccion: Neptuno/Vulcano](0106-v1.06-catalogo-espejo-de-ahas-doctrina-de-pares-decision-neptuno-vulcano.md) | Vigente |
 | 0107 | v1.07 | 2026-07-09 | [Cola de trabajo UNICA + regla de WIP (auditoria de organizacion pedida por Lucas)](0107-v1.07-cola-de-trabajo-unica-y-regla-wip.md) | Vigente |
 | 0108 | v1.08 | 2026-07-09 | [Cola reordenada por VALOR, no por orden de llegada (orden de Lucas)](0108-v1.08-cola-reordenada-por-valor.md) | Vigente |
+| 0109 | v1.09 | 2026-07-09 | [La definicion operativa del juicio investigativo (dos polos; la lista NO es el juicio)](0109-v1.09-definicion-operativa-del-juicio-dos-polos.md) | Vigente |
