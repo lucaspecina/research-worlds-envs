@@ -104,18 +104,33 @@ lado SEGUIR y documentado el catálogo (evolución, no refundación):
   Convergencia independiente del principio de pares registrada como robustez. El catálogo es
   CANTERA, no cola (línea de llegada sigue en 12 mundos). Dos-espacios = Mundo B (pedigrí
   Klahr-Dunbar, no se abre mundo nuevo). ECHO = tarea con timebox, no muro caído.
-- **PRÓXIMO**: (0) **réplica DeepSeek + clasificación automática de ceros — PRIMERA del ledger, no
-  se mueve** (hasta que corra, todo es "señal preliminar"). (a) **primer PAR = NEPTUNO/VULCANO**
-  (ADR 0106): el lado Neptuno ya existe (familia v2 validada); construir SOLO el gemelo Vulcano
-  (misma fachada, sin entidad oculta, la ley es otra) — **requisito pre-build**: test de viabilidad
-  estilo #12 (fit-con-entidad-espuria debe dejar residuo o pagar complejidad medible; si no, el
-  gemelo no discrimina → par rechazado). El par angosta/amplia (Klayman-Ha) queda EN CANTERA (nota
-  en su spec). (b) **mundo-trampa de causa-efecto** (familia G; ya hay `confounded_gen_v0`; deuda
-  `_canonical` en 0094). (c) minado pendiente: colisionador/Berkson · caso nombrado de apofenia ·
-  pares partir↔multiplicar y anomalía↔ruido. Deudas VIVAS: κ; DS-seed3 σ; variante dominio pareado
-  #16/#17; rival (c); definición mecánica del robot incremental; timebox ECHO.
+### Cola de trabajo ÚNICA (ADR 0107 — prioridad de arriba hacia abajo)
 
-## Cartera E1 (20 slots; 6 hechos)
+**Regla de trabajo-en-curso (WIP)**: máximo **1 validar + 1 construir + 1 investigar** en vuelo a
+la vez. Todo lo demás espera acá — visible, no caído. Antes había 4 listas desparramadas (PRÓXIMO,
+deudas vivas, deudas sin gatillar, minados pendientes); esta cola las reemplaza a TODAS.
+
+| P | Etapa | Ítem | Próximo paso concreto | Estado |
+|---|-------|------|----------------------|--------|
+| 0 | **validar** | Réplica DeepSeek + clasificación automática de ceros (ADR 0098) | 30 episodios (3 celdas × 2 cond × 5 seeds) con DeepSeek + clasificador automático de ceros ejecución/juicio | **LISTA — espera GO de Lucas**; hasta que corra, todo es "señal preliminar" |
+| 1 | **construir** | Gemelo Vulcano — par Neptuno/Vulcano (ADR 0106) | test de viabilidad estilo #12 (el fit-con-entidad-espuria debe dejar residuo o pagar complejidad MEDIBLE) ANTES de cualquier build; si falla → par rechazado | siguiente slot de construcción |
+| 2 | **validar** | Batería E1 (los 7 chequeos de la escalera §E1) | arrancar por spread multi-modelo (chequeo 1) + auditoría humana de baterías (chequeo 7) | tras P0 |
+| 3 | **construir** | Mundo causa-efecto (familia G, ADR 0102) | destrabar D1 (`_canonical` estructural) → diseño → build | **bloqueado por D1** |
+| 4 | **investigar** | Minado combinado: colisionador/Berkson · caso nombrado de apofenia · pares partir↔multiplicar y anomalía↔ruido | UNA sola corrida deep-research combinada | cuando el cupo "investigar" se libere |
+
+**Deudas técnicas (ordenadas por qué desbloquean, no por antigüedad)**:
+D1 `_canonical` estructural (ADR 0094 — desbloquea P3 + proto-designer MEDIO) · D2 definición
+mecánica del robot incremental (ADR 0106 — desbloquea certificados de mundos-aha) · D3 timebox ECHO
+(ADR 0106) · D4 κ (4 divergencias R vs |ΔP|) · D5 DS-seed3 chequeo-de-valor σ (ADR 0088) · D6
+variante dominio-pareado #16/#17 · D7 re-elicitación rival (c) · D8 barrido c_F suite sampling ·
+D9 derivación automática para mundos-ventana.
+
+**Cantera (no cola — de acá se saca SOLO cuando el slot "construir" se libera)**: los 8 slots por
+autorar de la cartera (#8, #10, #13-15, #18-20) · #12 rediseño no-lineal (ADR 0076) · par
+angosta/amplia Klayman-Ha (spec lista, `docs/mundo-espejo-klayman-ha.md`) · Mundo B / dos-espacios
+(pedigrí Klahr-Dunbar, ADR 0106) · proto-designer DIFÍCIL.
+
+## Cartera E1 (20 slots; 11 hechos · 1 bloqueado · 8 por autorar)
 
 > El mundo = **composición de operadores** con dificultad declarada, no trampas sueltas.
 > Buckets: **[C]ontrol** (frontier debe aprobar) / **[T]rampa** (headroom buscado).
@@ -147,8 +162,8 @@ lado SEGUIR y documentado el catálogo (evolución, no refundación):
 Reglas: ningún [T] se certifica sin visibilidad de TODOS sus operadores + E0-probe con
 headroom pre-registrado; cada [T] carga ≥2 coordenadas; los [C] son ~25% y ya están.
 
-**Deudas registradas sin gatillar**: barrido c_F suite sampling; κ (4 divergencias R vs
-|ΔP|); re-elicitación rival (c); derivación automática para mundos-ventana.
+**Deudas**: consolidadas en la **Cola de trabajo única** (sección *Estado actual*, D1-D9) — esta
+lista ya no se mantiene acá (una regla, una casa).
 
 ---
 

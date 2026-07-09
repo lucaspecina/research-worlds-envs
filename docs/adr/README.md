@@ -117,3 +117,4 @@
 | 0104 | v1.04 | 2026-07-07 | [Case-search: mapa de estructuras rebuildables por vicio; puntos ciegos #4/#5/#2 identificados](0104-v1.04-case-search-mapa-de-estructuras-por-vicio.md) | Vigente |
 | 0105 | v1.05 | 2026-07-07 | [3a busqueda (puntos ciegos): vicios 4/5/2 llenados; nuevo hueco = colisionador/seleccion (vicio 7)](0105-v1.05-tercera-busqueda-puntos-ciegos-llenados.md) | Vigente |
 | 0106 | v1.06 | 2026-07-09 | [Catalogo espejo de AHAs + doctrina de PARES (certificado y metrica) + decision de construccion: Neptuno/Vulcano](0106-v1.06-catalogo-espejo-de-ahas-doctrina-de-pares-decision-neptuno-vulcano.md) | Vigente |
+| 0107 | v1.07 | 2026-07-09 | [Cola de trabajo UNICA + regla de WIP (auditoria de organizacion pedida por Lucas)](0107-v1.07-cola-de-trabajo-unica-y-regla-wip.md) | Vigente |
