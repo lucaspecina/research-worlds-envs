@@ -72,11 +72,14 @@ gamble de payload; lecturas de ADR 0083/0085 sobre seed31 retractadas. Después:
 
 **LÍDER DE ESTADO (2026-07-07) — el corazón documentado.** Cerrado el chequeo de ciencia del
 lado SEGUIR y documentado el catálogo (evolución, no refundación):
-- **Validez de constructo (ADRs 0097/0098)**: pista ESPECÍFICA por vicio (idea de Lucas) +
-  mediana + separar ceros de ejecución/juicio → la pista dirigida AÍSLA el vicio (first_story
-  escaso mediana 0.00→0.87; ≈0 en el control y a presupuesto pleno). **Señal POSITIVA.** Hallazgo
-  que ordena el diseño: **la presión expone el vicio** (no bite a presupuesto pleno). Caveat:
-  n=5, un modelo → replicar con DeepSeek (VIVO).
+- **Validez de constructo — REPLICADA en 2 modelos (ADRs 0097/0098 + réplica 0110)**: la pista
+  DIRIGIDA al vicio AÍSLA el vicio (levanta el mundo del vicio, deja plano el control). gpt-5.4:
+  scarce 0.00→0.87. **DeepSeek (8 seeds + clasificador de ceros AUTOMÁTICO): scarce 0.29→0.81
+  (+0.52), control −0.005, resta de diferencias +0.52.** Caveats: 2 modelos; el control cerca del
+  techo → falta un control con headroom (requisito de la batería E1). **Hallazgo de perfil**:
+  DeepSeek se casa con la 1ª hipótesis AUN a presupuesto pleno (gpt no) → el "vicio solo bajo presión"
+  es de gpt, no universal (OQ 20). El label del catálogo baja de "preliminar" a "replicada, con
+  caveats" — NO "validado".
 - **El catálogo = el corazón (ADR 0099)**: `docs/failure-modes.md`, vivo — de un failure mode
   documentado → mundo puntuable; taxonomía por **DINÁMICA DE MUNDO** (6 familias) + 7 principios
   + scaffold de diseño.
@@ -117,7 +120,7 @@ el inventario sin validar NO compone** → validar-lo-existente > construir-lo-n
 
 | P | Etapa | Ítem | Por qué acá (valor) | Próximo paso concreto | Estado |
 |---|-------|------|---------------------|----------------------|--------|
-| 0 | **validar** | Réplica DeepSeek + clasificación automática de ceros (ADR 0098) | mata-o-confirma el claim central, costo mínimo; de yapa 1er dato multi-modelo (OQ 20) | 30 episodios (3 celdas × 2 cond × 5 seeds) + clasificador automático de ceros | **LISTA — espera GO de Lucas** |
+| 0 | **validar** | Réplica DeepSeek + clasificación automática de ceros (ADR 0098) | mata-o-confirma el claim central | ~~48 episodios DeepSeek~~ | ✅ **HECHO (ADR 0110)**: la señal se sostiene (scarce +0.52, control ≈0); caveat: 2 modelos + control cerca del techo → lo cubre P2 |
 | 1 | **construir** (paralelo a P0 — WIP lo permite) | Test de viabilidad del gemelo Vulcano (ADR 0106) | **GRATIS (cero API, puro CPU)** y sondea OQ 19 (parche-vs-entidad) — decide si el par bandera es construible ANTES de gastar en el build | fit-con-entidad-espuria sobre el pool: debe dejar residuo o pagar complejidad MEDIBLE; si no → par rechazado | puede arrancar YA |
 | 2 | **validar** | Mini-spread multi-modelo sobre los 11 mundos EXISTENTES (chequeo 1 de la batería E1) | valida el instrumento sin construir nada + 1ª sonda real de perfiles nativos (OQ 20) — le saca valor al inventario que ya está pago | presupuestar ANTES (pasada mínima informativa, ~3 modelos × subset discriminativo × 3 seeds); + auditoría humana de baterías (chequeo 7, tarea de Lucas) | tras P0 |
 | 3 | **construir** | BUILD del gemelo Vulcano | completa el par bandera — recién cuando la balanza está certificada (P0/P2) y la viabilidad pasó (P1) | spec → certificado del par (principio 10) → E0 | tras P1 ✓ y P0 sostenido |

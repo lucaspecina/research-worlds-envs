@@ -71,10 +71,14 @@ nunca se mezclan con los de juicio: mezclarlos diluye el foco que es toda la tes
   usarla (4/4 gpt bajo escasez), terminación apurada, **precisión fabricada** (declaró un σ
   que no midió; la nota se lo cobró), retirada a la arquitectura familiar (v2). Todo apareció
   con número en nuestros mundos.
-- **Validez de constructo — señal positiva (ADR 0098)**: una pista DIRIGIDA al vicio
-  específico restaura el puntaje SOLO donde el vicio vive (first_story escaso: mediana
-  0.00→0.87) y ≈0 en el control → el instrumento separa juicio, con la métrica correcta
-  (mediana + separar ceros de ejecución de ceros de juicio). Caveat: n=5, replicar.
+- **Validez de constructo — señal positiva, REPLICADA en 2 modelos (ADR 0098 + réplica 0110)**: una
+  pista DIRIGIDA al vicio específico restaura el puntaje SOLO donde el vicio vive y ≈0 en el control →
+  el instrumento separa juicio, con la métrica correcta (mediana + separar ceros de ejecución de
+  ceros de juicio). gpt-5.4: scarce 0.00→0.87. **DeepSeek (8 seeds, clasificador de ceros
+  AUTOMÁTICO): scarce 0.29→0.81 (+0.52), control plano (−0.005), resta de diferencias +0.52.**
+  Caveats: 2 modelos; el control está cerca del techo (falta un control con headroom). Hallazgo
+  lateral: DeepSeek se casa con la 1ª hipótesis AUN a presupuesto pleno (gpt no) → perfil de modelo,
+  OQ 20.
 - **El hallazgo que ordena el diseño**: **el vicio bite bajo PRESIÓN, no a presupuesto pleno.**
   gpt pivotea "de rutina" con plata holgada; se le cae el buen hábito cuando el recurso
   aprieta. → *el mundo tiene que CREAR la presión, no solo pedir un análisis prolijo.*
