@@ -113,7 +113,7 @@ deudas vivas, deudas sin gatillar, minados pendientes); esta cola las reemplaza 
 | P | Etapa | Ítem | Próximo paso concreto | Estado |
 |---|-------|------|----------------------|--------|
 | 0 | **validar** | Réplica DeepSeek + clasificación automática de ceros (ADR 0098) | 30 episodios (3 celdas × 2 cond × 5 seeds) con DeepSeek + clasificador automático de ceros ejecución/juicio | **LISTA — espera GO de Lucas**; hasta que corra, todo es "señal preliminar" |
-| 1 | **construir** | Gemelo Vulcano — par Neptuno/Vulcano (ADR 0106) | test de viabilidad estilo #12 (el fit-con-entidad-espuria debe dejar residuo o pagar complejidad MEDIBLE) ANTES de cualquier build; si falla → par rechazado | siguiente slot de construcción |
+| 1 | **construir** | Gemelo Vulcano — par Neptuno/Vulcano (ADR 0106) | test de viabilidad estilo #12 (el fit-con-entidad-espuria debe dejar residuo o pagar complejidad MEDIBLE) ANTES de cualquier build; si falla → par rechazado. **No es trámite: es la 1ª sonda de la línea parche-vs-entidad (open question 19)** | siguiente slot de construcción |
 | 2 | **validar** | Batería E1 (los 7 chequeos de la escalera §E1) | arrancar por spread multi-modelo (chequeo 1) + auditoría humana de baterías (chequeo 7) | tras P0 |
 | 3 | **construir** | Mundo causa-efecto (familia G, ADR 0102) | destrabar D1 (`_canonical` estructural) → diseño → build | **bloqueado por D1** |
 | 4 | **investigar** | Minado combinado: colisionador/Berkson · caso nombrado de apofenia · pares partir↔multiplicar y anomalía↔ruido | UNA sola corrida deep-research combinada | cuando el cupo "investigar" se libere |
