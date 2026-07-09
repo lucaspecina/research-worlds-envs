@@ -104,19 +104,25 @@ lado SEGUIR y documentado el catálogo (evolución, no refundación):
   Convergencia independiente del principio de pares registrada como robustez. El catálogo es
   CANTERA, no cola (línea de llegada sigue en 12 mundos). Dos-espacios = Mundo B (pedigrí
   Klahr-Dunbar, no se abre mundo nuevo). ECHO = tarea con timebox, no muro caído.
-### Cola de trabajo ÚNICA (ADR 0107 — prioridad de arriba hacia abajo)
+### Cola de trabajo ÚNICA (ADR 0107; **reordenada por VALOR, ADR 0108** — no por orden de llegada)
 
 **Regla de trabajo-en-curso (WIP)**: máximo **1 validar + 1 construir + 1 investigar** en vuelo a
 la vez. Todo lo demás espera acá — visible, no caído. Antes había 4 listas desparramadas (PRÓXIMO,
 deudas vivas, deudas sin gatillar, minados pendientes); esta cola las reemplaza a TODAS.
 
-| P | Etapa | Ítem | Próximo paso concreto | Estado |
-|---|-------|------|----------------------|--------|
-| 0 | **validar** | Réplica DeepSeek + clasificación automática de ceros (ADR 0098) | 30 episodios (3 celdas × 2 cond × 5 seeds) con DeepSeek + clasificador automático de ceros ejecución/juicio | **LISTA — espera GO de Lucas**; hasta que corra, todo es "señal preliminar" |
-| 1 | **construir** | Gemelo Vulcano — par Neptuno/Vulcano (ADR 0106) | test de viabilidad estilo #12 (el fit-con-entidad-espuria debe dejar residuo o pagar complejidad MEDIBLE) ANTES de cualquier build; si falla → par rechazado. **No es trámite: es la 1ª sonda de la línea parche-vs-entidad (open question 19)** | siguiente slot de construcción |
-| 2 | **validar** | Batería E1 (los 7 chequeos de la escalera §E1) | arrancar por spread multi-modelo (chequeo 1) + auditoría humana de baterías (chequeo 7) | tras P0 |
-| 3 | **construir** | Mundo causa-efecto (familia G, ADR 0102) | destrabar D1 (`_canonical` estructural) → diseño → build | **bloqueado por D1** |
-| 4 | **investigar** | Minado combinado: colisionador/Berkson · caso nombrado de apofenia · pares partir↔multiplicar y anomalía↔ruido | UNA sola corrida deep-research combinada | cuando el cupo "investigar" se libere |
+**Criterio de valor (ADR 0108, orden de Lucas)**: valor = reducción del riesgo-de-que-todo-sea-en-
+vano (¿el instrumento MIDE?) + generación del activo único (evidencia tier-A sobre modelos), por
+unidad de costo. Consecuencia: **la validación COMPONE (todo lo posterior hereda su credibilidad);
+el inventario sin validar NO compone** → validar-lo-existente > construir-lo-nuevo > investigar-más.
+
+| P | Etapa | Ítem | Por qué acá (valor) | Próximo paso concreto | Estado |
+|---|-------|------|---------------------|----------------------|--------|
+| 0 | **validar** | Réplica DeepSeek + clasificación automática de ceros (ADR 0098) | mata-o-confirma el claim central, costo mínimo; de yapa 1er dato multi-modelo (OQ 20) | 30 episodios (3 celdas × 2 cond × 5 seeds) + clasificador automático de ceros | **LISTA — espera GO de Lucas** |
+| 1 | **construir** (paralelo a P0 — WIP lo permite) | Test de viabilidad del gemelo Vulcano (ADR 0106) | **GRATIS (cero API, puro CPU)** y sondea OQ 19 (parche-vs-entidad) — decide si el par bandera es construible ANTES de gastar en el build | fit-con-entidad-espuria sobre el pool: debe dejar residuo o pagar complejidad MEDIBLE; si no → par rechazado | puede arrancar YA |
+| 2 | **validar** | Mini-spread multi-modelo sobre los 11 mundos EXISTENTES (chequeo 1 de la batería E1) | valida el instrumento sin construir nada + 1ª sonda real de perfiles nativos (OQ 20) — le saca valor al inventario que ya está pago | presupuestar ANTES (pasada mínima informativa, ~3 modelos × subset discriminativo × 3 seeds); + auditoría humana de baterías (chequeo 7, tarea de Lucas) | tras P0 |
+| 3 | **construir** | BUILD del gemelo Vulcano | completa el par bandera — recién cuando la balanza está certificada (P0/P2) y la viabilidad pasó (P1) | spec → certificado del par (principio 10) → E0 | tras P1 ✓ y P0 sostenido |
+| 4 | **investigar** | Minado combinado: colisionador/Berkson · apofenia nombrada · pares faltantes | **CONGELADO por rendimiento decreciente** (4 búsquedas en una semana; la 5ª vale menos que la 1ª corrida de validación) | no se abre hasta que P0-P3 se muevan, salvo que un build lo NECESITE | congelado |
+| 5 | **construir** | Mundo causa-efecto (familia G, ADR 0102) | valor alto pero bloqueado — no compite hasta destrabarse | destrabar D1 (`_canonical` estructural) → diseño → build | **bloqueado por D1** |
 
 **Deudas técnicas (ordenadas por qué desbloquean, no por antigüedad)**:
 D1 `_canonical` estructural (ADR 0094 — desbloquea P3 + proto-designer MEDIO) · D2 definición
