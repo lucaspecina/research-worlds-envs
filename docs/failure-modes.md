@@ -94,6 +94,32 @@ nunca se mezclan con los de juicio: mezclarlos diluye el foco que es toda la tes
    el juicio. Dos niveles: (1) estructuras distintas —lo fundamental—; (2) disfraces sobre cada
    estructura —superficie, el re-skin ya existente—. El minado de semillas (§5) apunta PRIMERO a la
    variedad estructural.
+10. **La unidad de diseño es el PAR de polos, no el vicio ni el aha sueltos** (ADR 0106; formulado
+    de forma INDEPENDIENTE por dos lecturas — la convergencia se registra como evidencia de robustez).
+    Toda operación cognitiva (unificar, analogar, partir-en-dos, postular-entidad, perseguir-anomalía,
+    persistir) es NEUTRA: el mundo decide si fue genio o vicio (Copycat a nivel mecanismo; Klayman-Ha
+    a nivel estrategia; phlogiston a nivel racionalidad — tres fuentes independientes convergen).
+    **Juicio = discriminación ACTIVA y COMPRABLE**: no "percibir" en qué mundo estás, sino GASTAR
+    presupuesto en la evidencia que separa los polos ANTES de aplicar la operación. Se construye de a
+    PARES: misma superficie, polos opuestos (en uno la operación gana; en el gemelo pierde).
+    **CERTIFICADO DEL PAR (obligatorio para todo par)**: (a) el robot-HÁBITO (aplica la operación en
+    ambos polos) gana el polo favorable y PIERDE el gemelo — si gana ambos, el gemelo no discrimina →
+    par rechazado; (b) el robot-JUICIO (compra la evidencia discriminante primero, decide después)
+    gana AMBOS con presupuesto alcanzable — si ningún robot-juicio alcanzable lo logra, el par es una
+    moneda (injusto) → rechazado. Es el certificado de trampa-necesaria (ADR 0082) elevado al nivel
+    par: la frontera entre polos debe ser DESCUBRIBLE pagando, y eso se demuestra, no se espera.
+    **MÉTRICA DEL PAR** (convención de cartera / reporting E1 — cero cambios al reward path): se
+    reporta (R_polo1, R_polo2, **min**); el min es la nota del par — el atajo gana uno y pierde el
+    otro → min bajo; el juicio gana ambos → min alto. Generaliza 1a/1b y #16/#17 (par ya construido
+    sin haberlo nombrado). El minado (§5) busca SIEMPRE los dos polos de cada operación.
+11. **Tiers de evidencia A/B — etiquetar TODO en ambos catálogos** (ADR 0106): **tier A** = el
+    vicio/operación está documentado EN LLMs/agentes con cita; **tier B** = paradigma humano (cog-sci
+    / historia de la ciencia) sin testear en modelos. Todo mundo tier-B lleva PRE-REGISTRADA la rama
+    *"frontier lo resuelve de rutina"* — que es un hallazgo publicable SOBRE modelos, no un fracaso
+    del mundo — y la cartera E1 no se apuesta mayoritariamente a tier B. Ejemplos: anclaje-21%
+    (Tversky-Kahneman, humanos) = tier B; evidencia-ignorada-68% (traces de LLM) = tier A. Nota: el
+    PAR (principio 10) convierte el riesgo tier-B en diagnóstico — si frontier resuelve el polo-aha
+    pero TAMBIÉN aplica la operación en el gemelo, no tuvo el aha: tiene el hábito.
 
 ## 3. La taxonomía por DINÁMICA DE MUNDO (el organizador clave)
 
@@ -336,6 +362,93 @@ ozono (los propios autores de NASA lo desmienten → usar 1g); el genérico "der
 (usar 1h / 2a / 2b); la ley "exponencial / vida-media" del horizonte y la "cadena donde un paso caído
 mata todo" (refutadas); el número "pass^8 <25%".
 
+### ★★ Catálogo ESPEJO — operaciones de AHA, de a pares (4ª búsqueda, 2026-07-09; ADR 0106)
+
+*El polo POSITIVO del catálogo: operaciones creativas del descubrimiento, donde ejecutar la operación
+es la ÚNICA vía al techo. Regla de admisión: el aha cuenta SOLO si se paga en una PREDICCIÓN medible
+(cero-LLM); la "elegancia comprensiva" sin predicción lleva etiqueta "no sabemos puntuarla". Cada
+operación va DE A PAR (principio 10). Evidencia primaria:
+`docs/research/2026-07-09-deep-research-4-estructuras-de-aha-pares.json` (111 agentes, 23 claims
+verificados). Casi todo **tier B** salvo donde se marca. **Estado: preliminar hasta la réplica del
+ledger (DeepSeek) — nada de esto se llama "validado".***
+
+**A1 — Analogía por MAPEO DE ESTRUCTURA** (Gentner; formaliza a Darwin). Alinear dos sistemas por su
+estructura relacional profunda y PROYECTAR al nuevo una propiedad no dada → una predicción concreta.
+· *Polo aha*: Darwin (selección artificial→natural; Thagard lo modela formalmente). · *Polo vicio*:
+analogía de SUPERFICIE — retrieval por parecido, no estructura (70% vs 30%, Trench-Minervino 2015;
+taxonomía de 4 fallas, Shelley 2003). · **Tier A en el polo vicio**: GPT/Claude colapsan en variantes
+contrafácticas donde el humano aguanta (Lewis-Mitchell 2024) — *campo EN DISPUTA (Webb-Holyoak
+argumentan analogía emergente; el claim "LLMs igualan al humano" fue REFUTADO 0-3 en esta corrida):
+hallazgo documentado, no consenso.* · **Pago: predicción → construible.**
+
+**A2 — CONSILIENCIA / unificar** (Whewell; Thagard). Una hipótesis explica hechos de TIPO distinto a
+los que la originaron, sin ad-hoc; la aceptabilidad sube con el nº de hechos cubiertos — un CONTABLE.
+· *Polo aha*: teoría ondulatoria de la luz (mancha de Poisson, refracción cónica). · *Polo vicio*:
+apofenia / unificación espuria — **hueco: falta el caso histórico NOMBRADO** (la búsqueda no lo trajo).
+· Tier B. · **Pago: número.** *En el contrato actual, la batería + MDL YA cobran lo esencial (el que
+parchea cada anomalía con su epiciclo paga MDL doble y falla fuera de soporte); el mundo solo necesita
+sembrar las dos anomalías.* Sobre ECHO ver la tarea de investigación abajo.
+
+**A3 — Búsqueda en DOS ESPACIOS** (Klahr-Dunbar, SDDS). Investigar = moverse entre el espacio de
+hipótesis y el de experimentos; el techo exige DISEÑAR el experimento discriminante (la "región III"
+que descarta todas las hipótesis comunes), no solo generar hipótesis. · *Polo vicio*: quedarse en un
+solo espacio (razonar de memoria, nunca diseñar la prueba que separa). · Tier B. · **Pago: medible.**
+**→ NO se abre mundo nuevo: esta estructura ES el Mundo B** (diseñado hace semanas); se registra el
+pedigrí Klahr-Dunbar en su spec. *El par 1a/1b también la instancia (probar el borde correcto =
+región III).*
+
+**A4 — RE-REPRESENTACIÓN que se paga** (Klahr-Dunbar; el sub-caso construible). Reencuadre
+DISCONTINUO de las variables crudas que destapa una predicción invisible en el encuadre original;
+cruzar de marco exige cambiar **≥3 casilleros SIMULTÁNEAMENTE** (por eso la revisión incremental no
+llega — 17/20 no cruzan). · *Polo aha*: reconcebir el parámetro de "contador" a "selector" → predicen
+el aparato. · *Polo vicio*: túnel en la representación inicial. · Tier B. · **Pago: predicción,
+sub-caso (i)** — la firma observable: la entrega CONSTRUYE una variable que nadie le dio. **Distinguir
+del sub-caso (ii)**: el reframing de pura elegancia comprensiva sin predicción → etiqueta "no sabemos
+puntuarla" (el muro de §7 sigue para ese). *Generaliza el trofeo v2. El "nº de casilleros simultáneos"
+se registra como DIAL de dificultad de mundos-aha.*
+
+**A5 — (mecanismo, no mundo) Deslizamiento conceptual de Copycat** (Hofstadter-Mitchell). Explica POR
+QUÉ la misma maquinaria de re-representación bifurca en mapeo profundo (genio) vs superficie (vicio):
+la analogía es percepción; bajo presión un concepto "desliza" al vecino. Tier B. Valor WAGER: es el
+sustento a nivel mecanismo del principio 10 (operación neutra, el polo lo decide el mundo) y de la
+firma "reconstruye la variable" de A4.
+
+**Firmas de creatividad (doctrina vigente: observadas, JAMÁS premiadas).** Tres huellas computables
+del acto creativo, todas DIAGNÓSTICO de trace — ninguna entra al reward; la nota sigue siendo la
+entrega: (i) la entrega construye una variable no dada (A4); (ii) el log de compras entra a la región
+discriminante (A3); (iii) un solo mecanismo cubre ambas anomalías sin parche (A2, ya cobrado vía MDL).
+
+**Robot INCREMENTAL (tercer robot, para mundos-aha) — aceptado con definición mecánica PENDIENTE
+antes de usarlo como certificado**: espacio declarado (knobs + estructuras), vecindad = una suposición
+por vez, presupuesto declarado, restarts acotados (sin acotar restarts, con reinicios infinitos
+tropieza cualquier salto y el certificado se diluye). **Certificado de ABISMO** = incremental Y
+escalera estancados bajo el muro + guión-con-salto en el techo.
+
+**ECHO / coherencia explicativa — tarea de investigación con TIMEBOX, no muro caído**: ECHO computa
+"la mejor explicación" como número cero-LLM (gana +0.94 / pierde −0.85), pero puntúa DADO un grafo
+hipótesis-evidencia ya formalizado; nuestro muro es construir ese grafo desde una entrega sin juez.
+Preguntas del timebox: ¿qué inputs exige? ¿se computa desde una entrega ejecutable? ¿sobrevive a
+submissions adversariales? Mientras: batería + MDL cobran lo esencial de consiliencia.
+
+**DECISIÓN DE CONSTRUCCIÓN (ADR 0106): primer par = NEPTUNO/VULCANO** (postular la entidad oculta ↔
+parchar con una entidad espuria cuando la ley es otra). El caso histórico es perfecto: **el mismo
+Le Verrier, la misma operación** — 1846 postula un planeta invisible por el bamboleo de Urano →
+Neptuno aparece esa noche a <1°; 1859 hace LA MISMA jugada con el corrimiento de Mercurio → Vulcano
+no existe; la respuesta era cambiar la TEORÍA (relatividad general). Lo que decide el polo: ¿la
+entidad postulada genera una predicción INDEPENDIENTE comprobable, o solo parcha? — y eso YA lo cobra
+la maquinaria (off-support + MDL). Razones de la elección: el lado Neptuno YA existe y está validado
+(familia v2 — headroom demostrado, tier A propio); falta SOLO el gemelo Vulcano (misma fachada, sin
+entidad oculta, la ley es otra). **REQUISITO pre-build**: test de viabilidad estilo #12 sobre el
+gemelo — el fit-con-entidad-espuria sobre el pool debe dejar residuo o pagar complejidad MEDIBLE; si
+no, el gemelo no discrimina y el par se rechaza (certificado del par, principio 10). *El par
+angosta/amplia (`docs/mundo-espejo-klayman-ha.md`) queda EN CANTERA: tier B puro, ambos polos desde
+cero, riesgo de que frontier lo resuelva de taquito.*
+
+**Huecos del catálogo espejo (próximo minado)**: el caso NOMBRADO de apofenia (polo vicio de A2) ·
+los pares partir-en-dos↔multiplicar-entidades y promover-anomalía↔perseguir-ruido (no aparecieron) ·
+promover A2/A3/A4 de tier B a tier A (¿frontier falla en cruzar espacios / reencuadrar? — pregunta
+empírica que nuestros propios mundos pueden contestar).
+
 ## 4-bis. Corpus compilado (Lucas) — ruteado por el corte OPERACIÓN/JUICIO (§0.5)
 
 Recopilación de Lucas de fuentes reales (2025-2026). Lo que aportan de único: **números**. Pero
@@ -425,10 +538,15 @@ de fuentes y sacando failure modes CONCRETOS con su cita:
 > **2ª búsqueda — casos por ESTRUCTURA (case-search, 2026-07-07, completa)**: ver el ★ Mapa en §4
 > (1≈8, 6=4, 3=4, 7=2). **3ª búsqueda — puntos ciegos (completa)**: LLENÓ vicio 4 (6 estructuras),
 > vicio 5 (7) y vicio 2 (5). Ver el ★ Mapa.
-> **Pendiente de minar (prioridad = el hueco que queda)**: vicio 7 sub-estructuras
+> **4ª búsqueda — estructuras de AHA de a pares (2026-07-09, completa)**: ver el ★★ Catálogo ESPEJO
+> en §4 (5 estructuras con polo vicio, tier y forma de pago; crudo en `docs/research/`).
+> **Pendiente de minar (prioridad = los huecos que quedan)**: vicio 7 sub-estructuras
 > **colisionador / sesgo-de-selección** (Berkson) e **"intervenir-o-fallar"** (0 casos aún) ·
+> caso NOMBRADO de apofenia + pares partir↔multiplicar y anomalía↔ruido (catálogo espejo) ·
 > historiografía caso-por-caso de los clásicos de visión-de-túnel (Blondlot, fusión fría, canales
 > marcianos) antes de usarlos · fuentes generales sin tocar: METR fino · AI-Scientist · Tetlock.
+> **Lente del minado desde ADR 0106**: para cada operación se buscan LOS DOS POLOS (caso genio + mal
+> uso documentado, cada uno con fuente), y todo hallazgo se etiqueta tier A/B (principios 10-11).
 
 > **Acción concreta**: correr una investigación dirigida (skill `deep-research` o WebSearch) por
 > cada familia, extrayendo failure modes con cita + evidencia. **Triage obligatorio (§0.5) ANTES
@@ -459,8 +577,14 @@ vicio documentado (§4/§5)
 - **Vicios un-hinteable (insight profundo, v2) vs dispositivos (hinteable)**: la distinción de
   ADR 0097. Los profundos no se validan con pista (cualquier pista = leak) — su validez es que
   ningún modelo los vence (v2: 0/10). Los dispositivos se validan con pista dirigida (ADR 0098).
-- **Eje de creatividad/representación**: inventar la estructura es research taste generativo y
-  es lo que mejor funciona (v2), pero es lo más difícil de generar y de puntuar. Merece su
-  propia línea de pensamiento.
-- **Réplica pendiente** (ADR 0098): DeepSeek + más seeds + clasificación automática de ceros,
-  antes de un claim firme de validez.
+- **Eje de creatividad/representación**: ahora tiene su catálogo (★★ Catálogo ESPEJO, §4) con la
+  línea divisoria precisa: re-representación que desbloquea PREDICCIÓN = construible (sub-caso i);
+  reframing de pura elegancia sin predicción = sigue del otro lado del muro (etiqueta "no sabemos
+  puntuarla"). ECHO/coherencia = tarea de investigación con timebox (ver ★★), no muro caído.
+- **El catálogo es CANTERA, no cola** (ADR 0106): la línea de llegada sigue en 12 mundos; de esta
+  cantera salen los 3-4 difíciles que faltan, con prioridad a la familia de reestructuración
+  (generaliza v2, headroom demostrado) y a completar UN par entero como prueba del principio 10.
+- **Réplica pendiente (ADR 0098) — PRIMERA del ledger, no se mueve**: DeepSeek + más seeds +
+  clasificación automática de ceros. Hasta que corra, TODO lo de este documento (incluido el
+  catálogo espejo) dice "señal preliminar", no "validado" — que el catálogo no se adelante a su
+  propia evidencia (nuestro vicio 3, versión casa).

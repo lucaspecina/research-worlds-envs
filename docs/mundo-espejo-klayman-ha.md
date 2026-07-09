@@ -1,9 +1,15 @@
 # Mundo espejo Klayman-Ha (estructuras 1a/1b del vicio "no actualizar")
 
-> **Spec de diseño** (spec-first, precede al código). Primer build estructural elegido del ★ Mapa
-> de estructuras por vicio (`docs/failure-modes.md` §4, ADR 0104). Es el PAR: dos mundos que
-> comparten mecanismo y solo invierten la geometría — la demostración viva del principio 9
-> (diversidad de estructuras ⇒ no se puede overfitear con un atajo).
+> **Spec de diseño** (spec-first, precede al código). Es el PAR: dos mundos que comparten mecanismo
+> y solo invierten la geometría — instancia del principio 10 (pares) y del 9 (diversidad
+> estructural).
+>
+> **ESTADO: EN CANTERA (ADR 0106, 2026-07-09)** — ya NO es el primer build. El primer par es
+> **Neptuno/Vulcano** (el lado Neptuno ya existe: familia v2 validada; falta solo el gemelo). Este
+> par queda en cantera por: tier B puro (sin evidencia en LLMs), ambos polos a construir desde cero,
+> y riesgo de que frontier lo resuelva de taquito. Cuando se retome: aplicar el CERTIFICADO DEL PAR
+> del principio 10 (robot-hábito pierde el gemelo; robot-juicio gana ambos), que subsume el §4 de
+> esta spec.
 
 ## 0. El punto (por qué este par primero)
 

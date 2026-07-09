@@ -116,3 +116,4 @@
 | 0103 | v1.03 | 2026-07-07 | [Diversidad ESTRUCTURAL por vicio (no solo de disfraz) como requisito anti-overfitting (precision de Lucas)](0103-v1.03-diversidad-estructural-por-vicio.md) | Vigente |
 | 0104 | v1.04 | 2026-07-07 | [Case-search: mapa de estructuras rebuildables por vicio; puntos ciegos #4/#5/#2 identificados](0104-v1.04-case-search-mapa-de-estructuras-por-vicio.md) | Vigente |
 | 0105 | v1.05 | 2026-07-07 | [3a busqueda (puntos ciegos): vicios 4/5/2 llenados; nuevo hueco = colisionador/seleccion (vicio 7)](0105-v1.05-tercera-busqueda-puntos-ciegos-llenados.md) | Vigente |
+| 0106 | v1.06 | 2026-07-09 | [Catalogo espejo de AHAs + doctrina de PARES (certificado y metrica) + decision de construccion: Neptuno/Vulcano](0106-v1.06-catalogo-espejo-de-ahas-doctrina-de-pares-decision-neptuno-vulcano.md) | Vigente |

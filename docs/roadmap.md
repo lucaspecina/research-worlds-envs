@@ -96,14 +96,24 @@ lado SEGUIR y documentado el catálogo (evolución, no refundación):
   5=7, 6=4, 7=2** (6 de 7 vicios con variedad). Puntos ciegos ya LLENADOS (4/5/2); **único hueco:
   vicio 7 sub-tipos colisionador/selección (0 casos)**. Caveat de diseño (phlogiston): persistir es
   vicio solo si la alternativa es decididamente superior. Ver ★ Mapa en §4.
-- **PRÓXIMO**: (a) primer build recomendado — el **par 1a/1b de Klayman-Ha** (subset vs superset):
-  dos estructuras OPUESTAS del vicio "no actualizar" donde un modelo que memoriza "buscá refutar"
-  gana una y pierde la otra → demuestra el principio 9 en vivo. **SPEC ESCRITA**:
-  `docs/mundo-espejo-klayman-ha.md` (SCM de intervalo, certificado de 2 robots, presión = queries
-  escasas). Pendiente: decidir 1a-solo vs par junto, y la piel/prior. (b) **mundo-trampa de causa-efecto**
-  (familia G; ya hay `confounded_gen_v0`; deuda `_canonical` en 0094). (c) **3ª búsqueda a los puntos
-  ciegos** (#4/#5/#2, y colisionador para #7). (d) réplica de 0098 (DeepSeek). Deudas VIVAS: κ;
-  DS-seed3 σ; variante dominio pareado #16/#17; rival (c).
+- **CATÁLOGO ESPEJO + DOCTRINA DE PARES (ADR 0106, 2026-07-09)**: la 4ª búsqueda trajo las
+  estructuras de AHA (5, de a pares con su polo vicio; ★★ en `docs/failure-modes.md` §4; crudo en
+  `docs/research/`). Doctrina nueva: **principio 10** (el PAR es la unidad — juicio = discriminación
+  activa comprable; CERTIFICADO DEL PAR robot-hábito/robot-juicio; métrica (R1,R2,min) solo
+  reporting) y **principio 11** (tiers A/B con rama pre-registrada "frontier lo resuelve de rutina").
+  Convergencia independiente del principio de pares registrada como robustez. El catálogo es
+  CANTERA, no cola (línea de llegada sigue en 12 mundos). Dos-espacios = Mundo B (pedigrí
+  Klahr-Dunbar, no se abre mundo nuevo). ECHO = tarea con timebox, no muro caído.
+- **PRÓXIMO**: (0) **réplica DeepSeek + clasificación automática de ceros — PRIMERA del ledger, no
+  se mueve** (hasta que corra, todo es "señal preliminar"). (a) **primer PAR = NEPTUNO/VULCANO**
+  (ADR 0106): el lado Neptuno ya existe (familia v2 validada); construir SOLO el gemelo Vulcano
+  (misma fachada, sin entidad oculta, la ley es otra) — **requisito pre-build**: test de viabilidad
+  estilo #12 (fit-con-entidad-espuria debe dejar residuo o pagar complejidad medible; si no, el
+  gemelo no discrimina → par rechazado). El par angosta/amplia (Klayman-Ha) queda EN CANTERA (nota
+  en su spec). (b) **mundo-trampa de causa-efecto** (familia G; ya hay `confounded_gen_v0`; deuda
+  `_canonical` en 0094). (c) minado pendiente: colisionador/Berkson · caso nombrado de apofenia ·
+  pares partir↔multiplicar y anomalía↔ruido. Deudas VIVAS: κ; DS-seed3 σ; variante dominio pareado
+  #16/#17; rival (c); definición mecánica del robot incremental; timebox ECHO.
 
 ## Cartera E1 (20 slots; 6 hechos)
 
