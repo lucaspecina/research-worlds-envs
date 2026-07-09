@@ -60,12 +60,15 @@ ancla S_truth). Idéntico patrón a `dummy_dose_v0`: `mechanism(PARAMS, regime, 
 - **Anclas**: **naive = predecir H** (la corazonada de la piel — la jugada del vicioso). **Techo =
   `world.py` = predecir T.** `R = (S_agente − S_naive)/(S_truth − S_naive)`.
 
-## 3. La presión que hace morder el vicio (principio 3)
+## 3. La presión: PERILLA de medición, no requisito (principio 3, corregido por ADR 0111)
 
-Con presupuesto holgado el agente barre toda la grilla y encuentra `T` — el vicio se duerme. **La
-trampa necesita queries ESCASAS**: pocas para permitirse confirmar Y explorar el borde. Bajo
-escasez, el que gasta todo confirmando su H (positive testing en 1a) se queda sin con qué probar el
-borde. La escasez es la perilla de dificultad (como en `first_story_scarce_v0`).
+Con presupuesto holgado el agente puede barrer toda la grilla y encontrar `T`. Bajo escasez, el que
+gasta todo confirmando su H (positive testing en 1a) se queda sin con qué probar el borde. **PERO
+—corrección de ADR 0111— la escasez NO es un requisito**: algunos modelos (DeepSeek) caen en el vicio
+aun a presupuesto pleno. Acá la escasez es un **dial de medición**: se barre su nivel y el mundo
+reporta *a qué punto se cae el hábito de cada modelo* (perfil por modelo), en vez de asumir "sin
+escasez no hay vicio". El certificado del par (principio 10) se corre a varios niveles de presupuesto,
+no a uno solo.
 
 ## 4. Certificado de trampa necesaria (ADR 0082 — dos robots × dos mundos)
 

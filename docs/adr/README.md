@@ -121,3 +121,4 @@
 | 0108 | v1.08 | 2026-07-09 | [Cola reordenada por VALOR, no por orden de llegada (orden de Lucas)](0108-v1.08-cola-reordenada-por-valor.md) | Vigente |
 | 0109 | v1.09 | 2026-07-09 | [La definicion operativa del juicio investigativo (dos polos; la lista NO es el juicio)](0109-v1.09-definicion-operativa-del-juicio-dos-polos.md) | Vigente |
 | 0110 | v1.10 | 2026-07-09 | [Replica DeepSeek de la validez (ADR 0098): la senal positiva se sostiene con un 2do modelo (+ hallazgo de perfil)](0110-v1.10-replica-deepseek-validez-se-sostiene.md) | Vigente |
+| 0111 | v1.11 | 2026-07-09 | [Hallazgo con nombre: PERFILES DE VICIO POR MODELO (la presion es PERILLA calibrable por modelo, no ingrediente necesario)](0111-v1.11-perfiles-de-vicio-por-modelo-presion-es-perilla.md) | Vigente |

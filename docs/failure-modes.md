@@ -79,9 +79,12 @@ nunca se mezclan con los de juicio: mezclarlos diluye el foco que es toda la tes
   Caveats: 2 modelos; el control está cerca del techo (falta un control con headroom). Hallazgo
   lateral: DeepSeek se casa con la 1ª hipótesis AUN a presupuesto pleno (gpt no) → perfil de modelo,
   OQ 20.
-- **El hallazgo que ordena el diseño**: **el vicio bite bajo PRESIÓN, no a presupuesto pleno.**
-  gpt pivotea "de rutina" con plata holgada; se le cae el buen hábito cuando el recurso
-  aprieta. → *el mundo tiene que CREAR la presión, no solo pedir un análisis prolijo.*
+- **El hallazgo que ordena el diseño (CORREGIDO — ADR 0111)**: ~~el vicio bite bajo PRESIÓN, no a
+  presupuesto pleno~~ era el **perfil de gpt-5.4**, NO una ley. gpt pivotea "de rutina" con plata
+  holgada; **DeepSeek se casa con la 1ª hipótesis AUN a presupuesto pleno** (réplica 0110). → la
+  presión es una **PERILLA calibrable POR MODELO**, no un ingrediente necesario: cada mundo con dial
+  de presión reporta *a qué nivel se cae el hábito de cada modelo* (medición fina, no binaria). Es el
+  producto **PERFILES DE VICIO POR MODELO** (OQ 20).
 
 ## 2. Principios de diseño (los que ganamos con dolor — no negociables)
 
@@ -90,8 +93,12 @@ nunca se mezclan con los de juicio: mezclarlos diluye el foco que es toda la tes
 2. **Certificado de trampa necesaria** (ADR 0082): dos robots scripteados — el **vicioso**
    (comete el vicio con maestría en todo lo demás) debe quedar LEJOS del techo; el
    **cuidadoso** debe alcanzarlo. Si el cuidadoso no llega → trampa injusta, se descarta.
-3. **La presión expone el vicio** (ADR 0098): escasez de presupuesto / tiempo / evidencia que
-   llega tarde. Un vicio dormido a presupuesto pleno no se mide sin presión.
+3. **La presión es una PERILLA que expone el vicio — calibrable por modelo** (ADR 0098, corregido por
+   0111): escasez de presupuesto / tiempo / evidencia que llega tarde. **NO es ingrediente necesario
+   universal**: gpt-5.4 esconde el vicio de 1ª-hipótesis a presupuesto pleno, DeepSeek lo muestra sin
+   presión. Por eso la presión no es precondición sino DIAL: se barre su nivel y se reporta a qué
+   punto se cae el hábito de cada modelo (medición fina). Un mundo puede exponer un vicio en algunos
+   modelos sin presión; la presión amplía el rango de modelos y afina la medición.
 4. **Vicios TEMPORALES → mundos que se DESPLIEGAN**: "no actualizar ante evidencia nueva"
    necesita que HAYA evidencia nueva llegando (la maquinaria de eventos, D4/ADR 0083, casi sin
    usar). El énfasis correcto: *evidencia por etapas, no toda disponible de entrada.*
