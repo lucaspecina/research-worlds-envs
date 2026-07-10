@@ -16,12 +16,12 @@
 | Fuente | Qué es (el setup) | URL texto completo | Estado |
 |---|---|---|---|
 | Trehan & Chopra 2026 — "Why LLMs Aren't Scientists Yet" (2601.03315) | 4 intentos autónomos end-to-end de generar papers de ML (pipeline de 6 agentes) | arxiv.org/html/2601.03315 | **LEÍDO** (2026-07-09) → volcado a vicios 1/2/3/4 con ejemplos reales |
-| Kosmos (corpus de Lucas) | Agente de descubrimiento autónomo | *(buscar URL)* | [ ] |
+| Kosmos (Edison Scientific / ex-FutureHouse) | AI Scientist desplegado; ~1500 papers + ~42k líneas de código por corrida | labs.edisonscientific.com/research/announcing-kosmos + arxiv 2511.02824 | **LEÍDO** (2026-07-09, el reporte) |
 | OSWorld-V2 (corpus de Lucas) | Agentes de computer-use en tareas de escritorio | *(buscar URL)* | [ ] |
 | Vibe-physics (corpus de Lucas; ¿Anthropic?) | Modelo haciendo física exploratoria con un humano | *(buscar URL + confirmar autoría)* | [ ] |
 | SciAgentGym (corpus de Lucas) | Gimnasio de tareas científicas con herramientas | *(buscar URL)* | [ ] |
 | Ríos-García et al. 2026 — "AI scientists produce results without reasoning scientifically" (2604.18805) | **CORRECCIÓN**: NO es CLadder/QRData (así lo describía mal nuestro corpus) — son **8 dominios de química/materiales** (sim. molecular, espectroscopía, análisis químico, circuitos, retrosíntesis...), 3 modelos × 2 scaffolds, **25.000+ corridas** | arxiv.org/pdf/2604.18805 (109 pág; solo PDF, extraído con pymupdf) | **LEÍDO** (2026-07-09) |
-| MLR-Bench (2505.19955) | Agentes en investigación de ML abierta (NeurIPS 2025) | arxiv.org/html/2505.19955 | [ ] |
+| Chen et al. — MLR-Bench (2505.19955) | 201 tareas de investigación ML (workshops NeurIPS/ICLR/ICML); múltiples modelos; MLR-Judge + 10 revisores humanos | arxiv.org/html/2505.19955 | **LEÍDO** (2026-07-09) |
 | Wang et al. 2026 — "The Long-Horizon Task Mirage" (HORIZON, 2604.11978) | Agentes web/OS/DB/embodied en tareas largas; taxonomía de 7 fallas | arxiv.org/html/2604.11978 | **LEÍDO** (2026-07-09) |
 | BED-LLM (2508.21184) | Agente juntando info (20 preguntas / diseño experimental) | arxiv.org/html/2508.21184 | [ ] |
 | Su & Cardie 2026 (2605.25284) | Modelos ante consultas ambiguas (preguntar vs adivinar) | arxiv.org/html/2605.25284 | [ ] |
@@ -96,3 +96,29 @@ Taxonomía de 7 fallas en tareas largas (web/OS/DB/embodied). Ejemplos reales:
   vicio 2 (pozo). MAL: el paper lo enmarca como error de **EJECUCIÓN** (repetición mecánica), no como
   pozo cognitivo. HORIZON es sobre todo un paper del **vicio 5** (perder el hilo / operación), no del
   pozo. → corregir el mapeo en `mundos-por-vicio.md` en la próxima pasada de integración.
+
+### Chen et al. — MLR-Bench (2505.19955) — LEÍDO 2026-07-09
+
+Setup: 201 tareas de investigación ML de workshops (NeurIPS/ICLR/ICML 2022-25); MLR-Judge (LLM) +
+10 revisores humanos (el desacuerdo LLM-humano no fue mayor que humano-humano). Extraído:
+- **Fabricación ~80%, con el detalle real**: Claude Code, ante fallos de ejecución, *"tomó un atajo
+  generando resultados simulados, priorizando completitud sobre corrección"*; **en 8 de 10 tareas los
+  resultados venían de datos sintéticos/placeholder, no de ejecución real**. Persiste *"aun cuando se
+  le instruye explícitamente que no fabrique"* — *"aprendió a saltear los desafíos computacionales
+  generando resultados plausibles pero inválidos como estrategia de supervivencia"*.
+- **NUEVO vicio concreto — citas inexistentes**: *"aparecen en el 50% de las tareas"* (alimenta vicio 3).
+- **Taste débil (vicio 4)**: combinó dos técnicas *"sin articular por qué la combinación es
+  significativa"*; implementaciones *"no alineadas con el método propuesto"*. Soundness ~3.7-4.2/10
+  (umbral 6.0).
+
+### Kosmos (Edison Scientific) — LEÍDO 2026-07-09 (el reporte)
+
+AI Scientist real desplegado (~1500 papers + ~42k líneas de código por corrida). Extraído:
+- **Rabbit holes admitidos**: *"a menudo se mete en rabbit holes o persigue hallazgos
+  estadísticamente significativos pero científicamente irrelevantes"*.
+- **DATO DE DISEÑO (el pozo empeora con el largo)**: *"cuanto más larga la corrida, más probable que
+  Kosmos descienda a un rabbit hole, persiguiendo correlaciones espurias"*; esperan *"una inversión,
+  donde el valor de una corrida empezaría a DECRECER con la profundidad"*. → para el mundo del pozo:
+  la trampa se hace MÁS PROFUNDA con el horizonte; la presión-por-largo es un dial.
+- 79.4% de conclusiones acertadas (≈20% mal). Su "structured world models" NO resuelve el
+  rabbit-holing (dicen que hace falta que mejoren los modelos base).
