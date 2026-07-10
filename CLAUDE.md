@@ -69,7 +69,9 @@ propone la edición del doc + un ADR nuevo en `docs/adr/`.
 
 Codex es un **compañero de pensamiento y crítica**, NO un escritor de código. Su rol es **segunda
 opinión, crítica y pulido de ideas** en cuestiones de **diseño / reflexión / análisis** — una tercera
-lectura independiente (como el "otro feedback"), no un ejecutor.
+lectura independiente (como el "otro feedback"), no un ejecutor. **También sirve para criticar y ayudar
+a DIRECCIONAR el CORE del proyecto** — su dirección, su rol, su objetivo — y proponer mejoras,
+**pivoteos o cambios grandes**, no solo decisiones puntuales.
 
 - **Cuándo consultarlo**: ante una **decisión importante y no trivial** (diseño, interpretación de un
   resultado, repensar un enfoque, pulir una idea), o **cuando Lucas lo pide**. Claude puede
