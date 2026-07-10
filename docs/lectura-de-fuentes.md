@@ -27,6 +27,8 @@
 | Su & Cardie 2026 — "Knowing but Not Showing" (2605.25284, Cornell) | 10 modelos ante consultas ambiguas (AmbigQA, 1000 ítems): preguntar vs adivinar | arxiv.org/html/2605.25284v1 | **LEÍDO** (2026-07-09) |
 | Jin et al. — Corr2Cause (2306.05836, ICLR 2024) | 17 modelos infiriendo causa desde correlación (200K ítems) | arxiv.org/abs/2306.05836 | **LEÍDO** (2026-07-09, abstract+claims; el html no daba más) |
 | Vaccaro 2026 (2606.11217) | Grados de libertad en experimentos SOBRE agentes (metodología HUMANA, no del agente) | arxiv.org/html/2606.11217v1 | **LEÍDO** (2026-07-09) → ⚠ CORRIGE nuestro encuadre |
+| **Chen, Zhao & Cohan 2026 — "Measuring the Gap Between Human and LLM Research Ideas" (2607.01233, Yale/UChicago)** | 9 LLMs generan ideas desde el mismo contexto de literatura que un paper humano real; taxonomía de "research taste" de 2 ejes; 11.683 ideas humanas | PDF (Lucas lo puso en root; extraído con pymupdf) | **LEÍDO** (2026-07-10) → vicio de síntesis + gemelo de A1 |
+| **"Position: LLMs can't jump" (OpenReview klU4737opt, sub. ICML)** | Position paper: los LLMs no pueden ABDUCCIÓN (el "salto" E→axiomas); caso Einstein/Relatividad General; usa el ejemplo Vulcano | PDF (Lucas lo puso en root — OpenReview daba 403 anti-bot; extraído con pymupdf) | **LEÍDO** (2026-07-10) → valida el par Neptuno/Vulcano + los aha |
 | The AI Scientist (Sakana) + críticas | Agente que genera papers de punta a punta | *(buscar URL)* | [ ] |
 | AI Co-Scientist (Google) | Sistema multi-agente de hipótesis científicas | *(buscar URL)* | [ ] |
 | SciAgentBench / DiscoveryWorld / DiscoveryBench | Benchmarks de descubrimiento con análisis de error | *(buscar URLs)* | [ ] |
@@ -212,6 +214,78 @@ c/u; base GPT-4o). Extraído:
   fuertemente negativo a fuertemente positivo — un investigador podría concluir que el LLM tiene
   anclaje humano robusto, ninguno, o anclaje inverso, según qué camino reporte"*. → jardín de
   senderos hecho demostración; y ojo: el "anclaje en LLMs" NO es robusto (relevante para el vicio 1).
+
+### Chen, Zhao & Cohan 2026 — "Measuring the Gap..." (2607.01233) — LEÍDO 2026-07-10 (PDF, pymupdf)
+
+Setup: 9 LLMs (Claude-Sonnet-4.6, Gemini-3.1-Pro, GPT-OSS-20B/120B, GPT-5.4-mini, Qwen3-8B/32B,
+DeepSeek-V4-Flash/Pro) generan una idea nueva (motivación + método) desde el MISMO set de trabajos
+previos que precedió a un paper humano real (11.683 papers de ICLR/ICML/NeurIPS + Nature Communications).
+Se etiqueta cada idea con una taxonomía de "research taste" de 2 ejes (7 patrones de oportunidad × 7
+paradigmas de método) y se comparan DISTRIBUCIONES humano-vs-LLM. Hallazgos con número real:
+- **Los LLMs ocupan una región MUCHO más angosta del taste que los humanos.** El sesgo central: sobre-
+  producen ideas de **puente/síntesis** ("conectá/combiná estas dos cosas"). *"Only 12.1% of human
+  ideas motivated by the pattern of connection... By contrast, across the nine main evaluated LLMs,
+  the corresponding rates range from 47.1% to 64.2%"*; síntesis/unificación como método: **5.1% humano
+  vs 22.5-38.7% LLM**.
+- **La operación "integrate": 34.2% de las salidas de modelo vs 2.35% de las humanas** (log-odds 3.07).
+  Las movidas HUMANAS que los modelos evitan: **replace** (9.13% vs 0.92%), **decouple** (2.33% vs
+  0.21%), **formalize**. *"human papers more often modify, separate, or formalize a narrower local
+  mechanism."* → OJO: "decouple two confounded mechanisms" es LITERAL nuestra familia causal (G).
+- **El "thinking" EMPEORA el vicio**: con modo razonamiento, Qwen bridge 49.7%→71.1%, síntesis
+  38.7%→52.2%, entropía baja. *"Thinking therefore appears to sharpen the model's preferred ideation
+  template instead of broaden the distribution toward human taste."* (relevante a nuestro "la presión/
+  andamiaje es una perilla": acá MÁS cómputo de razonamiento = MENOS diversidad).
+- **Los modelos se parecen entre sí MÁS que a los humanos** (cos-sim modelo-modelo 0.83 vs humano-modelo
+  0.72-0.78) → *"distinct model families converge to similar generation patterns."* (respalda nuestra
+  preocupación de overfitting: si todos comparten el reflejo, un mundo que lo caza los caza a todos).
+- Diagnósticos medibles (0-3, anotador): **bottleneck specificity** (¿identifica el mecanismo/factor
+  limitante preciso?) más baja en modelos; **boilerplate** más alto. *"even polished and specific model
+  outputs can concentrate on a narrower set of opportunity and method patterns."*
+- **Mapeo a WAGER**: es el **gemelo-vicio de nuestra operación-aha A1 (analogía/unificación)** con
+  números: unir-dos-cosas es genio cuando comparten estructura y **reflejo de relleno** cuando no
+  (apofenia a nivel ideación). Refuerza la doctrina de PARES (el reflejo "siempre integrá" gana el
+  polo-aha y DEBE perder el gemelo). Y nombra las movidas que un buen mundo debe premiar: reemplazar
+  un componente frágil, **desacoplar dos mecanismos confundidos** (¡familia G!), formalizar una
+  estructura local.
+
+### "Position: LLMs can't jump" (OpenReview klU4737opt) — LEÍDO 2026-07-10 (PDF, pymupdf)
+
+Position paper (no empírico): usando la Relatividad General de Einstein como caso de estudio, argumenta
+que los LLMs dominan **Inducción** (patrones) y avanzan en **Deducción** (prueba formal) pero les falta
+**Abducción** — el "Salto" (J) de la experiencia sensible (E) a los axiomas (A): *"structurally
+incapable of the abductive 'jump' required for scientific invention."* Marco de Peirce: Deducción
+(Regla+Caso→Resultado), Inducción (Caso+Resultado→Regla), **Abducción (Regla+Resultado→Caso: inventar
+la causa de un resultado sorprendente)**. Puntos con impacto directo en WAGER:
+- **EL EJEMPLO ES NUESTRO PAR NEPTUNO/VULCANO, publicado por otros** (validación independiente, tier B):
+  *"A compression-driven AI might prefer to patch Newtonian gravity with a parameter like the 'Vulcan'
+  planet hypothesis rather than expanding the hypothesis space to include non-Euclidean geometry, which
+  increases complexity before it simplifies it."* → parchar-con-Vulcano = la jugada perdedora; el salto
+  abductivo (reestructurar la teoría) = ganar. EXACTAMENTE nuestro gemelo.
+- **CRÍTICA A "CREATIVIDAD = COMPRESIÓN" (MDL) cuando NO hay señal de error** (nos toca: usamos MDL en el
+  scoring): *"An AI operating as an inductive optimization engine would have found the Newtonian loss
+  function to be near-zero. Without a significant discrepancy between prediction and observation, there
+  is no gradient to drive the system toward a foundational restructuring of spacetime."* La gravedad
+  newtoniana estaba verificada a 10⁻⁹; la única anomalía (perihelio de Mercurio) se leía como variable
+  oculta (Vulcano), no como falla de teoría. → **TENSIÓN honesta para nosotros**: nuestro reward ES una
+  señal de error; los descubrimientos más duros ocurren SIN señal de error. Nuestros mundos (con
+  anomalía cobrable) modelan el caso "hay señal", no el caso "loss≈0, reestructurá igual".
+- **Identificar el error ≠ generar el arreglo**: *"identifying the error is distinct from generating the
+  fix... selecting the correct axioms to resolve the conflict requires more than logical consistency."*
+  → respalda nuestro corte operación/juicio (marcar la inconsistencia es barato; el salto es el cuello).
+- **CONVERGENCIA con la tesis WAGER desde la filosofía de la ciencia**: proponen **world models
+  interactivos con intervención contrafáctica** como el laboratorio sintético para mecanizar el salto:
+  *"future iterations of such interactive environments, operating on a consistent latent physics
+  manifold rather than just pixels, will provide the synthetic laboratory necessary to transform the
+  Abductive Jump from a mystical insight into a reproducible algorithmic process."* Citan Genie (world
+  model con acción-controlable) y Pearl (*"take control of the simulation to conceptually cut the
+  cable"*). → es lo que construimos, argumentado desde otro ángulo. AI Scientist (Sakana) y AlphaEvolve
+  *"recombine existing symbolic concepts to optimize metrics — a sophisticated Chinese Room... lack the
+  embodied world model required to perform the counterfactual physical simulations that drive the
+  abductive Jump."*
+- **Caveat de alcance del paper**: su tesis fuerte es que el salto necesita grounding físico/multimodal
+  (sensorial); para dominios abstractos (mate/CS) admiten que *"the Sense Experience (E) may be grounded
+  in high-dimensional topology."* Nuestros mundos son simbólicos, no multimodales — pero SÍ dan
+  intervención contrafáctica (do()), que es la mitad que ellos marcan como faltante en AI Scientist.
 
 ## Búsqueda de descubrimiento — COMPLETA (2026-07-10)
 
