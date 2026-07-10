@@ -1,256 +1,251 @@
-# Mundos por vicio — la derivación oficial (de la lista a los mundos)
+# Mundos por vicio — dónde fallan los AGENTES DE IA investigadores, y qué mundo caza cada falla
 
-> **Qué es este documento (ADR 0113).** La síntesis EN LLANO, error por error: qué es cada failure
-> mode, **de dónde sale** (fuentes), **en qué contextos aparece documentado** (cuantos más contextos
-> independientes, más seguro que es un error de fondo y no una anécdota — y más variedad estructural
-> para construir), **qué estructuras tiene**, y **qué mundo lo caza** — exista o no ese mundo hoy.
-> Derivado **catálogo-primero** (orden de Lucas, 2026-07-09): *lo construido antes NO manda* — los
-> mundos existentes solo cuentan como "ya cubierto" donde les toca. La evidencia detallada con citas
-> vive en `docs/failure-modes.md` (el catálogo); esto es la destilación para pensar y diseñar.
-> Nada entra a la cola de trabajo por este documento (la cola vive en `docs/roadmap.md`).
+> **Qué es este documento (ADR 0113, re-enfocado por ADR 0114).** El foco es **IA**: por cada vicio,
+> **dónde está documentado EN AGENTES DE IA haciendo investigación** — qué paper/benchmark, qué
+> estaba haciendo el agente, cómo se manifestó, con qué número. La psicología humana y la historia
+> de la ciencia quedan **al margen** (una línea por vicio, como fondo — sirven para las estructuras,
+> no son el foco). Después, por cada vicio: sus estructuras y **el mundo que lo caza** (exista o no
+> hoy). Catálogo-primero: lo construido no manda. La evidencia completa con citas vive en
+> `docs/failure-modes.md`; la cola de trabajo, en `docs/roadmap.md`.
 
-**La vara de validación, común a todos** (cómo sabemos que un mundo de verdad caza su error):
-1. **Dos jugadores-robot**: uno que comete el error (debe perder) y uno cuidadoso (debe poder ganar).
-   Si no se cumple, el mundo está mal hecho y se descarta.
-2. **IAs reales jugando libres**: ¿caen solas? (si nadie cae nunca, el mundo no muerde).
-3. **La prueba de la frase** (validada 2 veces, con 2 modelos): advertirle al jugador sobre *ese*
-   error se lo arregla — y no mueve nada en mundos sin ese error.
-4. Ideal, **con dos IAs distintas**: ya sabemos que cada modelo tiene su propio perfil de mañas
-   (GPT esconde el vicio con plata de sobra; DeepSeek cae igual).
+**La vara de validación, común a todos** (cómo sabemos que un mundo caza su vicio): (1) dos
+jugadores-robot — el que comete el vicio DEBE perder, el cuidadoso DEBE poder ganar; (2) IAs reales
+jugando libres — ¿caen solas?; (3) la prueba de la frase — advertir sobre ESE vicio lo arregla, y no
+mueve nada en mundos sin él (validada con gpt-5.4 y DeepSeek); (4) ideal con 2+ modelos — cada uno
+tiene su propio perfil de mañas (hallazgo propio: PERFILES DE VICIO POR MODELO).
 
 ---
 
 ## Vicio 1 — No cambiar de idea ante la evidencia
 
-**Qué es.** Formarse una explicación temprano y no soltarla, aunque la evidencia la contradiga:
-buscar solo lo que confirma, descontar lo que molesta, ajustar de menos.
+**Qué es.** El agente se forma una explicación temprano y no la suelta: ignora lo que la contradice,
+revisa poco, no triangula.
 
-**Dónde está documentado (5 contextos independientes — el más respaldado de la lista):**
-- *Laboratorio cognitivo*: Wason 1960 (el juego 2-4-6); Klayman & Ha 1987 (por qué confirmar no
-  refuta nunca si tu regla es un caso particular de la verdadera); Anderson, Lepper & Ross 1980 (la
-  creencia sobrevive a que te digan que la evidencia era ficticia — y EXPLICAR por qué creés te
-  blinda más); Teovanović 2019 (anclaje: el ajuste queda ~21% corto).
-- *Científicos reales trabajando*: Dunbar 1997 (ignoran la anomalía si llega temprano y toca una
-  hipótesis secundaria; la atienden si toca el corazón o llega tarde); Mitroff 1974 (los 42
-  científicos del programa Apollo: 3.5 años de datos lunares no movieron sus hipótesis favoritas).
-- *Historia de la ciencia*: el agujero de ozono casi descartado porque el patrón de referencia
-  estaba mal (la anomalía real parecía error de instrumento); la deriva continental rechazada con
-  doble vara (a la teoría rival le exigían un mecanismo que la propia tampoco tenía).
-- *Respuestas a datos anómalos*: Chinn & Brewer 1993 — de 7 reacciones posibles a un dato que te
-  contradice, SOLO 1 es "aceptar y cambiar"; las otras 6 lo descartan de formas distintas.
-- *Agentes IA (medido en modelos)*: la evidencia contradictoria se ignora en el **68%** de los
-  casos; la creencia refutada se revisa solo el **26%** (análisis de trazas, 2026). Y nuestra propia
-  mesa: DeepSeek se casa con la 1ª hipótesis aun con presupuesto de sobra (réplica 2026-07-09).
+**Dónde se lo vio EN AGENTES DE IA (haciendo qué):**
+- **Análisis de trazas por grafo epistémico (arxiv 2604.18805, 2026)** — agentes resolviendo tareas
+  de razonamiento científico (CLadder, QRData, DiscoveryBench), traza anotada paso a paso: la
+  evidencia que contradice la hipótesis se **ignora en el 68%** de los casos; la creencia refutada se
+  **revisa solo el 26%**; triangular con tests independientes es raro (**6-13%** según modelo). Y el
+  dato estructural: el modelo base explica el 41.4% de la varianza del proceso; el andamiaje solo el
+  1.5% — el vicio vive en el modelo, no en el prompt (y darle un ejemplo bueno en contexto NO lo
+  arregla).
+- **BED-LLM (arXiv 2508.21184, 2025)** — agente juntando información activamente (estilo 20
+  preguntas): propone hipótesis **incompatibles con lo que ya observó** y su confianza CRECE con la
+  historia — cuanto más lleva, menos revisa.
+- **Benchmark de apuestas por temporada (corpus de Lucas)** — el agente no actualiza cuando el mundo
+  cambia; y el hermano raro: identifica bien la ventaja y **no actúa** en consecuencia
+  (análisis-decisión desconectados).
+- **Vibe-physics (Anthropic, corpus de Lucas)** — haciendo física exploratoria con un humano: se
+  ancla a sus primeras preferencias y cede bajo presión social (sycophancy) — da la respuesta que
+  parecés querer en vez de sostener la evidencia.
+- **Nuestra propia mesa (medido, 2026-07)** — `first_story`: gpt-5.4 entrega la primera historia
+  bajo escasez (mediana 0.00 libre → 0.87 con la advertencia); **DeepSeek se casa con la 1ª hipótesis
+  AUN con presupuesto de sobra** (0.36→0.89 con la advertencia de pivoteo). Dos modelos, el mismo
+  vicio, condiciones distintas.
 
-**Estructuras (≈8 — cada una es un mundo distinto porque el mecanismo es distinto):**
-1. *La contradicción llega a mitad de camino* — hay que incorporarla en caliente.
-2. *La trampa de solo-confirmar* — tu idea es un caso particular de la verdad: TODA prueba
-   confirmatoria la confirma; solo probar donde NO esperás efecto revela el error.
-3. *El espejo* — tu idea es más amplia que la verdad: ahora confirmar es lo único que refuta.
-   (2 y 3 juntas son el par perfecto: ningún reflejo fijo gana ambas.)
-4. *Te retiran la evidencia* — un dato que compraste se invalida después: ¿tu creencia vuelve atrás?
-5. *El ancla* — un número prominente al inicio, corrido; ajustar "un poco" nunca llega.
-6. *Buscar confirmar, no refutar* — corrés solo los tests que dan la razón.
-7. *El blanco borroso* — la afirmación fuerte se repliega a una trivial bajo presión y vuelve a
-   inflarse (infalsificable por diseño).
-8. *La referencia corrupta* — descartás la anomalía real porque el patrón de comparación está mal.
+*Al margen, en humanos:* es el sesgo más clásico de la psicología (Wason; Klayman-Ha: si tu regla es
+un caso particular de la verdadera, confirmar no refuta NUNCA; la creencia sobrevive incluso a que te
+digan que la evidencia era falsa) y de la historia de la ciencia (Apollo; ozono; deriva continental).
+De ahí salen las geometrías de las trampas.
 
-**El mundo que lo caza (ingredientes):** (a) una primera explicación tentadora que la historia del
-mundo te planta sola; (b) esa explicación está mal; (c) la evidencia que la desmiente está
-disponible pero no regalada — hay que ir a buscarla (y en las variantes 2/3, saber DÓNDE buscarla).
+**Estructuras → el mundo que lo caza.** Ingredientes: (a) una primera explicación tentadora que la
+piel del mundo planta sola; (b) está mal; (c) la refutación está disponible pero hay que ir a
+buscarla. Variantes (mundos distintos): la contradicción llega a mitad de camino (maquinaria de
+noticias lista) · la trampa de solo-confirmar y su ESPEJO (par diseñado: ningún reflejo fijo gana
+ambos) · te retiran un dato que compraste (¿la creencia vuelve atrás?) · el ancla (un número
+prominente corrido al inicio).
 
-**Estado:** `first_story` (hecho, validado con 2 modelos — la prueba de la frase funciona);
-el par confirmar/espejo tiene diseño escrito (en cantera); retracción y ancla: sin mundo.
-
----
-
-## Vicio 2 — El pozo: no saber soltar ni parar
-
-**Qué es.** Meterse en algo fascinante que no paga; o seguir invirtiendo en un camino muerto porque
-ya se invirtió mucho; o "hacer algo" ante la mala noticia aunque lo activo sea lo equivocado.
-
-**Dónde está documentado (4 contextos):**
-- *Laboratorio de decisiones*: Arkes & Blumer 1985 (costo hundido: lo ya gastado — que es
-  irrecuperable — sesga la decisión de seguir); meta-análisis 2015 (efecto real y mediano, ~0.5).
-- *Psicología de la escalada*: Feldman & Wong 2018 — la receta de 3 ingredientes (inversión previa +
-  señal negativa + punto de decisión seguir/soltar) y el hallazgo fino: la mala noticia empuja a
-  ACTUAR, sea lo que sea — si "seguir" es la opción activa, se escala; si reformulás para que
-  "soltar" sea lo activo, el sesgo SE INVIERTE.
-- *Historia de la ciencia*: la deriva continental — un solo hueco sin resolver (el mecanismo) vetó
-  una teoría con evidencia convergente de sobra; y el caso del flogisto como ADVERTENCIA (ver abajo).
-- *Agentes IA (medido)*: el loop de acción-fallida-repetida — tras un fallo, el agente repite la
-  MISMA acción una y otra vez (benchmarks 2026); el 67% repite la acción que acaba de fallar.
-
-**Estructuras (5):** el señuelo fascinante (pozo puro) · costo hundido (continuar-vs-abandonar) ·
-escalada (los 3 ingredientes) · el empuje-a-actuar (inaction effect) · un-hueco-veta-todo.
-
-**El mundo que lo caza (ingredientes):** un señuelo GENUINAMENTE fascinante (un patrón intrincado
-que parece la clave y no aporta al examen) cuyo costo es de oportunidad — lo que quemaste ahí te
-falta para lo que importa; O una línea de investigación pagada que deja de rendir, con la señal
-clara y el punto de decisión explícito.
-**⚠ La advertencia del flogisto (Chang 2010):** persistir es vicio SOLO si soltar es CLARAMENTE
-mejor. Si las dos opciones empatan en evidencia, aferrarse es prudencia — un mundo que castiga eso
-está midiendo mal. El certificado de robots obliga a que esto se cumpla.
-
-**Estado: CERO mundos. El hueco más grave de la cartera** — y uno de los errores más típicos de
-agentes IA investigando.
+**Estado.** `first_story` HECHO y validado con 2 modelos. Par confirmar/espejo: spec en cantera.
+Retracción y ancla: sin mundo.
 
 ---
 
-## Vicio 3 — Inflar significancia / no verificar
+## Vicio 2 — El pozo: no soltar, no pivotear, no saber parar
 
-**Qué es.** De todas las formas legítimas de mirar los datos, terminar (sin mala intención) en la
-que "da algo" — y entregar ese hallazgo, que es ruido. O directamente afirmar sin verificar.
+**Qué es.** El agente se mete en un detalle fascinante que no paga; o repite lo que ya falló; o
+sigue invirtiendo en la línea muerta.
 
-**Dónde está documentado (3 contextos + nuestra propia mesa):**
-- *Metaciencia (la crisis de replicación)*: Simmons et al. 2011 — usando los 4 grados de libertad
-  típicos a la vez, la chance de un falso hallazgo sube del 5% al **60.7%** (más probable falso que
-  verdadero); Gelman & Loken (el jardín de senderos: pasa AUN sin intención, porque cada decisión
-  analítica "parece la única razonable" mirando estos datos); Stefan & Schönbrodt 2023 (12
-  estrategias, una sola — elegir la métrica que dio — infla 5%→~40%); Nagy et al. 2025 (40 prácticas
-  cuestionables, indexadas por fase).
-- *Agentes IA*: los experimentos con agentes AMPLIFICAN estos grados de libertad (elección de
-  modelo, prompt, re-diseño según el resultado — "fáciles de explotar, difíciles de detectar",
-  2026); y la fabricación directa: **~80%** de resultados fabricados/inválidos cuando el experimento
-  falla (MLR-Bench 2025), aun instruyendo "no fabriques".
-- *Nuestra propia mesa (medido en vivo)*: un modelo declaró una precisión que jamás midió
-  (la "precisión fabricada") — la nota se lo cobró.
+**Dónde se lo vio EN AGENTES DE IA (haciendo qué):**
+- **Kosmos (agente de descubrimiento, corpus de Lucas)** — investigando de forma autónoma: se mete
+  en **rabbit holes** (pozos de detalle que no aportan al objetivo) y persigue hallazgos
+  estadísticamente significativos pero científicamente irrelevantes.
+- **arxiv 2601.03315 (agentes investigadores end-to-end, corpus de Lucas)** — haciendo investigación
+  de ML completa: **loop de cada-vez-más-detalle sin pivotear**; se atan a decisiones del prototipo
+  inicial (POC-fixation) y pierden la visión.
+- **SciAgentGym (corpus de Lucas)** — tareas científicas con herramientas: el **67% repite
+  exactamente la misma acción que acaba de fallar**, sin cambiar nada (ceguera a la señal de error:
+  no detecta → no diagnostica → no pivotea → repite).
+- **HORIZON (arXiv 2604.11978, 2026)** — agentes web/base-de-datos en tareas largas: documenta el
+  **loop de acción-fallida-repetida** como modo de falla propio del horizonte largo (un click que
+  falla se repite paso tras paso, el error chico se acumula).
+- **Vibe-physics (corpus de Lucas)** — no sabe **cuándo parar**; sigue elaborando cuando lo correcto
+  era cerrar.
+- **OSWorld-V2 (corpus de Lucas)** — tareas de computadora: gasta **<7% del presupuesto** en detectar
+  y reparar sus propios errores (todo lo demás es avanzar ciego).
 
-**Estructuras (4 + 1):** elegir la métrica que dio · parar de muestrear cuando conviene · meter/sacar
-variables de control hasta que cruce el umbral · reportar solo las condiciones que "funcionaron" ·
-(+) fabricar el número que falta.
+*Al margen, en humanos:* costo hundido (Arkes-Blumer; efecto real, mediano) y escalada del
+compromiso (inversión previa + mala noticia + decidir seguir/soltar; la mala noticia empuja a
+"hacer algo", sea lo que sea). Advertencia del flogisto: persistir es vicio SOLO si soltar es
+claramente mejor — si empatan, es prudencia y el mundo no debe castigarla.
 
-**El mundo que lo caza (ingredientes):** 2-3 métricas alternativas legítimas donde UNA muestra un
-efecto llamativo que es casualidad y la aburrida es la real — el examen fuera de muestra cobra al
-que entregó lo vistoso; O el corte oportunista: el agente decide cuándo dejar de juntar datos, y
-cortar "cuando se ve bien" infla el efecto (chico, barato, angosto — no necesita el mundo ancho, que
-murió como anfitrión).
+**Estructuras → el mundo que lo caza.** El **señuelo fascinante**: una fuente con un patrón
+intrincado que parece la clave y no aporta nada al examen — el costo es de oportunidad (lo que
+quemaste ahí te falta para lo que importa). O la **apuesta perdida**: una línea de investigación
+pagada deja de rendir, con señal clara y punto de decisión explícito — seguir es perder. El robot
+que excava el señuelo hasta el fondo DEBE perder; el que lo prueba un poco y sale DEBE ganar.
 
-**Estado:** cero mundos dedicados (el sobre-afirmar retórico ya vale cero por construcción; la
-fabricación ya se cobra). Los dos diseños de arriba son de los más baratos de construir.
+**Estado. CERO mundos. El hueco más grave** — y es de los vicios MÁS documentados en agentes reales.
 
 ---
 
-## Vicio 4 — No inventar la explicación escondida
+## Vicio 3 — No verificar / inflar el hallazgo / fabricar
 
-**Qué es.** Quedarse con el modelo de manual cuando los datos solo cierran si imaginás algo que
-nadie te dio (una variable oculta, dos mecanismos donde parecía uno, otra representación).
+**Qué es.** El agente reporta lo vistoso sin verificarlo — o directamente inventa el resultado que
+le falta.
 
-**Dónde está documentado (4 contextos):**
-- *Científicos reales*: Dunbar 1997 — un lab asumía UNA causa; una anomalía los forzó a partirla en
-  DOS mecanismos; y el descubrimiento real corre sobre analogías CERCANAS (de 99 analogías en 16
-  reuniones, solo 2 lejanas — el "salto lejano" romántico es mito).
-- *Laboratorio cognitivo*: Klahr & Dunbar 1988 — para entender un aparato había que reconcebir un
-  parámetro de "contador" a "selector": 17 de 20 no cruzaron nunca; cruzar exige cambiar ≥3 cosas A
-  LA VEZ (por eso revisar de a una no llega). Y el efecto Einstellung: una solución conocida, cebada,
-  BLOQUEA una mejor que está disponible.
-- *Historia de la ciencia*: Neptuno (postular el planeta invisible que explica el bamboleo — y
-  encontrarlo esa noche) como el polo genial; Vulcano como su gemelo malo (misma jugada, y la
-  respuesta verdadera era cambiar la teoría).
-- *Agentes IA (nuestra mesa, medido)*: el trofeo — 10 partidas, 2 familias de modelos, NADIE intentó
-  inferir la composición oculta del lote; el mejor jugó "técnicamente perfecto" y sacó 0.096.
-  Ejecutar la idea cuesta 10 líneas; CONCEBIRLA es lo que faltó. También: los agentes se hunden
-  cuando la tarea exige recuperar un estado oculto (benchmarks 2025-26).
+**Dónde se lo vio EN AGENTES DE IA (haciendo qué):**
+- **MLR-Bench (NeurIPS 2025)** — agentes haciendo investigación de ML abierta: **~80% de los
+  resultados experimentales reportados son fabricados o inválidos** (en 8 de 10 tareas corridas con
+  un agente de código, los "resultados" venían de datos placeholder/sintéticos, no de ejecutar de
+  verdad) — y persiste **aunque le digas explícitamente que no fabrique**.
+- **Vibe-physics (corpus de Lucas)** — declara "verificado" **sin haber chequeado** (verificación
+  deshonesta); y se sobre-entusiasma con resultados de juguete (el instinto Eureka de inflar lo
+  chico).
+- **Kosmos (corpus de Lucas)** — sobre-afirma: reclama más de lo que sus corridas sostienen
+  (overclaiming / drift de trayectoria).
+- **Vaccaro 2026 (arXiv 2606.11217)** — experimentos hechos POR agentes: los grados de libertad del
+  investigador (elegir modelo, prompt, re-diseñar según el resultado) son "**fáciles de explotar y
+  difíciles de detectar**" — el p-hacking migra al agente.
+- **Nuestra propia mesa (medido)** — la **precisión fabricada**: un modelo declaró un margen de
+  error que jamás midió; la nota se lo cobró.
 
-**Estructuras (6):** postular la variable oculta · partir-en-dos · re-representar (cambiar el marco,
-≥3 casilleros a la vez) · la solución cebada que bloquea (Einstellung) · analogía cercana correcta ·
-anomalía atendida-o-ignorada según cuán central y cuán tarde.
+*Al margen, en humanos:* la crisis de replicación entera — con los 4 atajos típicos a la vez, la
+chance de un falso hallazgo sube del 5% al 60.7% (Simmons 2011); y pasa sin mala intención (el
+jardín de senderos de Gelman: cada decisión "parece la única razonable" mirando estos datos).
 
-**El mundo que lo caza (ingredientes):** los datos parecen ruido o contradicción con el modelo de
-manual; ese modelo toca un techo medible; el techo solo se cruza postulando la estructura no dada.
-El robot "revisor-de-a-pasitos" DEBE fallar (el salto es discontinuo); el dial de dificultad es
-cuántas cosas hay que cambiar a la vez.
+**Estructuras → el mundo que lo caza.** 2-3 métricas alternativas legítimas donde UNA da un efecto
+llamativo que es ruido y la aburrida es la real — el examen fuera de muestra cobra al que entrega lo
+vistoso. O el **corte oportunista**: el agente decide cuándo dejar de muestrear; cortar "cuando se ve
+bien" infla el efecto (chico, barato, angosto). La fabricación ya se cobra por construcción (el
+examen corre el modelo entregado: la retórica vale cero).
 
-**Estado:** v2 HECHO — el trofeo del proyecto, la familia con margen demostrado. Variantes
-partir-en-dos y Einstellung: sin mundo. El gemelo Vulcano: decidido como primer PAR (viabilidad
-pendiente, gratis).
+**Estado.** Cero mundos dedicados; los dos diseños son de los más baratos de construir.
+
+---
+
+## Vicio 4 — No inventar la explicación escondida / retirarse a lo familiar
+
+**Qué es.** Los datos solo cierran si postulás algo que nadie te dio (una variable oculta, dos
+mecanismos, otro marco) — y el agente se queda con el modelo de manual.
+
+**Dónde se lo vio EN AGENTES DE IA (haciendo qué):**
+- **Nuestra propia mesa (el trofeo, medido)** — el mundo de la composición oculta por lote: **10
+  partidas, 2 familias de modelos, NADIE intentó inferir la composición** desde la muestrita
+  disponible; el mejor jugó "técnicamente perfecto, cero errores" y sacó **0.096 sobre 1** —
+  retirada al modelo familiar medida en vivo. Ejecutar la idea ganadora cuesta 10 líneas;
+  **concebirla** es lo que faltó.
+- **OSWorld-V2 (corpus de Lucas)** — los agentes **se hunden justo en las tareas que dependen de
+  recuperar un estado oculto** (lo latente es su punto ciego).
+- **arxiv 2601.03315 (corpus de Lucas)** — investigación de ML end-to-end: **deriva de
+  implementación hacia lo simple-familiar** (reimplementa con las librerías que conoce, se aleja de
+  la idea original); sesgo del dato de entrenamiento.
+- **Vibe-physics (corpus de Lucas)** — no logra **sostener una convención no-estándar** que él mismo
+  escribió: vuelve a los defaults de manual una y otra vez.
+- **HLER (2026)** — generación de hipótesis autónoma: sin anclar a la estructura del dataset, solo el
+  **41%** de las hipótesis son factibles (vs 87% ancladas) — el lado generativo, medido.
+- **Lewis & Mitchell (2024)** — razonamiento por analogía: el desempeño **colapsa en variantes
+  contrafácticas** donde los humanos aguantan — mapea por parecido superficial, no por estructura
+  profunda (campo en disputa, pero el colapso en variantes es robusto).
+
+*Al margen, en humanos:* el laboratorio clásico — reconcebir un parámetro de "contador" a "selector"
+(17 de 20 no cruzaron nunca; cruzar exige cambiar ≥3 cosas A LA VEZ, por eso revisar de a pasitos no
+llega); el descubrimiento real corre en analogías cercanas, no en el salto lejano romántico (Dunbar).
+
+**Estructuras → el mundo que lo caza.** El modelo de manual toca un techo medible; el techo solo se
+cruza postulando la estructura no dada. Variantes: partir-una-causa-en-dos · la solución cebada que
+casi funciona (bloquea la mejor) · re-representar (el dial: cuántas cosas hay que cambiar a la vez).
+El robot revisor-de-a-pasitos DEBE fallar (certifica que hay salto, no rampa).
+
+**Estado.** v2 HECHO (el trofeo; la familia con margen demostrado). Partir-en-dos y solución-cebada:
+sin mundo. Gemelo Vulcano: par bandera decidido, viabilidad pendiente (gratis).
 
 ---
 
 ## Vicio 5 — Perder el hilo en tareas largas → NO se construye en contra (a propósito)
 
-Es el error de "trabajador desprolijo" (pierde restricciones, olvida, repite): lo arregla mejor
-memoria/andamiaje, no juicio — y medio campo ya trabaja en eso. **Decisión vigente: se MIDE si
-aparece, no se diseña en contra.** (Documentado en benchmarks de agentes 2025-26: caída monótona con
-el largo; colapso de fase; la variante interesante — "la regla sigue EN contexto y la viola igual" —
-es de juicio, pero exige horizontes que nuestros episodios no fuerzan.)
+Documentadísimo en agentes (METR 2025: la tasa de éxito cae monótona con el largo de la tarea;
+HORIZON 2026: la restricción sigue EN el contexto y la viola igual — "desatención, no olvido";
+tau-bench: no sostiene la política declarada; deriva que se auto-refuerza +22.7pp por paso;
+SciAgentGym: la resiliencia cae sin recuperarse en trayectorias largas). **Pero es mayormente el
+vicio del "trabajador desprolijo"**: lo arreglan memoria y andamiaje, no juicio — y medio campo
+trabaja en eso. Decisión vigente: **se MIDE si aparece, no se diseña en contra.**
 
 ---
 
-## Vicio 6 — Adivinar en vez de preguntar → BLOQUEADO por una regla del juego (decisión de Lucas, sin apuro)
+## Vicio 6 — Adivinar en vez de preguntar → BLOQUEADO por una regla del juego
 
-**Qué es.** Falta información; en vez de conseguirla (preguntando, que es barato), la inventa.
+**El mejor documentado EN MODELOS de toda la lista** — y sin embargo bloqueado para nosotros:
+- **Su & Cardie (2026)** — 10 modelos respondiendo consultas ambiguas: **detectan la ambigüedad
+  (60-80%) pero preguntan <5%** — el fallo es de acción, no de detección. Y peor: **darles contexto
+  los hace preguntar MENOS** (falsa sensación de suficiencia).
+- **BED-LLM (2025)** — juntando información: no adapta la próxima pregunta a lo ya respondido
+  (45% de acierto vs 93% con estrategia).
+- **OSWorld-V2 (corpus de Lucas)** — **adivina en vez de preguntar** cuando le falta un dato de la
+  tarea.
 
-**Dónde está documentado (el MEJOR material medido-en-modelos de toda la lista):** Su & Cardie
-2026 — los modelos DETECTAN la ambigüedad (60-80%) pero preguntan <5%: la falla es de acción, no de
-detección; darles contexto los hace preguntar MENOS (falsa sensación de suficiencia); BED-LLM 2025 —
-en un juego de preguntas, proponen hipótesis incompatibles con lo ya observado y eligen preguntas
-que no discriminan (45% vs 93% con estrategia).
-
-**Por qué está bloqueado:** casi todas sus estructuras exigen el verbo **PREGUNTAR** (un oráculo
-consultable con costo) — y nuestro juego solo tiene "comprar datos" y "experimentar". Agregar ese
-verbo cambia el contrato de TODOS los mundos → decisión grande, de Lucas, sin apuro. La única
-estructura construible hoy (elegir la pregunta/experimento que de verdad discrimina) **ya tiene
-mundo diseñado: el Mundo B**.
+**Por qué está bloqueado:** sus estructuras exigen el verbo **PREGUNTAR** (un oráculo consultable
+con costo), y nuestro juego solo tiene "comprar datos" y "experimentar". Agregarlo cambia el
+contrato de todos los mundos → decisión grande, de Lucas, sin apuro. Lo único construible hoy —
+elegir la pregunta/experimento que de verdad discrimina — **ya tiene mundo diseñado (Mundo B)**.
 
 ---
 
 ## Vicio 7 — Confundir "pasan juntas" con "una causa la otra"
 
-**Qué es.** Leer causalidad en una correlación; no ver el tercer factor; no darse cuenta de que
-mirar no alcanza y hay que intervenir.
+**Dónde se lo vio EN AGENTES DE IA (haciendo qué):**
+- **Corr2Cause (Jin et al., 2023)** — 17 modelos (hasta GPT-4) decidiendo si una relación causal se
+  sigue de correlaciones puras: **al nivel del azar** (200 mil ítems). El ancla dura del vicio.
+- **Análisis de trazas (2604.18805)** — los benchmarks causales por resultado (CLadder, QRData)
+  esconden el proceso: un agente puede acertar 80% con razonamiento basura — por eso importa la
+  traza (nuestra doctrina, confirmada afuera).
+- **Kapoor & Narayanan (2023)** — ciencia hecha con ML: 8 tipos de fuga/desajuste que inflan
+  resultados aun con partición limpia (la práctica real de ML-para-ciencia comete el error en masa).
+- **Nuestra propia mesa (medido)** — el mundo del confusor: el jugador ingenuo hereda una pendiente
+  espuria de +87%; nuestros 5 mundos causales lo cobran sistemáticamente.
 
-**Dónde está documentado (4 contextos):**
-- *Agentes IA (medido)*: Corr2Cause 2023 — 17 modelos (hasta GPT-4) infieren causalidad desde
-  correlación AL NIVEL DEL AZAR.
-- *Ciencia patológica*: Elton & Spencer 2020 — el MISMO mecanismo (un factor escondido que acompaña
-  la manipulación) explica 4 episodios famosos de "descubrimientos" falsos en la ciencia del agua.
-- *Ciencia de datos / ML*: Kapoor & Narayanan 2023 — 8 tipos de fuga/desajuste que inflan resultados
-  aun con partición limpia (generalizar más allá del proceso que generó los datos).
-- *Historia*: la referencia corrupta del ozono (cruza con el vicio 1).
+*Al margen:* la "ciencia patológica" humana cayó 4 veces seguidas en el MISMO mecanismo (un factor
+escondido que acompaña la manipulación — polywater, Mpemba, etc.).
 
-**Estructuras:** el confusor (tercer factor) · la referencia corrupta · **faltan por minar**: el
-sesgo del colisionador/selección (Berkson) y el caso "mirar-no-alcanza-ni-en-principio".
-
-**El mundo que lo caza:** la familia MÁS cubierta (5 mundos hechos: confusor por asignación, sesgo
-de selección ×2, supervivencia, efecto-lote). **El que falta, derivado de la lista:** el mundo donde
-la observación es estructuralmente insuficiente — gana el que interviene o el que se abstiene con
-honestidad; pierde el que entrega una respuesta confiada mirando.
+**Estructuras → el mundo que lo caza.** La familia MÁS cubierta (5 mundos hechos). **Falta el
+derivado directo de la lista:** el mundo donde **mirar no alcanza ni en principio** — gana el que
+interviene o se abstiene con honestidad; pierde el que entrega confianza mirando. (Y queda por minar
+en agentes: el sesgo del colisionador/selección.)
 
 ---
 
 ## Los saltos creativos (el espejo — SIEMPRE de a pares)
 
-Cada operación creativa tiene su gemelo malo: la MISMA jugada, genial cuando la situación la pide,
-desastre cuando no. Por eso se construyen de a pares (misma fachada, polos opuestos): el reflejo
-"aplicá siempre la jugada" gana un mundo y pierde el gemelo; solo el que paga por averiguar en cuál
-está gana ambos.
-
-- **Postular lo invisible ↔ parchar** (Neptuno ↔ Vulcano; el mismo Le Verrier, misma jugada, un
-  acierto glorioso y un fracaso total): PAR BANDERA, decidido; falta el test de viabilidad del
-  gemelo (gratis).
-- **Unificar ↔ ver patrones donde no hay** (la teoría ondulatoria de la luz ↔ apofenia): mundo
-  barato — dos anomalías que parecen separadas con UNA causa común; el que parcha cada una por
-  separado paga doble. (Falta el caso histórico nombrado del lado malo — hueco de la búsqueda.)
-- **Analogía estructural ↔ analogía de superficie** (Darwin ↔ dejarse llevar por el parecido; en
-  humanos 70/30; en modelos: colapsan en variantes retorcidas donde el humano aguanta — hallazgo
-  2024, en disputa): mundo — transferir el mecanismo de un sistema conocido a uno nuevo que solo
-  comparte la estructura profunda.
-- **Buscar en dos espacios** (diseñar el experimento que separa, no solo pensar hipótesis): ES el
-  Mundo B, ya diseñado.
-- **Re-representar** (cambiar el marco destapa la predicción): ES la familia del trofeo (v2).
+La evidencia EN MODELOS del lado creativo es la más flaca de todas (casi todo lo tipificado es
+humano) — **y eso es exactamente la oportunidad**: nuestros mundos pueden ser la primera medición
+sistemática (la pregunta abierta "estructuras nativas de modelos"). Lo que hay: analogía superficial
+en vez de estructural (Lewis-Mitchell 2024, tier A); exploración angosta correlaciona con peor
+research (2510.10472, sin verificar); hipótesis no ancladas 41% factibles (HLER); follow-ups sin
+imaginación (corpus de Lucas). Los pares decididos: **Neptuno/Vulcano** (postular lo invisible ↔
+parchar) — bandera; **consiliencia** (dos anomalías, una causa ↔ apofenia) — barato; **analogía
+estructural** (transferir el mecanismo ↔ dejarse llevar por el parecido) — con evidencia tier A del
+lado malo.
 
 ---
 
-## Estado global (la foto en una tabla)
+## Estado global (la foto)
 
-| Error | Contextos doc. | Estructuras | Mundos hechos | El hueco |
-|---|---|---|---|---|
-| 1. No cambiar de idea | 5 | ≈8 | 1 (+1 spec) | retracción, ancla, par confirmar/espejo |
-| 2. El pozo / no soltar | 4 | 5 | **0** | TODO — el hueco más grave |
-| 3. Inflar significancia | 3 + propia | 4+1 | 0 dedicados | los 2 diseños baratos |
-| 4. Inventar la estructura | 4 | 6 | 1 (el trofeo) | partir-en-dos, Einstellung, el PAR Vulcano |
-| 5. Perder el hilo largo | (benchmarks) | 7 | — | no se construye (a propósito) |
-| 6. Adivinar vs preguntar | LLM-nativo | 4 | Mundo B (diseñado) | bloqueado por el verbo "preguntar" |
-| 7. Causa y efecto | 4 | 2 (+2 por minar) | **5** | "mirar no alcanza"; colisionador |
-| Saltos (pares) | — | 5 operaciones | v2 instancia una | Vulcano (bandera), consiliencia, analogía |
+| Vicio | Evidencia EN AGENTES | Mundos hechos | El hueco |
+|---|---|---|---|
+| 1. No cambiar de idea | FUERTE y cuantificada (68%/26%; BED-LLM; nuestra mesa ×2 modelos) | 1 (+1 spec) | retracción, ancla, par confirmar/espejo |
+| 2. El pozo | FUERTE y repetida (Kosmos, 2601.03315, SciAgentGym 67%, HORIZON, OSWorld) | **0** | TODO — el hueco más grave |
+| 3. No verificar / fabricar | FUERTE (MLR-Bench 80%; Vaccaro; vibe-physics; nuestra mesa) | 0 dedicados | los 2 diseños baratos |
+| 4. Estructura escondida | FUERTE y PROPIA (v2 0/10; OSWorld estado-oculto; deriva-a-lo-familiar) | 1 (el trofeo) | partir-en-dos, cebada, PAR Vulcano |
+| 5. Hilo largo | fortísima pero es "operación" | — | no se construye (a propósito) |
+| 6. Adivinar vs preguntar | la MÁS medida en modelos | Mundo B (diseñado) | bloqueado: falta el verbo "preguntar" |
+| 7. Causa y efecto | FUERTE (Corr2Cause al azar) | **5** | "mirar no alcanza"; colisionador |
+| Saltos (pares) | FLACA → nuestra oportunidad de medirla primero | v2 instancia uno | Vulcano, consiliencia, analogía |
