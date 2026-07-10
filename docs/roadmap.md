@@ -107,6 +107,18 @@ lado SEGUIR y documentado el catálogo (evolución, no refundación):
   Convergencia independiente del principio de pares registrada como robustez. El catálogo es
   CANTERA, no cola (línea de llegada sigue en 12 mundos). Dos-espacios = Mundo B (pedigrí
   Klahr-Dunbar, no se abre mundo nuevo). ECHO = tarea con timebox, no muro caído.
+**AUDITORÍA CRUZADA cartera-vs-catálogo (ADR 0112, 2026-07-09)**: dos lecturas independientes, mismo
+diagnóstico (convergencia registrada) — la cartera es pre-catálogo: fuerte en causal (5) y
+estructura-escondida (trofeo), VACÍA en atención (0/5) e interacción (0/4). Posición actualizada:
+**tres capas** (planos=catálogo → plantas piloto=mundos controlados a mano → fábrica=generación
+automática desde plantillas) + **dos niveles de diversidad** (ENTRE estructuras [intelectual] y
+DENTRO de cada una [fábrica]) — §0.6 del catálogo. Decisiones: retro-cert de los 5 causales (robots
+derivados de twins, fase de rigor de P2) · vicio 3 re-alojado (optional stopping temporal;
+variable-elegida 2-3 outcomes; el mundo ancho ya no es anfitrión) · familia F fuera de v1 (exige el
+verbo PREGUNTAR = semántica nueva = tripwire) · anomalías #14/#15 re-espec propagada · twotank CAE ·
+colas DEGRADADO a held-out E3 · tabla de re-derivación de slots = PAPEL a validar por Lucas (nada
+entra a la cola por esta vía).
+
 ### Cola de trabajo ÚNICA (ADR 0107; **reordenada por VALOR, ADR 0108** — no por orden de llegada)
 
 **Regla de trabajo-en-curso (WIP)**: máximo **1 validar + 1 construir + 1 investigar** en vuelo a
@@ -122,7 +134,7 @@ el inventario sin validar NO compone** → validar-lo-existente > construir-lo-n
 |---|-------|------|---------------------|----------------------|--------|
 | 0 | **validar** | Réplica DeepSeek + clasificación automática de ceros (ADR 0098) | mata-o-confirma el claim central | ~~48 episodios DeepSeek~~ | ✅ **HECHO (ADR 0110)**: la señal se sostiene (scarce +0.52, control ≈0); caveat: 2 modelos + control cerca del techo → lo cubre P2 |
 | 1 | **construir** (paralelo a P0 — WIP lo permite) | Test de viabilidad del gemelo Vulcano (ADR 0106) | **GRATIS (cero API, puro CPU)** y sondea OQ 19 (parche-vs-entidad) — decide si el par bandera es construible ANTES de gastar en el build | fit-con-entidad-espuria sobre el pool: debe dejar residuo o pagar complejidad MEDIBLE; si no → par rechazado | puede arrancar YA |
-| 2 | **validar** | Mini-spread multi-modelo sobre los 11 mundos EXISTENTES (chequeo 1 de la batería E1) | valida el instrumento sin construir nada + 1ª sonda real de perfiles nativos (OQ 20) — le saca valor al inventario que ya está pago | presupuestar ANTES (pasada mínima informativa, ~3 modelos × subset discriminativo × 3 seeds); + auditoría humana de baterías (chequeo 7, tarea de Lucas) | tras P0 |
+| 2 | **validar** | **CAMPAÑA DE VALIDACIÓN (ADR 0112)** en 3 fases: (i) **control-con-headroom** (el caveat de 0110: un control con margen donde la pista NO deba ayudar); (ii) **retro-certificación de los 5 causales** — robots-vicio DERIVADOS de los twins existentes (identidad terco≈twin, validada en first_story), cero API; produce las bandas de referencia por mundo que la batería cita; (iii) **mini-spread multi-modelo** | valida el instrumento sin construir inventario nuevo + 1ª sonda de perfiles nativos (OQ 20) | (i) diseño barato; (ii) CPU puro; (iii) presupuestar ANTES (~3 modelos × subset × 3 seeds) + auditoría humana de baterías (tarea de Lucas) | **SIGUIENTE del carril validar** (P0 ✓) |
 | 3 | **construir** | BUILD del gemelo Vulcano | completa el par bandera — recién cuando la balanza está certificada (P0/P2) y la viabilidad pasó (P1) | spec → certificado del par (principio 10) → E0 | tras P1 ✓ y P0 sostenido |
 | 4 | **investigar** | Minado combinado: colisionador/Berkson · apofenia nombrada · pares faltantes | **CONGELADO por rendimiento decreciente** (4 búsquedas en una semana; la 5ª vale menos que la 1ª corrida de validación) | no se abre hasta que P0-P3 se muevan, salvo que un build lo NECESITE | congelado |
 | 5 | **construir** | Mundo causa-efecto (familia G, ADR 0102) | valor alto pero bloqueado — no compite hasta destrabarse | destrabar D1 (`_canonical` estructural) → diseño → build | **bloqueado por D1** |
@@ -154,19 +166,19 @@ angosta/amplia Klayman-Ha (spec lista, `docs/mundo-espejo-klayman-ha.md`) · Mun
 | 5 | latent_mix_v2 | Latent | SCM | T | HECHO (tríptico confirmado) |
 | 6 | selection_bias_scarce_v0 | sampling | SCM | T | HECHO (presupuesto discrimina) |
 | 7 | survivorship_censor_v0 | sampling | SCM | T | **HECHO** (ADR 0077: capa archival nueva; naive malaprecia reclamos 5×; E0 0.975/0.818) |
-| 8 | immortal-time | sampling | SCM longitudinal | T | por autorar |
+| 8 | immortal-time | sampling | SCM longitudinal | T | por autorar — reasignación propuesta (0112, a validar): **pozo-señuelo con costo hundido** (vicio 2, hoy con CERO mundos) |
 | 9 | batch_confound_v0 | canal | SCM | T | **HECHO** (ADR 0078: pendiente espuria +87%; twin deriva −0.115; E0 0.890/0.933) |
-| 10 | missingness informativo | canal | SCM | T | por autorar |
+| 10 | missingness informativo | canal | SCM | T | por autorar — reasignación propuesta (0112, a validar): **escalada de compromiso** (vicio 2: inversión previa + señal negativa + punto seguir/pivotear, con evento D4) |
 | 11 | logistic_yield_v0 | Horizon | **ODE** | C→T | **HECHO** (formalismo validado, ADR 0074) |
-| 12 | twotank_clearance_v0 | Horizon | ODE | T | **BLOQUEADO por hallazgo** (ADR 0076: cascada lineal sin degeneración temprana → sin trampa; rediseño no-lineal en pila de diseño) |
-| 13 | colas M/M/k | diagnóstico | eventos discretos | T | por autorar (3er formalismo) |
-| 14 | anomalía plantada | Anomaly | SCM | T | por autorar |
-| 15 | anomalía temporal | Anomaly | ODE | T | por autorar |
+| 12 | twotank_clearance_v0 | Horizon | ODE | T | **CAÍDO (ADR 0112)** — su hallazgo ya pagó (ADR 0076: test de viabilidad + regla de degeneración); slot liberado → propuesta 0112: **par 1a/1b Klayman-Ha** (spec lista) |
+| 13 | colas M/M/k | diagnóstico | eventos discretos | T | **DEGRADADO a held-out de E3 (ADR 0112)** — formalismo fresco para el examen de generalización; construirlo para E1 lo quema. Slot E1 liberado → propuesta 0112: **consiliencia** (dos anomalías sembradas; el scoring ya la premia) |
+| 14 | anomalía plantada | Anomaly | SCM | T | por autorar — **re-espec PROPAGADA (ADR 0112, clase registrado≠integrado)**: deliverable = predicción bajo regímenes contrafácticos declarados en stakes (sin-anomalía / onset-distinto / post-horizonte), cero jueces |
+| 15 | anomalía temporal | Anomaly | ODE | T | por autorar — misma re-espec propagada que #14 |
 | 16 | prior_sweetspot_v0 | Prior | SCM | C | **HECHO** (ADR 0079: prior verdadero; twin lineal −0.315; E0 1.000/0.985 — techo tocado) |
 | 17 | first_story_v0 (Mundo A anti-vicio) | Prior | SCM | T | **HECHO** (ADR 0082: 1er certificado de trampa necesaria — terco 0.005 vs cuidadoso 0.960; E0 0.804/0.953, frontier rompe su hipótesis de rutina) |
-| 18 | identificabilidad | identificabilidad | SCM | T | por autorar |
-| 19 | triangulación | Horizon | SCM/ODE | T | por autorar |
-| 20 | revelación secuencial | causal-cliente | SCM | T | por autorar |
+| 18 | identificabilidad | identificabilidad | SCM | T | por autorar — re-mapeo propuesto (0112, a validar): **"intervenir-o-fallar"** (la sub-estructura causal FALTANTE del vicio 7) + abstención honesta |
+| 19 | triangulación | Horizon | SCM/ODE | T | por autorar — re-mapeo propuesto (0112, a validar): **convergent multi-test** (raro en modelos: 6-13%, tier A) |
+| 20 | revelación secuencial | causal-cliente | SCM | T | por autorar — re-mapeo propuesto (0112, a validar): vicio 1 estructura **evidencia mid-way** (D4 nativo) |
 
 Reglas: ningún [T] se certifica sin visibilidad de TODOS sus operadores + E0-probe con
 headroom pre-registrado; cada [T] carga ≥2 coordenadas; los [C] son ~25% y ya están.

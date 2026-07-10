@@ -65,6 +65,33 @@ Las seis familias de §3 son la **sub-taxonomía de la columna JUICIO** — orga
 puntuable un vicio de juicio. Los vicios de operación se registran y se **bracketean** (§4-bis),
 nunca se mezclan con los de juicio: mezclarlos diluye el foco que es toda la tesis del proyecto.
 
+## 0.6. Las tres capas del proyecto y los DOS niveles de diversidad (ADR 0112 — alineación de Lucas)
+
+El lugar de este catálogo en el proyecto completo, para que nadie confunda las plantas piloto con el
+producto:
+
+- **Capa 1 — PLANOS (este catálogo)**: las estructuras de vicios y ahas, de a pares, con fuente.
+  Trabajo intelectual, a mano, contra literatura. Acá vive la diversidad ENTRE estructuras.
+- **Capa 2 — PLANTAS PILOTO (los mundos a mano)**: cada mundo construido es un **experimento
+  CONTROLADO** que prueba que una estructura expone su vicio de verdad (certificados + corridas con
+  modelos reales). **No son el producto final — son la validación de una plantilla.** Todo lo que
+  construimos hoy es capa 2.
+- **Capa 3 — FÁBRICA (generación automática)**: estructura validada → **PLANTILLA** → la fábrica
+  estampa variaciones en serie (piel/dominio, parámetros, seeds), cada una filtrada por la
+  **certificación cero-LLM** (el yield es la métrica). Sin esta capa el proyecto no escala — *"sin
+  generación automática el proyecto no tiene valor"* (Lucas, OQ 14). Estado real: peldaño fácil ✓
+  (re-skin, yield 1/1); **medio TRABADO en D1** (`_canonical` estructural); difícil pendiente.
+
+**Los DOS niveles de diversidad (anti-overfitting; ambos necesarios, atacan cosas distintas):**
+1. **ENTRE estructuras** (capa 1 — principio 9): un mismo vicio en varias estructuras de fondo. La
+   fábrica NO inventa estructuras; esto es trabajo nuestro. Sin este nivel, un modelo entrenado
+   aprende *el truco de la estructura*.
+2. **DENTRO de cada estructura** (capa 3): disfraces, parámetros, seeds — barato, automatizable. Sin
+   este nivel, el modelo se memoriza *el mundo*.
+
+Doble función de la capa 3: **escala para entrenar** (cientos de variaciones por estructura) y
+**frescura para evaluar** (mundos que nadie vio = examen renovable, anti-contaminación).
+
 ## 1. Qué ya sabemos (no arrancamos de cero)
 
 - **El instrumento SÍ captura vicios, medidos** (no es aspiracional): comprar-evidencia-y-no-
@@ -238,7 +265,12 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
   sin comprar réplicas. *Estado: capturado y priceado.*
 - **Perseguir lo significativo-pero-irrelevante / p-hacking** — metaciencia / crisis de
   replicación (garden of forking paths, Gelman). → carnada de significancia (efecto chico-pero-
-  claro vs grande-pero-ruidoso). *Estado: por diseñar; anfitrión natural = mundo ancho.*
+  claro vs grande-pero-ruidoso). *Estado: **RE-ALOJADO (ADR 0112; supersede "anfitrión natural =
+  mundo ancho" — ese anfitrión MURIÓ con el techo de anchura, ADRs 0089/0091)**. Los nuevos
+  anfitriones NO necesitan anchura: (a) **optional stopping es TEMPORAL, no ancho** — mundo angosto
+  donde el agente decide cuándo dejar de muestrear y el sesgo de parada infla el efecto entregado
+  (off-support lo cobra); (b) **variable-elegida con 2-3 outcomes**, no 19 columnas. Ambos en
+  CANTERA con nota de construibilidad barata.*
 - **`[dr ✓]` Garden of forking paths — Gelman & Loken**: el problema de comparaciones múltiples
   aparece aun con UN SOLO análisis, porque cada decisión analítica es contingente al dato observado;
   y "**no se sienten como grados de libertad**" (cada elección parece la única razonable). *El vicio
@@ -246,7 +278,8 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
   quiere pescar (juicio, no truco).*
 - **`[dr ✓]` 12 estrategias de p-hacking, con número — Stefan & Schönbrodt 2023**: UNA sola
   (reportar selectivamente la variable dependiente que dio significativa, de 10) infla el
-  falso-positivo del 5% al **~40% (×8)**. *Calibra la carnada de significancia del mundo ancho.*
+  falso-positivo del 5% al **~40% (×8)**. *Calibra la carnada de significancia (anfitrión
+  re-alojado, ver arriba — ya no el mundo ancho).*
 - **`[dr ✓]` 40 QRPs indexadas por fase — Nagy et al. 2025** + bestiario (semilla de RNG favorable ·
   covariables ad hoc · discretizar continuas · missing-data hacking · PARKing). *Catálogo listo de
   jugadas perdedoras, cada una candidata a mundo.*
@@ -284,9 +317,13 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
   restricción de enlace tardío + horizonte. *Estado: se MIDE como hallazgo (límite del solver),
   no se diseña-en-contra.*
 
-### F — Interacción
+### F — Interacción *(FUERA de v1 — ADR 0112)*
 - **Adivinar en vez de averiguar** — evals de agentes interactivos. → info faltante con precio
-  accesible. *Estado: el inverso (comprar-y-no-usar) CONFIRMADO (#6); el directo por diseñar.*
+  accesible. *Estado: el inverso (comprar-y-no-usar) CONFIRMADO (#6). El directo — y las estructuras
+  6a/6b (no-pregunta-aunque-detecta; el-contexto-apaga-la-pregunta) — exige el verbo **PREGUNTAR**:
+  un oráculo consultable con costo, que NO existe en el contrato del episodio (observe/experiment).
+  Semántica nueva en el contrato = tripwire → **fuera de v1, en cantera con este rationale**, hasta
+  decisión explícita de Lucas. 6d (preguntas no-discriminantes) SÍ está cubierto: es Mundo B.*
 
 ### G — Razonamiento causal
 *Grupo propio, **aprobado por Lucas (2026-07-07)**. Gana su fila porque la CURA es una MOVIDA
@@ -596,9 +633,11 @@ vicio documentado (§4/§5)
    -> ¿qué DINÁMICA de mundo lo fuerza de forma puntuable? (§3)
    -> deliverable puntuable (predecir comportamiento) + cero-LLM
    -> diseñar el CERTIFICADO DE TRAMPA NECESARIA (robot vicioso pierde / cuidadoso gana)
-   -> ¿hace falta PRESIÓN? (escasez / tiempo / evidencia tardía) -- casi siempre sí
-   -> build (spec-first) -> certificar -> E0 con pre-registro
-   -> ¿el vicio se manifestó con un solver real? (la validez, ADR 0098)
+   -> ¿PRESIÓN? -- es PERILLA calibrable por modelo, no requisito (ADR 0111)
+   -> build (spec-first) -> certificar -> E0 con pre-registro   [= PLANTA PILOTO, capa 2]
+   -> ¿el vicio se manifestó con un solver real? (la validez, ADRs 0098/0110)
+   -> estructura VALIDADA => PLANTILLA para la FÁBRICA (capa 3, §0.6):
+      variaciones en serie (piel/params/seeds) filtradas por certificación cero-LLM (yield)
 ```
 
 ## 7. Lo difícil / preguntas abiertas (honestas)

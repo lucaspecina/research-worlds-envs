@@ -122,3 +122,4 @@
 | 0109 | v1.09 | 2026-07-09 | [La definicion operativa del juicio investigativo (dos polos; la lista NO es el juicio)](0109-v1.09-definicion-operativa-del-juicio-dos-polos.md) | Vigente |
 | 0110 | v1.10 | 2026-07-09 | [Replica DeepSeek de la validez (ADR 0098): la senal positiva se sostiene con un 2do modelo (+ hallazgo de perfil)](0110-v1.10-replica-deepseek-validez-se-sostiene.md) | Vigente |
 | 0111 | v1.11 | 2026-07-09 | [Hallazgo con nombre: PERFILES DE VICIO POR MODELO (la presion es PERILLA calibrable por modelo, no ingrediente necesario)](0111-v1.11-perfiles-de-vicio-por-modelo-presion-es-perilla.md) | Vigente |
+| 0112 | v1.12 | 2026-07-09 | [Auditoria cruzada cartera-vs-catalogo: tres capas + dos niveles de diversidad; decisiones de cartera; tabla de re-derivacion (papel)](0112-v1.12-auditoria-cruzada-cartera-vs-catalogo-tres-capas.md) | Vigente |

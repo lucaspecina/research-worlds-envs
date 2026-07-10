@@ -114,6 +114,20 @@ de línea de proceso, de cultivo, de mercado. La piel importa porque activa el c
 previo de la IA — y una perilla de diseño controla si ese conocimiento previo es **correcto o
 engañoso** (a veces lo que "suena razonable" es exactamente la trampa).
 
+**Y la vista de fábrica, que ordena todo el proyecto en tres capas.** Los mundos que construimos a
+mano son **plantas piloto**: experimentos controlados que prueban que una estructura de trampa
+funciona de verdad (el que cae en el vicio pierde, el cuidadoso gana, y una IA real muerde). **No
+son el producto final.** Cuando una estructura queda validada se convierte en **plantilla**, y una
+**fábrica automática** la multiplica: misma estructura de fondo, muchos disfraces, números y
+semillas distintas — cada variación filtrada por la certificación matemática (sin ninguna IA
+opinando). De ahí sale la escala para entrenar y el examen siempre fresco para evaluar. La
+diversidad tiene entonces **dos niveles, y los dos hacen falta**: *estructuras distintas* para el
+mismo vicio (trabajo intelectual nuestro — la fábrica no inventa estructuras) y *variaciones dentro*
+de cada estructura (trabajo de la fábrica, barato). Sin lo primero, una IA entrenada aprende el
+truco de la estructura; sin lo segundo, se memoriza el mundo. Estado honesto de la fábrica: el paso
+fácil (cambiar el disfraz) ya funciona; el paso medio está trabado en una pieza del verificador; el
+difícil ni arrancó.
+
 ## 6. Cómo se puntúa, sin jerga ✅
 
 La nota se llama **R** y va de **0 a 1**, calibrada con dos referencias:
