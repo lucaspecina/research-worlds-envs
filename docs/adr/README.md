@@ -124,4 +124,5 @@
 | 0111 | v1.11 | 2026-07-09 | [Hallazgo con nombre: PERFILES DE VICIO POR MODELO (la presion es PERILLA calibrable por modelo, no ingrediente necesario)](0111-v1.11-perfiles-de-vicio-por-modelo-presion-es-perilla.md) | Vigente |
 | 0112 | v1.12 | 2026-07-09 | [Auditoria cruzada cartera-vs-catalogo: tres capas + dos niveles de diversidad; decisiones de cartera; tabla de re-derivacion (papel)](0112-v1.12-auditoria-cruzada-cartera-vs-catalogo-tres-capas.md) | Vigente |
 | 0113 | v1.13 | 2026-07-09 | [Derivacion oficial vicio->mundo, catalogo-primero (docs/mundos-por-vicio.md)](0113-v1.13-derivacion-oficial-vicio-a-mundo-catalogo-primero.md) | Vigente |
-| 0114 | v1.14 | 2026-07-09 | [El foco de la documentacion de vicios es IA-INVESTIGADORA; lo humano al margen (correccion de Lucas)](0114-v1.14-foco-ia-en-la-documentacion-de-vicios.md) | Vigente |
+| 0114 | v1.14 | 2026-07-09 | [El foco de la documentacion de vicios es IA-INVESTIGADORA; lo humano al margen (correccion de Lucas)](0114-v1.14-foco-ia-en-la-documentacion-de-vicios.md) | Vigente (claim "busqueda lanzada" CORREGIDO en 0115) |
+| 0115 | v1.15 | 2026-07-09 | [Regla: los papers se leen a TEXTO COMPLETO; registro de lectura; correccion de un claim falso de 0114](0115-v1.15-regla-leer-papers-texto-completo-registro.md) | Vigente |
