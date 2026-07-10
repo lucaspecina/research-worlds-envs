@@ -209,7 +209,10 @@ y delirio (ver patrones que no están) si no. Entonces no alcanza con "saber uni
 desconfiar" — hay que saber **cuándo**. Por eso construimos de a **pares**: dos mundos que se ven
 iguales por fuera, en uno la jugada gana y en el gemelo pierde. Un modelo que aprendió el reflejo
 "uní siempre" gana uno y pierde el otro; solo el que **paga por averiguar en cuál está** gana los dos.
-El par es lo que impide que el examen se pueda trampear con un truco.
+El par es lo que impide que el examen se pueda trampear con un truco. (Prioridad honesta: los pares
+son un **agregado** que sumamos donde sale barato — imprescindibles recién para los mundos de saltos;
+lo fundamental del proyecto es la capacidad de diseñar los mundos de los vicios y multiplicarlos
+automáticamente con diversidad, §5.)
 
 Cada mundo (y cada par) lleva un **certificado**: se scriptean jugadores-robot — uno que comete el
 vicio, uno cuidadoso, y para los pares uno que aplica la jugada a lo bruto — y se demuestra con

@@ -124,6 +124,18 @@ error (fuentes · contextos · estructuras · el mundo que lo caza · estado), *
 construido no manda). Supersede como referencia de diseño a la tabla de re-derivación por slots de
 ADR 0112 (que anclaba en la cartera vieja — el vicio de costo hundido, cazado por Lucas).
 
+**RONDA CODEX + RE-CENTRADO (ADR 0117, 2026-07-10) — el estado que manda.** Primera consulta a Codex
+(ADR 0116; crudo en `docs/research/2026-07-10-codex-critica-integral-gpt56sol.md`): núcleo defendible,
+tesis sobredimensionada; su golpe verificado — en el experimento de pista **la trampa y el control
+recibieron pistas DISTINTAS** (chequeado contra ADR 0097: cierto) + control al techo + "la pista
+positiva es un checklist ⇒ podría ser OPERACIÓN por nuestro propio corte 0100". Se re-etiqueta el
+resultado como **"efecto de instrucción sobre desempeño, replicado en 2 modelos"** (la validez de
+constructo vuelve a hipótesis, a probar con diseño corregido). **DECISIÓN DE LUCAS (sobresee el
+"posterguen la fábrica" de Codex y el rango del principio 10)**: los gemelos son AGREGADO, no eje;
+**lo fundamental del proyecto = diseñar mundos-vicio que después se generen AUTOMÁTICAMENTE con
+diversidad real** (estructuras + composición con propiedades emergentes, no re-skins) — la cola de
+abajo re-centrada en eso. Vulcano (par de aha) → cantera.
+
 ### Cola de trabajo ÚNICA (ADR 0107; **reordenada por VALOR, ADR 0108** — no por orden de llegada)
 
 **Regla de trabajo-en-curso (WIP)**: máximo **1 validar + 1 construir + 1 investigar** en vuelo a
@@ -137,12 +149,17 @@ el inventario sin validar NO compone** → validar-lo-existente > construir-lo-n
 
 | P | Etapa | Ítem | Por qué acá (valor) | Próximo paso concreto | Estado |
 |---|-------|------|---------------------|----------------------|--------|
-| 0 | **validar** | Réplica DeepSeek + clasificación automática de ceros (ADR 0098) | mata-o-confirma el claim central | ~~48 episodios DeepSeek~~ | ✅ **HECHO (ADR 0110)**: la señal se sostiene (scarce +0.52, control ≈0); caveat: 2 modelos + control cerca del techo → lo cubre P2 |
-| 1 | **construir** (paralelo a P0 — WIP lo permite) | Test de viabilidad del gemelo Vulcano (ADR 0106) | **GRATIS (cero API, puro CPU)** y sondea OQ 19 (parche-vs-entidad) — decide si el par bandera es construible ANTES de gastar en el build | fit-con-entidad-espuria sobre el pool: debe dejar residuo o pagar complejidad MEDIBLE; si no → par rechazado | puede arrancar YA |
-| 2 | **validar** | **CAMPAÑA DE VALIDACIÓN (ADR 0112)** en 3 fases: (i) **control-con-headroom** (el caveat de 0110: un control con margen donde la pista NO deba ayudar); (ii) **retro-certificación de los 5 causales** — robots-vicio DERIVADOS de los twins existentes (identidad terco≈twin, validada en first_story), cero API; produce las bandas de referencia por mundo que la batería cita; (iii) **mini-spread multi-modelo** | valida el instrumento sin construir inventario nuevo + 1ª sonda de perfiles nativos (OQ 20) | (i) diseño barato; (ii) CPU puro; (iii) presupuestar ANTES (~3 modelos × subset × 3 seeds) + auditoría humana de baterías (tarea de Lucas) | **SIGUIENTE del carril validar** (P0 ✓) |
-| 3 | **construir** | BUILD del gemelo Vulcano | completa el par bandera — recién cuando la balanza está certificada (P0/P2) y la viabilidad pasó (P1) | spec → certificado del par (principio 10) → E0 | tras P1 ✓ y P0 sostenido |
-| 4 | **investigar** | Minado combinado: colisionador/Berkson · apofenia nombrada · pares faltantes | **CONGELADO por rendimiento decreciente** (4 búsquedas en una semana; la 5ª vale menos que la 1ª corrida de validación) | no se abre hasta que P0-P3 se muevan, salvo que un build lo NECESITE | congelado |
-| 5 | **construir** | Mundo causa-efecto (familia G, ADR 0102) | valor alto pero bloqueado — no compite hasta destrabarse | destrabar D1 (`_canonical` estructural) → diseño → build | **bloqueado por D1** |
+| 0 | **validar** | Réplica DeepSeek + clasificación automática de ceros (ADR 0098) | mata-o-confirma el claim central | ~~48 episodios DeepSeek~~ | ✅ **HECHO (ADR 0110)**; re-etiquetado por ADR 0117: "efecto de instrucción, replicado" — la validez de constructo la prueba P1 |
+| 1 | **validar** | **Experimento de pista CORREGIDO y MÍNIMO (ADR 0117)** — las 3 correcciones de la ronda Codex: control CON headroom, **la MISMA pista en trampa y control**, brazo placebo; **1 solo modelo, pocas seeds** (orden de Lucas: "no me volvería loco re-ejecutando todo") | el claim central no puede apoyarse en un diseño con pistas desparejas + control al techo; "eso no puede volver a fallar" | diseñar control-con-headroom → pre-registro firmado → presupuestar → correr | **SIGUIENTE del carril validar** |
+| 2 | **construir** | **CAMINO DE LA FÁBRICA (ADR 0117 — el core)**: destrabar D1 (`_canonical` estructural en `generic_certify.py`) → re-correr proto-designer MEDIO → yield | **lo más importante del proyecto** (Lucas): vicio→estructura→plantilla→generación automática con diversidad; sin esto no escala | retomar `_canonical` (recov 0.89 → estimador estructural), timebox anti-pozo | **SIGUIENTE del carril construir** |
+| 3 | **construir** | Mundo del POZO (vicio 2 — hoy CERO mundos) como **PLANTILLA parametrizada** (composición de operadores; planta piloto a mano primero) | primer mundo de una familia vacía + primer diseño nacido-para-fábrica | spec desde `docs/mundos-por-vicio.md` (vicio 2: pozo-señuelo con costo hundido) → build → certificar | tras P2 (o con timebox si P2 se traba) |
+| 4 | **validar** | Retro-cert de los 5 causales (CPU, gratis) → **mini-spread multi-modelo** (perfiles de vicio por modelo, OQ 20) | bandas de referencia + el activo único (evidencia tier-A sobre modelos) | (i) CPU puro; (ii) presupuestar ANTES + auditoría humana de baterías (Lucas) | tras P1 |
+| 5 | **construir** (oportunista) | Par terco↔paranoico desde las DOS mitades YA construidas (#16/#17, re-skin a fachada común) | el gemelo casi GRATIS — seguro anti-reflejo (agregado, no eje; ADR 0117) | re-skin validado + robots-reflejo cruzados + métrica min | cuando se libere slot construir |
+| 6 | **investigar** | Minado combinado: colisionador/Berkson · apofenia nombrada · pares faltantes · **baseline genérico fuerte no-LLM (Codex)** | congelado por rendimiento decreciente; el baseline entra cuando P1 cierre | no se abre salvo que un build lo NECESITE | congelado |
+
+**Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
+queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·
+higiene de claims + 2 inconsistencias entre docs señaladas por Codex (ubicar y reportar antes de tocar).
 
 **Deudas técnicas (ordenadas por qué desbloquean, no por antigüedad)**:
 D1 `_canonical` estructural (ADR 0094 — desbloquea P3 + proto-designer MEDIO) · D2 definición

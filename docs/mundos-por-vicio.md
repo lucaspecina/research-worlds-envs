@@ -202,7 +202,8 @@ casi funciona (bloquea la mejor) · re-representar (el dial: cuántas cosas hay 
 El robot revisor-de-a-pasitos DEBE fallar (certifica que hay salto, no rampa).
 
 **Estado.** v2 HECHO (el trofeo; la familia con margen demostrado). Partir-en-dos y solución-cebada:
-sin mundo. Gemelo Vulcano: par bandera decidido, viabilidad pendiente (gratis).
+sin mundo. Gemelo Vulcano: par bandera decidido → **ESTACIONADO en cantera (ADR 0117: es par de AHA,
+y los gemelos son agregado, no eje)**; su test de viabilidad (gratis) queda listo para rato ocioso.
 
 ---
 

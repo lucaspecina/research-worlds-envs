@@ -92,6 +92,13 @@ producto:
 Doble función de la capa 3: **escala para entrenar** (cientos de variaciones por estructura) y
 **frescura para evaluar** (mundos que nadie vio = examen renovable, anti-contaminación).
 
+**ESTO ES LO MÁS IMPORTANTE DEL PROYECTO (Lucas, 2026-07-10 — ADR 0117)**: la capacidad de diseñar
+mundos donde los vicios EMERGEN, de una forma que después pueda **generarse automáticamente con
+diversidad real** — muchas estructuras, y mundos que sean una **COMPOSICIÓN de piezas cuyas
+interacciones generen propiedades EMERGENTES** al estamparse en serie, no "el mismo juego maquillado
+de otra manera". Los mundos controlados de hoy (capa 2) existen para probar que esa capacidad
+funciona. Los pares/gemelos (principio 10) son un agregado valioso, **no** el eje.
+
 ## 1. Qué ya sabemos (no arrancamos de cero)
 
 - **El instrumento SÍ captura vicios, medidos** (no es aspiracional): comprar-evidencia-y-no-
@@ -155,6 +162,12 @@ Doble función de la capa 3: **escala para entrenar** (cientos de variaciones po
    variedad estructural.
 10. **La unidad de diseño es el PAR de polos, no el vicio ni el aha sueltos** (ADR 0106; formulado
     de forma INDEPENDIENTE por dos lecturas — la convergencia se registra como evidencia de robustez).
+    **RANGO (ADR 0117, decisión de Lucas)**: la doctrina queda, pero el par es un **AGREGADO / seguro
+    anti-reflejo**, NO el eje de prioridad del proyecto — lo fundamental es la capacidad
+    vicio→estructura→plantilla→generación automática con diversidad (§0.6). Los gemelos se suman
+    donde salen baratos (p.ej. #16/#17 ya construidos) y siguen OBLIGATORIOS para mundos-AHA
+    (donde el gatillo-fácil finge el salto); para mundos-vicio alcanza con que cada reflejo barato
+    pierda en ALGÚN lugar de la batería, no un gemelo dedicado por mundo.
     Toda operación cognitiva (unificar, analogar, partir-en-dos, postular-entidad, perseguir-anomalía,
     persistir) es NEUTRA: el mundo decide si fue genio o vicio (Copycat a nivel mecanismo; Klayman-Ha
     a nivel estrategia; phlogiston a nivel racionalidad — tres fuentes independientes convergen).
@@ -239,7 +252,7 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
   elige bien QUÉ test pedir pero pondera mal el resultado (misma pregunta, respuestas de muy distinta
   diagnosticidad) → preserva la hipótesis inicial. *Puede COMPRAR el test correcto y aun así leerlo
   mal — distinto de no-testear.*
-- **`[dr ✓]` Anomaly-blindness CONDICIONAL — Dunbar 1997** (in-vivo, 4 labs de biología molecular):
+- **`[dr ✓]` Anomaly-blindness CONDICIONAL — Dunbar 1997** (in-vivo, 4 labs):
   los científicos ignoran el hallazgo inesperado cuando es TEMPRANO y sobre una hipótesis auxiliar;
   le prestan atención si contradice supuestos centrales o llega TARDE. *Da el RÉGIMEN exacto donde
   el vicio bite → parametriza el timing del evento sellado (D4).*
@@ -307,7 +320,7 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
   estructura del dataset (≈59% alucinadas). *Cuantifica el lado generativo del research taste — y
   sugiere el dial: cuánta estructura se le da de entrada.*
 - **`[dr ·]` La analogía de descubrimiento es CERCANA, no lejana — Dunbar 1997**: de 99 analogías en
-  16 lab meetings, solo **2** lejanas/no-biológicas; el descubrimiento real corre sobre analogías
+  16 lab meetings, solo **2** lejanas; el descubrimiento real corre sobre analogías
   *near*, basadas en homología (40 mismo-organismo, 57 otro-organismo). *Dato de diseño para D:
   premiar la analogía estructural CERCANA correcta, no el salto vistoso — el mito del "insight
   lejano" no es donde vive el research taste.*
@@ -502,7 +515,8 @@ hipótesis-evidencia ya formalizado; nuestro muro es construir ese grafo desde u
 Preguntas del timebox: ¿qué inputs exige? ¿se computa desde una entrega ejecutable? ¿sobrevive a
 submissions adversariales? Mientras: batería + MDL cobran lo esencial de consiliencia.
 
-**DECISIÓN DE CONSTRUCCIÓN (ADR 0106): primer par = NEPTUNO/VULCANO** (postular la entidad oculta ↔
+**DECISIÓN DE CONSTRUCCIÓN (ADR 0106) — ESTACIONADA (ADR 0117: par de AHA → cantera; se retoma
+cuando el programa vaya por los ahas): primer par = NEPTUNO/VULCANO** (postular la entidad oculta ↔
 parchar con una entidad espuria cuando la ley es otra). El caso histórico es perfecto: **el mismo
 Le Verrier, la misma operación** — 1846 postula un planeta invisible por el bamboleo de Urano →
 Neptuno aparece esa noche a <1°; 1859 hace LA MISMA jugada con el corrimiento de Mercurio → Vulcano

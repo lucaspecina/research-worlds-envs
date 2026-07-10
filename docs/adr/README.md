@@ -127,3 +127,4 @@
 | 0114 | v1.14 | 2026-07-09 | [El foco de la documentacion de vicios es IA-INVESTIGADORA; lo humano al margen (correccion de Lucas)](0114-v1.14-foco-ia-en-la-documentacion-de-vicios.md) | Vigente (claim "busqueda lanzada" CORREGIDO en 0115) |
 | 0115 | v1.15 | 2026-07-09 | [Regla: los papers se leen a TEXTO COMPLETO; registro de lectura; correccion de un claim falso de 0114](0115-v1.15-regla-leer-papers-texto-completo-registro.md) | Vigente |
 | 0116 | v1.16 | 2026-07-10 | [Codex (GPT-5.6 Sol) como segunda opinion de diseno/reflexion, NO como escritor de codigo](0116-v1.16-codex-como-segunda-opinion-de-diseno.md) | Vigente |
+| 0117 | v1.17 | 2026-07-10 | [Lo FUNDAMENTAL es disenar mundos-vicio generables automaticamente con diversidad; los gemelos son AGREGADO (decision de Lucas tras la ronda Codex)](0117-v1.17-fundamento-fabrica-de-mundos-vicio-gemelos-agregado.md) | Vigente |
