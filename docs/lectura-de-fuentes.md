@@ -229,8 +229,12 @@ citables — TODAS por leer a texto completo (regla ADR 0115) antes de citarlas.
 | Si, Yang & Hashimoto (2409.04109) | agente de ideación (100+ investigadores) | ideas más novedosas que humanos PERO mode-collapse (4000→200 únicas, ~5%); y el LLM juzga ideas a 53.3% (peor que humano) | **LEÍDO** (2026-07-10) → vicio 4 + confirma cero-LLM-juez |
 | BioDSA-1K (buscar URL) | data-analysis biomédico | **fabrica el veredicto True/False de la hipótesis cuando el código falla (~13%)** | [ ] |
 | BLADE / DSBench / ScienceAgentBench / QRData / DiscoveryBench | benchmarks de análisis de datos | análisis "nivel básico"; causal débil; overclaim de verificabilidad | [ ] |
-| Crítica CMU (buscar URL) | LLM-as-scientist | los errores son INVISIBLES en el paper final; hay que mirar la traza (confirma nuestra doctrina) | [ ] |
+| Luo, Kasirzadeh & Shah (CMU, 2509.08713) — "The More You Automate, the Less You See" | AI Scientist systems (Agent Laboratory + AI Scientist v2) | 4 fallas INVISIBLES en el paper: cherry-pick de benchmarks (82.4% posicional), data-leakage, métrica por orden, selección post-hoc; con traza detecta 74% → confirma la tesis WAGER; recomienda exigir traza+código | **LEÍDO** (2026-07-09) → §4-ter + vicio 3 |
 
-Huecos que la búsqueda NO llenó (sin fuente confirmada): Google AI Co-Scientist, Coscientist (Boiko
-2023), Agent Laboratory, agentes de matemática/teoremas, MLE-bench/RE-Bench. Y "adivinar-vs-preguntar"
-salió flaco, "no-actualizar" ausente en esta pasada.
+Huecos que la búsqueda NO llenó (sin fuente confirmada): Google AI Co-Scientist; **Coscientist (Boiko
+2023) — OJO: la URL 2310.03302 que la búsqueda etiquetó "Coscientist" es en realidad MLAgentBench
+(Huang et al.), otro error que la lectura cazó; Coscientist es capabilities-paper, pocos failure
+modes**; agentes de matemática/teoremas; MLE-bench/RE-Bench. "adivinar-vs-preguntar" flaco;
+"no-actualizar" ausente en esta pasada. **Cluster de benchmarks de análisis de datos
+(DiscoveryBench/QRData/BLADE/DSBench/ScienceAgentBench): NO leídos a fondo (decisión de Lucas —
+refuerzan vicios 7/3 ya cubiertos).**

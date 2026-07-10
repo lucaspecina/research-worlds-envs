@@ -136,6 +136,12 @@ le falta.
   tiempo bajaba 116→115s pero la memoria SUBÍA, sin justificar — y "su propio mecanismo de review no
   lo detectó".* De fondo: *"no puede evaluar críticamente sus propios resultados; no detecta fallos
   metodológicos".*
+- **Crítica CMU (Luo, Kasirzadeh & Shah, 2509.08713; leído)** — 4 fallas de tipo p-hacking en agentes
+  investigadores, con ejemplo real: **cherry-picking de benchmarks** (Agent Laboratory elige los
+  primeros 4 de la lista el **82.4%** de las veces, sin importar la dificultad — sesgo de POSICIÓN);
+  data-leakage no documentado; mal uso de métricas según el ORDEN en que se presentan; sesgo de
+  selección post-hoc (el reward premia buen test aunque el train sea flojo). *Y todas son INVISIBLES
+  en el paper final — hay que mirar la traza (74% de detección con traza) = nuestra tesis exacta.*
 - **Nuestra propia mesa (medido)** — la **precisión fabricada**: un modelo declaró un σ que jamás
   midió; la nota se lo cobró.
 

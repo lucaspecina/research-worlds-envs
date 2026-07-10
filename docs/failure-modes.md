@@ -584,6 +584,14 @@ Straddle (parte operación, parte juicio — se anota el corte, no se mezcla):
   resultado no puede detectar estas fallas; hasta que el razonamiento sea un objetivo de
   entrenamiento, el conocimiento no puede justificarse por el proceso"* = **exactamente** nuestra
   doctrina "conducta observada" (§2.1). Confirmación externa fuerte, de un grupo de química de afuera.
+- **2ª confirmación externa, aún más directa (Luo, Kasirzadeh & Shah, CMU — 2509.08713, "The More You
+  Automate, the Less You See"; leído)**: *"usar solo el paper final como objetivo de evaluación pierde
+  la oportunidad de encontrar muchos failure modes críticos, particularmente los que involucran el
+  proceso de decisión durante la experimentación"*; con acceso a las TRAZAS la detección sube a 74%
+  (F1 0.75). Documenta 4 fallas invisibles en el paper (cherry-picking de benchmarks —Agent Laboratory
+  elige los primeros 4 listados el 82.4% de las veces—, data-leakage no documentado, mal uso de
+  métricas por orden de presentación, sesgo de selección post-hoc). **Recomienda que las conferencias
+  exijan las trazas + el código** — es, textual, el argumento de WAGER.
 - **El grafo epistémico como vocabulario listo** (mismo paper): anota cada paso de la traza
   con 6 nodos — **H**ypothesis, **T**est, **E**vidence, **J**udgment, **U**pdate,
   **C**ommitment — y aristas (testing, observing, contradicting, updating…), y matchea contra
