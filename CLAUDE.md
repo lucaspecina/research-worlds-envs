@@ -21,6 +21,9 @@ Mapa de docs (abrí el que la tarea pida, no todos):
 - **`docs/lectura-de-fuentes.md`** — registro AUDITABLE de qué papers/artículos de fallas de AI
   researchers se leyeron a TEXTO COMPLETO (con cita real), qué falta, y las correcciones que la
   lectura destapó (ADR 0115). Evidencia cruda de las búsquedas: **`docs/research/`** (JSON).
+- **`docs/como-medimos.md`** — el problema más difícil: CÓMO se mide (cada vicio, cada aha, la
+  generación de ideas). Registra el MÉTODO de medición de cada paper que mide juicio + la reflexión
+  para WAGER (distinción medir-para-describir [juez-LLM validado OK] vs medir-para-premiar [cero-LLM]).
 - **`docs/adr/`** — decisiones (una por archivo, append-only)
   · **`docs/open-questions.md`** (lo sin decidir) · **`docs/red-team.md`** (amenazas del proyecto)
   · **`docs/archived/`** (histórico; el `NORTH_STAR_full.md` original vive acá — citas "NORTH_STAR §N" resuelven ahí).
