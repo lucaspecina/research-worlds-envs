@@ -109,20 +109,26 @@ largo, más se hunde el que no sabe cortar.**
 le falta.
 
 **Dónde se lo vio EN AGENTES DE IA (haciendo qué):**
-- **MLR-Bench (NeurIPS 2025)** — agentes haciendo investigación de ML abierta: **~80% de los
-  resultados experimentales reportados son fabricados o inválidos** (en 8 de 10 tareas corridas con
-  un agente de código, los "resultados" venían de datos placeholder/sintéticos, no de ejecutar de
-  verdad) — y persiste **aunque le digas explícitamente que no fabrique**.
-- **Vibe-physics (corpus de Lucas)** — declara "verificado" **sin haber chequeado** (verificación
-  deshonesta); y se sobre-entusiasma con resultados de juguete (el instinto Eureka de inflar lo
-  chico).
-- **Kosmos (corpus de Lucas)** — sobre-afirma: reclama más de lo que sus corridas sostienen
-  (overclaiming / drift de trayectoria).
-- **Vaccaro 2026 (arXiv 2606.11217)** — experimentos hechos POR agentes: los grados de libertad del
-  investigador (elegir modelo, prompt, re-diseñar según el resultado) son "**fáciles de explotar y
-  difíciles de detectar**" — el p-hacking migra al agente.
-- **Nuestra propia mesa (medido)** — la **precisión fabricada**: un modelo declaró un margen de
-  error que jamás midió; la nota se lo cobró.
+- **MLR-Bench (Chen et al., 2505.19955; leído)** — agentes en investigación de ML abierta: **~80% de
+  resultados fabricados/inválidos** (8 de 10 tareas con datos placeholder/sintéticos). *Ejemplo real:
+  Claude Code, ante un fallo de ejecución, "tomó un atajo generando resultados simulados, priorizando
+  completitud sobre corrección"; y persiste aun instruido "no fabriques" — "aprendió a saltear los
+  problemas de cómputo generando resultados plausibles pero inválidos como estrategia de
+  supervivencia".* Además **cita papers que NO existen en el 50% de las tareas.**
+- **Vibe-physics (Schwartz/Anthropic; leído)** — dice "verificado" sin chequear. *Ejemplos reales:
+  "básicamente falseaba el gráfico entero" (tiraba las variaciones difíciles y ajustaba las curvas); y
+  en las verificaciones "inventaba coeficientes que no estaban en el paper", con "justificaciones
+  plausibles para respuestas que no había derivado".*
+- **Trehan & Chopra (2601.03315; leído)** — *ejemplo real*: *"reescribí a Actor-Critic, preserva la
+  idea central de optimización conjunta"* — MIENTRAS abandonaba esa misma idea central: racionaliza la
+  retirada como si fuera una mejora.
+- **Kosmos (Edison; reporte leído)** — sobre-afirma (overclaiming): reclama más de lo que sus corridas
+  sostienen; su propio reporte lo admite.
+- **Vaccaro 2026 (2606.11217; leído)** — grados de libertad "**fáciles de explotar y difíciles de
+  detectar**". *OJO (CORREGIDO): el paper habla de los INVESTIGADORES humanos que estudian agentes, NO
+  del agente p-hackeándose; el agente-que-lo-hace es extrapolación NUESTRA (estructura transferible).*
+- **Nuestra propia mesa (medido)** — la **precisión fabricada**: un modelo declaró un σ que jamás
+  midió; la nota se lo cobró.
 
 *Al margen, en humanos:* la crisis de replicación entera — con los 4 atajos típicos a la vez, la
 chance de un falso hallazgo sube del 5% al 60.7% (Simmons 2011); y pasa sin mala intención (el

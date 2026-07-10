@@ -213,10 +213,24 @@ c/u; base GPT-4o). Extraído:
   anclaje humano robusto, ninguno, o anclaje inverso, según qué camino reporte"*. → jardín de
   senderos hecho demostración; y ojo: el "anclaje en LLMs" NO es robusto (relevante para el vicio 1).
 
-## Búsqueda de descubrimiento en curso
+## Búsqueda de descubrimiento — COMPLETA (2026-07-10)
 
-Lanzado 2026-07-09 (deep-research `wq9k0l8oh`, en segundo plano, ESTA VEZ de verdad): juntar la mayor
-cantidad de fuentes de **AI scientists / research agents / generadores de hipótesis en mates y
-ciencia** (Sakana AI Scientist, Google Co-Scientist, Coscientist, Agent Laboratory, Robin/Kosmos,
-DiscoveryBench/QRData/BLADE, math agents, MLE-bench/RE-Bench/PaperBench...). Devuelve URL + qué
-documenta cada una → se leen a texto completo las importantes y entran a la tabla de arriba.
+Corrida `wq9k0l8oh` (108 agentes, 23 claims verificados 3-0). Crudo:
+`docs/research/2026-07-10-deep-research-5-ai-scientists-descubrimiento.json`. **12 fuentes NUEVAS
+citables — TODAS por leer a texto completo (regla ADR 0115) antes de citarlas.** Cola:
+
+| Fuente | Sistema | Qué documenta (1 línea, sin verificar por lectura propia aún) | Estado |
+|---|---|---|---|
+| Beel & Kan 2025 (2502.14297) | Sakana AI Scientist | juzga todo como "novel" (taste); 57% de papers con números alucinados; 42% de exp. fallan | [ ] |
+| 2506.01372 | AI Scientists (crítica) | "fallan sin fuerte capacidad de implementación" | [ ] |
+| **PaperBench (2504.01848, OpenAI)** | replicar papers de ML | **cortan ANTES afirmando falso que terminaron; "fallan en estrategizar largo plazo"** → 3ª fuente del VICIO 8 | [ ] |
+| Kosmos report (2511.02824) | Kosmos | 79.4% de statements OK (57.9% en síntesis); "pierden coherencia tras N acciones" | [ ] |
+| Robin (buscar URL) | Robin | overclaiming: "primer sistema en automatizar la ciencia" | [ ] |
+| Si et al. (buscar URL) | agente de ideación | mode-collapse: ~5% de ideas no-duplicadas | [ ] |
+| BioDSA-1K (buscar URL) | data-analysis biomédico | **fabrica el veredicto True/False de la hipótesis cuando el código falla (~13%)** | [ ] |
+| BLADE / DSBench / ScienceAgentBench / QRData / DiscoveryBench | benchmarks de análisis de datos | análisis "nivel básico"; causal débil; overclaim de verificabilidad | [ ] |
+| Crítica CMU (buscar URL) | LLM-as-scientist | los errores son INVISIBLES en el paper final; hay que mirar la traza (confirma nuestra doctrina) | [ ] |
+
+Huecos que la búsqueda NO llenó (sin fuente confirmada): Google AI Co-Scientist, Coscientist (Boiko
+2023), Agent Laboratory, agentes de matemática/teoremas, MLE-bench/RE-Bench. Y "adivinar-vs-preguntar"
+salió flaco, "no-actualizar" ausente en esta pasada.
