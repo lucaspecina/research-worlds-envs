@@ -119,6 +119,11 @@ verbo PREGUNTAR = semántica nueva = tripwire) · anomalías #14/#15 re-espec pr
 colas DEGRADADO a held-out E3 · tabla de re-derivación de slots = PAPEL a validar por Lucas (nada
 entra a la cola por esta vía).
 
+**DERIVACIÓN OFICIAL VICIO→MUNDO (ADR 0113)**: `docs/mundos-por-vicio.md` — la síntesis en llano por
+error (fuentes · contextos · estructuras · el mundo que lo caza · estado), **catálogo-primero** (lo
+construido no manda). Supersede como referencia de diseño a la tabla de re-derivación por slots de
+ADR 0112 (que anclaba en la cartera vieja — el vicio de costo hundido, cazado por Lucas).
+
 ### Cola de trabajo ÚNICA (ADR 0107; **reordenada por VALOR, ADR 0108** — no por orden de llegada)
 
 **Regla de trabajo-en-curso (WIP)**: máximo **1 validar + 1 construir + 1 investigar** en vuelo a

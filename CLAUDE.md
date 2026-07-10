@@ -14,6 +14,9 @@ Mapa de docs (abrí el que la tarea pida, no todos):
 - **`docs/failure-modes.md`** — el corazón. La **definición operativa** del juicio (§0, dos polos) +
   el catálogo de failure modes (vicios) Y operaciones de aha, de a **PARES**, + scaffold de diseño
   (de un vicio/aha documentado → un mundo puntuable; taxonomía por dinámica de mundo).
+- **`docs/mundos-por-vicio.md`** — la derivación oficial vicio→mundo EN LLANO (ADR 0113): por cada
+  error — fuentes, contextos donde está documentado, estructuras, y el mundo que lo caza (exista o
+  no). **Catálogo-primero: lo construido no manda.** El catálogo es la evidencia; este doc, el diseño.
 - **`docs/adr/`** — decisiones (una por archivo, append-only)
   · **`docs/open-questions.md`** (lo sin decidir) · **`docs/red-team.md`** (amenazas del proyecto)
   · **`docs/archived/`** (histórico; el `NORTH_STAR_full.md` original vive acá — citas "NORTH_STAR §N" resuelven ahí).
