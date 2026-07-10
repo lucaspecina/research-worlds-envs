@@ -17,9 +17,9 @@
 |---|---|---|---|
 | Trehan & Chopra 2026 — "Why LLMs Aren't Scientists Yet" (2601.03315) | 4 intentos autónomos end-to-end de generar papers de ML (pipeline de 6 agentes) | arxiv.org/html/2601.03315 | **LEÍDO** (2026-07-09) → volcado a vicios 1/2/3/4 con ejemplos reales |
 | Kosmos (Edison Scientific / ex-FutureHouse) | AI Scientist desplegado; ~1500 papers + ~42k líneas de código por corrida | labs.edisonscientific.com/research/announcing-kosmos + arxiv 2511.02824 | **LEÍDO** (2026-07-09, el reporte) |
-| OSWorld-V2 (corpus de Lucas) | Agentes de computer-use en tareas de escritorio | *(buscar URL)* | [ ] |
+| XLANG Lab — OSWorld 2.0 (2606.29537) | 108 workflows de computer-use largos (1.6h humanas medianas, 318 tool-calls); mejor agente 20.6% | arxiv.org/html/2606.29537v1 | **LEÍDO** (2026-07-09) |
 | Vibe-physics (corpus de Lucas; ¿Anthropic?) | Modelo haciendo física exploratoria con un humano | *(buscar URL + confirmar autoría)* | [ ] |
-| SciAgentGym (corpus de Lucas) | Gimnasio de tareas científicas con herramientas | *(buscar URL)* | [ ] |
+| Shen et al. — SciAgentGym (2602.12984, Fudan NLP) | Tareas científicas multi-paso con herramientas | arxiv.org/html/2602.12984v1 | **LEÍDO** (2026-07-09) → ⚠ CORRIGE una cifra nuestra |
 | Ríos-García et al. 2026 — "AI scientists produce results without reasoning scientifically" (2604.18805) | **CORRECCIÓN**: NO es CLadder/QRData (así lo describía mal nuestro corpus) — son **8 dominios de química/materiales** (sim. molecular, espectroscopía, análisis químico, circuitos, retrosíntesis...), 3 modelos × 2 scaffolds, **25.000+ corridas** | arxiv.org/pdf/2604.18805 (109 pág; solo PDF, extraído con pymupdf) | **LEÍDO** (2026-07-09) |
 | Chen et al. — MLR-Bench (2505.19955) | 201 tareas de investigación ML (workshops NeurIPS/ICLR/ICML); múltiples modelos; MLR-Judge + 10 revisores humanos | arxiv.org/html/2505.19955 | **LEÍDO** (2026-07-09) |
 | Wang et al. 2026 — "The Long-Horizon Task Mirage" (HORIZON, 2604.11978) | Agentes web/OS/DB/embodied en tareas largas; taxonomía de 7 fallas | arxiv.org/html/2604.11978 | **LEÍDO** (2026-07-09) |
@@ -122,3 +122,31 @@ AI Scientist real desplegado (~1500 papers + ~42k líneas de código por corrida
   la trampa se hace MÁS PROFUNDA con el horizonte; la presión-por-largo es un dial.
 - 79.4% de conclusiones acertadas (≈20% mal). Su "structured world models" NO resuelve el
   rabbit-holing (dicen que hace falta que mejoren los modelos base).
+
+### XLANG Lab — OSWorld 2.0 (2606.29537) — LEÍDO 2026-07-09
+
+108 workflows largos de computer-use (1.6h humanas medianas, 318 tool-calls; mejor agente 20.6%).
+Fallas con ejemplo real: pierde restricciones · *"pierde info que llega a mitad de tarea, tratándola
+como ruido de fondo en vez de actualizar el estado de la tarea"* · adivina en vez de preguntar ·
+saltea verificación (*"submission no es verification"*) · <7% del presupuesto en auto-repararse.
+Concentradas en: inferencia de estado implícito (39.8%), tracking multi-item (39.8%), desambiguar
+conflictos (36.1%), entorno dinámico (9.3%).
+- **CORRECCIÓN A NUESTRO CORTE OPERACIÓN/JUICIO (ADR 0100)**: yo había bracketeado estas fallas de
+  OSWorld como OPERACIÓN (las arregla el andamiaje). **El paper argumenta lo contrario**: *"los
+  agentes ejecutan bien las acciones locales pero no pueden sostener un modelo de la tarea a nivel
+  global... fallan en el RAZONAMIENTO: mantener el estado semántico, reconocer cuándo la info nueva
+  invalida decisiones previas, y reconocer cuándo pausar en vez de adivinar."* → "perder info
+  mid-task y no actualizar" ES nuestro vicio 1 (no actualizar). Revisar la clasificación en la pasada
+  de integración: parte de OSWorld es JUICIO, no operación.
+
+### Shen et al. — SciAgentGym (2602.12984) — LEÍDO 2026-07-09 — ⚠ CORRIGE UNA CIFRA NUESTRA
+
+- **CORRECCIÓN GRAVE**: nuestro catálogo dice *"error-signal blindness: 67% repite la misma acción
+  fallida (SciAgentGym)"*. **ES FALSO.** El "67" es un **número de CASO** (*"in Case 67, the model
+  repeatedly re-invokes the same shear-stress subroutine"*), NO un porcentaje. No existe ningún "67%"
+  en el paper. Probable origen: alguien hizo 100−32.9 (ver abajo) y lo cruzó con el "Caso 67". Hay
+  que corregirlo en TODOS los docs (`failure-modes.md` §4-bis; `mundos-por-vicio.md`).
+- **Los números REALES (y son buenos, sólidos)**: los modelos responden a solo el **32.9%** de las
+  señales de error (*"ignoran la mayoría"*); "tuning" 6.6%; switching estratégico exitoso 15.3%;
+  loop-escape 35.7% (o sea ~64% cae en repetición idéntica). Resiliencia: los débiles caen monótono
+  **29%→10%**; los fuertes hacen Rise-Fall-Rise (40→57→9→63). → usar estos, no el "67%" inventado.
