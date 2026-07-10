@@ -24,8 +24,14 @@ generador puede ser mediocre; el filtro es duro):
   naive-far, null-floor, carga diferencial ≥2 coordenadas.
 - Certificado de trampa necesaria (robots vicioso/cuidadoso, ADR 0082) para anti-vicio.
 - Test de contaminación (semillas famosas), pin no-op, sanidad de escala.
-- **Un mundo generado que pasa la certificación completa es usable, lo haya escrito quien
-  lo haya escrito.** Ese es el teorema que habilita todo.
+- **Un mundo generado que pasa la certificación completa es CANDIDATO, no usable** (corrección
+  ADR 0119, ronda 2 de Codex — la versión anterior de esta línea afirmaba un teorema falso):
+  la certificación demuestra consistencia con los rivales/baterías/degradaciones que el propio
+  sistema anticipó — **no** validez de constructo, ni ausencia de shortcuts, ni diversidad
+  efectiva. La usabilidad exige además **cuarentena** (nada generado entra a E1/entrenamiento/
+  claims por pasar certificados) + **auditoría independiente** (humana de batería, regla §7; y
+  panel de conducta cuando exista). Lo que sí habilita la certificación: filtrar barato y sin
+  humano el 90% que ni siquiera es internamente consistente.
 
 ## 3. Lo que FALTA (la mitad generadora) + lo que NO cambia
 

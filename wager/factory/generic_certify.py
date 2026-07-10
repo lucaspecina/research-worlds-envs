@@ -62,21 +62,19 @@ def _perturbed(wmod, meta, factor=1.15):
 CANONICAL_CLASS = "regime_factored_additive_context_v0"  # ADR 0120
 
 
-def _partition_gate(vals, den_s, den_full):
-    """Per-partition recoverability gate (ADR 0120): a partition is held to the
-    0.95 bar only where it can MEASURE it. R on a ~zero denominator is noise,
-    not measurement (observed live on confounded_gen_v0's obs cut: naive~truth
-    there, den_obs = 1.3% of den_full, and the canonical's R_obs swung
-    0.30->0.45 across acquisition seeds while its ABSOLUTE obs distance had
-    collapsed). Where the partition denominator is uninformative (<10% of the
-    full one) the claim shrinks to "no worse than the naive on that partition"
-    -- which the OLD (pre-0120) canonical still fails (its obs R was deeply
-    negative). vals = R values across acquisition seeds; the MIN governs."""
-    if not vals or den_s is None:
+def _partition_gate(canon_scores, s_truth_p, den_full):
+    """Per-partition recoverability gate = ABSOLUTE REGRET against the STABLE
+    scale (ADR 0120 as amended by Codex ronda 4, which killed the first cut --
+    a 10%-denominator branch -- for having an exploitable cliff and a sign
+    hole): regret_p = max_seed(S_truth_p - S_canonical_p) / |den_full| <= FLOOR.
+    No division by the partition's own (possibly ~zero) denominator, no
+    discontinuity, worst acquisition seed governs. Measured separations it
+    reproduces: confounded-new obs 0.94% PASS / pre-0120 obs ~6.7% FAIL /
+    reskin-legacy obs ~4.05% pass-barely."""
+    if not canon_scores or s_truth_p is None or not den_full:
         return None
-    if abs(den_s) >= 0.10 * abs(den_full):
-        return min(vals) >= 1.0 - FLOOR
-    return min(vals) >= -FLOOR
+    regret = max(s_truth_p - s for s in canon_scores) / abs(den_full)
+    return regret <= FLOOR
 
 
 def _source_is_identity(src) -> bool:
@@ -365,10 +363,6 @@ def certify(case_dir) -> dict:
     sub_obs = _sub_ws(obs_idx) if len(obs_idx) >= 3 else None
     sub_do = _sub_ws(do_idx) if len(do_idx) >= 3 else None
 
-    def R_sub(fn, sub):
-        ws_s, st, sn = sub
-        return (score_callable(fn, ws_s, meta.scoring) - sn) / (st - sn) if st != sn else float("nan")
-
     # ---- canonical under legal_plan_v0 (ADR 0120) ------------------------------
     reps_src = next((s for s in meta.episode.observe_sources.values()
                      if s.channel is not None and s.channel.replicates == 2), None)
@@ -386,32 +380,41 @@ def certify(case_dir) -> dict:
     else:
         acq_seeds = [(62001, 52001, 63001), (62501, 52501, 63501)]
         per_seed = {"full": [], "obs": [], "do": []}
+        canon_scores = {"obs": [], "do": []}
         diags = []
         for sg, sp, sr in acq_seeds:
             canon, diag = _canonical_legal(meta, schema, world_sample, plan, obs_half,
                                            source, reps_src, sg, sp, sr)
             per_seed["full"].append(round(R(canon), 4))
-            if sub_obs:
-                per_seed["obs"].append(round(R_sub(canon, sub_obs), 4))
-            if sub_do:
-                per_seed["do"].append(round(R_sub(canon, sub_do), 4))
+            for part, sub in (("obs", sub_obs), ("do", sub_do)):
+                if sub:
+                    sc = score_callable(canon, sub[0], meta.scoring)
+                    canon_scores[part].append(sc)
+                    per_seed[part].append(round((sc - sub[2]) / (sub[1] - sub[2]), 4)
+                                          if sub[1] != sub[2] else float("nan"))
             diags.append(diag)
         r_canon = min(per_seed["full"])  # seed-robustness: the MIN governs
         supported = all(d["supported"] for d in diags)
         rec_full = supported and r_canon >= 1.0 - FLOOR
 
-        if obs_half and per_seed["obs"]:
-            rec_obs = supported and bool(_partition_gate(
-                per_seed["obs"], sub_obs[1] - sub_obs[2], den))
-        if per_seed["do"]:
-            rec_do = supported and bool(_partition_gate(
-                per_seed["do"], sub_do[1] - sub_do[2], den))
+        # regret gates apply to EVERY world with the sub-battery -- including
+        # legacy-path worlds (no legacy hole; ronda 4 (c)): ALL-PASS must imply
+        # bounded regret on every partition, whichever canonical route ran.
+        if canon_scores["obs"]:
+            rec_obs = supported and bool(_partition_gate(canon_scores["obs"], sub_obs[1], den))
+        if canon_scores["do"]:
+            rec_do = supported and bool(_partition_gate(canon_scores["do"], sub_do[1], den))
         canon_ledger.update({
             "acq_seeds": acq_seeds, "r_per_seed": per_seed, "diag_per_seed": diags,
             "partition_denoms": {
                 "full": round(den, 6),
                 "obs": round(sub_obs[1] - sub_obs[2], 6) if sub_obs else None,
                 "do": round(sub_do[1] - sub_do[2], 6) if sub_do else None,
+            },
+            "partition_regret_pct_of_scale": {
+                part: round(100.0 * max(sub[1] - s for s in canon_scores[part]) / abs(den), 3)
+                for part, sub in (("obs", sub_obs), ("do", sub_do))
+                if canon_scores[part] and sub
             },
             "note": None if supported else (
                 "unsupported_by_canonical: lack-of-fit of the declared class on "

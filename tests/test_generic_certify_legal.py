@@ -66,26 +66,31 @@ def test_identity_source_is_positive_allowlist():
     assert not _source_is_identity(_src(hidden_columns=("u",)))
 
 
-# ---------------------------------------------------------- partition gates --
+# ------------------------------------------- partition gates (regret form) --
+# _partition_gate(canon_scores, s_truth_p, den_full) gates on ABSOLUTE regret
+# against the stable full-battery scale (ADR 0120 as amended by Codex ronda 4:
+# the earlier 10%-denominator branch had an exploitable cliff + a sign hole).
 def test_do_broken_fails_even_if_full_would_pass():
-    # informative denominator -> the 0.95 bar applies; a do-broken canonical
-    # (obs easy, do wrong) must FAIL its partition gate.
-    assert _partition_gate([0.62, 0.65], den_s=0.8, den_full=1.0) is False
-    assert _partition_gate([0.97, 0.999], den_s=0.8, den_full=1.0) is True
+    # regret = (s_truth_p - score)/|den_full|; a do-broken canonical is far
+    # below truth on its partition -> way over the 5% bar.
+    assert _partition_gate([-0.40, -0.38], s_truth_p=0.0, den_full=1.0) is False
+    assert _partition_gate([-0.01, -0.02], s_truth_p=0.0, den_full=1.0) is True
 
 
-def test_uninformative_partition_shrinks_claim_not_the_gate():
-    # ~zero denominator: R there is noise -> claim shrinks to "no worse than
-    # naive". Mildly-positive noise passes...
-    assert _partition_gate([0.30, 0.45], den_s=0.005, den_full=0.41) is True
-    # ...but the PRE-0120 canonical (deeply negative obs R) still fails: the
-    # relaxed branch is not a free pass.
-    assert _partition_gate([-3.9, -4.1], den_s=0.005, den_full=0.41) is False
+def test_tiny_denominator_noise_passes_but_old_bug_fails():
+    # measured live (confounded_gen_v0): the obs partition denominator is ~1.3%
+    # of the full scale; the NEW canonical's obs regret is 0.94% of scale ->
+    # PASS without dividing by the tiny partition denominator...
+    assert _partition_gate([-0.003835, -0.003005], s_truth_p=0.0, den_full=0.409975) is True
+    # ...while the PRE-0120 canonical (obs regret ~6.7% of scale) FAILS,
+    assert _partition_gate([-0.0275], s_truth_p=0.0, den_full=0.41) is False
+    # and the reskin legacy path (4.05% of scale) passes -- barely.
+    assert _partition_gate([-0.04307], s_truth_p=0.0, den_full=1.063686) is True
 
 
-def test_seed_robustness_min_governs():
-    # one good acquisition seed cannot rescue a bad one.
-    assert _partition_gate([0.99, 0.62], den_s=0.8, den_full=1.0) is False
+def test_seed_robustness_worst_governs():
+    # one good acquisition seed cannot rescue a bad one: MAX regret gates.
+    assert _partition_gate([-0.01, -0.08], s_truth_p=0.0, den_full=1.0) is False
 
 
 # ------------------------------------------------------------- integration ---
