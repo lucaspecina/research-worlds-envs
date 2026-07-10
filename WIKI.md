@@ -57,6 +57,21 @@ más* **empeora** el reflejo, y los modelos se parecen entre sí más que a un h
 de juicio es real, sistemático y medible. Eso es exactamente lo que este proyecto existe para medir
 y entrenar.
 
+**¿Y si con el RL sobre tareas verificables ya alcanza?** (la pregunta existencial — vuelve seguido,
+y tiene respuesta escrita: ADR 0126). El RL sobre concursos tipo AtCoder produjo saltos brutales
+(2026: una IA le ganó ~7× al campeón humano), y la creatividad *instrumental* emerge de una única
+métrica (Move 37). Pero mirá qué entrena ese camino y qué no: allá el mundo **no esconde nada y
+jamás miente** — el generador de problemas es público y verificar es gratis e infinito. Del camino al
+premio emergen buscar bien, iterar, pivotear; el camino **jamás atraviesa** desconfiar de un dato,
+decidir qué evidencia comprar, inferir un mecanismo oculto, o elegir entre dos historias que explican
+lo mismo. Peor: respecto de los datos, la política óptima allá es la **opuesta** a la de la ciencia —
+credulidad total allá, desconfianza calibrada acá. WAGER no compite con ese motor: **es el mismo
+motor** (corrector insobornable + generador de mundos + examen fresco) apuntado a lo único que
+importa: *qué te esconde el mundo* — AtCoder puntúa tu solución a un problema declarado; WAGER puntúa
+tu **creencia** sobre un mundo oculto. Estado honesto: que entrenar acá transfiera es la apuesta
+declarada, con su experimento (mismo cómputo: entrenar allá vs acá, examen congelado externo) y sus
+criterios de muerte.
+
 ## 3. La idea central
 
 Tres piezas.
