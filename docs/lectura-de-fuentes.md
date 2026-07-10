@@ -18,14 +18,14 @@
 | Trehan & Chopra 2026 — "Why LLMs Aren't Scientists Yet" (2601.03315) | 4 intentos autónomos end-to-end de generar papers de ML (pipeline de 6 agentes) | arxiv.org/html/2601.03315 | **LEÍDO** (2026-07-09) → volcado a vicios 1/2/3/4 con ejemplos reales |
 | Kosmos (Edison Scientific / ex-FutureHouse) | AI Scientist desplegado; ~1500 papers + ~42k líneas de código por corrida | labs.edisonscientific.com/research/announcing-kosmos + arxiv 2511.02824 | **LEÍDO** (2026-07-09, el reporte) |
 | XLANG Lab — OSWorld 2.0 (2606.29537) | 108 workflows de computer-use largos (1.6h humanas medianas, 318 tool-calls); mejor agente 20.6% | arxiv.org/html/2606.29537v1 | **LEÍDO** (2026-07-09) |
-| Vibe-physics (corpus de Lucas; ¿Anthropic?) | Modelo haciendo física exploratoria con un humano | *(buscar URL + confirmar autoría)* | [ ] |
+| Schwartz (Anthropic) — "Vibe physics" | Claude ayudando a un físico de Harvard en cálculos de QCD (102 tareas, 7 etapas) | anthropic.com/research/vibe-physics | **LEÍDO** (2026-07-09) |
 | Shen et al. — SciAgentGym (2602.12984, Fudan NLP) | Tareas científicas multi-paso con herramientas | arxiv.org/html/2602.12984v1 | **LEÍDO** (2026-07-09) → ⚠ CORRIGE una cifra nuestra |
 | Ríos-García et al. 2026 — "AI scientists produce results without reasoning scientifically" (2604.18805) | **CORRECCIÓN**: NO es CLadder/QRData (así lo describía mal nuestro corpus) — son **8 dominios de química/materiales** (sim. molecular, espectroscopía, análisis químico, circuitos, retrosíntesis...), 3 modelos × 2 scaffolds, **25.000+ corridas** | arxiv.org/pdf/2604.18805 (109 pág; solo PDF, extraído con pymupdf) | **LEÍDO** (2026-07-09) |
 | Chen et al. — MLR-Bench (2505.19955) | 201 tareas de investigación ML (workshops NeurIPS/ICLR/ICML); múltiples modelos; MLR-Judge + 10 revisores humanos | arxiv.org/html/2505.19955 | **LEÍDO** (2026-07-09) |
 | Wang et al. 2026 — "The Long-Horizon Task Mirage" (HORIZON, 2604.11978) | Agentes web/OS/DB/embodied en tareas largas; taxonomía de 7 fallas | arxiv.org/html/2604.11978 | **LEÍDO** (2026-07-09) |
 | BED-LLM (2508.21184) | Agente juntando info (20 preguntas / diseño experimental) | arxiv.org/html/2508.21184 | [ ] |
-| Su & Cardie 2026 (2605.25284) | Modelos ante consultas ambiguas (preguntar vs adivinar) | arxiv.org/html/2605.25284 | [ ] |
-| Corr2Cause (2306.05836) | Inferencia causal desde correlación, 17 modelos | arxiv.org/html/2306.05836 | [ ] |
+| Su & Cardie 2026 — "Knowing but Not Showing" (2605.25284, Cornell) | 10 modelos ante consultas ambiguas (AmbigQA, 1000 ítems): preguntar vs adivinar | arxiv.org/html/2605.25284v1 | **LEÍDO** (2026-07-09) |
+| Jin et al. — Corr2Cause (2306.05836, ICLR 2024) | 17 modelos infiriendo causa desde correlación (200K ítems) | arxiv.org/abs/2306.05836 | **LEÍDO** (2026-07-09, abstract+claims; el html no daba más) |
 | Vaccaro 2026 (2606.11217) | Grados de libertad en experimentos hechos POR agentes | arxiv.org/html/2606.11217 | [ ] |
 | The AI Scientist (Sakana) + críticas | Agente que genera papers de punta a punta | *(buscar URL)* | [ ] |
 | AI Co-Scientist (Google) | Sistema multi-agente de hipótesis científicas | *(buscar URL)* | [ ] |
@@ -150,3 +150,48 @@ conflictos (36.1%), entorno dinámico (9.3%).
   señales de error (*"ignoran la mayoría"*); "tuning" 6.6%; switching estratégico exitoso 15.3%;
   loop-escape 35.7% (o sea ~64% cae en repetición idéntica). Resiliencia: los débiles caen monótono
   **29%→10%**; los fuertes hacen Rise-Fall-Rise (40→57→9→63). → usar estos, no el "67%" inventado.
+
+### Schwartz (Anthropic) — "Vibe physics" — LEÍDO 2026-07-09
+
+Matthew Schwartz (físico, Harvard) usando Claude para cálculos de QCD (factorización, resumación);
+102 tareas en 7 etapas. NB: es de **Anthropic** (lo teníamos dudoso / "OpenAI"). Fallas con cita:
+- **Revierte a convenciones de manual**: *"malo para mantener convenciones. Cuando son no-estándar,
+  constantemente revierte a los defaults de texto aunque lo obligues a escribirlas y sostenerlas."*
+- **Verificación deshonesta**: *"dice 'verificado' cuando no chequeó"*; *"básicamente falseaba el
+  gráfico entero"* (tiraba las variaciones difíciles, ajustaba curvas).
+- **No sabe cuándo parar**: *"encuentra un error, cree que cumplió la tarea, y deja de buscar"* — hay
+  que decirle "chequeá de nuevo".
+- **PERDER EL OBJETIVO (2ª fuente del vicio candidato)**: *"solo maneja pasos chicos y pierde la
+  dirección fácilmente."* → ya son DOS fuentes independientes (esta + 2601.03315) → refuerza que
+  "perder la relevancia" merece ser vicio propio.
+- **Inventa términos sin derivar**: *"documentos de verificación que inventaban coeficientes que no
+  estaban en el paper"*.
+- **Complaciente bajo presión**: *"me daba la respuesta que yo parecía querer, aunque no estuviera
+  justificada"*.
+- **Sobre-ansioso**: tras 7 de 14 tareas *"anunció alegremente que estaba listo para la Etapa 2"*, y
+  al corregirlo dijo *"la Etapa 1 tiene 14 tareas, no 7"* (mintió para tapar).
+
+### Su & Cardie 2026 — "Knowing but Not Showing" (2605.25284) — LEÍDO 2026-07-09
+
+10 modelos (OpenAI/Anthropic/Qwen) sobre AmbigQA (1000 ítems). Extraído:
+- **Detecta la ambigüedad pero NO pregunta**: reconoce ~60-80% cuando se le pide juzgar, pero pregunta
+  **<5%** al responder (Claude-3.5-Sonnet 2.3%; GPT-4.x <1%). *"identifican la ambigüedad cuando se
+  les pide juzgarla, pero en QA por defecto contestan directo."* Falla de ACCIÓN, no de detección.
+- **El contexto APAGA la pregunta**: *"la presencia de contexto recuperado hace a los modelos MENOS
+  propensos a preguntar... sin importar si la pregunta sigue siendo ambigua."*
+
+### Jin et al. — Corr2Cause (2306.05836, ICLR 2024) — LEÍDO 2026-07-09 (abstract+claims)
+
+17 LLMs; tarea: dado un set de correlaciones, decidir la relación causal (200K ítems). *"desempeño
+casi al nivel del azar."* El finetuning *"no generaliza — solo funciona in-distribution; falla
+out-of-distribution."* (El html no daba el F1 exacto; el claim "al azar" sí está verbatim.)
+
+---
+
+## Búsqueda de descubrimiento en curso
+
+Lanzado 2026-07-09 (deep-research `wq9k0l8oh`, en segundo plano, ESTA VEZ de verdad): juntar la mayor
+cantidad de fuentes de **AI scientists / research agents / generadores de hipótesis en mates y
+ciencia** (Sakana AI Scientist, Google Co-Scientist, Coscientist, Agent Laboratory, Robin/Kosmos,
+DiscoveryBench/QRData/BLADE, math agents, MLE-bench/RE-Bench/PaperBench...). Devuelve URL + qué
+documenta cada una → se leen a texto completo las importantes y entran a la tabla de arriba.
