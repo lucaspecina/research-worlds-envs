@@ -23,10 +23,10 @@
 | Ríos-García et al. 2026 — "AI scientists produce results without reasoning scientifically" (2604.18805) | **CORRECCIÓN**: NO es CLadder/QRData (así lo describía mal nuestro corpus) — son **8 dominios de química/materiales** (sim. molecular, espectroscopía, análisis químico, circuitos, retrosíntesis...), 3 modelos × 2 scaffolds, **25.000+ corridas** | arxiv.org/pdf/2604.18805 (109 pág; solo PDF, extraído con pymupdf) | **LEÍDO** (2026-07-09) |
 | Chen et al. — MLR-Bench (2505.19955) | 201 tareas de investigación ML (workshops NeurIPS/ICLR/ICML); múltiples modelos; MLR-Judge + 10 revisores humanos | arxiv.org/html/2505.19955 | **LEÍDO** (2026-07-09) |
 | Wang et al. 2026 — "The Long-Horizon Task Mirage" (HORIZON, 2604.11978) | Agentes web/OS/DB/embodied en tareas largas; taxonomía de 7 fallas | arxiv.org/html/2604.11978 | **LEÍDO** (2026-07-09) |
-| BED-LLM (2508.21184) | Agente juntando info (20 preguntas / diseño experimental) | arxiv.org/html/2508.21184 | [ ] |
+| Choudhury et al. — BED-LLM (2508.21184) | Agente juntando info (20 preguntas; Animals/Celebrities/Things) | arxiv.org/html/2508.21184v1 | **LEÍDO** (2026-07-09) |
 | Su & Cardie 2026 — "Knowing but Not Showing" (2605.25284, Cornell) | 10 modelos ante consultas ambiguas (AmbigQA, 1000 ítems): preguntar vs adivinar | arxiv.org/html/2605.25284v1 | **LEÍDO** (2026-07-09) |
 | Jin et al. — Corr2Cause (2306.05836, ICLR 2024) | 17 modelos infiriendo causa desde correlación (200K ítems) | arxiv.org/abs/2306.05836 | **LEÍDO** (2026-07-09, abstract+claims; el html no daba más) |
-| Vaccaro 2026 (2606.11217) | Grados de libertad en experimentos hechos POR agentes | arxiv.org/html/2606.11217 | [ ] |
+| Vaccaro 2026 (2606.11217) | Grados de libertad en experimentos SOBRE agentes (metodología HUMANA, no del agente) | arxiv.org/html/2606.11217v1 | **LEÍDO** (2026-07-09) → ⚠ CORRIGE nuestro encuadre |
 | The AI Scientist (Sakana) + críticas | Agente que genera papers de punta a punta | *(buscar URL)* | [ ] |
 | AI Co-Scientist (Google) | Sistema multi-agente de hipótesis científicas | *(buscar URL)* | [ ] |
 | SciAgentBench / DiscoveryWorld / DiscoveryBench | Benchmarks de descubrimiento con análisis de error | *(buscar URLs)* | [ ] |
@@ -187,6 +187,31 @@ casi al nivel del azar."* El finetuning *"no generaliza — solo funciona in-dis
 out-of-distribution."* (El html no daba el F1 exacto; el claim "al azar" sí está verbatim.)
 
 ---
+
+### Choudhury et al. — BED-LLM (2508.21184) — LEÍDO 2026-07-09
+
+Agente jugando a adivinar (20 preguntas) sobre 3 datasets (Animals/Celebrities/Things, 100 targets
+c/u; base GPT-4o). Extraído:
+- **Muestra hipótesis incompatibles con lo ya observado** *"especialmente a medida que crece el
+  historial"*; y **se sobre-colapsa** *"saltando a conclusiones sobre θ sin evidencia suficiente"*.
+  Ambos EMPEORAN con el largo de la interacción.
+- **Preguntas no-adaptativas**: la versión naive no adapta la pregunta a las respuestas → 45% (Naive)
+  vs 93% (con diseño experimental) en Animals. → mundo: elegir la pregunta que DISCRIMINA.
+
+### Vaccaro 2026 — "Preregistration for Experiments with AI Agents" (2606.11217) — LEÍDO 2026-07-09 — ⚠ CORRIGE NUESTRO ENCUADRE
+
+- **CORRECCIÓN**: nuestro catálogo dice *"el p-hacking migra al propio agente-científico (nuestro
+  sujeto)"*. **El paper NO dice eso.** Encuadra el problema como de la **metodología HUMANA** que
+  estudia agentes, no como una falla del agente: *"heredan, y en algunos casos amplifican,
+  vulnerabilidades metodológicas que siempre plagaron la investigación con sujetos humanos"*. El
+  sujeto que p-hackea son los INVESTIGADORES, no el agente. → nuestra frase "nuestro sujeto" era una
+  extrapolación nuestra (un vicio candidato TRANSFERIBLE a un agente-científico), no un hallazgo del
+  paper. Corregir el encuadre en `failure-modes.md` §4-C.
+- **Lo valioso que SÍ aporta (número real)**: probaron el anclaje en LLMs sobre **2.430
+  especificaciones** (modelo, prompt, distancia del ancla, etc.) y el índice de anclaje va *"de
+  fuertemente negativo a fuertemente positivo — un investigador podría concluir que el LLM tiene
+  anclaje humano robusto, ninguno, o anclaje inverso, según qué camino reporte"*. → jardín de
+  senderos hecho demostración; y ojo: el "anclaje en LLMs" NO es robusto (relevante para el vicio 1).
 
 ## Búsqueda de descubrimiento en curso
 
