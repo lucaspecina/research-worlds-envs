@@ -289,51 +289,14 @@ la causa de un resultado sorprendente)**. Puntos con impacto directo en WAGER:
   in high-dimensional topology."* Nuestros mundos son simbólicos, no multimodales — pero SÍ dan
   intervención contrafáctica (do()), que es la mitad que ellos marcan como faltante en AI Scientist.
 
-### AUTOCOG (2606.26448) — LEÍDO 2026-07-10 (completo, pymupdf) — foco: cómo construir mundos
+### AUTOCOG (2606.26448) y ModelSMC (2602.18266) — LEÍDOS completos 2026-07-10
 
-Loop cerrado 100% autónomo que descubre teorías de decisión humana con participantes reales (Prolific,
-N=25/exp, US$0.80). 2 slots de teorías COMPITEN (agentes-abogados) → diseño experimental adversarial →
-datos → arbitraje → revisión. Teorías = modelos ejecutables (predict/policy/params). Resultado
-estrella: teoría NUEVA (Diminishing Returns WADD, utilidad cóncava) **confirmada en estudio
-PRE-REGISTRADO** con participantes nuevos. Extraído para diseño:
-- **El CONTROL más valioso — métrica fija es CIEGA**: reemplazaron la métrica adaptativa por una
-  distancia fija (JSD) y FALLÓ en recuperar perseveración (0/3) y take-the-worst (0/3), vs 3/3 y 2/3
-  con métrica adaptativa. Cita oro: *"fixing an explicit distance fixes in advance which behavioral
-  differences count as evidence: theories that differ only in ways the chosen distribution cannot
-  express are indistinguishable to the pipeline, and therefore earn no selection pressure."* → es
-  nuestro red-team #5 (puntos ciegos de D) demostrado desde afuera.
-- **Control anti-apofenia**: *"when given pure noise it converged on theories equivalent to random
-  guessing rather than imposing structure on it"* → fixture negativo a adoptar (mundo-nulo).
-- **Experimento aceptado solo si SIMULACIÓN lo muestra discriminante** al N planeado (Welch α=.01)
-  ANTES de juntar datos → receta mecánica de "frontera descubrible" (OQ 18) y de diseño de batería.
-- **Evaluación GENERATIVA sin fitting** (nuestra doctrina, validada por un top-lab): *"harder to game
-  than a single predictive score, and implicitly regularizes against overfitting."*
-- Framing adversarial > neutral (solo el adversarial recuperó perseveración) → patrón para el par/Mundo B.
-
-### ModelSMC (2602.18266) — LEÍDO 2026-07-10 (completo, pymupdf) — foco: cómo construir mundos
-
-Descubrimiento de simuladores como INFERENCIA bayesiana sobre programas: población de N modelos-código
-(partículas) pesados por **likelihood marginal p(xo|m)** (integra params), no por distancia ad-hoc.
-Backbone Claude-Sonnet-4.6. 3 sistemas REALES (SIR, riñón/aldosterona en R, Hodgkin-Huxley). Extraído:
-- **RECETA DE CONSTRUCCIÓN por rotura deliberada**: *"We intentionally replace the aldosterone
-  mechanism with a constant term, thereby introducing a targeted structural misspecification.
-  ModelSMC is tasked with inferring the missing regulatory dynamics from the data."* → tomar un
-  simulador REAL validado y ROMPERLE una pieza = un mundo, con la realidad como autora (escala la
-  fábrica sin inventar mecanismos).
-- **No-identificabilidad como DIAGNÓSTICO, no bug**: *"posterior mass serves as a diagnostic:
-  low-weight regions indicate genuine structural mismatch, while clusters of high-probability models
-  reveal symmetries and ambiguities that are invisible to single-model discovery."* → un mundo donde
-  la respuesta correcta es "estas estructuras son indistinguibles con lo observado" (vicio 7
-  intervenir-o-fallar + abstención); la entrega buena es una MEZCLA con pesos (nuestro contrato ya lo
-  permite).
-- **Anatomía de consigna (App H)**: OBJECTIVE + BASE MODEL + EXTENSIBILITY (slots tuneables) +
-  EVALUATION METRICS + DATA CONTEXT que ACOTA el espacio + "BEGIN EDITABLE SECTION (only modify within
-  this block)" → plantilla directa para la consigna del proto-designer: andamiaje que restringe SIN
-  soplar la respuesta.
-- Depth > diversity a presupuesto fijo (N=5,K=150 mejor que N=150,K=5) → dato para el generador.
-- **Vecindad/competencia**: ModelSMC resuelve descubrimiento de modelos por BÚSQUEDA POBLACIONAL — es
-  un candidato a "baseline destructor" (red-team #2/#20): un pipeline que gana SIN el juicio que
-  medimos. A correr contra nuestros mundos antes de llamarlos "de juicio".
+Detalle con citas en `docs/research/2026-07-10-lectura-{autocog,modelsmc}-*.md`. En una línea cada uno:
+ambos (top-labs) VALIDAN nuestra arquitectura (entrega=simulador ejecutable, evaluación generativa sin
+fitting, held-out). Ideas de construcción a evaluar SI se ganan su lugar (no integradas): romper un
+simulador real = un mundo (ModelSMC); mundo de no-identificabilidad (entrega = mezcla con pesos);
+control anti-apofenia / mundo-nulo (AUTOCOG); ModelSMC como baseline destructor. Decisión de adopción,
+pendiente con Lucas.
 
 ## Búsqueda de descubrimiento — COMPLETA (2026-07-10)
 
