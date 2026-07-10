@@ -287,7 +287,10 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
   → *mundo donde el orden hipótesis-antes-que-datos es verificable (el sellado de compromiso).*
 - **`[dr ✓]` DOF amplificados en experimentos con AGENTES — Vaccaro 2026**: selección de modelo,
   wording del prompt, settings, rediseño contingente al resultado — "fáciles de explotar y difíciles
-  de detectar". *El p-hacking migra al propio agente-científico (nuestro sujeto).*
+  de detectar". *CORREGIDO 2026-07-09 (ADR 0115): el paper encuadra esto como metodología HUMANA que
+  ESTUDIA agentes, NO como falla del agente; el agente-que-se-p-hackea-a-sí-mismo es extrapolación
+  NUESTRA (vicio candidato transferible). Dato real: probaron anclaje en LLMs sobre 2.430
+  especificaciones → de anclaje inverso a fuerte según qué reporten (el anclaje en LLMs NO es robusto).*
 - **`[dr ✓]` Fabricación cuando el experimento falla — MLR-Bench (NeurIPS 2025)**: **~80%** de los
   casos reportan resultados fabricados/inválidos (8 de 10 tareas con datos placeholder/sintéticos en
   vez de ejecución real); persiste aun instruyendo "no fabriques". *Es EXACTAMENTE nuestro
@@ -552,22 +555,35 @@ Vicio nuevo, de frontera:
 ### OPERACIÓN — NO es blanco de WAGER (lo resuelve el andamiaje; el campo ya está en esto)
 Se listan para **NO confundirlos** con los de juicio, no para construir mundos:
 - **Perder restricciones · no registrar info mid-way · adivinar en vez de preguntar · saltear
-  verificación · <7% del presupuesto en auto-repararse** (OSWorld-V2): el trabajador desprolijo.
-  Memoria / checklists / planners / loops de reparación → territorio de ingeniería de agentes.
+  verificación · <7% del presupuesto en auto-repararse** (OSWorld 2.0, 2606.29537): el trabajador
+  desprolijo. Memoria / checklists / planners / loops de reparación → territorio de ingeniería.
+  · **⚠ TENSIÓN (leído 2026-07-09, ADR 0115)**: los autores de OSWorld 2.0 argumentan que NO son
+  operación sino JUICIO — *"ejecutan bien las acciones locales pero fallan en el RAZONAMIENTO:
+  mantener el estado de la tarea, reconocer cuándo la info nueva invalida decisiones, cuándo pausar en
+  vez de adivinar"*. "Perder info mid-task y no actualizar" = nuestro vicio 1. → nuestro discriminador
+  (¿lo arregla el andamiaje?) y su tesis chocan acá; pendiente de resolver con Lucas si parte de
+  OSWorld cruza a JUICIO.
 
 Straddle (parte operación, parte juicio — se anota el corte, no se mezcla):
-- **Error-signal blindness: 67% repite la misma acción fallida** (SciAgentGym): *rastrear que
-  falló* es operación (un loop de reflexion lo tapa); *diagnosticar por qué y pivotear* es juicio.
+- **Error-signal blindness — responde a solo el 32.9% de las señales de error** (SciAgentGym;
+  loop-escape 35.7%, switching 15.3%; resiliencia débiles 29→10). *CORREGIDO 2026-07-09 leyendo el
+  paper (ADR 0115): el "67%" que citábamos NO existe — era el "Caso 67" (un ejemplo), no un
+  porcentaje.* *Rastrear que falló* es operación (un loop de reflexion lo tapa); *diagnosticar por
+  qué y pivotear* es juicio.
 - **Degradación de resiliencia en trayectorias largas** (E): la robustez cae monótona en
   horizonte (débiles ~30%→~10%); *que sea entrenable* (Rise-Fall-Rise en los fuertes) es la parte
   de juicio/modelo → insumo E2. El horizonte en sí es la cara operacional de E (§3).
 
 ## 4-ter. Metodología externa que VALIDA nuestro enfoque (no un vicio — una confirmación)
 
-- **La evaluación por OUTCOME no detecta estas fallas** (arxiv 2604.18805): un agente puede
-  sacar 80% de accuracy en CLadder/QRData/DiscoveryBench y tener un proceso de razonamiento
-  basura. **Por eso hay que analizar la TRAZA, no solo el resultado** — exactamente nuestra
-  doctrina "conducta observada" (§2.1) y las firmas de trace. Confirmación externa fuerte.
+- **La evaluación por OUTCOME no detecta estas fallas** (2604.18805, *"AI scientists produce results
+  without reasoning scientifically"*, Ríos-García et al.; **leído entero 2026-07-09** — su setup son
+  **8 dominios de QUÍMICA/materiales + 25.000 corridas**, NO "CLadder/QRData" como decíamos): un
+  agente ejecuta el workflow con buen resultado pero con proceso basura (ignora evidencia 68%, revisa
+  26%; base-model 41.4% vs scaffold 1.5% de la varianza). Su frase textual: *"la evaluación por
+  resultado no puede detectar estas fallas; hasta que el razonamiento sea un objetivo de
+  entrenamiento, el conocimiento no puede justificarse por el proceso"* = **exactamente** nuestra
+  doctrina "conducta observada" (§2.1). Confirmación externa fuerte, de un grupo de química de afuera.
 - **El grafo epistémico como vocabulario listo** (mismo paper): anota cada paso de la traza
   con 6 nodos — **H**ypothesis, **T**est, **E**vidence, **J**udgment, **U**pdate,
   **C**ommitment — y aristas (testing, observing, contradicting, updating…), y matchea contra

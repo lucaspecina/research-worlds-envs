@@ -66,18 +66,21 @@ Retracción y ancla: sin mundo.
 sigue invirtiendo en la línea muerta.
 
 **Dónde se lo vio EN AGENTES DE IA (haciendo qué):**
-- **Kosmos (agente de descubrimiento, corpus de Lucas)** — investigando de forma autónoma: se mete
-  en **rabbit holes** (pozos de detalle que no aportan al objetivo) y persigue hallazgos
-  estadísticamente significativos pero científicamente irrelevantes.
-- **arxiv 2601.03315 (agentes investigadores end-to-end, corpus de Lucas)** — haciendo investigación
-  de ML completa: **loop de cada-vez-más-detalle sin pivotear**; se atan a decisiones del prototipo
-  inicial (POC-fixation) y pierden la visión.
-- **SciAgentGym (corpus de Lucas)** — tareas científicas con herramientas: el **67% repite
-  exactamente la misma acción que acaba de fallar**, sin cambiar nada (ceguera a la señal de error:
-  no detecta → no diagnostica → no pivotea → repite).
-- **HORIZON (arXiv 2604.11978, 2026)** — agentes web/base-de-datos en tareas largas: documenta el
-  **loop de acción-fallida-repetida** como modo de falla propio del horizonte largo (un click que
-  falla se repite paso tras paso, el error chico se acumula).
+- **Kosmos (Edison Scientific; reporte leído entero)** — AI Scientist desplegado: admite que *"se mete
+  en rabbit holes y persigue hallazgos significativos pero científicamente irrelevantes"*. **DATO DE
+  DISEÑO clave**: *"cuanto más larga la corrida, más probable que descienda a un rabbit hole"*, hasta
+  esperar que el VALOR de la corrida se INVIERTA con la profundidad → **el largo de la investigación
+  es un dial natural de la trampa: cuanto más lo dejás cavar, más se hunde.**
+- **Trehan & Chopra (2601.03315; leído)** — investigación de ML end-to-end: **loop de cada-vez-más-
+  detalle sin pivotear** (ej. real: se clavó en un error de convolución, 31×31→79×79, ambos mal,
+  quemando iteraciones); se ata al prototipo inicial (POC-fixation).
+- **SciAgentGym (Shen et al., 2602.12984; leído)** — tareas científicas con herramientas: los modelos
+  **responden a solo el 32.9% de las señales de error** (loop-escape 35.7%: ~2 de cada 3 caen en
+  repetición idéntica). *CORREGIDO 2026-07-09: nuestro "67%" era el "Caso 67" (un ejemplo), NO un
+  porcentaje — se leyó el paper.*
+- **HORIZON (Wang et al., 2604.11978; leído)** — su "loop de acción-fallida-repetida" *lo tenía acá,
+  pero CORREGIDO: el paper lo enmarca como error de EJECUCIÓN (repetición mecánica), no pozo cognitivo
+  → pertenece al vicio 5, no al pozo.* Se deja la nota para no volver a mapearlo mal.
 - **Vibe-physics (corpus de Lucas)** — no sabe **cuándo parar**; sigue elaborando cuando lo correcto
   era cerrar.
 - **OSWorld-V2 (corpus de Lucas)** — tareas de computadora: gasta **<7% del presupuesto** en detectar
@@ -93,6 +96,8 @@ intrincado que parece la clave y no aporta nada al examen — el costo es de opo
 quemaste ahí te falta para lo que importa). O la **apuesta perdida**: una línea de investigación
 pagada deja de rendir, con señal clara y punto de decisión explícito — seguir es perder. El robot
 que excava el señuelo hasta el fondo DEBE perder; el que lo prueba un poco y sale DEBE ganar.
+**Dial de dificultad (dato real de Kosmos): el LARGO permitido de la investigación — cuanto más
+largo, más se hunde el que no sabe cortar.**
 
 **Estado. CERO mundos. El hueco más grave** — y es de los vicios MÁS documentados en agentes reales.
 
@@ -205,9 +210,9 @@ elegir la pregunta/experimento que de verdad discrimina — **ya tiene mundo dis
 **Dónde se lo vio EN AGENTES DE IA (haciendo qué):**
 - **Corr2Cause (Jin et al., 2023)** — 17 modelos (hasta GPT-4) decidiendo si una relación causal se
   sigue de correlaciones puras: **al nivel del azar** (200 mil ítems). El ancla dura del vicio.
-- **Análisis de trazas (2604.18805)** — los benchmarks causales por resultado (CLadder, QRData)
-  esconden el proceso: un agente puede acertar 80% con razonamiento basura — por eso importa la
-  traza (nuestra doctrina, confirmada afuera).
+- **Ríos-García et al. (2604.18805; leído)** — la evaluación por RESULTADO esconde el proceso: un
+  agente ejecuta bien y razona basura (ignora evidencia 68%). *CORREGIDO: su setup son 8 dominios de
+  química, NO "CLadder/QRData".* Por eso importa la TRAZA (nuestra doctrina, confirmada afuera).
 - **Kapoor & Narayanan (2023)** — ciencia hecha con ML: 8 tipos de fuga/desajuste que inflan
   resultados aun con partición limpia (la práctica real de ML-para-ciencia comete el error en masa).
 - **Nuestra propia mesa (medido)** — el mundo del confusor: el jugador ingenuo hereda una pendiente
@@ -220,6 +225,33 @@ escondido que acompaña la manipulación — polywater, Mpemba, etc.).
 derivado directo de la lista:** el mundo donde **mirar no alcanza ni en principio** — gana el que
 interviene o se abstiene con honestidad; pierde el que entrega confianza mirando. (Y queda por minar
 en agentes: el sesgo del colisionador/selección.)
+
+---
+
+## Vicio 8 (NUEVO — agregado 2026-07-09 leyendo los papers) — Perder el objetivo / la relevancia
+
+**Qué es.** El agente pierde de vista para qué estaba investigando: angosta el foco a un sub-problema,
+deja de mantener el panorama, o persigue algo que dejó de ser relevante al objetivo. **Relacionado con
+el pozo (vicio 2) pero DISTINTO**: el pozo es clavarse en un detalle que no paga; esto es perder el
+NORTE — se puede perder el objetivo sin meterse en ningún pozo (persiguiendo lo significativo-pero-
+irrelevante, o resolviendo prolijo un sub-problema que no es la pregunta).
+
+**Dónde se lo vio EN AGENTES DE IA (DOS fuentes independientes — por eso entra a la lista):**
+- **Trehan & Chopra (2601.03315; leído)** — investigación de ML end-to-end: *"no podían mantener un
+  pensamiento de portafolio y seguían angostando el foco"*.
+- **Schwartz / Anthropic "vibe-physics" (leído)** — Claude en física de QCD (102 tareas, 7 etapas):
+  *"solo maneja pasos chicos y pierde la dirección fácilmente."*
+- *(Relacionado, ya contado en otros vicios: Kosmos persiguiendo lo significativo-pero-irrelevante;
+  la POC-fixation de 2601.03315.)*
+
+**Estructuras → el mundo que lo caza (por diseñar).** Un objetivo global claro con varios sub-
+problemas, donde el reward SOLO paga el objetivo global; el que se pierde en un sub-problema
+parcial (aun resolviéndolo bien) entrega peor el global. Firma: reporta un sub-resultado prolijo que
+no responde la pregunta que le hicieron. **Más tramposo que el pozo**: allá el señuelo no paga NADA;
+acá el sub-problema paga PARCIAL. Ojo de diseño: distinguirlo de la buena descomposición (resolver
+sub-problemas ES investigar) — el vicio es perder el ENSAMBLE, no descomponer.
+
+**Estado.** CERO mundos. Candidato nuevo con 2 fuentes.
 
 ---
 
@@ -242,10 +274,11 @@ lado malo.
 | Vicio | Evidencia EN AGENTES | Mundos hechos | El hueco |
 |---|---|---|---|
 | 1. No cambiar de idea | FUERTE y cuantificada (68%/26%; BED-LLM; nuestra mesa ×2 modelos) | 1 (+1 spec) | retracción, ancla, par confirmar/espejo |
-| 2. El pozo | FUERTE y repetida (Kosmos, 2601.03315, SciAgentGym 67%, HORIZON, OSWorld) | **0** | TODO — el hueco más grave |
+| 2. El pozo | FUERTE y repetida (Kosmos —empeora con el largo—, 2601.03315, SciAgentGym; *HORIZON es ejecución, se movió a v5*) | **0** | TODO — el hueco más grave |
 | 3. No verificar / fabricar | FUERTE (MLR-Bench 80%; Vaccaro; vibe-physics; nuestra mesa) | 0 dedicados | los 2 diseños baratos |
 | 4. Estructura escondida | FUERTE y PROPIA (v2 0/10; OSWorld estado-oculto; deriva-a-lo-familiar) | 1 (el trofeo) | partir-en-dos, cebada, PAR Vulcano |
 | 5. Hilo largo | fortísima pero es "operación" | — | no se construye (a propósito) |
 | 6. Adivinar vs preguntar | la MÁS medida en modelos | Mundo B (diseñado) | bloqueado: falta el verbo "preguntar" |
 | 7. Causa y efecto | FUERTE (Corr2Cause al azar) | **5** | "mirar no alcanza"; colisionador |
+| **8. Perder el objetivo/relevancia (NUEVO)** | 2 fuentes (2601.03315; vibe-physics) | **0** | por diseñar — distinguirlo de la buena descomposición |
 | Saltos (pares) | FLACA → nuestra oportunidad de medirla primero | v2 instancia uno | Vulcano, consiliencia, analogía |

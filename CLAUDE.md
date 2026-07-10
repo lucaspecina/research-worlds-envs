@@ -18,6 +18,9 @@ Mapa de docs (abrí el que la tarea pida, no todos):
   **foco IA**: por cada vicio, dónde está documentado EN AGENTES DE IA investigadores (paper +
   haciendo-qué + número; lo humano al margen), sus estructuras, y el mundo que lo caza (exista o no).
   **Catálogo-primero: lo construido no manda.** El catálogo es la evidencia; este doc, el diseño.
+- **`docs/lectura-de-fuentes.md`** — registro AUDITABLE de qué papers/artículos de fallas de AI
+  researchers se leyeron a TEXTO COMPLETO (con cita real), qué falta, y las correcciones que la
+  lectura destapó (ADR 0115). Evidencia cruda de las búsquedas: **`docs/research/`** (JSON).
 - **`docs/adr/`** — decisiones (una por archivo, append-only)
   · **`docs/open-questions.md`** (lo sin decidir) · **`docs/red-team.md`** (amenazas del proyecto)
   · **`docs/archived/`** (histórico; el `NORTH_STAR_full.md` original vive acá — citas "NORTH_STAR §N" resuelven ahí).
