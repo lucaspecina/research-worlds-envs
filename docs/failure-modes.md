@@ -110,12 +110,15 @@ funciona. Los pares/gemelos (principio 10) son un agregado valioso, **no** el ej
   commiteado antes de los datos — ADRs 0118/0119) dio **negativo en todo**: la misma pista que en
   0098/0110 había dado +0.52 esta vez HUNDIÓ su propio mundo (scarce 0.58→0.00, pares por seed
   −0.44), el placebo de puro estilo movió el score en ambos mundos, y el control resultó sin
-  headroom. **El método de pistas queda RETIRADO como evidencia de validez**; el resultado viejo
-  ("efecto de instrucción replicado") queda NO REPLICADO. Hallazgo metodológico clave: varianza
-  corrida-a-corrida enorme (scarce/libre: mediana 0.29 en una corrida, 0.58 en otra, protocolo
-  idéntico) → con R bimodal y n=8, las medianas no son evidencia. La validación migra a
-  manipulaciones NO-instruccionales (presupuesto/presión, robots, diseños apareados) — diseño
-  abierto. Hallazgo lateral que SÍ sigue vivo (re-testear con el método nuevo):
+  headroom. El resultado viejo ("efecto de instrucción replicado") queda NO REPLICADO. Hallazgo
+  metodológico clave: varianza corrida-a-corrida enorme (scarce/libre: mediana 0.29 en una corrida,
+  0.58 en otra; tasa de ceros del brazo pista 2/8→5/8, protocolo idéntico) → con R bimodal y n=8,
+  las medianas no son evidencia **en ninguna dirección** — el negativo tampoco prueba que la pista
+  dañe. **El método de pistas NO se abandona (decisión de Lucas, ADR 0122)**: retirada solo su
+  FORMA actual como evidencia; rediseño de la medición en curso (piso de ruido → autopsia de ceros
+  con trazas → perillas de varianza → pista v2 potenciada), con manipulaciones no-instruccionales
+  (presupuesto/presión, robots) como sonda complementaria. Hallazgo lateral que SÍ sigue vivo
+  (re-testear con el método rediseñado):
   DeepSeek se casa con la 1ª hipótesis AUN a presupuesto pleno (gpt no) → perfil de modelo,
   OQ 20.
 - **El hallazgo que ordena el diseño (CORREGIDO — ADR 0111)**: ~~el vicio bite bajo PRESIÓN, no a
