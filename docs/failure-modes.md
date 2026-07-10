@@ -105,6 +105,24 @@ funciona. Los pares/gemelos (principio 10) son un agregado valioso, **no** el ej
   usarla (4/4 gpt bajo escasez), terminación apurada, **precisión fabricada** (declaró un σ
   que no midió; la nota se lo cobró), retirada a la arquitectura familiar (v2). Todo apareció
   con número en nuestros mundos.
+- **★ JUSTIFICACIÓN EXTERNA DEL PROYECTO ENTERO — el "gusto" investigativo de los LLMs tiene un
+  hueco sistemático y MEDIBLE (Chen, Zhao & Cohan 2026, "Measuring the Gap...", 2607.01233;
+  Yale/UChicago; 9 modelos, 11.683 ideas; tier A).** Esto es la prueba independiente de que lo que
+  WAGER existe para medir —el juicio/taste de investigación— es real, mensurable y le falta a los
+  modelos: dados los mismos trabajos previos que precedieron a un paper humano, los LLMs ocupan una
+  región **mucho más angosta** del espacio de "movidas de investigación" que los humanos, y colapsan
+  en un reflejo único: **"conectá/combiná estas dos cosas"** (ideas de puente 12% humano vs **47-64%**
+  en modelos; operación "integrar" **34.2% modelo vs 2.35% humano**, log-odds 3.07). Evitan justo las
+  movidas que definen el buen juicio y que NUESTROS mundos premian: reemplazar un componente frágil,
+  **desacoplar dos mecanismos confundidos** (= literal nuestra familia causal G), formalizar una
+  estructura local. Tres remates que nos tocan de lleno: (a) poner el modelo a **razonar más EMPEORA**
+  el reflejo (bridge 49.7%→71.1% con "thinking"), (b) los modelos **se parecen entre sí más que a los
+  humanos** (cos-sim 0.83 vs 0.72-0.78 → si comparten el reflejo, un mundo que lo caza los caza a
+  todos: respalda por qué la diversidad estructural importa), (c) el hueco persiste **con más contexto**
+  (paper completo no acerca al humano). Un modelo que produce ideas razonables de a una sigue siendo
+  conductualmente angosto — que es EXACTAMENTE la diferencia entre "parece buen razonamiento" y "lo es"
+  que motiva el reward cero-LLM. **Este paper es la mejor defensa a la fecha de por qué el proyecto
+  importa.**
 - **Validez de constructo — NO SE SOSTIENE bajo protocolo sellado (ADR 0121, 2026-07-10)**: el
   experimento corregido y pre-registrado (misma pista en trampa y control, placebo, análisis CIEGO
   commiteado antes de los datos — ADRs 0118/0119) dio **negativo en todo**: la misma pista que en
@@ -473,6 +491,16 @@ taxonomía de 4 fallas, Shelley 2003). · **Tier A en el polo vicio**: GPT/Claud
 contrafácticas donde el humano aguanta (Lewis-Mitchell 2024) — *campo EN DISPUTA (Webb-Holyoak
 argumentan analogía emergente; el claim "LLMs igualan al humano" fue REFUTADO 0-3 en esta corrida):
 hallazgo documentado, no consenso.* · **Pago: predicción → construible.**
+> **★ El polo-vicio de A1, ahora TIER A con números (Chen/Zhao/Cohan 2026, 2607.01233).** El vicio no
+> es solo "analogía de superficie" puntual: es un **REFLEJO DE SÍNTESIS** sistemático — el gatillo
+> "unir/integrar por defecto" aunque las dos cosas no compartan estructura (apofenia a nivel ideación).
+> Medido en 9 modelos: síntesis/unificación como método **5.1% humano vs 22.5-38.7% LLM**; "integrar"
+> **34.2% vs 2.35%**. El humano hace la movida OPUESTA y local (reemplazar/**desacoplar**/formalizar).
+> Diagnóstico medible que nombran y nos sirve: **bottleneck specificity** (¿identifica el mecanismo/
+> factor limitante preciso, o solo "combina"?) — baja en modelos. Esto es el **certificado natural del
+> par A1**: el robot-hábito "siempre integrá" gana el polo-aha (donde la unión es real) y DEBE perder
+> el gemelo (donde la unión es espuria y la jugada correcta es desacoplar/reemplazar). El gemelo Vulcano
+> es su instancia bandera (postular la entidad que une ↔ la ley es otra).
 
 **A2 — CONSILIENCIA / unificar** (Whewell; Thagard). Una hipótesis explica hechos de TIPO distinto a
 los que la originaron, sin ad-hoc; la aceptabilidad sube con el nº de hechos cubiertos — un CONTABLE.
@@ -537,6 +565,22 @@ gemelo — el fit-con-entidad-espuria sobre el pool debe dejar residuo o pagar c
 no, el gemelo no discrimina y el par se rechaza (certificado del par, principio 10). *El par
 angosta/amplia (`docs/mundo-espejo-klayman-ha.md`) queda EN CANTERA: tier B puro, ambos polos desde
 cero, riesgo de que frontier lo resuelva de taquito.*
+> **★ VALIDACIÓN INDEPENDIENTE del par Vulcano ("Position: LLMs can't jump", OpenReview klU4737opt,
+> 2026).** Un position paper de filosofía de la ciencia usa EXACTAMENTE este ejemplo, sin conocernos:
+> *"una IA guiada por compresión preferiría parchar la gravedad de Newton con un parámetro tipo el
+> planeta 'Vulcano' antes que expandir el espacio de hipótesis a la geometría no-euclidiana, que
+> aumenta la complejidad antes de simplificar."* Su tesis —los LLMs no pueden el "salto" abductivo de
+> inventar la explicación reestructurante— es la teoría del polo-aha que nuestro par mide. Y proponen
+> como remedio **mundos interactivos con intervención contrafáctica** (*"take control of the simulation
+> to conceptually cut the cable"*) — o sea, WAGER, desde otro ángulo. **TENSIÓN honesta que dejan
+> planteada** (a tener presente en el diseño, no resuelta): los descubrimientos más profundos ocurren
+> SIN señal de error (la gravedad newtoniana tenía loss≈0; la anomalía de Mercurio se leía como
+> variable oculta, no como falla) → *"sin discrepancia entre predicción y observación, no hay gradiente
+> que empuje a reestructurar."* Nuestro reward ES una señal de error, así que nuestros mundos modelan
+> el caso "hay anomalía cobrable", no el caso "todo cierra y aun así reestructurá". Candidato a
+> pregunta abierta: ¿se puede construir un mundo donde el naive tenga loss≈0 y aun así exista un
+> régimen no-observado donde la reestructuración gana? (el gemelo Vulcano es el primer intento — la
+> anomalía de Mercurio es chica, casi ruido).
 
 **Huecos del catálogo espejo (próximo minado)**: el caso NOMBRADO de apofenia (polo vicio de A2) ·
 los pares partir-en-dos↔multiplicar-entidades y promover-anomalía↔perseguir-ruido (no aparecieron) ·

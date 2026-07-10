@@ -46,6 +46,17 @@ buen razonamiento", el sistema se puede engañar**. Bajo presión de optimizaci�
 juega aprende a *actuar* el buen razonamiento —a producir la forma sin el fondo— y el juez
 se lo compra. Ese es el error que este proyecto existe para no cometer.
 
+**¿Y hace falta medir esto? Sí, y hay prueba dura.** Un estudio grande de 2026 (Chen, Zhao y
+Cohan, Yale/UChicago; 9 modelos, casi 12.000 ideas) dio a los modelos los mismos trabajos previos
+que precedieron a un paper humano real y comparó qué ideas proponen. Resultado: los LLMs ocupan un
+espacio **mucho más angosto** de "movidas de investigación" que los humanos y caen todos en el mismo
+reflejo — *"conectá estas dos cosas"* (ideas de puente: 12% en humanos, **hasta 64%** en modelos).
+Justo evitan las movidas que definen el buen juicio y que nuestros mundos premian: reemplazar una
+pieza frágil, **desacoplar dos causas confundidas**, formalizar. Y —clave— poner el modelo a *pensar
+más* **empeora** el reflejo, y los modelos se parecen entre sí más que a un humano. O sea: el hueco
+de juicio es real, sistemático y medible. Eso es exactamente lo que este proyecto existe para medir
+y entrenar.
+
 ## 3. La idea central
 
 Tres piezas.

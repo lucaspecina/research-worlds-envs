@@ -191,6 +191,15 @@ mecanismos, otro marco) — y el agente se queda con el modelo de manual.
 - **Lewis & Mitchell (2024)** — razonamiento por analogía: el desempeño **colapsa en variantes
   contrafácticas** donde los humanos aguantan — mapea por parecido superficial, no por estructura
   profunda (campo en disputa, pero el colapso en variantes es robusto).
+- **★ Chen, Zhao & Cohan 2026 ("Measuring the Gap...", 2607.01233; leído; TIER A, la evidencia más
+  fuerte de este vicio)** — 9 modelos generan ideas desde el mismo contexto de literatura que un paper
+  humano real. El vicio con número: el **REFLEJO DE SÍNTESIS** — sobre-producen "conectá/combiná estas
+  dos cosas" (ideas de puente **12% humano vs 47-64% LLM**; operación "integrar" **34.2% modelo vs
+  2.35% humano**). Evitan las movidas humanas locales: **reemplazar** (9.1% vs 0.9%), **desacoplar dos
+  mecanismos confundidos** (2.3% vs 0.2% — ¡nuestra familia causal!), **formalizar**. Poner el modelo a
+  razonar más EMPEORA el reflejo; los modelos se parecen entre sí más que a los humanos. Es el
+  polo-vicio de la analogía a nivel ideación, medido a escala. **Y es la mejor justificación externa
+  del proyecto entero** (que el juicio/taste falta y se puede medir).
 
 *Al margen, en humanos:* el laboratorio clásico — reconcebir un parámetro de "contador" a "selector"
 (17 de 20 no cruzaron nunca; cruzar exige cambiar ≥3 cosas A LA VEZ, por eso revisar de a pasitos no
@@ -204,6 +213,10 @@ El robot revisor-de-a-pasitos DEBE fallar (certifica que hay salto, no rampa).
 **Estado.** v2 HECHO (el trofeo; la familia con margen demostrado). Partir-en-dos y solución-cebada:
 sin mundo. Gemelo Vulcano: par bandera decidido → **ESTACIONADO en cantera (ADR 0117: es par de AHA,
 y los gemelos son agregado, no eje)**; su test de viabilidad (gratis) queda listo para rato ocioso.
+**Validado por afuera**: el position paper "LLMs can't jump" (2026) usa el ejemplo Vulcano exacto
+—parchar-con-Vulcano vs reestructurar-la-teoría— y propone mundos con intervención contrafáctica como
+la vía al salto: es nuestra tesis desde la filosofía de la ciencia. (Deja una tensión honesta: el
+salto más duro pasa SIN señal de error, y nuestro reward ES señal de error — ver `failure-modes.md`.)
 
 ---
 
