@@ -29,8 +29,8 @@
 | Vaccaro 2026 (2606.11217) | Grados de libertad en experimentos SOBRE agentes (metodología HUMANA, no del agente) | arxiv.org/html/2606.11217v1 | **LEÍDO** (2026-07-09) → ⚠ CORRIGE nuestro encuadre |
 | **Chen, Zhao & Cohan 2026 — "Measuring the Gap Between Human and LLM Research Ideas" (2607.01233, Yale/UChicago)** | 9 LLMs generan ideas desde el mismo contexto de literatura que un paper humano real; taxonomía de "research taste" de 2 ejes; 11.683 ideas humanas | PDF (Lucas lo puso en root; extraído con pymupdf) | **LEÍDO** (2026-07-10) → vicio de síntesis + gemelo de A1 |
 | **"Position: LLMs can't jump" (OpenReview klU4737opt, sub. ICML)** | Position paper: los LLMs no pueden ABDUCCIÓN (el "salto" E→axiomas); caso Einstein/Relatividad General; usa el ejemplo Vulcano | PDF (Lucas lo puso en root — OpenReview daba 403 anti-bot; extraído con pymupdf) | **LEÍDO** (2026-07-10) → valida el par Neptuno/Vulcano + los aha |
-| **Jagadish, Strittmatter et al. 2026 — "Closing the Loop to Discover Psychological Theories with an Automated Cognitive Scientist" (2606.26448, Princeton/Griffiths)** | científico cognitivo AUTOMATIZADO en loop cerrado (teoría→experimento→revisión) — 44 pág | arxiv pdf (extraído, en scratchpad) | [ ] **PENDIENTE lectura completa** (traído por Lucas 2026-07-10) |
-| **Wahl, Schenk et al. 2026 — "A Probabilistic Framework for LLM-Based Model Discovery" (2602.18266, lab Macke/Tübingen)** | descubrimiento de modelos SIMULADORES mecanísticos desde datos con workflows agénticos iterativos (≈nuestra entrega) — 55 pág | arxiv pdf (extraído, en scratchpad) | [ ] **PENDIENTE lectura completa** (traído por Lucas 2026-07-10) |
+| **Jagadish, Strittmatter et al. 2026 — AUTOCOG "Closing the Loop... Automated Cognitive Scientist" (2606.26448, Princeton/Griffiths+Daw)** | científico cognitivo AUTOMATIZADO en loop cerrado con HUMANOS reales (2 teorías compiten → diseño adversarial → Prolific → arbitraje → revisión); descubre teoría nueva confirmada pre-registro | arxiv pdf (extraído, pymupdf) | **LEÍDO** (2026-07-10, completo) → cómo-construir-mundos + como-medimos |
+| **Wahl, Schenk et al. 2026 — ModelSMC "A Probabilistic Framework for LLM-Based Model Discovery" (2602.18266, Macke/Tübingen, ICML)** | descubrimiento de simuladores mecanísticos como INFERENCIA (SMC: población de modelos-código pesados por likelihood marginal); 3 sistemas reales (SIR/riñón/Hodgkin-Huxley) | arxiv pdf (extraído, pymupdf) | **LEÍDO** (2026-07-10, completo) → receta "romper un simulador real" + no-identificabilidad |
 | The AI Scientist (Sakana) + críticas | Agente que genera papers de punta a punta | *(buscar URL)* | [ ] |
 | AI Co-Scientist (Google) | Sistema multi-agente de hipótesis científicas | *(buscar URL)* | [ ] |
 | SciAgentBench / DiscoveryWorld / DiscoveryBench | Benchmarks de descubrimiento con análisis de error | *(buscar URLs)* | [ ] |
@@ -288,6 +288,52 @@ la causa de un resultado sorprendente)**. Puntos con impacto directo en WAGER:
   (sensorial); para dominios abstractos (mate/CS) admiten que *"the Sense Experience (E) may be grounded
   in high-dimensional topology."* Nuestros mundos son simbólicos, no multimodales — pero SÍ dan
   intervención contrafáctica (do()), que es la mitad que ellos marcan como faltante en AI Scientist.
+
+### AUTOCOG (2606.26448) — LEÍDO 2026-07-10 (completo, pymupdf) — foco: cómo construir mundos
+
+Loop cerrado 100% autónomo que descubre teorías de decisión humana con participantes reales (Prolific,
+N=25/exp, US$0.80). 2 slots de teorías COMPITEN (agentes-abogados) → diseño experimental adversarial →
+datos → arbitraje → revisión. Teorías = modelos ejecutables (predict/policy/params). Resultado
+estrella: teoría NUEVA (Diminishing Returns WADD, utilidad cóncava) **confirmada en estudio
+PRE-REGISTRADO** con participantes nuevos. Extraído para diseño:
+- **El CONTROL más valioso — métrica fija es CIEGA**: reemplazaron la métrica adaptativa por una
+  distancia fija (JSD) y FALLÓ en recuperar perseveración (0/3) y take-the-worst (0/3), vs 3/3 y 2/3
+  con métrica adaptativa. Cita oro: *"fixing an explicit distance fixes in advance which behavioral
+  differences count as evidence: theories that differ only in ways the chosen distribution cannot
+  express are indistinguishable to the pipeline, and therefore earn no selection pressure."* → es
+  nuestro red-team #5 (puntos ciegos de D) demostrado desde afuera.
+- **Control anti-apofenia**: *"when given pure noise it converged on theories equivalent to random
+  guessing rather than imposing structure on it"* → fixture negativo a adoptar (mundo-nulo).
+- **Experimento aceptado solo si SIMULACIÓN lo muestra discriminante** al N planeado (Welch α=.01)
+  ANTES de juntar datos → receta mecánica de "frontera descubrible" (OQ 18) y de diseño de batería.
+- **Evaluación GENERATIVA sin fitting** (nuestra doctrina, validada por un top-lab): *"harder to game
+  than a single predictive score, and implicitly regularizes against overfitting."*
+- Framing adversarial > neutral (solo el adversarial recuperó perseveración) → patrón para el par/Mundo B.
+
+### ModelSMC (2602.18266) — LEÍDO 2026-07-10 (completo, pymupdf) — foco: cómo construir mundos
+
+Descubrimiento de simuladores como INFERENCIA bayesiana sobre programas: población de N modelos-código
+(partículas) pesados por **likelihood marginal p(xo|m)** (integra params), no por distancia ad-hoc.
+Backbone Claude-Sonnet-4.6. 3 sistemas REALES (SIR, riñón/aldosterona en R, Hodgkin-Huxley). Extraído:
+- **RECETA DE CONSTRUCCIÓN por rotura deliberada**: *"We intentionally replace the aldosterone
+  mechanism with a constant term, thereby introducing a targeted structural misspecification.
+  ModelSMC is tasked with inferring the missing regulatory dynamics from the data."* → tomar un
+  simulador REAL validado y ROMPERLE una pieza = un mundo, con la realidad como autora (escala la
+  fábrica sin inventar mecanismos).
+- **No-identificabilidad como DIAGNÓSTICO, no bug**: *"posterior mass serves as a diagnostic:
+  low-weight regions indicate genuine structural mismatch, while clusters of high-probability models
+  reveal symmetries and ambiguities that are invisible to single-model discovery."* → un mundo donde
+  la respuesta correcta es "estas estructuras son indistinguibles con lo observado" (vicio 7
+  intervenir-o-fallar + abstención); la entrega buena es una MEZCLA con pesos (nuestro contrato ya lo
+  permite).
+- **Anatomía de consigna (App H)**: OBJECTIVE + BASE MODEL + EXTENSIBILITY (slots tuneables) +
+  EVALUATION METRICS + DATA CONTEXT que ACOTA el espacio + "BEGIN EDITABLE SECTION (only modify within
+  this block)" → plantilla directa para la consigna del proto-designer: andamiaje que restringe SIN
+  soplar la respuesta.
+- Depth > diversity a presupuesto fijo (N=5,K=150 mejor que N=150,K=5) → dato para el generador.
+- **Vecindad/competencia**: ModelSMC resuelve descubrimiento de modelos por BÚSQUEDA POBLACIONAL — es
+  un candidato a "baseline destructor" (red-team #2/#20): un pipeline que gana SIN el juicio que
+  medimos. A correr contra nuestros mundos antes de llamarlos "de juicio".
 
 ## Búsqueda de descubrimiento — COMPLETA (2026-07-10)
 
