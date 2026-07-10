@@ -577,10 +577,14 @@ cero, riesgo de que frontier lo resuelva de taquito.*
 > SIN señal de error (la gravedad newtoniana tenía loss≈0; la anomalía de Mercurio se leía como
 > variable oculta, no como falla) → *"sin discrepancia entre predicción y observación, no hay gradiente
 > que empuje a reestructurar."* Nuestro reward ES una señal de error, así que nuestros mundos modelan
-> el caso "hay anomalía cobrable", no el caso "todo cierra y aun así reestructurá". Candidato a
-> pregunta abierta: ¿se puede construir un mundo donde el naive tenga loss≈0 y aun así exista un
-> régimen no-observado donde la reestructuración gana? (el gemelo Vulcano es el primer intento — la
-> anomalía de Mercurio es chica, casi ruido).
+> el caso "hay anomalía cobrable", no el caso "todo cierra y aun así reestructurá". **REENCUADRE de
+> Lucas (2026-07-10) — casi disuelve la objeción**: controlamos el DGP, así que diseñamos los datos
+> observados para que **sub-determinen** la estructura — el naive ajusta bien lo VISIBLE (como Newton),
+> pero la nota se cobra en regímenes NO mostrados (do(), contrafáctico, fuera-de-soporte) donde solo la
+> estructura verdadera generaliza. La señal no está en ajustar lo observado (eso lo hace el naive) sino
+> en el proceso de descubrimiento + los regímenes ocultos = el test abductivo, y nuestro scoring YA
+> puntúa sobre batería no-mostrada. El trofeo v2 es instancia parcial. Ver **OQ 24** (con el residuo
+> duro que queda: cuando ni un agente que sondea ve señal en ningún régimen alcanzable).
 
 **Huecos del catálogo espejo (próximo minado)**: el caso NOMBRADO de apofenia (polo vicio de A2) ·
 los pares partir-en-dos↔multiplicar-entidades y promover-anomalía↔perseguir-ruido (no aparecieron) ·
