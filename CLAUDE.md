@@ -65,6 +65,24 @@ propone la edición del doc + un ADR nuevo en `docs/adr/`.
   partir, GOs sin ejecutar — cada ítem tildado ✓ o explícitamente VIVO con su próximo paso.
   Un pendiente que no aparece en el ledger es un pendiente caído en silencio.
 
+## Codex (GPT-5.6 Sol) — segunda opinión / pensar juntos (ADR 0116)
+
+Codex es un **compañero de pensamiento y crítica**, NO un escritor de código. Su rol es **segunda
+opinión, crítica y pulido de ideas** en cuestiones de **diseño / reflexión / análisis** — una tercera
+lectura independiente (como el "otro feedback"), no un ejecutor.
+
+- **Cuándo consultarlo**: ante una **decisión importante y no trivial** (diseño, interpretación de un
+  resultado, repensar un enfoque, pulir una idea), o **cuando Lucas lo pide**. Claude puede
+  **preguntarle a Lucas "¿querés que le consulte a Codex?"** antes de hacerlo. **JAMÁS para que
+  escriba el código** — la solución la pensamos y la escribimos nosotros; a Codex se le pide *pensar
+  la solución, analizar, criticar, reflexionar*.
+- **Cómo — sesión PERSISTENTE (ida y vuelta con memoria, no mensajes aislados)**: modelo
+  `gpt-5.6-sol` / esfuerzo `max` (default en `~/.codex/config.toml`; el ID correcto es **`gpt-5.6-sol`**,
+  NO `gpt-5.6`, que el login ChatGPT rechaza). Arrancar con `codex exec --skip-git-repo-check "..."`
+  y **continuar la misma sesión** con `codex exec resume --last "..."` — retiene todo el hilo.
+- **La dinámica buscada**: que Codex CRITIQUE lo que estamos haciendo y genere el ida-y-vuelta que
+  pule la idea. Lo que diga Codex se le reporta a Lucas **en llano** (memoria *comunicar-sin-jerga*).
+
 ## Referencia SREG — política de cuarentena
 
 El repo SREG (proyecto anterior, mismo autor) es **referencia de SOLO LECTURA** en:
