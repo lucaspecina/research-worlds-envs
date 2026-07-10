@@ -127,6 +127,11 @@ le falta.
 - **Vaccaro 2026 (2606.11217; leído)** — grados de libertad "**fáciles de explotar y difíciles de
   detectar**". *OJO (CORREGIDO): el paper habla de los INVESTIGADORES humanos que estudian agentes, NO
   del agente p-hackeándose; el agente-que-lo-hace es extrapolación NUESTRA (estructura transferible).*
+- **Sakana AI Scientist (Beel & Kan, 2502.14297; leído)** — 4 de 7 papers (**57%**) con números
+  fabricados. *Ej. real: un estudio de "eficiencia energética" reclamó mejora de RMSE mientras el
+  tiempo bajaba 116→115s pero la memoria SUBÍA, sin justificar — y "su propio mecanismo de review no
+  lo detectó".* De fondo: *"no puede evaluar críticamente sus propios resultados; no detecta fallos
+  metodológicos".*
 - **Nuestra propia mesa (medido)** — la **precisión fabricada**: un modelo declaró un σ que jamás
   midió; la nota se lo cobró.
 
@@ -164,6 +169,10 @@ mecanismos, otro marco) — y el agente se queda con el modelo de manual.
   escribió: vuelve a los defaults de manual una y otra vez.
 - **HLER (2026)** — generación de hipótesis autónoma: sin anclar a la estructura del dataset, solo el
   **41%** de las hipótesis son factibles (vs 87% ancladas) — el lado generativo, medido.
+- **Sakana AI Scientist (Beel & Kan, 2502.14297; leído)** — *taste débil, medido*: juzgó *"las 10
+  ideas generadas y las 2 semilla como NOVEDOSAS"* usando *"keyword matching en vez de síntesis
+  profunda"* — ej. real: llamó novedoso al micro-batching para SGD, técnica ya documentada (Jain et
+  al. 2018). No distingue lo conocido de lo nuevo.
 - **Lewis & Mitchell (2024)** — razonamiento por analogía: el desempeño **colapsa en variantes
   contrafácticas** donde los humanos aguantan — mapea por parecido superficial, no por estructura
   profunda (campo en disputa, pero el colapso en variantes es robusto).
@@ -242,11 +251,17 @@ el pozo (vicio 2) pero DISTINTO**: el pozo es clavarse en un detalle que no paga
 NORTE — se puede perder el objetivo sin meterse en ningún pozo (persiguiendo lo significativo-pero-
 irrelevante, o resolviendo prolijo un sub-problema que no es la pregunta).
 
-**Dónde se lo vio EN AGENTES DE IA (DOS fuentes independientes — por eso entra a la lista):**
+**Dónde se lo vio EN AGENTES DE IA (TRES fuentes independientes — por eso entra a la lista):**
 - **Trehan & Chopra (2601.03315; leído)** — investigación de ML end-to-end: *"no podían mantener un
   pensamiento de portafolio y seguían angostando el foco"*.
 - **Schwartz / Anthropic "vibe-physics" (leído)** — Claude en física de QCD (102 tareas, 7 etapas):
   *"solo maneja pasos chicos y pierde la dirección fácilmente."*
+- **PaperBench (Starace et al., OpenAI, 2504.01848; leído)** — replicando papers de ML: *"todos los
+  modelos salvo Claude 3.5 Sonnet cortaban ANTES, afirmando que habían terminado o que habían chocado
+  un problema"*; *"todos fallaron en estrategizar cómo replicar el paper dado el tiempo limitado"*.
+  **Evidencia CAUSAL**: o1 con "BasicAgent" saca 13.2%; con "IterativeAgent" (que le SACA la opción de
+  cortar antes) sube a **24.4%** — casi el doble solo por no dejarlo abandonar. → directamente
+  medible: ¿corta antes afirmando que terminó?
 - *(Relacionado, ya contado en otros vicios: Kosmos persiguiendo lo significativo-pero-irrelevante;
   la POC-fixation de 2601.03315.)*
 

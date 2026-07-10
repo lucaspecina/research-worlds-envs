@@ -221,9 +221,9 @@ citables — TODAS por leer a texto completo (regla ADR 0115) antes de citarlas.
 
 | Fuente | Sistema | Qué documenta (1 línea, sin verificar por lectura propia aún) | Estado |
 |---|---|---|---|
-| Beel & Kan 2025 (2502.14297) | Sakana AI Scientist | juzga todo como "novel" (taste); 57% de papers con números alucinados; 42% de exp. fallan | [ ] |
+| Beel & Kan 2025 (2502.14297) | Sakana AI Scientist | taste (todo "novel"; micro-batching-SGD ya publicado); 57% papers con números fabricados (ej. energía: memoria sube, no justifica); "no evalúa sus propios resultados" | **LEÍDO** (2026-07-10) → vicios 3 y 4 |
 | 2506.01372 | AI Scientists (crítica) | "fallan sin fuerte capacidad de implementación" | [ ] |
-| **PaperBench (2504.01848, OpenAI)** | replicar papers de ML | **cortan ANTES afirmando falso que terminaron; "fallan en estrategizar largo plazo"** → 3ª fuente del VICIO 8 | [ ] |
+| **PaperBench (Starace et al., 2504.01848, OpenAI)** | replicar papers de ML | **cortan ANTES afirmando falso que terminaron; "fallan en estrategizar largo plazo"**; causal: o1 13.2%→24.4% al sacarle la opción de cortar. 3ª fuente del VICIO 8 | **LEÍDO** (2026-07-10) → vicio 8 |
 | Kosmos report (2511.02824) | Kosmos | 79.4% de statements OK (57.9% en síntesis); "pierden coherencia tras N acciones" | [ ] |
 | Robin (buscar URL) | Robin | overclaiming: "primer sistema en automatizar la ciencia" | [ ] |
 | Si et al. (buscar URL) | agente de ideación | mode-collapse: ~5% de ideas no-duplicadas | [ ] |
