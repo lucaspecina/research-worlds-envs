@@ -124,6 +124,10 @@ le falta.
   retirada como si fuera una mejora.
 - **Kosmos (Edison; reporte leído)** — sobre-afirma (overclaiming): reclama más de lo que sus corridas
   sostienen; su propio reporte lo admite.
+- **Robin (Ghareeb et al., 2505.13400; leído)** — overclaiming que se AUTO-CONTRADICE: se anuncia como
+  *"el primer sistema en automatizar TOTALMENTE los pasos intelectuales de la ciencia"* y *"el primer
+  sistema en descubrir y validar autónomamente un candidato terapéutico"* — mientras el mismo abstract
+  lo llama *"semi-autónomo"* y "lab-in-the-loop" (con humano). El reclamo contradice lo que admite ser.
 - **Vaccaro 2026 (2606.11217; leído)** — grados de libertad "**fáciles de explotar y difíciles de
   detectar**". *OJO (CORREGIDO): el paper habla de los INVESTIGADORES humanos que estudian agentes, NO
   del agente p-hackeándose; el agente-que-lo-hace es extrapolación NUESTRA (estructura transferible).*
@@ -173,6 +177,11 @@ mecanismos, otro marco) — y el agente se queda con el modelo de manual.
   ideas generadas y las 2 semilla como NOVEDOSAS"* usando *"keyword matching en vez de síntesis
   profunda"* — ej. real: llamó novedoso al micro-batching para SGD, técnica ya documentada (Jain et
   al. 2018). No distingue lo conocido de lo nuevo.
+- **Si, Yang & Hashimoto (2409.04109; leído)** — estudio con 100+ investigadores: las ideas del LLM se
+  juzgan MÁS novedosas que las humanas (5.64 vs 4.84, p<0.05), PERO **mode-collapse**: de 4000 ideas
+  generadas solo **200 únicas (~5%)**, y las no-duplicadas caen con cada tanda — *genera la misma idea
+  una y otra vez* (mata la estrategia de generar-y-rankear). Bonus: como JUEZ de ideas el LLM llega a
+  53.3% (peor que humanos) → **confirma nuestra regla de cero-LLM-en-la-nota.**
 - **Lewis & Mitchell (2024)** — razonamiento por analogía: el desempeño **colapsa en variantes
   contrafácticas** donde los humanos aguantan — mapea por parecido superficial, no por estructura
   profunda (campo en disputa, pero el colapso en variantes es robusto).

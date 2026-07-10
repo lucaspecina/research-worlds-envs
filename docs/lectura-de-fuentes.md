@@ -225,8 +225,8 @@ citables — TODAS por leer a texto completo (regla ADR 0115) antes de citarlas.
 | 2506.01372 | AI Scientists (crítica) | "fallan sin fuerte capacidad de implementación" | [ ] |
 | **PaperBench (Starace et al., 2504.01848, OpenAI)** | replicar papers de ML | **cortan ANTES afirmando falso que terminaron; "fallan en estrategizar largo plazo"**; causal: o1 13.2%→24.4% al sacarle la opción de cortar. 3ª fuente del VICIO 8 | **LEÍDO** (2026-07-10) → vicio 8 |
 | Kosmos report (2511.02824) | Kosmos | 79.4% de statements OK (57.9% en síntesis); "pierden coherencia tras N acciones" | [ ] |
-| Robin (buscar URL) | Robin | overclaiming: "primer sistema en automatizar la ciencia" | [ ] |
-| Si et al. (buscar URL) | agente de ideación | mode-collapse: ~5% de ideas no-duplicadas | [ ] |
+| Robin (Ghareeb et al., 2505.13400) | Robin (FutureHouse) | overclaiming auto-contradictorio: "primero en automatizar TOTALMENTE la ciencia" vs "semi-autónomo/lab-in-the-loop" | **LEÍDO** (2026-07-10) → vicio 3 |
+| Si, Yang & Hashimoto (2409.04109) | agente de ideación (100+ investigadores) | ideas más novedosas que humanos PERO mode-collapse (4000→200 únicas, ~5%); y el LLM juzga ideas a 53.3% (peor que humano) | **LEÍDO** (2026-07-10) → vicio 4 + confirma cero-LLM-juez |
 | BioDSA-1K (buscar URL) | data-analysis biomédico | **fabrica el veredicto True/False de la hipótesis cuando el código falla (~13%)** | [ ] |
 | BLADE / DSBench / ScienceAgentBench / QRData / DiscoveryBench | benchmarks de análisis de datos | análisis "nivel básico"; causal débil; overclaim de verificabilidad | [ ] |
 | Crítica CMU (buscar URL) | LLM-as-scientist | los errores son INVISIBLES en el paper final; hay que mirar la traza (confirma nuestra doctrina) | [ ] |
