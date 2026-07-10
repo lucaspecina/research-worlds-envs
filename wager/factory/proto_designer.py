@@ -233,7 +233,8 @@ def _extract_json(text: str):
         return None
 
 
-def _medio_validate_spec(spec) -> list:
+def _medio_validate_spec(spec, stratum=None, extra_forbidden=()) -> list:
+    stratum = stratum or STRATUM_B
     errs = []
     if not isinstance(spec, dict):
         return ["no parseable json"]
@@ -243,10 +244,10 @@ def _medio_validate_spec(spec) -> list:
     if len(set(names)) != 3 or not all(re.fullmatch(r"[a-z][a-z0-9_]*", n or "") for n in names):
         errs.append(f"column names invalid or not distinct: {names}")
     blob = json.dumps(spec).lower()
-    if any(f in blob for f in ("molding", "syringe", "inyec")):
-        errs.append("forbidden fixture domain detected")
+    if any(f in blob for f in ("molding", "syringe", "inyec") + tuple(extra_forbidden)):
+        errs.append("forbidden domain detected")
     p = spec.get("params") or {}
-    for k, (lo, hi) in STRATUM_B.items():
+    for k, (lo, hi) in stratum.items():
         v = p.get(k)
         if not isinstance(v, (int, float)) or not (lo <= float(v) <= hi):
             errs.append(f"param {k}={v!r} outside frozen stratum [{lo}, {hi}]")
@@ -318,25 +319,27 @@ def _medio_write_world(case_dir: Path, spec: dict) -> None:
     (case_dir / "world.py").write_text(src, encoding="utf-8", newline="\n")
 
 
-def medio(target_root=None, model: str = "gpt-5.4") -> dict:
-    """Piloto de instanciación fresca (ADR 0128): genera UN caso nuevo de la
-    plantilla confundida tipada dentro de STRATUM_B y lo certifica con el
-    verificador CONGELADO. Lectura sellada: 1/1 = 'existe una segunda
-    instanciación fresca certificable de esta plantilla'; 0/1 = piloto fallido.
-    Ninguno estima yield. Presupuesto: 1 artefacto + <=3 reparametrizaciones
-    NUMÉRICAS; el autoajuste ve solo NOMBRES de gates, jamás ítems de batería."""
+def medio(target_root=None, model: str = "gpt-5.4", stratum=None, extra_forbidden=()) -> dict:
+    """Instanciación fresca (ADR 0128): genera UN caso nuevo de la plantilla
+    confundida tipada dentro del ESTRATO dado (default STRATUM_B) y lo
+    certifica con el verificador CONGELADO. Lectura sellada por encargo:
+    pass / fallo_dentro_de_clase / fuera_de_clase / colision_de_dominio /
+    plumbing. Presupuesto: 1 artefacto + <=3 reparametrizaciones NUMÉRICAS;
+    el autoajuste ve solo NOMBRES de gates, jamás ítems de batería."""
     from wager.agent.llm_client import FoundryChat  # lazy: keeps LLM out of import graph
 
+    stratum = stratum or STRATUM_B
     target_root = Path(target_root) if target_root else (ROOT / "cases")
     log = {"pilot": "medio_fresh_ADR0128", "model": model,
-           "stratum": {k: list(v) for k, v in STRATUM_B.items()}, "attempts": []}
+           "stratum": {k: list(v) for k, v in stratum.items()},
+           "extra_forbidden": list(extra_forbidden), "attempts": []}
 
-    bands = "\n".join(f"  {k}: [{lo}, {hi}]" for k, (lo, hi) in STRATUM_B.items())
+    bands = "\n".join(f"  {k}: [{lo}, {hi}]" for k, (lo, hi) in stratum.items())
     gen = FoundryChat(system=MEDIO_GEN_SYSTEM, model=model, max_completion_tokens=4000)
     raw = _text(gen.ask(MEDIO_GEN_RULES.replace("{bands}", bands)))
     log["gen_raw"] = raw
     spec = _extract_json(raw)
-    errs = _medio_validate_spec(spec)
+    errs = _medio_validate_spec(spec, stratum, extra_forbidden)
     for _ in range(3):
         if not errs:
             break
@@ -344,7 +347,7 @@ def medio(target_root=None, model: str = "gpt-5.4") -> dict:
                             "\nReturn the corrected full json block. Same rules."))
         log["attempts"].append({"stage": "spec_retry", "errors": errs, "raw": raw})
         spec = _extract_json(raw)
-        errs = _medio_validate_spec(spec)
+        errs = _medio_validate_spec(spec, stratum, extra_forbidden)
     if errs:
         log["classification"] = "fuera_de_clase"
         log["errors"] = errs
@@ -352,6 +355,20 @@ def medio(target_root=None, model: str = "gpt-5.4") -> dict:
     log["spec"] = spec
 
     case_dir = target_root / spec["case_id"]
+    if case_dir.exists():
+        # colisión de dominio/slug con un caso existente: DATO del batch
+        # (colapso de dominios); un solo retry pidiendo dominio distinto.
+        log["attempts"].append({"stage": "domain_collision", "case_id": spec["case_id"]})
+        raw = _text(gen.ask("That case_id/domain already exists. Choose a clearly DIFFERENT "
+                            "industrial domain and return the corrected full json block. Same rules."))
+        spec = _extract_json(raw)
+        errs = _medio_validate_spec(spec, stratum, extra_forbidden)
+        if errs or spec["case_id"] == log["spec"]["case_id"] or (target_root / spec["case_id"]).exists():
+            log["classification"] = "colision_de_dominio"
+            log["errors"] = errs
+            return log
+        log["spec"] = spec
+        case_dir = target_root / spec["case_id"]
     case_dir.mkdir(parents=True, exist_ok=False)
     _medio_write_world(case_dir, spec)
 
@@ -412,7 +429,7 @@ def medio(target_root=None, model: str = "gpt-5.4") -> dict:
             "Return the corrected full json block (same structure, same names, same prose)."))
         log["attempts"].append({"stage": f"reparam_{attempt}", "raw": raw})
         spec2 = _extract_json(raw)
-        errs2 = _medio_validate_spec(spec2)
+        errs2 = _medio_validate_spec(spec2, stratum, extra_forbidden)
         if errs2 or spec2["case_id"] != spec["case_id"]:
             log["attempts"].append({"stage": f"reparam_{attempt}_rejected", "errors": errs2})
             continue
