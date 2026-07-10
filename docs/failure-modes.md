@@ -105,13 +105,18 @@ funciona. Los pares/gemelos (principio 10) son un agregado valioso, **no** el ej
   usarla (4/4 gpt bajo escasez), terminación apurada, **precisión fabricada** (declaró un σ
   que no midió; la nota se lo cobró), retirada a la arquitectura familiar (v2). Todo apareció
   con número en nuestros mundos.
-- **Validez de constructo — señal positiva, REPLICADA en 2 modelos (ADR 0098 + réplica 0110)**: una
-  pista DIRIGIDA al vicio específico restaura el puntaje SOLO donde el vicio vive y ≈0 en el control →
-  el instrumento separa juicio, con la métrica correcta (mediana + separar ceros de ejecución de
-  ceros de juicio). gpt-5.4: scarce 0.00→0.87. **DeepSeek (8 seeds, clasificador de ceros
-  AUTOMÁTICO): scarce 0.29→0.81 (+0.52), control plano (−0.005), resta de diferencias +0.52.**
-  Caveats: 2 modelos; el control está cerca del techo (falta un control con headroom). Hallazgo
-  lateral: DeepSeek se casa con la 1ª hipótesis AUN a presupuesto pleno (gpt no) → perfil de modelo,
+- **Validez de constructo — NO SE SOSTIENE bajo protocolo sellado (ADR 0121, 2026-07-10)**: el
+  experimento corregido y pre-registrado (misma pista en trampa y control, placebo, análisis CIEGO
+  commiteado antes de los datos — ADRs 0118/0119) dio **negativo en todo**: la misma pista que en
+  0098/0110 había dado +0.52 esta vez HUNDIÓ su propio mundo (scarce 0.58→0.00, pares por seed
+  −0.44), el placebo de puro estilo movió el score en ambos mundos, y el control resultó sin
+  headroom. **El método de pistas queda RETIRADO como evidencia de validez**; el resultado viejo
+  ("efecto de instrucción replicado") queda NO REPLICADO. Hallazgo metodológico clave: varianza
+  corrida-a-corrida enorme (scarce/libre: mediana 0.29 en una corrida, 0.58 en otra, protocolo
+  idéntico) → con R bimodal y n=8, las medianas no son evidencia. La validación migra a
+  manipulaciones NO-instruccionales (presupuesto/presión, robots, diseños apareados) — diseño
+  abierto. Hallazgo lateral que SÍ sigue vivo (re-testear con el método nuevo):
+  DeepSeek se casa con la 1ª hipótesis AUN a presupuesto pleno (gpt no) → perfil de modelo,
   OQ 20.
 - **El hallazgo que ordena el diseño (CORREGIDO — ADR 0111)**: ~~el vicio bite bajo PRESIÓN, no a
   presupuesto pleno~~ era el **perfil de gpt-5.4**, NO una ley. gpt pivotea "de rutina" con plata
