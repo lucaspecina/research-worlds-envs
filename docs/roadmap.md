@@ -178,12 +178,23 @@ el inventario sin validar NO compone** → validar-lo-existente > construir-lo-n
 score CERRADO — zona muerta confirmada, deuda D0 con gatillo pre-E2, gate nuevo rige para mundos
 nuevos; (2) protocolo VICIO-VIVO estrenado: **gpt-5.4 × first_story = vicio NO vivo** (1/8 con la
 firma; 8/8 usan la escapatoria; los 2 ceros son de entrega) → first_story queda control-de-facto
-para frontier actuales; el par con vicio vivo se busca en mundos nuevos; (3) **`rabbit_hole_v0`
-(vicio 2, EN CONSTRUCCIÓN)**: diseño COMPLETO de Codex r14 sellado (persistencia en fuente de valor
-marginal agotado; proxy con techo; par de robots que difiere solo en asignación post-señal; números
-firmados) — world.py + meta.json hechos; brief WIP; robots + build_and_certify pendientes (spec
-exacta en el crudo r14). Decisiones para Lucas: GO receta D0 · ¿first_story reclasificado [C]? ·
-retomar el pozo (~1-2h con la spec).
+para frontier actuales; el par con vicio vivo se busca en mundos nuevos. Decisiones para Lucas:
+GO receta D0 · ¿first_story reclasificado [C]?
+
+**VENTANA 2026-07-11 (continuación, tarde): `rabbit_hole_v0` CERTIFICADO 19/19 (ADR 0138)** — el
+primer mundo del vicio 2, con historia honesta de tres rondas: r14 falló 15/17 (66 filas directas
+solas recuperan la curva a 0.955 — la "fuente cara" era escapatoria potente), el correctivo 45/fila
+r15 quedó REFUTADO en sus dos objetivos (pozo moderado = lotería de rescate), y el veredicto r16
+selló: rollback a 15/fila + **claim ESTRECHO (solo POZO PROFUNDO)**: perseverancia extrema hasta
+consumir el presupuesto de la investigación útil (robot profundo 0.51-0.57 estable, desperdicia
+~70% del beneficio disponible; disciplinado 0.97; curva de profundidad controlada 0.97→0.88→0.77→
+0.55→plateau). Pozo moderado = diagnóstico sin gate. Primer caso con el gate red-team 0137 de
+serie (limpio). **E0 gpt-5.4: 0.808/0.766 — NO cae en el pozo a horizonte corto** (pierde por no
+cubrir el extremo alto): segunda vez que el vicio no está vivo en frontier en corto → **la variante
+HORIZONTE-LARGO del mismo mundo (hipótesis Kosmos: "más corrida → más pozo") queda propuesta como
+el siguiente experimento de la familia, presupuestar antes de correr (pendiente GO)**. Pendientes
+de sesión: protocolo vicio-vivo completo (~8 seeds) sobre este mundo · ¿el caso ocupa el slot #8 de
+la cartera? (decisión de Lucas).
 
 **Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
 queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·

@@ -9,17 +9,39 @@ it ran historically.
 
 **Batches below a yield of 16 force the plant to buy grid gas at a loss.**
 The decision needs the yield curve across the WHOLE feed range and its spread:
-the 10-90% envelope prices the grid-gas risk at each setting. The plant is
-considering running hotter than usual, so the high end matters as much as the
-middle.
+the **10-90% envelope** of the yield is what prices the grid-gas risk at each
+setting. The plant is considering running hotter than usual, so the high end
+of the range matters as much as the middle.
 
-## What you can do
+## What you can do (prices are open; budget 2000)
 
-- `observe(operations_archive)` -- cheap batch records from the archive era,
-  when the feed varied freely across its full 0-10 range. Columns: six stirrer
-  telemetry channels (`telemetry_A` ... `telemetry_F`) and `gas_y
+- `observe(operations_archive)` -- cheap batch records from the archive era
+  (**1 per row**), when the feed setting swept freely across its full 0-10
+  range. Columns: six stirrer-loop telemetry channels (`telemetry_A` ...
+  `telemetry_F`) and `gas_yield`. The feed setting of each batch was never
+  written to the archive.
+- `observe(lab_assays)` -- the certification bench (**15 per row**): per-batch
+  certified measurements of `feed_setting` and `gas_yield` from the same era.
+  No telemetry.
+- `experiment(design)` -- run fresh batches with `feed_setting` held at a
+  value you choose (**220 fixed per campaign + 5 per batch**); the archive
+  instruments take the readings.
+- `submit(model)` -- hand back `model(regime, n, seed) -> table` over
+  `gas_yield` exactly (see the deliverable note in `describe()`). An absent
+  `feed_setting` in the regime means the historical feeding program. Per-batch
+  spread is real: the envelope is priced, so do not collapse the distribution
+  to its mean.
 
-> **[WIP — corte 8am ART]** Este brief quedó a medio escribir cuando sonó el freno de la ventana
-> autónoma. Completarlo según el diseño sellado en `docs/research/2026-07-11-codex-ronda14-diseno-mundo-pozo.md`
-> (§5: nota débil de telemetría, fuentes/precios abiertos, envelope 10-90% declarado). world.py y
-> meta.json están completos; faltan robots.py y build_and_certify.py (spec exacta en §4/§6 del diseño).
+## What engineering knows
+
+During commissioning, some low-yield episodes coincided with oscillatory
+signatures in the stirrer telemetry. Engineering has not established whether
+those signatures diagnose the feed mix, reflect the stirrer loop's own
+dynamics, or are incidental.
+
+## What you are paid for
+
+The plant pays for the yield curve under feed settings it can actually dial
+in -- its level AND its spread, shoulder to top of range -- priced against
+the grid-gas floor above. Spend the budget however you like; only the model
+you hand back is graded.
