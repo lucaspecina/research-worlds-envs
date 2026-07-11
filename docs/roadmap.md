@@ -224,11 +224,29 @@ asigna bien; con costo difuso — v1 — cava). **Regla de muerte pre-firmada AP
 la receta episodio-corto-sintético + stakes-declarados NO hace emerger el pozo en frontier; la
 familia pivotea a horizonte nativo largo / objetivos difusos / simulador publicado (converge
 con la vía Tübingen).** v2 queda como ACTIVO: mundo verificado que separa fuerte — control de
-asignación para frontier, candidato directo para E2 (¿la clase 4-8B cae donde frontier no?),
-esqueleto de portafolio reutilizable. Próximo paso propuesto (decisión de Lucas): presupuestar
-la variante horizonte-largo/objetivos-difusos sobre el esqueleto v2 (la hipótesis Kosmos sigue
-sin testear) o abrir directamente el piloto Tübingen. Pendientes menores: ¿v0 ocupa el slot #8?
-(Lucas) · barrido E2 multi-modelo sobre v2 (calibración, cuando toque).
+asignación para frontier, candidato directo para E2, esqueleto de portafolio reutilizable.
+
+**TRAMO AUTÓNOMO NOCTURNO (orden de Lucas: "no frenen, búsquenle la vuelta") — LA ESCALERA DE
+EMERGENCIA, completa y medida (10 episodios por peldaño, firmas pre-registradas; Codex r20 crítico
+del diseño — rechazó un peldaño por injusto [objetivo-fantasma] y aportó el ingrediente
+obra-propia; crudo en tasks)**: sobre el esqueleto v2 se probaron los ingredientes de las caídas
+documentadas, uno por vez, sin tocar examen ni física: (1) costo itemizado 0/10 · (2) objetivo
+difuso 0/10 · (3) obra-propia/residual-con-nombre (tablero que cierra un patrón y nombra el
+siguiente) 0/10 · (4) arranque-en-caliente (handoff a mitad de hilo con momentum del antecesor)
+0/10 — y 9/10 compraron CERO porciones: el resumen heredado sacia · (5) micro-compromisos ×16
+0/10. Las trazas muestran JUICIO textual ("esa pregunta es más consecuente que afinar el ripple"),
+no hábito. **Calibración clase-E2 (DeepSeek × v2): 0/10 con firma estricta PERO 1 sobre-cavado
+real (4 porciones, R=0.47, un tema sin medir) y 4/10 fallas de entrega — el mundo SÍ tiene señal
+de entrenamiento para la clase 4-8B.** LECTURA CONSOLIDADA: la conducta de pozo en frontier corto
+solo apareció donde no había alternativas visibles (v1); en vista-de-planificador con opciones
+compradas de menú, ningún encuadre narrativo la elicita. Los casos reales (Kosmos/Trehan) tienen
+lo que ningún episodio-menú fabrica: ESTADO PROPIO ACUMULADO con dependencias — el agente escribió
+código, tiene hipótesis abiertas, cada pivote abandona obra funcionando. **SIGUIENTE BUILD (spec
+semilla de Codex r20e): el laboratorio nativamente largo — 12+ rondas, el agente registra su
+modelo provisional por línea, QC evalúa SU artefacto, follow-ups que se desbloquean por resultado,
+presupuesto compartido; 100-200k tokens de contexto ÚTIL.** Pendientes: diseño fino + presupuesto
+del lab-largo (para GO de Lucas) · ¿v0 ocupa slot #8? · firma del pozo moderado para clase E2
+(la estricta se lo pierde: exigía ≤2 campañas).
 
 **Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
 queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·
