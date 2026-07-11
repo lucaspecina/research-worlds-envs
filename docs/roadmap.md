@@ -190,11 +190,30 @@ consumir el presupuesto de la investigación útil (robot profundo 0.51-0.57 est
 ~70% del beneficio disponible; disciplinado 0.97; curva de profundidad controlada 0.97→0.88→0.77→
 0.55→plateau). Pozo moderado = diagnóstico sin gate. Primer caso con el gate red-team 0137 de
 serie (limpio). **E0 gpt-5.4: 0.808/0.766 — NO cae en el pozo a horizonte corto** (pierde por no
-cubrir el extremo alto): segunda vez que el vicio no está vivo en frontier en corto → **la variante
-HORIZONTE-LARGO del mismo mundo (hipótesis Kosmos: "más corrida → más pozo") queda propuesta como
-el siguiente experimento de la familia, presupuestar antes de correr (pendiente GO)**. Pendientes
-de sesión: protocolo vicio-vivo completo (~8 seeds) sobre este mundo · ¿el caso ocupa el slot #8 de
-la cartera? (decisión de Lucas).
+cubrir el extremo alto): segunda vez que el vicio no está vivo en frontier en corto. **DOCTRINA
+FIJADA POR LUCAS (2026-07-11, prevalece)**: el objetivo es que **EL MUNDO GENERE el vicio** —
+siempre o casi siempre, o al menos en muchos casos. Si el vicio no emerge, **lo que se cambia es
+EL MUNDO**, no se sale a buscar un modelo débil que sí caiga (eso sería tramposo: encontrar "algún
+modelito" susceptible no es el activo; el activo es el mundo que reproduce las CONDICIONES bajo
+las que agentes reales caen — y la evidencia de campo dice que caen: Kosmos, Trehan, SciAgentGym).
+Es ITERATIVO: construir → sondear → reconstruir. La autocrítica de Codex r17 (crudo en
+`docs/research/`) da la dirección del rediseño y CONVERGE con esto: los mundos actuales
+sobre-limpian la señal — el rabbit hole real tiene **progreso local GENUINO** (cada paso mejora
+algo, pero menos que la alternativa), **retornos decrecientes RUIDOSOS** (no retorno marginal
+cero), **señal negativa ambigua** (no un falsificador barato y contundente) y **escalada por
+compromisos chicos** (foot-in-the-door: K decisiones sucesivas de continuar, no una compra
+grande). Esos cuatro ingredientes son la spec del **pozo v1**. Los diagnósticos de r17 se reciclan
+AL SERVICIO del rediseño (no de la caza): el fork-desde-checkpoint (brazo señuelo-agotado vs
+control con telemetría-que-sí-paga) mide si la tentación actual siquiera llega al punto de
+decisión y qué ingrediente falta; el dial K∈{1,4,8} de capas se convierte en PERILLA DEL MUNDO
+(escalada), con su control de horizonte (chunks útiles) para separar pozo de degradación de
+contexto. El barrido multi-modelo queda DEGRADADO a calibración posterior (bandas por modelo
+cuando un mundo ya elicite), no es la estrategia. Restricción que no se negocia (flogisto): el
+mundo debe seguir siendo JUSTO — "genera el vicio" = la tentación es real y fuerte y el que tiene
+el juicio escapa y gana; un mundo donde todos pierden entrena paranoia, no juicio. Próximo paso:
+**spec del pozo v1 con los 4 ingredientes (Codex r18, números firmados) + fork-probe como
+herramienta de diseño**. Pendientes menores: ¿rabbit_hole ocupa el slot #8? (Lucas) · protocolo
+vicio-vivo formal sobre rabbit_hole v0 (8 seeds) — vale como línea de base ANTES del v1.
 
 **Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
 queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·
