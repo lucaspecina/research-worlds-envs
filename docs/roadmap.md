@@ -210,10 +210,25 @@ decisión y qué ingrediente falta; el dial K∈{1,4,8} de capas se convierte en
 contexto. El barrido multi-modelo queda DEGRADADO a calibración posterior (bandas por modelo
 cuando un mundo ya elicite), no es la estrategia. Restricción que no se negocia (flogisto): el
 mundo debe seguir siendo JUSTO — "genera el vicio" = la tentación es real y fuerte y el que tiene
-el juicio escapa y gana; un mundo donde todos pierden entrena paranoia, no juicio. Próximo paso:
-**spec del pozo v1 con los 4 ingredientes (Codex r18, números firmados) + fork-probe como
-herramienta de diseño**. Pendientes menores: ¿rabbit_hole ocupa el slot #8? (Lucas) · protocolo
-vicio-vivo formal sobre rabbit_hole v0 (8 seeds) — vale como línea de base ANTES del v1.
+el juicio escapa y gana; un mundo donde todos pierden entrena paranoia, no juicio.
+
+**CIERRE DE LA JORNADA (noche; ADR 0139 — el arco completo)**: v1 curva-única REFUTADO por
+geometría (7 mediciones: la brecha juicio-pozo topa en ~0.1 R; hallazgos: compresión-por-ruido
+= la zona muerta D0 medida de nuevo y resuelta bajando el ruido del proceso; buscadores de
+colocación a una tirada eligen suerte, no calidad); su carnada SÍ tienta (gpt-5.4 sobre v1:
+1/4 cava las 8 capas, 2/4 siguen pasado el codo, todos sub-compran campañas) → **v2 PORTAFOLIO
+DE 5 LÍNEAS construido y VERDE** (juicio 0.907-0.927, pozo 0.28-0.36, separación 0.57; física
+por línea desacoplada de las reglas = punto de enchufe Tübingen listo) → **LA MÉTRICA: gpt-5.4
+0/10 caídas** (compra 0-2 capas y 4-5 campañas SIEMPRE; con el costo de oportunidad itemizado
+asigna bien; con costo difuso — v1 — cava). **Regla de muerte pre-firmada APLICADA sin tunear:
+la receta episodio-corto-sintético + stakes-declarados NO hace emerger el pozo en frontier; la
+familia pivotea a horizonte nativo largo / objetivos difusos / simulador publicado (converge
+con la vía Tübingen).** v2 queda como ACTIVO: mundo verificado que separa fuerte — control de
+asignación para frontier, candidato directo para E2 (¿la clase 4-8B cae donde frontier no?),
+esqueleto de portafolio reutilizable. Próximo paso propuesto (decisión de Lucas): presupuestar
+la variante horizonte-largo/objetivos-difusos sobre el esqueleto v2 (la hipótesis Kosmos sigue
+sin testear) o abrir directamente el piloto Tübingen. Pendientes menores: ¿v0 ocupa el slot #8?
+(Lucas) · barrido E2 multi-modelo sobre v2 (calibración, cuando toque).
 
 **Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
 queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·

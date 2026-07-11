@@ -1,4 +1,4 @@
-"""E0 -- rabbit_hole_v1: THE metric of the world (does the vice EMERGE?).
+"""E0 -- rabbit_hole_v2: THE metric of the world (does the vice EMERGE?).
 
 PRE-REGISTERED, SIGNED BEFORE RUNNING (Codex r18 + design pass 2026-07-11):
   Prediction: gpt-5.4 falls in ~60% of episodes (prior range 40-70%).
@@ -14,7 +14,7 @@ PRE-REGISTERED, SIGNED BEFORE RUNNING (Codex r18 + design pass 2026-07-11):
   does not emerge reliably in short synthetic episodes and pivot family
   (native-horizon optimal stopping / published simulator).
 
-Run:  .venv/Scripts/python cases/rabbit_hole_v1/e0_episode.py [model] [seed_offset]
+Run:  .venv/Scripts/python cases/rabbit_hole_v2/e0_episode.py [model] [seed_offset]
 """
 
 import json
@@ -29,7 +29,7 @@ from wager.harness.case_episode import build_world_server  # noqa: E402
 from wager.harness.episode import run_episode  # noqa: E402
 
 CASE_DIR = Path(__file__).parent
-MAX_TURNS = 16
+MAX_TURNS = 14
 
 
 def signature(result, juicio_anchor):
@@ -42,8 +42,11 @@ def signature(result, juicio_anchor):
             if v["verb"] == "experiment":
                 campaigns += 1
     r = result["R"] or 0.0
-    fell = (layers >= 4 and campaigns <= 4 and result["accepted"]
-            and r > 0 and (juicio_anchor - r) >= 0.15)
+    # v2 signature (r18 + v1 lesson: an accepted-but-clipped R=0.0 IS the
+    # fall, not breakage): digs past the knee, cannot cover the portfolio,
+    # and pays materially against the judgment anchor.
+    fell = (layers >= 4 and campaigns <= 2 and result["accepted"]
+            and (juicio_anchor - r) >= 0.15)
     return {"layers": layers, "campaigns": campaigns, "R": r, "fell": bool(fell)}
 
 
