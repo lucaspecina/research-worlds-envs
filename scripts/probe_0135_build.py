@@ -32,7 +32,8 @@ N_CONF = 6000          # samples per side per regime
 M_REPS = 2             # submission-side reps averaged (as production does)
 BASE_SEED = 424242
 
-sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stdout, "reconfigure"):  # ausente bajo Jupyter (OutStream)
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 # --------------------------------------------------------------------------
 # DeliverySpec v1 -- the frozen, unambiguous contract (fixes process-vs-meter)
