@@ -174,6 +174,17 @@ el inventario sin validar NO compone** → validar-lo-existente > construir-lo-n
 | 5 | **construir** (oportunista) | Par terco↔paranoico desde las DOS mitades YA construidas (#16/#17, re-skin a fachada común) | el gemelo casi GRATIS — seguro anti-reflejo (agregado, no eje; ADR 0117) | re-skin validado + robots-reflejo cruzados + métrica min | cuando se libere slot construir |
 | 6 | **investigar** | Minado combinado: colisionador/Berkson · apofenia nombrada · pares faltantes · **baseline genérico fuerte no-LLM (Codex)** | congelado por rendimiento decreciente; el baseline entra cuando P1 cierre | no se abre salvo que un build lo NECESITE | congelado |
 
+**VENTANA AUTÓNOMA 2026-07-11 (corte 8am ART; ADRs 0137 + resultados sellados)**: (1) red-team del
+score CERRADO — zona muerta confirmada, deuda D0 con gatillo pre-E2, gate nuevo rige para mundos
+nuevos; (2) protocolo VICIO-VIVO estrenado: **gpt-5.4 × first_story = vicio NO vivo** (1/8 con la
+firma; 8/8 usan la escapatoria; los 2 ceros son de entrega) → first_story queda control-de-facto
+para frontier actuales; el par con vicio vivo se busca en mundos nuevos; (3) **`rabbit_hole_v0`
+(vicio 2, EN CONSTRUCCIÓN)**: diseño COMPLETO de Codex r14 sellado (persistencia en fuente de valor
+marginal agotado; proxy con techo; par de robots que difiere solo en asignación post-señal; números
+firmados) — world.py + meta.json hechos; brief WIP; robots + build_and_certify pendientes (spec
+exacta en el crudo r14). Decisiones para Lucas: GO receta D0 · ¿first_story reclasificado [C]? ·
+retomar el pozo (~1-2h con la spec).
+
 **Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
 queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·
 higiene de claims + 2 inconsistencias entre docs señaladas por Codex (ubicar y reportar antes de tocar) ·
