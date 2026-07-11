@@ -136,6 +136,14 @@ constructo vuelve a hipótesis, a probar con diseño corregido). **DECISIÓN DE 
 diversidad real** (estructuras + composición con propiedades emergentes, no re-skins) — la cola de
 abajo re-centrada en eso. Vulcano (par de aha) → cantera.
 
+**TRES VÍAS DE GENERACIÓN — REGISTRADAS; TÜBINGEN PREFERIDA Y DIFERIDA (ADR 0132, 2026-07-10)**: la
+pregunta de Lucas por los "seeds de papers" destapó vías dispersas en tres docs; quedan comparadas en
+`operators.md` §4 + `proto-designer.md` §3 — (1) plantilla+composición [actual; arreglo dado+dominios
+DISEÑADO, alcanza para hoy], (2) semilla-paper [doctrina original, fallback], (3) semilla-simulador
+[Tübingen: "romper"=ESCONDER una pieza de un sim real portado; preferida para diversidad profunda;
+piloto de 1 mundo cuando se abra el slot]. Decisión de Lucas: motores = CONTENIDO, no instrumento →
+la fábrica se PAUSA post-batch y el slot vuelve a VALIDAR (P1).
+
 ### Cola de trabajo ÚNICA (ADR 0107; **reordenada por VALOR, ADR 0108** — no por orden de llegada)
 
 **Regla de trabajo-en-curso (WIP)**: máximo **1 validar + 1 construir + 1 investigar** en vuelo a
@@ -151,7 +159,7 @@ el inventario sin validar NO compone** → validar-lo-existente > construir-lo-n
 |---|-------|------|---------------------|----------------------|--------|
 | 0 | **validar** | Réplica DeepSeek + clasificación automática de ceros (ADR 0098) | mata-o-confirma el claim central | ~~48 episodios DeepSeek~~ | ✅ **HECHO (ADR 0110)**; re-etiquetado por ADR 0117: "efecto de instrucción, replicado" — la validez de constructo la prueba P1 |
 | 1 | **validar** | Experimento de pista CORREGIDO y MÍNIMO (ADRs 0117/0118/0119) | el claim central no podía apoyarse en pistas desparejas + control al techo | ~~48 episodios DeepSeek corridos (~US$2)~~ | ✅ **CERRADO — VEREDICTO NEGATIVO (ADR 0121)**: P0/P1/P3/P4 fallaron; la pista HUNDIÓ su propio mundo (pares por seed −0.44), el placebo de estilo movió el score, el control sin headroom (0.958). El resultado viejo queda NO REPLICADO; varianza corrida-a-corrida documentada (0.29 vs 0.58; ceros del brazo pista 2/8→5/8) → invalida el positivo Y el negativo. **El método NO se abandona (Lucas, ADR 0122)**; rediseño CONCRETADO con Codex ronda 5 → **ADR 0124/0125: protocolo honesto de 3 fases**. **Fase 1 HECHA (ADR 0129)**: 3 corridas idénticas dieron +0.52/−0.58/+0.64 → varianza DEMOSTRADA (ninguna corrida n=8 es evidencia); clasificación ciega: 15/16 descubren la estructura, los catastróficos aparecen en AMBOS brazos (T4 atractor preexistente > T2) — el fallo vive en la ENTREGA (calibración/mediador espurio). Sigue: confirmatorio v2 con conducta-de-ENTREGA como eslabón; espera GO |
-| 2 | **construir** | **CAMINO DE LA FÁBRICA (ADR 0117 — el core)**: destrabar D1 → re-correr proto-designer MEDIO → yield | **lo más importante del proyecto** (Lucas): vicio→estructura→plantilla→generación automática con diversidad; sin esto no escala | **D1 ✓ (0120) · PILOTO FRESCO ✓ PASS 1/1 · MICRO-BATCH ✓ 5/5 (ADR 0131)** — pero el panel midió el colapso: 4/5 dominios iguales, params idénticos por estrato, conducta pearson~1.0 → "plantilla repetible, no diversidad". Siguen: params muestreados por CÓDIGO (no LLM) + diversidad de dominio dirigida (decisión con Lucas) → plantilla de RIGOR ESTADÍSTICO (0128) | **batch ✓ — decisión de diseño con Lucas** |
+| 2 | **construir** | **CAMINO DE LA FÁBRICA (ADR 0117 — el core)**: destrabar D1 → re-correr proto-designer MEDIO → yield | **lo más importante del proyecto** (Lucas): vicio→estructura→plantilla→generación automática con diversidad; sin esto no escala | **D1 ✓ (0120) · PILOTO FRESCO ✓ PASS 1/1 · MICRO-BATCH ✓ 5/5 (ADR 0131)** — el panel midió el colapso: 4/5 dominios iguales, params idénticos por estrato → "plantilla repetible, no diversidad". Arreglo DISEÑADO (params por RNG en código + dominios dirigidos); vías de motor comparadas y decididas en ADR 0132 (Tübingen preferida, diferida) | **PAUSADA (ADR 0132) — el slot vuelve a validar (P1); arreglo diseñado, se implementa cuando la fábrica reabra** |
 | 3 | **construir** | ~~Mundo del POZO~~ → **SUPERSEDIDO (ADR 0128)**: secuencia = piloto fresco (8 requisitos r9) → **micro-batch N=5 congelado** → auditoría + panel conductual → **plantilla de RIGOR ESTADÍSTICO** (precisión fabricada / decisión de replicar — cobertura genuina por r8). El pozo se degrada a PERILLA/distractor dentro de mundos causales o de rigor (su núcleo ya recibe presión genérica en AHC) | los builds van donde somos únicos (cobertura) y el multiplicador se prueba con N que informa (5, no 1) | implementar `medio()` congelado → piloto → batch | **decidido con Codex (r9), delegado por Lucas** |
 | 4 | **validar** | Retro-cert de los 5 causales (CPU, gratis) → **mini-spread multi-modelo** (perfiles de vicio por modelo, OQ 20) | bandas de referencia + el activo único (evidencia tier-A sobre modelos) | (i) CPU puro; (ii) presupuestar ANTES + auditoría humana de baterías (Lucas) | tras P1 |
 | 5 | **construir** (oportunista) | Par terco↔paranoico desde las DOS mitades YA construidas (#16/#17, re-skin a fachada común) | el gemelo casi GRATIS — seguro anti-reflejo (agregado, no eje; ADR 0117) | re-skin validado + robots-reflejo cruzados + métrica min | cuando se libere slot construir |
@@ -159,7 +167,10 @@ el inventario sin validar NO compone** → validar-lo-existente > construir-lo-n
 
 **Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
 queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·
-higiene de claims + 2 inconsistencias entre docs señaladas por Codex (ubicar y reportar antes de tocar).
+higiene de claims + 2 inconsistencias entre docs señaladas por Codex (ubicar y reportar antes de tocar) ·
+**piloto semilla-simulador Tübingen (ADR 0132)**: UN mundo punta a punta desde el sim publicado más
+simple, para medir el costo real de porteo — LA vía preferida de diversidad profunda cuando se abra
+el slot construir (fallbacks: semilla-paper → plantilla+arreglo).
 
 **Deudas técnicas (ordenadas por qué desbloquean, no por antigüedad)**:
 D1 `_canonical` estructural (ADR 0094 — desbloquea P3 + proto-designer MEDIO) · D2 definición

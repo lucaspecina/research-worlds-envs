@@ -39,10 +39,15 @@
 ## 4. Generación de un caso — los dos modos `[ESTABLE]`
 
 ```
-MODO CON SEMILLA (paper / informe NTSB / case study de investigación / par obs→experimento / post-mortem):
-  semilla → [digestion] → moraleja epistémica
-          → [architect] → motor del catálogo + operadores TRASPLANTADOS de la moraleja
-          → perillas + piel (anti-leak: el writer del brief NO ve batería ni rivales)
+MODO CON SEMILLA (paper / informe NTSB / case study / par obs→experimento / post-mortem / simulador publicado):
+  semilla TEXTUAL    → [digestion] → moraleja epistémica
+                     → [architect] → motor del catálogo + operadores TRASPLANTADOS de la moraleja
+                     → perillas + piel (anti-leak: el writer del brief NO ve batería ni rivales)
+  semilla EJECUTABLE → portar las ecuaciones del simulador publicado a world.py (misma interfaz
+    (ADR 0132)         sample(); contratos/harness/scoring intactos) → trampa DIRIGIDA por el
+                       catálogo: qué pieza queda invisible en las fuentes baratas + qué explicación
+                       tentadora sirve el diseño ("romper" = ESCONDER) → perillas + piel
+                       (trasplante de dominio POR DEFECTO + test de contaminación, como toda semilla famosa)
 
 MODO SIN SEMILLA (sampleo):
   prior de la librería → motor ~ catálogo, operadores ~ composiciones plausibles,
@@ -55,7 +60,7 @@ En ambos modos los operadores instalados quedan **declarados en `meta.json`** (j
 
 **Tres fuentes de generación, con roles distintos — ninguna reemplaza a las otras.**
 
-1. **Semillas reales** (papers, NTSB, investigaciones, obs→experimento, post-mortems): la *autoridad sobre la estructura* — anclan el soporte de la distribución a cómo la realidad engaña de verdad. No son la fuente de volumen.
+1. **Semillas reales** (papers, NTSB, investigaciones, obs→experimento, post-mortems, simuladores publicados): la *autoridad sobre la estructura* — anclan el soporte de la distribución a cómo la realidad engaña de verdad. No son la fuente de volumen. Dos formas: **textual** (digestión→trasplante) y **ejecutable** (el simulador portado ES el motor — ADR 0132, la preferida para estructuras nuevas; implementación diferida).
 2. **Composición + perillas** (librería sobre el catálogo de motores): el *volumen* — convierten cada estructura en una familia paramétrica de mundos re-sampleables.
 3. **Búsqueda del designer** (oráculo de fallas, regret sobre perillas, operadores nuevos): la *frontera* — regiones que ningún corpus documentó, en el borde de la policy actual. Mitigación activa del ataque #14 y motor de la coevolución; el modo con semilla no la veta.
 

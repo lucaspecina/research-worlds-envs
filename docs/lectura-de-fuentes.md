@@ -295,8 +295,9 @@ Detalle con citas en `docs/research/2026-07-10-lectura-{autocog,modelsmc}-*.md`.
 ambos (top-labs) VALIDAN nuestra arquitectura (entrega=simulador ejecutable, evaluación generativa sin
 fitting, held-out). Ideas de construcción a evaluar SI se ganan su lugar (no integradas): romper un
 simulador real = un mundo (ModelSMC); mundo de no-identificabilidad (entrega = mezcla con pesos);
-control anti-apofenia / mundo-nulo (AUTOCOG); ModelSMC como baseline destructor. Decisión de adopción,
-pendiente con Lucas.
+control anti-apofenia / mundo-nulo (AUTOCOG); ModelSMC como baseline destructor. Decisión de adopción:
+**romper-simulador DECIDIDA (ADR 0132: vía preferida de diversidad profunda, implementación
+DIFERIDA — el slot sigue en validar)**; las otras tres candidatas siguen sin decidir.
 
 ## Búsqueda de descubrimiento — COMPLETA (2026-07-10)
 

@@ -47,6 +47,15 @@ generador puede ser mediocre; el filtro es duro):
   cero-LLM; el LLM nunca toca el cómputo del reward. Frontera intacta.
 - **El solver jamás ve la taxonomía de operadores** ni la consigna.
 
+**De dónde sale el MOTOR — tres vías (ADR 0132; preferencia decidida, implementación diferida).**
+(1) **Plantilla+composición** — la implementada: volumen barato; colapso de diversidad MEDIDO
+(ADR 0131) y arreglo diseñado (parámetros por RNG seedeado en CÓDIGO, dominios dirigidos por
+pool/exclusión, el LLM solo prosa). (2) **Semilla-paper** (`operators.md` §4, doctrina original):
+especificada, nunca implementada — fallback. (3) **Semilla-simulador** ("esconder una pieza de un
+simulador real portado", Tübingen/ModelSMC): la PREFERIDA para estructuras nuevas cuando el slot
+de construcción se abra — piloto de UN mundo primero. Las vías no compiten: 3 y 2 crean
+estructuras; 1 las multiplica. El foco de hoy sigue en VALIDAR el instrumento (roadmap P1), no acá.
+
 ## 4. La arquitectura (consigna → generador → certificación → yield)
 
 ```
