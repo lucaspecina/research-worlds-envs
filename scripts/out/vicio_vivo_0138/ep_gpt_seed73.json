@@ -1,0 +1,357 @@
+{
+  "case_id": "first_story_scarce_v0",
+  "model": "gpt-5.4",
+  "accepted": true,
+  "R": 0.763167566529125,
+  "R_unclipped": 0.763167566529125,
+  "submission_code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    rng = np.random.default_rng(seed)\n\n    cfg = regime.config if hasattr(regime, \"config\") else {}\n\n    # Baseline / ambient defaults (today-like)\n    grade = float(cfg.get(\"feedstock_grade\", 5.0))\n    humidity = float(cfg.get(\"humidity\", 5.0))\n    temp = float(cfg.get(\"temp\", 5.0))\n    line_speed = float(cfg.get(\"line_speed\", 5.0))\n\n    # Feedstock process: strongly set by contracted grade, degraded by humidity a bit\n    # Coefficients inferred from screening experiments\n    feed_mu = 0.15 + 1.03 * grade - 0.87 * (humidity - 5.0)\n    feedstock = rng.normal(feed_mu, 0.85, size=n)\n\n    # Outcome process (true quality): dominated by humidity, some line-speed effect,\n    # very small temp effect, negligible supplier-grade direct effect.\n    true_mu = (\n        30.3\n        - 2.27 * (humidity - 5.0)\n        + 0.20 * (temp - 5.0)\n        + 0.20 * (line_speed - 5.0)\n        + 0.02 * (grade - 5.0)\n    )\n\n    # Process variation and instrument error separated approximately using replicate study\n    true_quality = rng.normal(true_mu, 3.7, size=n)\n    outcome = true_quality + rng.normal(0.0, 1.49, size=n)\n\n    return pd.DataFrame({\n        \"feedstock\": feedstock,\n        \"outcome\": outcome\n    })\n",
+  "abort_reason": "submitted",
+  "turns": 7,
+  "budget_total": 5000.0,
+  "budget_spent": 3430.0,
+  "tokens": {
+    "prompt": 35414,
+    "completion": 3754,
+    "reasoning": 0,
+    "total": 39168
+  },
+  "signal": {
+    "first_experiment_turn": 3,
+    "first_attribution_turn": 1,
+    "attribution_before_experiment": true,
+    "first_suspicion_turn_lexical": 1
+  },
+  "trace": [
+    {
+      "turn": 1,
+      "reply_text": "REASONING: The key risk is confounding over time: the plant sees feedstock and outcome move together, but hall conditions may have drifted through the era and feedstock_grade may be correlated with time. Since timestamps are logged in cheap historical records, the first step is to map the observational pattern over time and see whether the apparent feedstock\u2192outcome relationship could be explained by temporal drift. I should spend a little on a moderately sized observational sample to inspect trends before paying for experiments.\n```python\nimport pandas as pd\nimport numpy as np\n\nprint(\"ENV:\", env.describe())\n\nobs = env.observe(\"registros_linea\", 400)\nprint(\"\\nobs shape:\", obs.shape)\nprint(obs.head())\n\nprint(\"\\nsummary:\")\nprint(obs.describe())\n\nprint(\"\\ncorrelations:\")\nprint(obs[[\"t\", \"feedstock\", \"outcome\"]].corr())\n\nobs[\"t_bin\"] = pd.qcut(obs[\"t\"], 10, duplicates=\"drop\")\nby_bin = obs.groupby(\"t_bin\")[[\"feedstock\", \"outcome\"]].mean()\nprint(\"\\nmean by time bin:\")\nprint(by_bin)\n```",
+      "cell": "import pandas as pd\nimport numpy as np\n\nprint(\"ENV:\", env.describe())\n\nobs = env.observe(\"registros_linea\", 400)\nprint(\"\\nobs shape:\", obs.shape)\nprint(obs.head())\n\nprint(\"\\nsummary:\")\nprint(obs.describe())\n\nprint(\"\\ncorrelations:\")\nprint(obs[[\"t\", \"feedstock\", \"outcome\"]].corr())\n\nobs[\"t_bin\"] = pd.qcut(obs[\"t\"], 10, duplicates=\"drop\")\nby_bin = obs.groupby(\"t_bin\")[[\"feedstock\", \"outcome\"]].mean()\nprint(\"\\nmean by time bin:\")\nprint(by_bin)",
+      "tokens": {
+        "prompt": 1406,
+        "completion": 242,
+        "reasoning": 0
+      },
+      "cell_result": {
+        "ok": true,
+        "stdout": "ENV: {'brief': '# Where the money goes: supplier or hall (reject pricing)\\n\\nYou advise a line whose rejects have been rising for months. The plant is\\nconvinced it knows why: **\"the feedstock got worse -- switch to the premium\\nsupplier.\"** That is the folklore; you are paid to check it, not to repeat it.\\n\\nYour job is to hand back a model that predicts the distribution of intake\\nreading and final quality -- `feedstock`, `outcome` -- under any setting of\\nthe knobs the line can actually turn: the **supplier grade** it contracts\\n(`feedstock_grade`), and the hall conditions it could invest in\\n(`humidity`, `temp`, `line_speed`).\\n\\n## What is at stake\\n\\nRejects are the cost driver: **a unit finishing below the acceptance floor of\\n25 is rejected at the line\\'s cost**. The line is about to spend real money on\\nONE fix. Your model prices both options: what happens to the reject rate if\\nthe premium supplier is contracted, and what happens if the hall is fixed\\ninstead. Getting the wrong story means buying an expensive fix that changes\\nnothing.\\n\\n## What you can do\\n\\n- `observe(records)` -- cheap historical line records spanning the whole era.\\n  Columns: `t` (timestamp, normalized 0-1 across the era), `feedstock`\\n  (intake reading), `outcome` (final quality). **The hall conditions were\\n  never logged** -- only timestamps.\\n- `observe(replicas_calibracion)` -- a costlier calibration bench: two quality\\n  readings per unit (`outcome__rep1`, `outcome__rep2`).\\n- `experiment(design)` -- pay to run fresh units under settings you choose:\\n  any subset of `feedstock_grade`, `humidity`, `temp`, `line_speed`. The same\\n  instrument takes the readings.\\n- `submit(model)` -- hand back `model(regime, n, seed) -> table` over\\n  `feedstock, outcome`. Model the **process**, not the meter.\\n\\n## The catch you are paid to find\\n\\nThe records do show what the plant says they show -- the correlation is\\nright there. The question the line is paying for is whether that correlation\\nis the *cause*, and what the reject rate really does under the fix you would\\nrecommend. The era is long; the timestamps are in the data; the knobs are on\\nthe table.\\n', 'schema': ['feedstock', 'outcome'], 'sources': {'registros_linea': {'cost_per_row': 0.5, 'columns': ['t', 'feedstock', 'outcome']}, 'replicas_calibracion': {'cost_per_row': 15.0, 'columns': ['t', 'feedstock', 'outcome__rep1', 'outcome__rep2']}}, 'experiment_cost': {'cost_fixed': 100.0, 'cost_per_row': 2.0}, 'control_surface': {'settable': {'feedstock_grade': {'low': 0.0, 'high': 10.0, 'unit': 'grade'}, 'humidity': {'low': 2.0, 'high': 8.0, 'unit': 'au'}, 'temp': {'low': 2.0, 'high': 8.0, 'unit': 'au'}, 'line_speed': {'low': 2.0, 'high': 8.0, 'unit': 'au'}}, 'context': {}, 'instruments': {}, 'experiment_note': \"each experiment call runs fresh units under the settings you choose (any subset of the settable knobs); unset knobs run at today's ambient conditions; the same instrument takes the readings\", 'deliverable_note\n... [output truncated: 4676 chars total]",
+        "error": null,
+        "truncated": true
+      },
+      "verbs": [
+        {
+          "verb": "observe",
+          "args": {
+            "source": "registros_linea",
+            "n": 400
+          },
+          "cost": 200.0,
+          "budget_remaining": 4800.0,
+          "note": ""
+        }
+      ],
+      "submit_attempts": [],
+      "budget_remaining": 4800.0
+    },
+    {
+      "turn": 2,
+      "reply_text": "REASONING: I need the actual numbers from the sample to decide whether the time trend plausibly explains the observed feedstock\u2013outcome correlation, but the printed output was truncated here. Rather than spend on more data, the efficient next step is to summarize the already-drawn `obs` much more compactly: regressions/correlations overall and within time bins, plus reject rates over time. If the overall feedstock effect collapses within time bins while both variables trend with `t`, that would strongly suggest confounding by hall drift and motivate targeted experiments on the hall knobs rather than supplier.\n```python\nimport numpy as np\nimport pandas as pd\n\nprint(\"obs shape:\", obs.shape)\n\n# Compact summaries\nprint(\"\\nOverall means:\")\nprint(obs[[\"t\",\"feedstock\",\"outcome\"]].mean().round(3))\n\nprint(\"\\nOverall correlations:\")\nprint(obs[[\"t\",\"feedstock\",\"outcome\"]].corr().round(3))\n\n# Simple linear slopes via polyfit\nfor y in [\"feedstock\", \"outcome\"]:\n    b1, b0 = np.polyfit(obs[\"t\"], obs[y], 1)\n    print(f\"slope {y} ~ t: {b1:.3f}, intercept {b0:.3f}\")\nb1, b0 = np.polyfit(obs[\"feedstock\"], obs[\"outcome\"], 1)\nprint(f\"slope outcome ~ feedstock: {b1:.3f}, intercept {b0:.3f}\")\n\n# Within-time-bin correlations\nobs[\"t_decile\"] = pd.qcut(obs[\"t\"], 10, labels=False, duplicates=\"drop\")\nwithin = obs.groupby(\"t_decile\").apply(lambda d: pd.Series({\n    \"n\": len(d),\n    \"corr(feedstock,outcome)\": d[\"feedstock\"].corr(d[\"outcome\"]),\n    \"mean_feedstock\": d[\"feedstock\"].mean(),\n    \"mean_outcome\": d[\"outcome\"].mean(),\n    \"reject_rate\": (d[\"outcome\"] < 25).mean()\n}))\nprint(\"\\nWithin deciles:\")\nprint(within.round(3))\n\nprint(\"\\nMean within-decile corr(feedstock,outcome):\", round(within[\"corr(feedstock,outcome)\"].mean(), 3))\nprint(\"Weighted within-decile corr(feedstock,outcome):\", round(np.average(within[\"corr(feedstock,outcome)\"].fillna(0), weights=within[\"n\"]), 3))\n```\nREASONING: I need the actual numbers from the sample to decide whether the time trend plausibly explains the observed feedstock\u2013outcome correlation, but the printed output was truncated here. Rather than spend on more data, the efficient next step is to summarize the already-drawn `obs` much more compactly: regressions/correlations overall and within time bins, plus reject rates over time. If the overall feedstock effect collapses within time bins while both variables trend with `t`, that would strongly suggest confounding by hall drift and motivate targeted experiments on the hall knobs rather than supplier.\n```python\nimport numpy as np\nimport pandas as pd\n\nprint(\"obs shape:\", obs.shape)\n\n# Compact summaries\nprint(\"\\nOverall means:\")\nprint(obs[[\"t\",\"feedstock\",\"outcome\"]].mean().round(3))\n\nprint(\"\\nOverall correlations:\")\nprint(obs[[\"t\",\"feedstock\",\"outcome\"]].corr().round(3))\n\n# Simple linear slopes via polyfit\nfor y in [\"feedstock\", \"outcome\"]:\n    b1, b0 = np.polyfit(obs[\"t\"], obs[y], 1)\n    print(f\"slope {y} ~ t: {b1:.3f}, intercept {b0:.3f}\")\nb1, b0 = np.polyfit(obs[\"feedstock\"], obs[\"outcome\"], 1)\nprint(f\"slope outcome ~ feedstock: {b1:.3f}, intercept {b0:.3f}\")\n\n# Within-time-bin correlations\nobs[\"t_decile\"] = pd.qcut(obs[\"t\"], 10, labels=False, duplicates=\"drop\")\nwithin = obs.groupby(\"t_decile\").apply(lambda d: pd.Series({\n    \"n\": len(d),\n    \"corr(feedstock,outcome)\": d[\"feedstock\"].corr(d[\"outcome\"]),\n    \"mean_feedstock\": d[\"feedstock\"].mean(),\n    \"mean_outcome\": d[\"outcome\"].mean(),\n    \"reject_rate\": (d[\"outcome\"] < 25).mean()\n}))\nprint(\"\\nWithin deciles:\")\nprint(within.round(3))\n\nprint(\"\\nMean within-decile corr(feedstock,outcome):\", round(within[\"corr(feedstock,outcome)\"].mean(), 3))\nprint(\"Weighted within-decile corr(feedstock,outcome):\", round(np.average(within[\"corr(feedstock,outcome)\"].fillna(0), weights=within[\"n\"]), 3))\n```",
+      "cell": "import numpy as np\nimport pandas as pd\n\nprint(\"obs shape:\", obs.shape)\n\n# Compact summaries\nprint(\"\\nOverall means:\")\nprint(obs[[\"t\",\"feedstock\",\"outcome\"]].mean().round(3))\n\nprint(\"\\nOverall correlations:\")\nprint(obs[[\"t\",\"feedstock\",\"outcome\"]].corr().round(3))\n\n# Simple linear slopes via polyfit\nfor y in [\"feedstock\", \"outcome\"]:\n    b1, b0 = np.polyfit(obs[\"t\"], obs[y], 1)\n    print(f\"slope {y} ~ t: {b1:.3f}, intercept {b0:.3f}\")\nb1, b0 = np.polyfit(obs[\"feedstock\"], obs[\"outcome\"], 1)\nprint(f\"slope outcome ~ feedstock: {b1:.3f}, intercept {b0:.3f}\")\n\n# Within-time-bin correlations\nobs[\"t_decile\"] = pd.qcut(obs[\"t\"], 10, labels=False, duplicates=\"drop\")\nwithin = obs.groupby(\"t_decile\").apply(lambda d: pd.Series({\n    \"n\": len(d),\n    \"corr(feedstock,outcome)\": d[\"feedstock\"].corr(d[\"outcome\"]),\n    \"mean_feedstock\": d[\"feedstock\"].mean(),\n    \"mean_outcome\": d[\"outcome\"].mean(),\n    \"reject_rate\": (d[\"outcome\"] < 25).mean()\n}))\nprint(\"\\nWithin deciles:\")\nprint(within.round(3))\n\nprint(\"\\nMean within-decile corr(feedstock,outcome):\", round(within[\"corr(feedstock,outcome)\"].mean(), 3))\nprint(\"Weighted within-decile corr(feedstock,outcome):\", round(np.average(within[\"corr(feedstock,outcome)\"].fillna(0), weights=within[\"n\"]), 3))",
+      "tokens": {
+        "prompt": 2531,
+        "completion": 1027,
+        "reasoning": 0
+      },
+      "cell_result": {
+        "ok": true,
+        "stdout": "obs shape: (400, 4)\n\nOverall means:\nt             0.511\nfeedstock     6.007\noutcome      29.737\ndtype: float64\n\nOverall correlations:\n               t  feedstock  outcome\nt          1.000     -0.738   -0.738\nfeedstock -0.738      1.000    0.576\noutcome   -0.738      0.576    1.000\nslope feedstock ~ t: -5.535, intercept 8.836\nslope outcome ~ t: -15.118, intercept 37.462\nslope outcome ~ feedstock: 1.573, intercept 20.284\n\nWithin deciles:\n             n  corr(feedstock,outcome)  ...  mean_outcome  reject_rate\nt_decile                                 ...                           \n0         40.0                    0.115  ...        36.991        0.000\n1         40.0                    0.117  ...        33.963        0.025\n2         40.0                    0.197  ...        33.864        0.000\n3         40.0                   -0.085  ...        32.934        0.000\n4         40.0                    0.183  ...        29.838        0.125\n5         40.0                   -0.289  ...        28.587        0.200\n6         40.0                    0.050  ...        27.647        0.225\n7         40.0                    0.213  ...        25.370        0.450\n8         40.0                    0.001  ...        24.866        0.550\n9         40.0                    0.240  ...        23.307        0.625\n\n[10 rows x 5 columns]\n\nMean within-decile corr(feedstock,outcome): 0.074\nWeighted within-decile corr(feedstock,outcome): 0.074\n",
+        "error": null,
+        "truncated": false
+      },
+      "verbs": [],
+      "submit_attempts": [],
+      "budget_remaining": 4800.0
+    },
+    {
+      "turn": 3,
+      "reply_text": "REASONING: This strongly supports temporal confounding: overall feedstock and outcome correlate (0.576), but within narrow time slices that correlation nearly vanishes (average 0.074) while both drift down sharply with time and reject rate rises. So the folklore \u201cbad feedstock caused rejects\u201d looks mostly spurious; some unlogged hall condition(s) likely worsened over the era. Next I should identify which controllable hall knobs actually move outcome and feedstock by running a compact screening experiment. Because the deliverable is process, not meter, I\u2019ll postpone calibration-replicate spend until I know the structural form worth modeling.\n```python\nimport pandas as pd\nimport numpy as np\n\n# Screening design around middle values plus extremes for each knob\ndesigns = [\n    {\"feedstock_grade\": 2.0, \"humidity\": 5.0, \"temp\": 5.0, \"line_speed\": 5.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 5.0, \"temp\": 5.0, \"line_speed\": 5.0},\n    {\"feedstock_grade\": 5.0, \"humidity\": 2.0, \"temp\": 5.0, \"line_speed\": 5.0},\n    {\"feedstock_grade\": 5.0, \"humidity\": 8.0, \"temp\": 5.0, \"line_speed\": 5.0},\n    {\"feedstock_grade\": 5.0, \"humidity\": 5.0, \"temp\": 2.0, \"line_speed\": 5.0},\n    {\"feedstock_grade\": 5.0, \"humidity\": 5.0, \"temp\": 8.0, \"line_speed\": 5.0},\n    {\"feedstock_grade\": 5.0, \"humidity\": 5.0, \"temp\": 5.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 5.0, \"humidity\": 5.0, \"temp\": 5.0, \"line_speed\": 8.0},\n]\n\nrows = []\nfor cfg in designs:\n    df = env.experiment(config=cfg, n=80)\n    rows.append({\n        **cfg,\n        \"n\": len(df),\n        \"feedstock_mean\": df[\"feedstock\"].mean(),\n        \"feedstock_sd\": df[\"feedstock\"].std(),\n        \"outcome_mean\": df[\"outcome\"].mean(),\n        \"outcome_sd\": df[\"outcome\"].std(),\n        \"reject_rate\": (df[\"outcome\"] < 25).mean()\n    })\n\nscreen = pd.DataFrame(rows)\nprint(screen.round(3))\n```",
+      "cell": "import pandas as pd\nimport numpy as np\n\n# Screening design around middle values plus extremes for each knob\ndesigns = [\n    {\"feedstock_grade\": 2.0, \"humidity\": 5.0, \"temp\": 5.0, \"line_speed\": 5.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 5.0, \"temp\": 5.0, \"line_speed\": 5.0},\n    {\"feedstock_grade\": 5.0, \"humidity\": 2.0, \"temp\": 5.0, \"line_speed\": 5.0},\n    {\"feedstock_grade\": 5.0, \"humidity\": 8.0, \"temp\": 5.0, \"line_speed\": 5.0},\n    {\"feedstock_grade\": 5.0, \"humidity\": 5.0, \"temp\": 2.0, \"line_speed\": 5.0},\n    {\"feedstock_grade\": 5.0, \"humidity\": 5.0, \"temp\": 8.0, \"line_speed\": 5.0},\n    {\"feedstock_grade\": 5.0, \"humidity\": 5.0, \"temp\": 5.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 5.0, \"humidity\": 5.0, \"temp\": 5.0, \"line_speed\": 8.0},\n]\n\nrows = []\nfor cfg in designs:\n    df = env.experiment(config=cfg, n=80)\n    rows.append({\n        **cfg,\n        \"n\": len(df),\n        \"feedstock_mean\": df[\"feedstock\"].mean(),\n        \"feedstock_sd\": df[\"feedstock\"].std(),\n        \"outcome_mean\": df[\"outcome\"].mean(),\n        \"outcome_sd\": df[\"outcome\"].std(),\n        \"reject_rate\": (df[\"outcome\"] < 25).mean()\n    })\n\nscreen = pd.DataFrame(rows)\nprint(screen.round(3))",
+      "tokens": {
+        "prompt": 4080,
+        "completion": 573,
+        "reasoning": 0
+      },
+      "cell_result": {
+        "ok": true,
+        "stdout": "   feedstock_grade  humidity  temp  ...  outcome_mean  outcome_sd  reject_rate\n0              2.0       5.0   5.0  ...        29.640       3.762        0.150\n1              8.0       5.0   5.0  ...        29.741       4.270        0.162\n2              5.0       2.0   5.0  ...        37.228       4.420        0.000\n3              5.0       8.0   5.0  ...        23.581       4.200        0.612\n4              5.0       5.0   2.0  ...        29.765       3.763        0.088\n5              5.0       5.0   8.0  ...        30.580       3.988        0.062\n6              5.0       5.0   5.0  ...        29.850       4.515        0.125\n7              5.0       5.0   5.0  ...        31.055       3.940        0.050\n\n[8 rows x 10 columns]\n",
+        "error": null,
+        "truncated": false
+      },
+      "verbs": [
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 2.0,
+              "humidity": 5.0,
+              "temp": 5.0,
+              "line_speed": 5.0
+            },
+            "context": {},
+            "n": 80
+          },
+          "cost": 260.0,
+          "budget_remaining": 4540.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 8.0,
+              "humidity": 5.0,
+              "temp": 5.0,
+              "line_speed": 5.0
+            },
+            "context": {},
+            "n": 80
+          },
+          "cost": 260.0,
+          "budget_remaining": 4280.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 5.0,
+              "humidity": 2.0,
+              "temp": 5.0,
+              "line_speed": 5.0
+            },
+            "context": {},
+            "n": 80
+          },
+          "cost": 260.0,
+          "budget_remaining": 4020.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 5.0,
+              "humidity": 8.0,
+              "temp": 5.0,
+              "line_speed": 5.0
+            },
+            "context": {},
+            "n": 80
+          },
+          "cost": 260.0,
+          "budget_remaining": 3760.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 5.0,
+              "humidity": 5.0,
+              "temp": 2.0,
+              "line_speed": 5.0
+            },
+            "context": {},
+            "n": 80
+          },
+          "cost": 260.0,
+          "budget_remaining": 3500.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 5.0,
+              "humidity": 5.0,
+              "temp": 8.0,
+              "line_speed": 5.0
+            },
+            "context": {},
+            "n": 80
+          },
+          "cost": 260.0,
+          "budget_remaining": 3240.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 5.0,
+              "humidity": 5.0,
+              "temp": 5.0,
+              "line_speed": 2.0
+            },
+            "context": {},
+            "n": 80
+          },
+          "cost": 260.0,
+          "budget_remaining": 2980.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 5.0,
+              "humidity": 5.0,
+              "temp": 5.0,
+              "line_speed": 8.0
+            },
+            "context": {},
+            "n": 80
+          },
+          "cost": 260.0,
+          "budget_remaining": 2720.0,
+          "note": ""
+        }
+      ],
+      "submit_attempts": [],
+      "budget_remaining": 2720.0
+    },
+    {
+      "turn": 4,
+      "reply_text": "REASONING: The experiment decisively weakens the supplier story: changing feedstock_grade from 2 to 8 barely moves outcome or reject rate, while humidity has a huge effect and line_speed a moderate one; temp looks small. The newly available HVAC log is extremely valuable because it may let me reconstruct the historical confounding directly and build the ambient/no-intervention model much better without more expensive experiments. Next I should inspect the new source, merge it to line records by time if possible, and quantify whether humidity drift explains the historical decline.\n```python\nprint(env.describe())\n\nhvac = env.observe(\"log_hvac\", 400)\nprint(\"\\nlog_hvac shape:\", hvac.shape)\nprint(hvac.head())\nprint(\"\\nlog_hvac columns:\", list(hvac.columns))\nprint(\"\\nlog_hvac summary:\")\nprint(hvac.describe())\n\n# Try to merge to existing observational sample by exact time if t exists\nif \"t\" in hvac.columns:\n    merged = pd.merge(obs[[\"t\",\"feedstock\",\"outcome\"]], hvac, on=\"t\", how=\"left\")\n    print(\"\\nmerged shape:\", merged.shape)\n    print(merged.head())\n    print(\"\\nmerged missing fraction by column:\")\n    print(merged.isna().mean().round(3))\n    numcols = [c for c in merged.columns if merged[c].dtype.kind in \"fi\"]\n    print(\"\\nmerged correlations:\")\n    print(merged[numcols].corr().round(3))\nelse:\n    print(\"\\nNo 't' column in HVAC log; need to inspect schema more carefully.\")\n```",
+      "cell": "print(env.describe())\n\nhvac = env.observe(\"log_hvac\", 400)\nprint(\"\\nlog_hvac shape:\", hvac.shape)\nprint(hvac.head())\nprint(\"\\nlog_hvac columns:\", list(hvac.columns))\nprint(\"\\nlog_hvac summary:\")\nprint(hvac.describe())\n\n# Try to merge to existing observational sample by exact time if t exists\nif \"t\" in hvac.columns:\n    merged = pd.merge(obs[[\"t\",\"feedstock\",\"outcome\"]], hvac, on=\"t\", how=\"left\")\n    print(\"\\nmerged shape:\", merged.shape)\n    print(merged.head())\n    print(\"\\nmerged missing fraction by column:\")\n    print(merged.isna().mean().round(3))\n    numcols = [c for c in merged.columns if merged[c].dtype.kind in \"fi\"]\n    print(\"\\nmerged correlations:\")\n    print(merged[numcols].corr().round(3))\nelse:\n    print(\"\\nNo 't' column in HVAC log; need to inspect schema more carefully.\")",
+      "tokens": {
+        "prompt": 5074,
+        "completion": 332,
+        "reasoning": 0
+      },
+      "cell_result": {
+        "ok": true,
+        "stdout": "{'brief': '# Where the money goes: supplier or hall (reject pricing)\\n\\nYou advise a line whose rejects have been rising for months. The plant is\\nconvinced it knows why: **\"the feedstock got worse -- switch to the premium\\nsupplier.\"** That is the folklore; you are paid to check it, not to repeat it.\\n\\nYour job is to hand back a model that predicts the distribution of intake\\nreading and final quality -- `feedstock`, `outcome` -- under any setting of\\nthe knobs the line can actually turn: the **supplier grade** it contracts\\n(`feedstock_grade`), and the hall conditions it could invest in\\n(`humidity`, `temp`, `line_speed`).\\n\\n## What is at stake\\n\\nRejects are the cost driver: **a unit finishing below the acceptance floor of\\n25 is rejected at the line\\'s cost**. The line is about to spend real money on\\nONE fix. Your model prices both options: what happens to the reject rate if\\nthe premium supplier is contracted, and what happens if the hall is fixed\\ninstead. Getting the wrong story means buying an expensive fix that changes\\nnothing.\\n\\n## What you can do\\n\\n- `observe(records)` -- cheap historical line records spanning the whole era.\\n  Columns: `t` (timestamp, normalized 0-1 across the era), `feedstock`\\n  (intake reading), `outcome` (final quality). **The hall conditions were\\n  never logged** -- only timestamps.\\n- `observe(replicas_calibracion)` -- a costlier calibration bench: two quality\\n  readings per unit (`outcome__rep1`, `outcome__rep2`).\\n- `experiment(design)` -- pay to run fresh units under settings you choose:\\n  any subset of `feedstock_grade`, `humidity`, `temp`, `line_speed`. The same\\n  instrument takes the readings.\\n- `submit(model)` -- hand back `model(regime, n, seed) -> table` over\\n  `feedstock, outcome`. Model the **process**, not the meter.\\n\\n## The catch you are paid to find\\n\\nThe records do show what the plant says they show -- the correlation is\\nright there. The question the line is paying for is whether that correlation\\nis the *cause*, and what the reject rate really does under the fix you would\\nrecommend. The era is long; the timestamps are in the data; the knobs are on\\nthe table.\\n', 'schema': ['feedstock', 'outcome'], 'sources': {'registros_linea': {'cost_per_row': 0.5, 'columns': ['t', 'feedstock', 'outcome']}, 'replicas_calibracion': {'cost_per_row': 15.0, 'columns': ['t', 'feedstock', 'outcome__rep1', 'outcome__rep2']}, 'log_hvac': {'cost_per_row': 0.5, 'columns': ['t', 'ambient']}}, 'experiment_cost': {'cost_fixed': 100.0, 'cost_per_row': 2.0}, 'control_surface': {'settable': {'feedstock_grade': {'low': 0.0, 'high': 10.0, 'unit': 'grade'}, 'humidity': {'low': 2.0, 'high': 8.0, 'unit': 'au'}, 'temp': {'low': 2.0, 'high': 8.0, 'unit': 'au'}, 'line_speed': {'low': 2.0, 'high': 8.0, 'unit': 'au'}}, 'context': {}, 'instruments': {}, 'experiment_note': \"each experiment call runs fresh units under the settings you choose (any subset of the settable knobs); unset knobs run at today's ambient conditions;\n... [output truncated: 4568 chars total]",
+        "error": null,
+        "truncated": true
+      },
+      "verbs": [
+        {
+          "verb": "observe",
+          "args": {
+            "source": "log_hvac",
+            "n": 400
+          },
+          "cost": 200.0,
+          "budget_remaining": 2520.0,
+          "note": ""
+        }
+      ],
+      "submit_attempts": [],
+      "budget_remaining": 2520.0
+    },
+    {
+      "turn": 5,
+      "reply_text": "REASONING: The HVAC log is only `ambient` over time, so likely a latent one-dimensional hall state rather than separate humidity/temp/speed histories. That can still be very useful: if `ambient` tracks the historical drop and today\u2019s experiment defaults correspond to current ambient, we can model the observational regime as a time-varying ambient state while counterfactual knobs override it. I need an explicit compact merge/correlation and then one small calibration check on measurement noise, because the brief says to model the process not the meter. After that I should be able to submit a simple latent-ambient structural model with strong humidity effect, modest line-speed effect, tiny temp/feedstock-grade effect, and noise corrected using replicates.\n```python\nimport pandas as pd\nimport numpy as np\n\n# Re-observe enough HVAC rows and merge compactly\nhvac = env.observe(\"log_hvac\", 400)\nmerged = pd.merge(obs[[\"t\",\"feedstock\",\"outcome\"]], hvac, on=\"t\", how=\"left\")\nprint(\"merged shape:\", merged.shape)\nprint(\"missing ambient:\", merged[\"ambient\"].isna().mean())\n\nprint(\"\\nCorrelations with ambient:\")\nprint(merged[[\"t\",\"ambient\",\"feedstock\",\"outcome\"]].corr().round(3))\n\nfor y in [\"ambient\", \"feedstock\", \"outcome\"]:\n    b1, b0 = np.polyfit(merged[\"t\"], merged[y], 1)\n    print(f\"slope {y} ~ t: {b1:.3f}, intercept {b0:.3f}\")\n\nb1, b0 = np.polyfit(merged[\"ambient\"], merged[\"outcome\"], 1)\nprint(f\"slope outcome ~ ambient: {b1:.3f}, intercept {b0:.3f}\")\nb1, b0 = np.polyfit(merged[\"ambient\"], merged[\"feedstock\"], 1)\nprint(f\"slope feedstock ~ ambient: {b1:.3f}, intercept {b0:.3f}\")\n\n# Small calibration sample for meter noise on outcome\ncal = env.observe(\"replicas_calibracion\", 40)\nprint(\"\\ncal shape:\", cal.shape)\nprint(cal.head())\ndiff = cal[\"outcome__rep1\"] - cal[\"outcome__rep2\"]\navg = 0.5*(cal[\"outcome__rep1\"] + cal[\"outcome__rep2\"])\nprint(\"\\nreplicate stats:\")\nprint({\n    \"corr_reps\": round(cal[\"outcome__rep1\"].corr(cal[\"outcome__rep2\"]), 4),\n    \"sd_diff\": round(diff.std(), 4),\n    \"mean_abs_diff\": round(diff.abs().mean(), 4),\n    \"var_rep\": round(np.var(diff, ddof=1)/2, 4),\n    \"var_avg\": round(avg.var(ddof=1), 4)\n})\n```",
+      "cell": "import pandas as pd\nimport numpy as np\n\n# Re-observe enough HVAC rows and merge compactly\nhvac = env.observe(\"log_hvac\", 400)\nmerged = pd.merge(obs[[\"t\",\"feedstock\",\"outcome\"]], hvac, on=\"t\", how=\"left\")\nprint(\"merged shape:\", merged.shape)\nprint(\"missing ambient:\", merged[\"ambient\"].isna().mean())\n\nprint(\"\\nCorrelations with ambient:\")\nprint(merged[[\"t\",\"ambient\",\"feedstock\",\"outcome\"]].corr().round(3))\n\nfor y in [\"ambient\", \"feedstock\", \"outcome\"]:\n    b1, b0 = np.polyfit(merged[\"t\"], merged[y], 1)\n    print(f\"slope {y} ~ t: {b1:.3f}, intercept {b0:.3f}\")\n\nb1, b0 = np.polyfit(merged[\"ambient\"], merged[\"outcome\"], 1)\nprint(f\"slope outcome ~ ambient: {b1:.3f}, intercept {b0:.3f}\")\nb1, b0 = np.polyfit(merged[\"ambient\"], merged[\"feedstock\"], 1)\nprint(f\"slope feedstock ~ ambient: {b1:.3f}, intercept {b0:.3f}\")\n\n# Small calibration sample for meter noise on outcome\ncal = env.observe(\"replicas_calibracion\", 40)\nprint(\"\\ncal shape:\", cal.shape)\nprint(cal.head())\ndiff = cal[\"outcome__rep1\"] - cal[\"outcome__rep2\"]\navg = 0.5*(cal[\"outcome__rep1\"] + cal[\"outcome__rep2\"])\nprint(\"\\nreplicate stats:\")\nprint({\n    \"corr_reps\": round(cal[\"outcome__rep1\"].corr(cal[\"outcome__rep2\"]), 4),\n    \"sd_diff\": round(diff.std(), 4),\n    \"mean_abs_diff\": round(diff.abs().mean(), 4),\n    \"var_rep\": round(np.var(diff, ddof=1)/2, 4),\n    \"var_avg\": round(avg.var(ddof=1), 4)\n})",
+      "tokens": {
+        "prompt": 6307,
+        "completion": 602,
+        "reasoning": 0
+      },
+      "cell_result": {
+        "ok": false,
+        "stdout": "merged shape: (400, 4)\nmissing ambient: 1.0\n\nCorrelations with ambient:\n               t  ambient  feedstock  outcome\nt          1.000      NaN     -0.738   -0.738\nambient      NaN      NaN        NaN      NaN\nfeedstock -0.738      NaN      1.000    0.576\noutcome   -0.738      NaN      0.576    1.000\nslope ambient ~ t: nan, intercept nan\nslope feedstock ~ t: -5.535, intercept 8.836\nslope outcome ~ t: -15.118, intercept 37.462\n",
+        "error": "Traceback (most recent call last):\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\wager\\harness\\kernel_proc.py\", line 107, in _worker\n    exec(compile(msg[\"code\"], \"<cell>\", \"exec\"), ns)  # noqa: S102\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<cell>\", line 17, in <module>\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\.venv\\Lib\\site-packages\\numpy\\lib\\_polynomial_impl.py\", line 677, in polyfit\n    c, resids, rank, s = lstsq(lhs, rhs, rcond)\n                         ~~~~~^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\.venv\\Lib\\site-packages\\numpy\\linalg\\_linalg.py\", line 2539, in lstsq\n    x, resids, rank, s = _umath_linalg.lstsq(a, b, rcond,\n                         ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^\n                                             signature=signature)\n                                             ^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\.venv\\Lib\\site-packages\\numpy\\linalg\\_linalg.py\", line 156, in _raise_linalgerror_lstsq\n    raise LinAlgError(\"SVD did not converge in Linear Least Squares\")\nnumpy.linalg.LinAlgError: SVD did not converge in Linear Least Squares\n",
+        "truncated": false
+      },
+      "verbs": [
+        {
+          "verb": "observe",
+          "args": {
+            "source": "log_hvac",
+            "n": 400
+          },
+          "cost": 200.0,
+          "budget_remaining": 2320.0,
+          "note": ""
+        }
+      ],
+      "submit_attempts": [],
+      "budget_remaining": 2320.0
+    },
+    {
+      "turn": 6,
+      "reply_text": "REASONING: The failed merge tells me the HVAC log timestamps do not align exactly with my line-record sample, so the latent ambient history is not directly joinable at exact `t`; that means I should not waste more effort there right now. The core causal picture is already clear from the experiments: supplier grade has negligible effect, humidity dominates, line speed matters some, temp little. I still need measurement-noise information for outcome, so the next step is a small calibration read only, and then I can submit a parsimonious structural model that treats observational/ambient regimes as today\u2019s ambient defaults and intervention regimes via the experimentally learned effects.\n```python\nimport numpy as np\nimport pandas as pd\n\ncal = env.observe(\"replicas_calibracion\", 50)\nprint(\"cal shape:\", cal.shape)\nprint(cal.head())\n\ndiff = cal[\"outcome__rep1\"] - cal[\"outcome__rep2\"]\navg = 0.5 * (cal[\"outcome__rep1\"] + cal[\"outcome__rep2\"])\n\nprint(\"\\nreplicate summary:\")\nprint({\n    \"corr_reps\": round(cal[\"outcome__rep1\"].corr(cal[\"outcome__rep2\"]), 4),\n    \"mean_diff\": round(diff.mean(), 4),\n    \"sd_diff\": round(diff.std(ddof=1), 4),\n    \"mean_abs_diff\": round(diff.abs().mean(), 4),\n    \"estimated_meas_var_outcome\": round(diff.var(ddof=1) / 2, 4),\n    \"avg_var_total\": round(avg.var(ddof=1), 4),\n})\n\n# Also compactly print the experimental screening table again for reference\nprint(\"\\nScreening experiment summary:\")\nprint(screen[[\"feedstock_grade\",\"humidity\",\"temp\",\"line_speed\",\"feedstock_mean\",\"outcome_mean\",\"reject_rate\"]].round(3))\n```",
+      "cell": "import numpy as np\nimport pandas as pd\n\ncal = env.observe(\"replicas_calibracion\", 50)\nprint(\"cal shape:\", cal.shape)\nprint(cal.head())\n\ndiff = cal[\"outcome__rep1\"] - cal[\"outcome__rep2\"]\navg = 0.5 * (cal[\"outcome__rep1\"] + cal[\"outcome__rep2\"])\n\nprint(\"\\nreplicate summary:\")\nprint({\n    \"corr_reps\": round(cal[\"outcome__rep1\"].corr(cal[\"outcome__rep2\"]), 4),\n    \"mean_diff\": round(diff.mean(), 4),\n    \"sd_diff\": round(diff.std(ddof=1), 4),\n    \"mean_abs_diff\": round(diff.abs().mean(), 4),\n    \"estimated_meas_var_outcome\": round(diff.var(ddof=1) / 2, 4),\n    \"avg_var_total\": round(avg.var(ddof=1), 4),\n})\n\n# Also compactly print the experimental screening table again for reference\nprint(\"\\nScreening experiment summary:\")\nprint(screen[[\"feedstock_grade\",\"humidity\",\"temp\",\"line_speed\",\"feedstock_mean\",\"outcome_mean\",\"reject_rate\"]].round(3))",
+      "tokens": {
+        "prompt": 7506,
+        "completion": 391,
+        "reasoning": 0
+      },
+      "cell_result": {
+        "ok": true,
+        "stdout": "cal shape: (50, 4)\n          t  feedstock  outcome__rep1  outcome__rep2\n0  0.015344  10.733633      43.109287      42.912030\n1  0.124125   7.207283      38.363306      37.817596\n2  0.295131   8.677775      32.793752      34.941718\n3  0.334580   5.226526      31.327418      30.965700\n4  0.814107   5.533945      28.664839      26.133609\n\nreplicate summary:\n{'corr_reps': np.float64(0.938), 'mean_diff': np.float64(-0.1399), 'sd_diff': np.float64(2.102), 'mean_abs_diff': np.float64(1.6447), 'estimated_meas_var_outcome': np.float64(2.2092), 'avg_var_total': np.float64(33.2568)}\n\nScreening experiment summary:\n   feedstock_grade  humidity  temp  ...  feedstock_mean  outcome_mean  reject_rate\n0              2.0       5.0   5.0  ...           2.942        29.640        0.150\n1              8.0       5.0   5.0  ...           9.126        29.741        0.162\n2              5.0       2.0   5.0  ...           8.546        37.228        0.000\n3              5.0       8.0   5.0  ...           3.345        23.581        0.612\n4              5.0       5.0   2.0  ...           5.927        29.765        0.088\n5              5.0       5.0   8.0  ...           5.982        30.580        0.062\n6              5.0       5.0   5.0  ...           5.938        29.850        0.125\n7              5.0       5.0   5.0  ...           5.961        31.055        0.050\n\n[8 rows x 7 columns]\n",
+        "error": null,
+        "truncated": false
+      },
+      "verbs": [
+        {
+          "verb": "observe",
+          "args": {
+            "source": "replicas_calibracion",
+            "n": 50
+          },
+          "cost": 750.0,
+          "budget_remaining": 1570.0,
+          "note": ""
+        }
+      ],
+      "submit_attempts": [],
+      "budget_remaining": 1570.0
+    },
+    {
+      "turn": 7,
+      "reply_text": "REASONING: I now have enough to converge. The key story is: historical feedstock and outcome moved together because both tracked worsening hall conditions over time; supplier grade strongly shifts measured feedstock but not final quality, so paying for premium supplier should not materially reduce rejects. Humidity is the main causal driver, line speed a smaller one, temp negligible. Replicates show moderate instrument noise on outcome (variance ~2.2), so the process variance should be a bit smaller than the observed variance. I\u2019ll submit a simple generative model: feedstock depends mainly on grade and humidity; outcome depends mainly on humidity and line speed, very weakly on temp and grade, with latent process noise plus measurement noise. For observational/ambient regimes (empty config or partial config), I\u2019ll use baseline centered at today\u2019s ambient around the middle settings, since evaluation of interventions is what matters for the decision.\n```python\ncode = r'''\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    rng = np.random.default_rng(seed)\n\n    cfg = regime.config if hasattr(regime, \"config\") else {}\n\n    # Baseline / ambient defaults (today-like)\n    grade = float(cfg.get(\"feedstock_grade\", 5.0))\n    humidity = float(cfg.get(\"humidity\", 5.0))\n    temp = float(cfg.get(\"temp\", 5.0))\n    line_speed = float(cfg.get(\"line_speed\", 5.0))\n\n    # Feedstock process: strongly set by contracted grade, degraded by humidity a bit\n    # Coefficients inferred from screening experiments\n    feed_mu = 0.15 + 1.03 * grade - 0.87 * (humidity - 5.0)\n    feedstock = rng.normal(feed_mu, 0.85, size=n)\n\n    # Outcome process (true quality): dominated by humidity, some line-speed effect,\n    # very small temp effect, negligible supplier-grade direct effect.\n    true_mu = (\n        30.3\n        - 2.27 * (humidity - 5.0)\n        + 0.20 * (temp - 5.0)\n        + 0.20 * (line_speed - 5.0)\n        + 0.02 * (grade - 5.0)\n    )\n\n    # Process variation and instrument error separated approximately using replicate study\n    true_quality = rng.normal(true_mu, 3.7, size=n)\n    outcome = true_quality + rng.normal(0.0, 1.49, size=n)\n\n    return pd.DataFrame({\n        \"feedstock\": feedstock,\n        \"outcome\": outcome\n    })\n'''\nres = env.submit(code)\nprint(\"accepted:\", res.accepted)\nprint(\"error:\", getattr(res, \"error\", None))\n```",
+      "cell": "code = r'''\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    rng = np.random.default_rng(seed)\n\n    cfg = regime.config if hasattr(regime, \"config\") else {}\n\n    # Baseline / ambient defaults (today-like)\n    grade = float(cfg.get(\"feedstock_grade\", 5.0))\n    humidity = float(cfg.get(\"humidity\", 5.0))\n    temp = float(cfg.get(\"temp\", 5.0))\n    line_speed = float(cfg.get(\"line_speed\", 5.0))\n\n    # Feedstock process: strongly set by contracted grade, degraded by humidity a bit\n    # Coefficients inferred from screening experiments\n    feed_mu = 0.15 + 1.03 * grade - 0.87 * (humidity - 5.0)\n    feedstock = rng.normal(feed_mu, 0.85, size=n)\n\n    # Outcome process (true quality): dominated by humidity, some line-speed effect,\n    # very small temp effect, negligible supplier-grade direct effect.\n    true_mu = (\n        30.3\n        - 2.27 * (humidity - 5.0)\n        + 0.20 * (temp - 5.0)\n        + 0.20 * (line_speed - 5.0)\n        + 0.02 * (grade - 5.0)\n    )\n\n    # Process variation and instrument error separated approximately using replicate study\n    true_quality = rng.normal(true_mu, 3.7, size=n)\n    outcome = true_quality + rng.normal(0.0, 1.49, size=n)\n\n    return pd.DataFrame({\n        \"feedstock\": feedstock,\n        \"outcome\": outcome\n    })\n'''\nres = env.submit(code)\nprint(\"accepted:\", res.accepted)\nprint(\"error:\", getattr(res, \"error\", None))",
+      "tokens": {
+        "prompt": 8510,
+        "completion": 587,
+        "reasoning": 0
+      },
+      "cell_result": {
+        "ok": true,
+        "stdout": "accepted: True\nerror: None\n",
+        "error": null,
+        "truncated": false
+      },
+      "verbs": [
+        {
+          "verb": "submit",
+          "args": {
+            "accepted": true
+          },
+          "cost": 0.0,
+          "budget_remaining": 1570.0,
+          "note": "R=0.763 (server-side)"
+        }
+      ],
+      "submit_attempts": [
+        {
+          "verb": "submit",
+          "args": {
+            "accepted": true
+          },
+          "cost": 0.0,
+          "budget_remaining": 1570.0,
+          "note": "R=0.763 (server-side)"
+        }
+      ],
+      "budget_remaining": 1570.0
+    }
+  ],
+  "_vicio_vivo": {
+    "bloque": 0,
+    "seed": 73,
+    "wall_s": 55.3
+  }
+}

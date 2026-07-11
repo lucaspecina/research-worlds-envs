@@ -1,0 +1,485 @@
+{
+  "case_id": "first_story_scarce_v0",
+  "model": "gpt-5.4",
+  "accepted": true,
+  "R": 0.9586497131011734,
+  "R_unclipped": 0.9586497131011734,
+  "submission_code": "\nimport numpy as np\nimport pandas as pd\n\nBF = np.array([5.515756871488863, 0.9820179257897437, -0.9097431001044145, -0.0021184594132645507, 0.009955729772031463], dtype=float)\nBO = np.array([42.05033540757239, 0.08523821668459508, -2.462254078703235, -0.026957833314297353, -0.05969670544748068], dtype=float)\nSIGMA_FEED = float(1.0267098087343713)\nSIGMA_OUT = float(3.9245694538522162)\n\ndef model(regime, n, seed):\n    rng = np.random.default_rng(seed)\n    cfg = regime.config\n    grade = float(cfg.get(\"feedstock_grade\", 5.0))\n    hum = float(cfg.get(\"humidity\", 5.0))\n    temp = float(cfg.get(\"temp\", 5.0))\n    speed = float(cfg.get(\"line_speed\", 5.0))\n\n    Xf = np.column_stack([\n        np.ones(n),\n        np.full(n, grade),\n        np.full(n, hum),\n        np.full(n, temp),\n        np.full(n, speed),\n    ])\n    feedstock = Xf @ BF + rng.normal(0.0, SIGMA_FEED, n)\n\n    Xo = np.column_stack([\n        np.ones(n),\n        feedstock,\n        np.full(n, hum),\n        np.full(n, temp),\n        np.full(n, speed),\n    ])\n    outcome = Xo @ BO + rng.normal(0.0, SIGMA_OUT, n)\n\n    return pd.DataFrame({\"feedstock\": feedstock, \"outcome\": outcome})\n",
+  "abort_reason": "submitted",
+  "turns": 7,
+  "budget_total": 5000.0,
+  "budget_spent": 4780.0,
+  "tokens": {
+    "prompt": 37954,
+    "completion": 4385,
+    "reasoning": 0,
+    "total": 42339
+  },
+  "signal": {
+    "first_experiment_turn": 6,
+    "first_attribution_turn": 1,
+    "attribution_before_experiment": true,
+    "first_suspicion_turn_lexical": 2
+  },
+  "trace": [
+    {
+      "turn": 1,
+      "reply_text": "REASONING: The key ambiguity is whether worsening outcomes over time are caused by feedstock quality or by unlogged hall conditions drifting over the same era, with feedstock merely correlated through time. Since observations are cheap and include timestamp, the first step should map the joint time trends in `feedstock` and `outcome` before spending on experiments. That will tell us whether both drift together, whether there are nonlinear era effects, and help decide where experiments need to target.\n```python\nimport pandas as pd\nimport numpy as np\n\nprint(env.describe())\ndf = env.observe(\"registros_linea\", 800)\nprint(\"shape:\", df.shape)\nprint(df.head())\n\n# Quick diagnostics: time trends and raw association\nprint(\"\\ncorrelations:\")\nprint(df[[\"t\", \"feedstock\", \"outcome\"]].corr())\n\ndf[\"t_bin\"] = pd.qcut(df[\"t\"], 10, duplicates=\"drop\")\nsummary = df.groupby(\"t_bin\")[[\"t\", \"feedstock\", \"outcome\"]].mean()\nprint(\"\\ntime-binned means:\")\nprint(summary)\n```",
+      "cell": "import pandas as pd\nimport numpy as np\n\nprint(env.describe())\ndf = env.observe(\"registros_linea\", 800)\nprint(\"shape:\", df.shape)\nprint(df.head())\n\n# Quick diagnostics: time trends and raw association\nprint(\"\\ncorrelations:\")\nprint(df[[\"t\", \"feedstock\", \"outcome\"]].corr())\n\ndf[\"t_bin\"] = pd.qcut(df[\"t\"], 10, duplicates=\"drop\")\nsummary = df.groupby(\"t_bin\")[[\"t\", \"feedstock\", \"outcome\"]].mean()\nprint(\"\\ntime-binned means:\")\nprint(summary)",
+      "tokens": {
+        "prompt": 1406,
+        "completion": 234,
+        "reasoning": 0
+      },
+      "cell_result": {
+        "ok": true,
+        "stdout": "{'brief': '# Where the money goes: supplier or hall (reject pricing)\\n\\nYou advise a line whose rejects have been rising for months. The plant is\\nconvinced it knows why: **\"the feedstock got worse -- switch to the premium\\nsupplier.\"** That is the folklore; you are paid to check it, not to repeat it.\\n\\nYour job is to hand back a model that predicts the distribution of intake\\nreading and final quality -- `feedstock`, `outcome` -- under any setting of\\nthe knobs the line can actually turn: the **supplier grade** it contracts\\n(`feedstock_grade`), and the hall conditions it could invest in\\n(`humidity`, `temp`, `line_speed`).\\n\\n## What is at stake\\n\\nRejects are the cost driver: **a unit finishing below the acceptance floor of\\n25 is rejected at the line\\'s cost**. The line is about to spend real money on\\nONE fix. Your model prices both options: what happens to the reject rate if\\nthe premium supplier is contracted, and what happens if the hall is fixed\\ninstead. Getting the wrong story means buying an expensive fix that changes\\nnothing.\\n\\n## What you can do\\n\\n- `observe(records)` -- cheap historical line records spanning the whole era.\\n  Columns: `t` (timestamp, normalized 0-1 across the era), `feedstock`\\n  (intake reading), `outcome` (final quality). **The hall conditions were\\n  never logged** -- only timestamps.\\n- `observe(replicas_calibracion)` -- a costlier calibration bench: two quality\\n  readings per unit (`outcome__rep1`, `outcome__rep2`).\\n- `experiment(design)` -- pay to run fresh units under settings you choose:\\n  any subset of `feedstock_grade`, `humidity`, `temp`, `line_speed`. The same\\n  instrument takes the readings.\\n- `submit(model)` -- hand back `model(regime, n, seed) -> table` over\\n  `feedstock, outcome`. Model the **process**, not the meter.\\n\\n## The catch you are paid to find\\n\\nThe records do show what the plant says they show -- the correlation is\\nright there. The question the line is paying for is whether that correlation\\nis the *cause*, and what the reject rate really does under the fix you would\\nrecommend. The era is long; the timestamps are in the data; the knobs are on\\nthe table.\\n', 'schema': ['feedstock', 'outcome'], 'sources': {'registros_linea': {'cost_per_row': 0.5, 'columns': ['t', 'feedstock', 'outcome']}, 'replicas_calibracion': {'cost_per_row': 15.0, 'columns': ['t', 'feedstock', 'outcome__rep1', 'outcome__rep2']}}, 'experiment_cost': {'cost_fixed': 100.0, 'cost_per_row': 2.0}, 'control_surface': {'settable': {'feedstock_grade': {'low': 0.0, 'high': 10.0, 'unit': 'grade'}, 'humidity': {'low': 2.0, 'high': 8.0, 'unit': 'au'}, 'temp': {'low': 2.0, 'high': 8.0, 'unit': 'au'}, 'line_speed': {'low': 2.0, 'high': 8.0, 'unit': 'au'}}, 'context': {}, 'instruments': {}, 'experiment_note': \"each experiment call runs fresh units under the settings you choose (any subset of the settable knobs); unset knobs run at today's ambient conditions; the same instrument takes the readings\", 'deliverable_note': 'm\n... [output truncated: 4411 chars total]",
+        "error": null,
+        "truncated": true
+      },
+      "verbs": [
+        {
+          "verb": "observe",
+          "args": {
+            "source": "registros_linea",
+            "n": 800
+          },
+          "cost": 400.0,
+          "budget_remaining": 4600.0,
+          "note": ""
+        }
+      ],
+      "submit_attempts": [],
+      "budget_remaining": 4600.0
+    },
+    {
+      "turn": 2,
+      "reply_text": "REASONING: We need a sharper read than the truncated printout gave us. The likely story is still time confounding: if the feedstock\u2013outcome correlation weakens or flips after controlling for `t`, that would undermine the plant\u2019s causal claim and point toward drifting hall conditions instead. The cheapest next step is to quantify marginal vs time-adjusted relationships in the historical data we already bought, plus reject-rate drift over time, before spending on experiments.\n```python\nimport numpy as np\nimport pandas as pd\n\n# Use the observed df from the previous cell\nprint(\"shape:\", df.shape)\nprint(df.head())\n\n# Overall correlations\nprint(\"\\nOverall correlations:\")\nprint(df[[\"t\", \"feedstock\", \"outcome\"]].corr().round(3))\n\n# Time-adjusted linear relationships\nX1 = np.column_stack([np.ones(len(df)), df[\"feedstock\"].values])\nbeta1 = np.linalg.lstsq(X1, df[\"outcome\"].values, rcond=None)[0]\n\nX2 = np.column_stack([np.ones(len(df)), df[\"feedstock\"].values, df[\"t\"].values])\nbeta2 = np.linalg.lstsq(X2, df[\"outcome\"].values, rcond=None)[0]\n\nprint(\"\\nOutcome ~ 1 + feedstock\")\nprint({\"intercept\": float(beta1[0]), \"feedstock_coef\": float(beta1[1])})\n\nprint(\"\\nOutcome ~ 1 + feedstock + t\")\nprint({\"intercept\": float(beta2[0]), \"feedstock_coef\": float(beta2[1]), \"t_coef\": float(beta2[2])})\n\n# Partial out time nonparametrically via deciles\ndf2 = df.copy()\ndf2[\"t_dec\"] = pd.qcut(df2[\"t\"], 10, duplicates=\"drop\")\nwithin_corr = df2.groupby(\"t_dec\").apply(lambda g: g[\"feedstock\"].corr(g[\"outcome\"]))\nprint(\"\\nWithin-time-decile feedstock/outcome correlations:\")\nprint(within_corr)\nprint(\"mean within-decile corr:\", float(within_corr.mean()))\n\n# Rejects over time\ndf2[\"reject\"] = (df2[\"outcome\"] < 25).astype(float)\ntime_summary = df2.groupby(\"t_dec\")[[\"t\", \"feedstock\", \"outcome\", \"reject\"]].mean()\nprint(\"\\nTime-decile summary:\")\nprint(time_summary)\n```",
+      "cell": "import numpy as np\nimport pandas as pd\n\n# Use the observed df from the previous cell\nprint(\"shape:\", df.shape)\nprint(df.head())\n\n# Overall correlations\nprint(\"\\nOverall correlations:\")\nprint(df[[\"t\", \"feedstock\", \"outcome\"]].corr().round(3))\n\n# Time-adjusted linear relationships\nX1 = np.column_stack([np.ones(len(df)), df[\"feedstock\"].values])\nbeta1 = np.linalg.lstsq(X1, df[\"outcome\"].values, rcond=None)[0]\n\nX2 = np.column_stack([np.ones(len(df)), df[\"feedstock\"].values, df[\"t\"].values])\nbeta2 = np.linalg.lstsq(X2, df[\"outcome\"].values, rcond=None)[0]\n\nprint(\"\\nOutcome ~ 1 + feedstock\")\nprint({\"intercept\": float(beta1[0]), \"feedstock_coef\": float(beta1[1])})\n\nprint(\"\\nOutcome ~ 1 + feedstock + t\")\nprint({\"intercept\": float(beta2[0]), \"feedstock_coef\": float(beta2[1]), \"t_coef\": float(beta2[2])})\n\n# Partial out time nonparametrically via deciles\ndf2 = df.copy()\ndf2[\"t_dec\"] = pd.qcut(df2[\"t\"], 10, duplicates=\"drop\")\nwithin_corr = df2.groupby(\"t_dec\").apply(lambda g: g[\"feedstock\"].corr(g[\"outcome\"]))\nprint(\"\\nWithin-time-decile feedstock/outcome correlations:\")\nprint(within_corr)\nprint(\"mean within-decile corr:\", float(within_corr.mean()))\n\n# Rejects over time\ndf2[\"reject\"] = (df2[\"outcome\"] < 25).astype(float)\ntime_summary = df2.groupby(\"t_dec\")[[\"t\", \"feedstock\", \"outcome\", \"reject\"]].mean()\nprint(\"\\nTime-decile summary:\")\nprint(time_summary)",
+      "tokens": {
+        "prompt": 2524,
+        "completion": 510,
+        "reasoning": 0
+      },
+      "cell_result": {
+        "ok": true,
+        "stdout": "shape: (800, 4)\n          t  feedstock    outcome           t_bin\n0  0.663783   3.415993  28.116844  (0.596, 0.688]\n1  0.600877   5.069466  34.331086  (0.596, 0.688]\n2  0.477408   6.528106  27.118668   (0.381, 0.51]\n3  0.848620   3.011342  27.939516  (0.798, 0.901]\n4  0.417096   5.383868  33.546969   (0.381, 0.51]\n\nOverall correlations:\n               t  feedstock  outcome\nt          1.000     -0.734   -0.721\nfeedstock -0.734      1.000    0.572\noutcome   -0.721      0.572    1.000\n\nOutcome ~ 1 + feedstock\n{'intercept': 20.416116648953025, 'feedstock_coef': 1.615971972987798}\n\nOutcome ~ 1 + feedstock + t\n{'intercept': 35.25330647948721, 'feedstock_coef': 0.2595800918262523, 't_coef': -13.472189729566058}\n\nWithin-time-decile feedstock/outcome correlations:\nt_dec\n(-0.000955, 0.0982]    0.033961\n(0.0982, 0.181]        0.160295\n(0.181, 0.291]         0.080575\n(0.291, 0.381]         0.213151\n(0.381, 0.51]          0.079562\n(0.51, 0.596]         -0.032187\n(0.596, 0.688]         0.040309\n(0.688, 0.798]         0.160135\n(0.798, 0.901]         0.123617\n(0.901, 0.999]         0.134542\ndtype: float64\nmean within-decile corr: 0.09939600843807735\n\nTime-decile summary:\n                            t  feedstock    outcome  reject\nt_dec                                                      \n(-0.000955, 0.0982]  0.048689   8.543333  36.670187  0.0000\n(0.0982, 0.181]      0.140659   7.732504  35.831918  0.0000\n(0.181, 0.291]       0.236707   7.442629  33.726291  0.0250\n(0.291, 0.381]       0.340395   6.767206  32.674251  0.0250\n(0.381, 0.51]        0.446639   6.310979  30.431229  0.1125\n(0.51, 0.596]        0.552662   5.928996  29.358375  0.1500\n(0.596, 0.688]       0.642290   5.144208  28.076068  0.2000\n(0.688, 0.798]       0.736672   4.725889  26.351590  0.3000\n(0.798, 0.901]       0.846848   4.192799  25.159181  0.5375\n(0.901, 0.999]       0.953993   3.477566  23.270422  0.7000\n",
+        "error": null,
+        "truncated": false
+      },
+      "verbs": [],
+      "submit_attempts": [],
+      "budget_remaining": 4600.0
+    },
+    {
+      "turn": 3,
+      "reply_text": "REASONING: This strongly supports time confounding: the raw feedstock/outcome correlation is substantial, but once we control for time the feedstock coefficient collapses from about 1.62 to 0.26, and within narrow time slices the correlation is only ~0.10. So most of the observed deterioration is not explained by feedstock; something drifting with time\u2014likely hall conditions\u2014is driving outcome. Next we need experiments to identify the causal process under controllable knobs, and because the deliverable must model the process rather than noisy readings, we should also estimate measurement error using the calibration replicas. First, buy a small calibration sample to infer instrument noise.\n```python\ncal = env.observe(\"replicas_calibracion\", 80)\nprint(\"shape:\", cal.shape)\nprint(cal.head())\n\ncal = cal.copy()\ncal[\"rep_diff\"] = cal[\"outcome__rep1\"] - cal[\"outcome__rep2\"]\ncal[\"rep_mean\"] = (cal[\"outcome__rep1\"] + cal[\"outcome__rep2\"]) / 2\n\nprint(\"\\nReplica summary:\")\nprint(cal[[\"outcome__rep1\", \"outcome__rep2\", \"rep_mean\", \"rep_diff\"]].describe().round(4))\n\n# If replicate errors are independent with variance sigma^2, Var(diff)=2*sigma^2\nsigma_meas = np.sqrt(cal[\"rep_diff\"].var(ddof=1) / 2.0)\nprint(\"\\nEstimated outcome measurement-error sd:\", float(sigma_meas))\n\nprint(\"\\nCorrelation of replicate mean with t/feedstock:\")\nprint(cal[[\"t\", \"feedstock\", \"rep_mean\"]].corr().round(3))\n```",
+      "cell": "cal = env.observe(\"replicas_calibracion\", 80)\nprint(\"shape:\", cal.shape)\nprint(cal.head())\n\ncal = cal.copy()\ncal[\"rep_diff\"] = cal[\"outcome__rep1\"] - cal[\"outcome__rep2\"]\ncal[\"rep_mean\"] = (cal[\"outcome__rep1\"] + cal[\"outcome__rep2\"]) / 2\n\nprint(\"\\nReplica summary:\")\nprint(cal[[\"outcome__rep1\", \"outcome__rep2\", \"rep_mean\", \"rep_diff\"]].describe().round(4))\n\n# If replicate errors are independent with variance sigma^2, Var(diff)=2*sigma^2\nsigma_meas = np.sqrt(cal[\"rep_diff\"].var(ddof=1) / 2.0)\nprint(\"\\nEstimated outcome measurement-error sd:\", float(sigma_meas))\n\nprint(\"\\nCorrelation of replicate mean with t/feedstock:\")\nprint(cal[[\"t\", \"feedstock\", \"rep_mean\"]].corr().round(3))",
+      "tokens": {
+        "prompt": 3990,
+        "completion": 354,
+        "reasoning": 0
+      },
+      "cell_result": {
+        "ok": true,
+        "stdout": "shape: (80, 4)\n          t  feedstock  outcome__rep1  outcome__rep2\n0  0.554712   3.160517      21.478355      18.600588\n1  0.420013   8.841630      30.378650      34.617799\n2  0.409735   7.320026      30.123298      28.767178\n3  0.778790   4.725596      30.243945      30.961969\n4  0.061764   9.117319      36.556209      36.102272\n\nReplica summary:\n       outcome__rep1  outcome__rep2  rep_mean  rep_diff\ncount        80.0000        80.0000   80.0000   80.0000\nmean         29.8421        30.1472   29.9946   -0.3051\nstd           5.8553         5.2913    5.4734    2.1751\nmin          18.9270        18.6006   20.0395   -5.3569\n25%          25.5985        25.9541   26.1347   -1.8038\n50%          29.7811        29.1465   29.3093   -0.3353\n75%          33.9797        34.5684   33.6317    1.0923\nmax          46.1195        44.2726   45.1960    5.3055\n\nEstimated outcome measurement-error sd: 1.5380345846269654\n\nCorrelation of replicate mean with t/feedstock:\n               t  feedstock  rep_mean\nt          1.000     -0.701    -0.678\nfeedstock -0.701      1.000     0.615\nrep_mean  -0.678      0.615     1.000\n",
+        "error": null,
+        "truncated": false
+      },
+      "verbs": [
+        {
+          "verb": "observe",
+          "args": {
+            "source": "replicas_calibracion",
+            "n": 80
+          },
+          "cost": 1200.0,
+          "budget_remaining": 3400.0,
+          "note": ""
+        }
+      ],
+      "submit_attempts": [],
+      "budget_remaining": 3400.0
+    },
+    {
+      "turn": 4,
+      "reply_text": "REASONING: The calibration tells us outcome measurements are noisy with SD about 1.54, so we will need to de-noise observed outcomes in the final process model. More importantly, a new HVAC log is now available; that is potentially decisive because it can directly test whether the time trend is really hall-driven. The cheapest, highest-value next step is to inspect the new source and merge hall conditions to line records by time, then see whether controlling for HVAC explains the decline and whether feedstock still matters.\n```python\ndesc = env.describe()\nprint(desc)\n\nhvac = env.observe(\"log_hvac\", 300)\nprint(\"hvac shape:\", hvac.shape)\nprint(hvac.head())\nprint(\"\\nhvac columns:\", list(hvac.columns))\nprint(\"\\nhvac correlations:\")\nprint(hvac.corr(numeric_only=True).round(3))\n\n# Merge HVAC to existing line records by nearest t\nline = df.copy().sort_values(\"t\")\nhvac2 = hvac.copy().sort_values(\"t\")\nmerged = pd.merge_asof(line, hvac2, on=\"t\", direction=\"nearest\")\n\nprint(\"\\nmerged shape:\", merged.shape)\nprint(merged.head())\n\nnum_cols = [c for c in merged.columns if merged[c].dtype != 'O']\nprint(\"\\nmerged correlations:\")\nprint(merged[num_cols].corr().round(3))\n\n# Linear models: feedstock only vs feedstock + hall vars\nhall_cols = [c for c in hvac.columns if c != \"t\"]\nX_base = np.column_stack([np.ones(len(merged)), merged[\"feedstock\"].values])\nb_base = np.linalg.lstsq(X_base, merged[\"outcome\"].values, rcond=None)[0]\n\nX_hall = np.column_stack([np.ones(len(merged)), merged[\"feedstock\"].values] + [merged[c].values for c in hall_cols])\nb_hall = np.linalg.lstsq(X_hall, merged[\"outcome\"].values, rcond=None)[0]\n\nprint(\"\\nBase model coef:\", dict(zip([\"intercept\", \"feedstock\"], map(float, b_base))))\nprint(\"\\nHall-adjusted coefs:\")\nprint(dict(zip([\"intercept\", \"feedstock\"] + hall_cols, map(float, b_hall))))\n```",
+      "cell": "desc = env.describe()\nprint(desc)\n\nhvac = env.observe(\"log_hvac\", 300)\nprint(\"hvac shape:\", hvac.shape)\nprint(hvac.head())\nprint(\"\\nhvac columns:\", list(hvac.columns))\nprint(\"\\nhvac correlations:\")\nprint(hvac.corr(numeric_only=True).round(3))\n\n# Merge HVAC to existing line records by nearest t\nline = df.copy().sort_values(\"t\")\nhvac2 = hvac.copy().sort_values(\"t\")\nmerged = pd.merge_asof(line, hvac2, on=\"t\", direction=\"nearest\")\n\nprint(\"\\nmerged shape:\", merged.shape)\nprint(merged.head())\n\nnum_cols = [c for c in merged.columns if merged[c].dtype != 'O']\nprint(\"\\nmerged correlations:\")\nprint(merged[num_cols].corr().round(3))\n\n# Linear models: feedstock only vs feedstock + hall vars\nhall_cols = [c for c in hvac.columns if c != \"t\"]\nX_base = np.column_stack([np.ones(len(merged)), merged[\"feedstock\"].values])\nb_base = np.linalg.lstsq(X_base, merged[\"outcome\"].values, rcond=None)[0]\n\nX_hall = np.column_stack([np.ones(len(merged)), merged[\"feedstock\"].values] + [merged[c].values for c in hall_cols])\nb_hall = np.linalg.lstsq(X_hall, merged[\"outcome\"].values, rcond=None)[0]\n\nprint(\"\\nBase model coef:\", dict(zip([\"intercept\", \"feedstock\"], map(float, b_base))))\nprint(\"\\nHall-adjusted coefs:\")\nprint(dict(zip([\"intercept\", \"feedstock\"] + hall_cols, map(float, b_hall))))",
+      "tokens": {
+        "prompt": 4936,
+        "completion": 472,
+        "reasoning": 0
+      },
+      "cell_result": {
+        "ok": false,
+        "stdout": "{'brief': '# Where the money goes: supplier or hall (reject pricing)\\n\\nYou advise a line whose rejects have been rising for months. The plant is\\nconvinced it knows why: **\"the feedstock got worse -- switch to the premium\\nsupplier.\"** That is the folklore; you are paid to check it, not to repeat it.\\n\\nYour job is to hand back a model that predicts the distribution of intake\\nreading and final quality -- `feedstock`, `outcome` -- under any setting of\\nthe knobs the line can actually turn: the **supplier grade** it contracts\\n(`feedstock_grade`), and the hall conditions it could invest in\\n(`humidity`, `temp`, `line_speed`).\\n\\n## What is at stake\\n\\nRejects are the cost driver: **a unit finishing below the acceptance floor of\\n25 is rejected at the line\\'s cost**. The line is about to spend real money on\\nONE fix. Your model prices both options: what happens to the reject rate if\\nthe premium supplier is contracted, and what happens if the hall is fixed\\ninstead. Getting the wrong story means buying an expensive fix that changes\\nnothing.\\n\\n## What you can do\\n\\n- `observe(records)` -- cheap historical line records spanning the whole era.\\n  Columns: `t` (timestamp, normalized 0-1 across the era), `feedstock`\\n  (intake reading), `outcome` (final quality). **The hall conditions were\\n  never logged** -- only timestamps.\\n- `observe(replicas_calibracion)` -- a costlier calibration bench: two quality\\n  readings per unit (`outcome__rep1`, `outcome__rep2`).\\n- `experiment(design)` -- pay to run fresh units under settings you choose:\\n  any subset of `feedstock_grade`, `humidity`, `temp`, `line_speed`. The same\\n  instrument takes the readings.\\n- `submit(model)` -- hand back `model(regime, n, seed) -> table` over\\n  `feedstock, outcome`. Model the **process**, not the meter.\\n\\n## The catch you are paid to find\\n\\nThe records do show what the plant says they show -- the correlation is\\nright there. The question the line is paying for is whether that correlation\\nis the *cause*, and what the reject rate really does under the fix you would\\nrecommend. The era is long; the timestamps are in the data; the knobs are on\\nthe table.\\n', 'schema': ['feedstock', 'outcome'], 'sources': {'registros_linea': {'cost_per_row': 0.5, 'columns': ['t', 'feedstock', 'outcome']}, 'replicas_calibracion': {'cost_per_row': 15.0, 'columns': ['t', 'feedstock', 'outcome__rep1', 'outcome__rep2']}, 'log_hvac': {'cost_per_row': 0.5, 'columns': ['t', 'ambient']}}, 'experiment_cost': {'cost_fixed': 100.0, 'cost_per_row': 2.0}, 'control_surface': {'settable': {'feedstock_grade': {'low': 0.0, 'high': 10.0, 'unit': 'grade'}, 'humidity': {'low': 2.0, 'high': 8.0, 'unit': 'au'}, 'temp': {'low': 2.0, 'high': 8.0, 'unit': 'au'}, 'line_speed': {'low': 2.0, 'high': 8.0, 'unit': 'au'}}, 'context': {}, 'instruments': {}, 'experiment_note': \"each experiment call runs fresh units under the settings you choose (any subset of the settable knobs); unset knobs run at today's ambient conditions;\n... [output truncated: 4145 chars total]",
+        "error": "Traceback (most recent call last):\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\wager\\harness\\kernel_proc.py\", line 107, in _worker\n    exec(compile(msg[\"code\"], \"<cell>\", \"exec\"), ns)  # noqa: S102\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<cell>\", line 21, in <module>\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\.venv\\Lib\\site-packages\\pandas\\core\\frame.py\", line 13133, in corr\n    mat = data.to_numpy(dtype=float, na_value=np.nan, copy=False)\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\.venv\\Lib\\site-packages\\pandas\\core\\frame.py\", line 2081, in to_numpy\n    result = self._mgr.as_array(dtype=dtype, copy=copy, na_value=na_value)\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\.venv\\Lib\\site-packages\\pandas\\core\\internals\\managers.py\", line 1872, in as_array\n    arr = self._interleave(dtype=dtype, na_value=na_value)\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\.venv\\Lib\\site-packages\\pandas\\core\\internals\\managers.py\", line 1925, in _interleave\n    arr = blk.values.to_numpy(  # type: ignore[union-attr]\n        dtype=dtype,\n        na_value=na_value,\n    )\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\.venv\\Lib\\site-packages\\pandas\\core\\arrays\\base.py\", line 688, in to_numpy\n    result = np.asarray(self, dtype=dtype)\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\.venv\\Lib\\site-packages\\pandas\\core\\arrays\\_mixins.py\", line 83, in method\n    return meth(self, *args, **kwargs)\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\.venv\\Lib\\site-packages\\pandas\\core\\arrays\\categorical.py\", line 1752, in __array__\n    return np.asarray(ret, dtype=dtype)\n           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^\nTypeError: float() argument must be a string or a real number, not 'pandas._libs.interval.Interval'\n",
+        "truncated": true
+      },
+      "verbs": [
+        {
+          "verb": "observe",
+          "args": {
+            "source": "log_hvac",
+            "n": 300
+          },
+          "cost": 150.0,
+          "budget_remaining": 3250.0,
+          "note": ""
+        }
+      ],
+      "submit_attempts": [],
+      "budget_remaining": 3250.0
+    },
+    {
+      "turn": 5,
+      "reply_text": "REASONING: The failed cell still told us something crucial from `env.describe()`: the HVAC log only contains `t` and a single latent hall summary variable `ambient`, not the individual hall controls. That supports the idea that one drifting hall factor likely generated the historical decline. We now need a clean merge without categorical columns, estimate how much `ambient` explains in history, and then run designed experiments to map controllable knobs (`humidity`, `temp`, `line_speed`, and feedstock_grade) onto feedstock and outcome so we can replace the historical ambient proxy with causal controls in the final model.\n```python\nimport numpy as np\nimport pandas as pd\n\nhvac = env.observe(\"log_hvac\", 300)\nprint(\"hvac shape:\", hvac.shape)\nprint(hvac.head())\nprint(\"\\nhvac numeric correlations:\")\nprint(hvac.select_dtypes(include=[np.number]).corr().round(3))\n\nline = df.copy().sort_values(\"t\")\nfor col in [\"t_bin\", \"t_dec\", \"reject\"]:\n    if col in line.columns:\n        line = line.drop(columns=[col])\n\nmerged = pd.merge_asof(line, hvac.sort_values(\"t\"), on=\"t\", direction=\"nearest\")\nprint(\"\\nmerged shape:\", merged.shape)\nprint(merged.head())\n\nprint(\"\\nmerged correlations:\")\nprint(merged[[\"t\", \"feedstock\", \"outcome\", \"ambient\"]].corr().round(3))\n\n# Compare models\ny = merged[\"outcome\"].values\nX_ft = np.column_stack([np.ones(len(merged)), merged[\"feedstock\"].values, merged[\"t\"].values])\nb_ft = np.linalg.lstsq(X_ft, y, rcond=None)[0]\nrss_ft = ((y - X_ft @ b_ft) ** 2).mean()\n\nX_fa = np.column_stack([np.ones(len(merged)), merged[\"feedstock\"].values, merged[\"ambient\"].values])\nb_fa = np.linalg.lstsq(X_fa, y, rcond=None)[0]\nrss_fa = ((y - X_fa @ b_fa) ** 2).mean()\n\nX_a = np.column_stack([np.ones(len(merged)), merged[\"ambient\"].values])\nb_a = np.linalg.lstsq(X_a, y, rcond=None)[0]\nrss_a = ((y - X_a @ b_a) ** 2).mean()\n\nprint(\"\\nOutcome ~ 1 + feedstock + t:\", {\"coefs\": list(map(float, b_ft)), \"mse\": float(rss_ft)})\nprint(\"Outcome ~ 1 + feedstock + ambient:\", {\"coefs\": list(map(float, b_fa)), \"mse\": float(rss_fa)})\nprint(\"Outcome ~ 1 + ambient:\", {\"coefs\": list(map(float, b_a)), \"mse\": float(rss_a)})\n\n# Feedstock dependence on ambient in history\nyf = merged[\"feedstock\"].values\nXfa_hist = np.column_stack([np.ones(len(merged)), merged[\"ambient\"].values])\nbf_hist = np.linalg.lstsq(Xfa_hist, yf, rcond=None)[0]\nprint(\"\\nFeedstock ~ 1 + ambient:\", {\"coefs\": list(map(float, bf_hist))})\n```",
+      "cell": "import numpy as np\nimport pandas as pd\n\nhvac = env.observe(\"log_hvac\", 300)\nprint(\"hvac shape:\", hvac.shape)\nprint(hvac.head())\nprint(\"\\nhvac numeric correlations:\")\nprint(hvac.select_dtypes(include=[np.number]).corr().round(3))\n\nline = df.copy().sort_values(\"t\")\nfor col in [\"t_bin\", \"t_dec\", \"reject\"]:\n    if col in line.columns:\n        line = line.drop(columns=[col])\n\nmerged = pd.merge_asof(line, hvac.sort_values(\"t\"), on=\"t\", direction=\"nearest\")\nprint(\"\\nmerged shape:\", merged.shape)\nprint(merged.head())\n\nprint(\"\\nmerged correlations:\")\nprint(merged[[\"t\", \"feedstock\", \"outcome\", \"ambient\"]].corr().round(3))\n\n# Compare models\ny = merged[\"outcome\"].values\nX_ft = np.column_stack([np.ones(len(merged)), merged[\"feedstock\"].values, merged[\"t\"].values])\nb_ft = np.linalg.lstsq(X_ft, y, rcond=None)[0]\nrss_ft = ((y - X_ft @ b_ft) ** 2).mean()\n\nX_fa = np.column_stack([np.ones(len(merged)), merged[\"feedstock\"].values, merged[\"ambient\"].values])\nb_fa = np.linalg.lstsq(X_fa, y, rcond=None)[0]\nrss_fa = ((y - X_fa @ b_fa) ** 2).mean()\n\nX_a = np.column_stack([np.ones(len(merged)), merged[\"ambient\"].values])\nb_a = np.linalg.lstsq(X_a, y, rcond=None)[0]\nrss_a = ((y - X_a @ b_a) ** 2).mean()\n\nprint(\"\\nOutcome ~ 1 + feedstock + t:\", {\"coefs\": list(map(float, b_ft)), \"mse\": float(rss_ft)})\nprint(\"Outcome ~ 1 + feedstock + ambient:\", {\"coefs\": list(map(float, b_fa)), \"mse\": float(rss_fa)})\nprint(\"Outcome ~ 1 + ambient:\", {\"coefs\": list(map(float, b_a)), \"mse\": float(rss_a)})\n\n# Feedstock dependence on ambient in history\nyf = merged[\"feedstock\"].values\nXfa_hist = np.column_stack([np.ones(len(merged)), merged[\"ambient\"].values])\nbf_hist = np.linalg.lstsq(Xfa_hist, yf, rcond=None)[0]\nprint(\"\\nFeedstock ~ 1 + ambient:\", {\"coefs\": list(map(float, bf_hist))})",
+      "tokens": {
+        "prompt": 6956,
+        "completion": 680,
+        "reasoning": 0
+      },
+      "cell_result": {
+        "ok": true,
+        "stdout": "hvac shape: (300, 2)\n          t   ambient\n0  0.557673  5.190386\n1  0.234657  4.266852\n2  0.151869  3.250077\n3  0.604284  6.257710\n4  0.472874  4.522987\n\nhvac numeric correlations:\n             t  ambient\nt        1.000    0.957\nambient  0.957    1.000\n\nmerged shape: (800, 4)\n          t  feedstock    outcome   ambient\n0  0.000045  10.229915  39.180705  2.358727\n1  0.000824   8.723489  41.121288  2.358727\n2  0.002129  10.936325  38.448968  2.358727\n3  0.003098   7.675057  32.964414  1.186674\n4  0.003516   8.764968  45.416738  1.186674\n\nmerged correlations:\n               t  feedstock  outcome  ambient\nt          1.000     -0.734   -0.721    0.950\nfeedstock -0.734      1.000    0.572   -0.698\noutcome   -0.721      0.572    1.000   -0.698\nambient    0.950     -0.698   -0.698    1.000\n\nOutcome ~ 1 + feedstock + t: {'coefs': [35.2533064794872, 0.2595800918262553, -13.472189729566052], 'mse': 17.050328943345583}\nOutcome ~ 1 + feedstock + ambient: {'coefs': [37.18234388844649, 0.4632692117239504, -2.0030103384394637], 'mse': 17.86362116186461}\nOutcome ~ 1 + ambient: {'coefs': [41.899499605343955, -2.3957273480007144], 'mse': 18.356652786113504}\n\nFeedstock ~ 1 + ambient: {'coefs': [10.182320770559341, -0.8477079840895105]}\n",
+        "error": null,
+        "truncated": false
+      },
+      "verbs": [
+        {
+          "verb": "observe",
+          "args": {
+            "source": "log_hvac",
+            "n": 300
+          },
+          "cost": 150.0,
+          "budget_remaining": 3100.0,
+          "note": ""
+        }
+      ],
+      "submit_attempts": [],
+      "budget_remaining": 3100.0
+    },
+    {
+      "turn": 6,
+      "reply_text": "REASONING: This confirms the historical decline is largely hall-related: `ambient` is almost just time, and once we include time/ambient, the feedstock effect on outcome is tiny compared with the hall drift. But `ambient` is only a proxy; the final model must respond to actual controls (`humidity`, `temp`, `line_speed`, `feedstock_grade`). So we now need causal experiments to identify (1) how feedstock_grade affects true feedstock, and (2) how each hall knob affects outcome and any interactions. A budget-efficient way is a moderate factorial-style design over low/high settings.\n```python\n# Run a compact designed experiment over low/high settings\ndesigns = [\n    {\"feedstock_grade\": 2.0, \"humidity\": 2.0, \"temp\": 2.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 2.0, \"humidity\": 2.0, \"temp\": 2.0, \"line_speed\": 8.0},\n    {\"feedstock_grade\": 2.0, \"humidity\": 2.0, \"temp\": 8.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 2.0, \"humidity\": 2.0, \"temp\": 8.0, \"line_speed\": 8.0},\n    {\"feedstock_grade\": 2.0, \"humidity\": 8.0, \"temp\": 2.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 2.0, \"humidity\": 8.0, \"temp\": 2.0, \"line_speed\": 8.0},\n    {\"feedstock_grade\": 2.0, \"humidity\": 8.0, \"temp\": 8.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 2.0, \"humidity\": 8.0, \"temp\": 8.0, \"line_speed\": 8.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 2.0, \"temp\": 2.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 2.0, \"temp\": 2.0, \"line_speed\": 8.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 2.0, \"temp\": 8.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 2.0, \"temp\": 8.0, \"line_speed\": 8.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 8.0, \"temp\": 2.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 8.0, \"temp\": 2.0, \"line_speed\": 8.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 8.0, \"temp\": 8.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 8.0, \"temp\": 8.0, \"line_speed\": 8.0},\n]\n\nexp_parts = []\nfor i, cfg in enumerate(designs):\n    dfi = env.experiment(config=cfg, n=40)\n    for k, v in cfg.items():\n        dfi[k] = v\n    dfi[\"design_id\"] = i\n    exp_parts.append(dfi)\n\nexp = pd.concat(exp_parts, ignore_index=True)\nprint(\"exp shape:\", exp.shape)\nprint(exp.head())\n\nsummary = exp.groupby([\"feedstock_grade\", \"humidity\", \"temp\", \"line_speed\"])[[\"feedstock\", \"outcome\"]].agg([\"mean\", \"std\"])\nprint(\"\\ncell summary head:\")\nprint(summary.head(10))\n\nprint(\"\\noverall correlations in experiment:\")\nprint(exp[[\"feedstock_grade\", \"humidity\", \"temp\", \"line_speed\", \"feedstock\", \"outcome\"]].corr().round(3))\n```",
+      "cell": "# Run a compact designed experiment over low/high settings\ndesigns = [\n    {\"feedstock_grade\": 2.0, \"humidity\": 2.0, \"temp\": 2.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 2.0, \"humidity\": 2.0, \"temp\": 2.0, \"line_speed\": 8.0},\n    {\"feedstock_grade\": 2.0, \"humidity\": 2.0, \"temp\": 8.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 2.0, \"humidity\": 2.0, \"temp\": 8.0, \"line_speed\": 8.0},\n    {\"feedstock_grade\": 2.0, \"humidity\": 8.0, \"temp\": 2.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 2.0, \"humidity\": 8.0, \"temp\": 2.0, \"line_speed\": 8.0},\n    {\"feedstock_grade\": 2.0, \"humidity\": 8.0, \"temp\": 8.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 2.0, \"humidity\": 8.0, \"temp\": 8.0, \"line_speed\": 8.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 2.0, \"temp\": 2.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 2.0, \"temp\": 2.0, \"line_speed\": 8.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 2.0, \"temp\": 8.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 2.0, \"temp\": 8.0, \"line_speed\": 8.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 8.0, \"temp\": 2.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 8.0, \"temp\": 2.0, \"line_speed\": 8.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 8.0, \"temp\": 8.0, \"line_speed\": 2.0},\n    {\"feedstock_grade\": 8.0, \"humidity\": 8.0, \"temp\": 8.0, \"line_speed\": 8.0},\n]\n\nexp_parts = []\nfor i, cfg in enumerate(designs):\n    dfi = env.experiment(config=cfg, n=40)\n    for k, v in cfg.items():\n        dfi[k] = v\n    dfi[\"design_id\"] = i\n    exp_parts.append(dfi)\n\nexp = pd.concat(exp_parts, ignore_index=True)\nprint(\"exp shape:\", exp.shape)\nprint(exp.head())\n\nsummary = exp.groupby([\"feedstock_grade\", \"humidity\", \"temp\", \"line_speed\"])[[\"feedstock\", \"outcome\"]].agg([\"mean\", \"std\"])\nprint(\"\\ncell summary head:\")\nprint(summary.head(10))\n\nprint(\"\\noverall correlations in experiment:\")\nprint(exp[[\"feedstock_grade\", \"humidity\", \"temp\", \"line_speed\", \"feedstock\", \"outcome\"]].corr().round(3))",
+      "tokens": {
+        "prompt": 8257,
+        "completion": 900,
+        "reasoning": 0
+      },
+      "cell_result": {
+        "ok": true,
+        "stdout": "exp shape: (640, 8)\n     t  feedstock    outcome  ...  temp  line_speed  design_id\n0  0.0   4.687365  36.138671  ...   2.0         2.0          0\n1  0.0   6.024071  40.353908  ...   2.0         2.0          0\n2  0.0   5.425930  38.448990  ...   2.0         2.0          0\n3  0.0   5.783062  41.482690  ...   2.0         2.0          0\n4  0.0   5.626284  40.015813  ...   2.0         2.0          0\n\n[5 rows x 8 columns]\n\ncell summary head:\n                                          feedstock  ...   outcome\n                                               mean  ...       std\nfeedstock_grade humidity temp line_speed             ...          \n2.0             2.0      2.0  2.0          5.863619  ...  3.402257\n                              8.0          5.504904  ...  4.359286\n                         8.0  2.0          5.711965  ...  3.839777\n                              8.0          5.799403  ...  4.892524\n                8.0      2.0  2.0          0.307816  ...  3.602773\n                              8.0          0.163631  ...  3.824492\n                         8.0  2.0          0.012424  ...  4.944557\n                              8.0          0.398348  ...  4.604469\n8.0             2.0      2.0  2.0         11.568621  ...  4.172885\n                              8.0         11.686025  ...  4.431325\n\n[10 rows x 4 columns]\n\noverall correlations in experiment:\n                 feedstock_grade  humidity  ...  feedstock  outcome\nfeedstock_grade            1.000     0.000  ...      0.711    0.010\nhumidity                   0.000     1.000  ...     -0.658   -0.875\ntemp                       0.000     0.000  ...     -0.002   -0.009\nline_speed                 0.000     0.000  ...      0.007   -0.020\nfeedstock                  0.711    -0.658  ...      1.000    0.599\noutcome                    0.010    -0.875  ...      0.599    1.000\n\n[6 rows x 6 columns]\n",
+        "error": null,
+        "truncated": false
+      },
+      "verbs": [
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 2.0,
+              "humidity": 2.0,
+              "temp": 2.0,
+              "line_speed": 2.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 2920.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 2.0,
+              "humidity": 2.0,
+              "temp": 2.0,
+              "line_speed": 8.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 2740.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 2.0,
+              "humidity": 2.0,
+              "temp": 8.0,
+              "line_speed": 2.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 2560.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 2.0,
+              "humidity": 2.0,
+              "temp": 8.0,
+              "line_speed": 8.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 2380.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 2.0,
+              "humidity": 8.0,
+              "temp": 2.0,
+              "line_speed": 2.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 2200.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 2.0,
+              "humidity": 8.0,
+              "temp": 2.0,
+              "line_speed": 8.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 2020.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 2.0,
+              "humidity": 8.0,
+              "temp": 8.0,
+              "line_speed": 2.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 1840.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 2.0,
+              "humidity": 8.0,
+              "temp": 8.0,
+              "line_speed": 8.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 1660.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 8.0,
+              "humidity": 2.0,
+              "temp": 2.0,
+              "line_speed": 2.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 1480.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 8.0,
+              "humidity": 2.0,
+              "temp": 2.0,
+              "line_speed": 8.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 1300.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 8.0,
+              "humidity": 2.0,
+              "temp": 8.0,
+              "line_speed": 2.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 1120.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 8.0,
+              "humidity": 2.0,
+              "temp": 8.0,
+              "line_speed": 8.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 940.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 8.0,
+              "humidity": 8.0,
+              "temp": 2.0,
+              "line_speed": 2.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 760.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 8.0,
+              "humidity": 8.0,
+              "temp": 2.0,
+              "line_speed": 8.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 580.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 8.0,
+              "humidity": 8.0,
+              "temp": 8.0,
+              "line_speed": 2.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 400.0,
+          "note": ""
+        },
+        {
+          "verb": "experiment",
+          "args": {
+            "config": {
+              "feedstock_grade": 8.0,
+              "humidity": 8.0,
+              "temp": 8.0,
+              "line_speed": 8.0
+            },
+            "context": {},
+            "n": 40
+          },
+          "cost": 180.0,
+          "budget_remaining": 220.0,
+          "note": ""
+        }
+      ],
+      "submit_attempts": [],
+      "budget_remaining": 220.0
+    },
+    {
+      "turn": 7,
+      "reply_text": "REASONING: The experiment is decisive. Outcome is essentially unrelated to supplier grade once hall conditions are controlled, while humidity has a huge negative effect; feedstock grade mainly shifts the intake reading, and humidity also strongly suppresses feedstock. Temp and line speed appear weak. With only 220 budget left, the best move is to fit a parsimonious structural model from the experimental data, de-noise outcome using the replicate-based measurement error estimate, and submit. The ambient/historical evidence explained why the plant was fooled; the experiments identify the real lever.\n```python\nimport numpy as np\nimport pandas as pd\n\n# Fit simple process model on experiments\nexp_fit = exp.copy()\n\n# True outcome variance estimate = observed variance - measurement variance\nsigma_meas = float(sigma_meas)\n\n# Feedstock process: linear in controllable knobs\nXf = np.column_stack([\n    np.ones(len(exp_fit)),\n    exp_fit[\"feedstock_grade\"].values,\n    exp_fit[\"humidity\"].values,\n    exp_fit[\"temp\"].values,\n    exp_fit[\"line_speed\"].values,\n])\nbf = np.linalg.lstsq(Xf, exp_fit[\"feedstock\"].values, rcond=None)[0]\nfeed_pred = Xf @ bf\nfeed_resid = exp_fit[\"feedstock\"].values - feed_pred\nsigma_feed = float(feed_resid.std(ddof=1))\n\n# Outcome reading model: linear in feedstock + hall controls\nXo = np.column_stack([\n    np.ones(len(exp_fit)),\n    exp_fit[\"feedstock\"].values,\n    exp_fit[\"humidity\"].values,\n    exp_fit[\"temp\"].values,\n    exp_fit[\"line_speed\"].values,\n])\nbo = np.linalg.lstsq(Xo, exp_fit[\"outcome\"].values, rcond=None)[0]\nout_pred = Xo @ bo\nout_resid = exp_fit[\"outcome\"].values - out_pred\nsigma_out_obs = float(out_resid.std(ddof=1))\nsigma_out_proc = max(0.1, float(np.sqrt(max(1e-8, sigma_out_obs**2 - sigma_meas**2))))\n\nprint(\"feedstock coefs:\", list(map(float, bf)))\nprint(\"feedstock resid sd:\", sigma_feed)\nprint(\"outcome coefs:\", list(map(float, bo)))\nprint(\"observed outcome resid sd:\", sigma_out_obs)\nprint(\"de-noised process outcome resid sd:\", sigma_out_proc)\n\n# Quick policy pricing from fitted process\ndef sim_regime(cfg, n=20000, seed=0):\n    rng = np.random.default_rng(seed)\n    grade = cfg.get(\"feedstock_grade\", 5.0)\n    hum = cfg.get(\"humidity\", 5.0)\n    temp = cfg.get(\"temp\", 5.0)\n    speed = cfg.get(\"line_speed\", 5.0)\n    Xf0 = np.column_stack([np.ones(n), np.full(n, grade), np.full(n, hum), np.full(n, temp), np.full(n, speed)])\n    f = Xf0 @ bf + rng.normal(0, sigma_feed, n)\n    Xo0 = np.column_stack([np.ones(n), f, np.full(n, hum), np.full(n, temp), np.full(n, speed)])\n    y = Xo0 @ bo + rng.normal(0, sigma_out_proc, n)\n    return float((y < 25).mean()), float(f.mean()), float(y.mean())\n\nfor name, cfg in {\n    \"status_quo_mid\": {\"feedstock_grade\":5.0, \"humidity\":5.0, \"temp\":5.0, \"line_speed\":5.0},\n    \"premium_supplier_only\": {\"feedstock_grade\":8.0, \"humidity\":5.0, \"temp\":5.0, \"line_speed\":5.0},\n    \"fix_hall_only_dry\": {\"feedstock_grade\":5.0, \"humidity\":2.0, \"temp\":5.0, \"line_speed\":5.0},\n    \"worst_hall_humid\": {\"feedstock_grade\":5.0, \"humidity\":8.0, \"temp\":5.0, \"line_speed\":5.0},\n}.items():\n    rr, mf, my = sim_regime(cfg)\n    print(name, {\"reject_rate\": rr, \"mean_feedstock\": mf, \"mean_outcome\": my})\n\ncode = f\"\"\"\nimport numpy as np\nimport pandas as pd\n\nBF = np.array({bf.tolist()}, dtype=float)\nBO = np.array({bo.tolist()}, dtype=float)\nSIGMA_FEED = float({sigma_feed})\nSIGMA_OUT = float({sigma_out_proc})\n\ndef model(regime, n, seed):\n    rng = np.random.default_rng(seed)\n    cfg = regime.config\n    grade = float(cfg.get(\"feedstock_grade\", 5.0))\n    hum = float(cfg.get(\"humidity\", 5.0))\n    temp = float(cfg.get(\"temp\", 5.0))\n    speed = float(cfg.get(\"line_speed\", 5.0))\n\n    Xf = np.column_stack([\n        np.ones(n),\n        np.full(n, grade),\n        np.full(n, hum),\n        np.full(n, temp),\n        np.full(n, speed),\n    ])\n    feedstock = Xf @ BF + rng.normal(0.0, SIGMA_FEED, n)\n\n    Xo = np.column_stack([\n        np.ones(n),\n        feedstock,\n        np.full(n, hum),\n        np.full(n, temp),\n        np.full(n, speed),\n    ])\n    outcome = Xo @ BO + rng.normal(0.0, SIGMA_OUT, n)\n\n    return pd.DataFrame({{\"feedstock\": feedstock, \"outcome\": outcome}})\n\"\"\"\nres = env.submit(code)\nprint(\"submit accepted:\", res.accepted)\nprint(\"submit error:\", getattr(res, \"error\", None))\n```",
+      "cell": "import numpy as np\nimport pandas as pd\n\n# Fit simple process model on experiments\nexp_fit = exp.copy()\n\n# True outcome variance estimate = observed variance - measurement variance\nsigma_meas = float(sigma_meas)\n\n# Feedstock process: linear in controllable knobs\nXf = np.column_stack([\n    np.ones(len(exp_fit)),\n    exp_fit[\"feedstock_grade\"].values,\n    exp_fit[\"humidity\"].values,\n    exp_fit[\"temp\"].values,\n    exp_fit[\"line_speed\"].values,\n])\nbf = np.linalg.lstsq(Xf, exp_fit[\"feedstock\"].values, rcond=None)[0]\nfeed_pred = Xf @ bf\nfeed_resid = exp_fit[\"feedstock\"].values - feed_pred\nsigma_feed = float(feed_resid.std(ddof=1))\n\n# Outcome reading model: linear in feedstock + hall controls\nXo = np.column_stack([\n    np.ones(len(exp_fit)),\n    exp_fit[\"feedstock\"].values,\n    exp_fit[\"humidity\"].values,\n    exp_fit[\"temp\"].values,\n    exp_fit[\"line_speed\"].values,\n])\nbo = np.linalg.lstsq(Xo, exp_fit[\"outcome\"].values, rcond=None)[0]\nout_pred = Xo @ bo\nout_resid = exp_fit[\"outcome\"].values - out_pred\nsigma_out_obs = float(out_resid.std(ddof=1))\nsigma_out_proc = max(0.1, float(np.sqrt(max(1e-8, sigma_out_obs**2 - sigma_meas**2))))\n\nprint(\"feedstock coefs:\", list(map(float, bf)))\nprint(\"feedstock resid sd:\", sigma_feed)\nprint(\"outcome coefs:\", list(map(float, bo)))\nprint(\"observed outcome resid sd:\", sigma_out_obs)\nprint(\"de-noised process outcome resid sd:\", sigma_out_proc)\n\n# Quick policy pricing from fitted process\ndef sim_regime(cfg, n=20000, seed=0):\n    rng = np.random.default_rng(seed)\n    grade = cfg.get(\"feedstock_grade\", 5.0)\n    hum = cfg.get(\"humidity\", 5.0)\n    temp = cfg.get(\"temp\", 5.0)\n    speed = cfg.get(\"line_speed\", 5.0)\n    Xf0 = np.column_stack([np.ones(n), np.full(n, grade), np.full(n, hum), np.full(n, temp), np.full(n, speed)])\n    f = Xf0 @ bf + rng.normal(0, sigma_feed, n)\n    Xo0 = np.column_stack([np.ones(n), f, np.full(n, hum), np.full(n, temp), np.full(n, speed)])\n    y = Xo0 @ bo + rng.normal(0, sigma_out_proc, n)\n    return float((y < 25).mean()), float(f.mean()), float(y.mean())\n\nfor name, cfg in {\n    \"status_quo_mid\": {\"feedstock_grade\":5.0, \"humidity\":5.0, \"temp\":5.0, \"line_speed\":5.0},\n    \"premium_supplier_only\": {\"feedstock_grade\":8.0, \"humidity\":5.0, \"temp\":5.0, \"line_speed\":5.0},\n    \"fix_hall_only_dry\": {\"feedstock_grade\":5.0, \"humidity\":2.0, \"temp\":5.0, \"line_speed\":5.0},\n    \"worst_hall_humid\": {\"feedstock_grade\":5.0, \"humidity\":8.0, \"temp\":5.0, \"line_speed\":5.0},\n}.items():\n    rr, mf, my = sim_regime(cfg)\n    print(name, {\"reject_rate\": rr, \"mean_feedstock\": mf, \"mean_outcome\": my})\n\ncode = f\"\"\"\nimport numpy as np\nimport pandas as pd\n\nBF = np.array({bf.tolist()}, dtype=float)\nBO = np.array({bo.tolist()}, dtype=float)\nSIGMA_FEED = float({sigma_feed})\nSIGMA_OUT = float({sigma_out_proc})\n\ndef model(regime, n, seed):\n    rng = np.random.default_rng(seed)\n    cfg = regime.config\n    grade = float(cfg.get(\"feedstock_grade\", 5.0))\n    hum = float(cfg.get(\"humidity\", 5.0))\n    temp = float(cfg.get(\"temp\", 5.0))\n    speed = float(cfg.get(\"line_speed\", 5.0))\n\n    Xf = np.column_stack([\n        np.ones(n),\n        np.full(n, grade),\n        np.full(n, hum),\n        np.full(n, temp),\n        np.full(n, speed),\n    ])\n    feedstock = Xf @ BF + rng.normal(0.0, SIGMA_FEED, n)\n\n    Xo = np.column_stack([\n        np.ones(n),\n        feedstock,\n        np.full(n, hum),\n        np.full(n, temp),\n        np.full(n, speed),\n    ])\n    outcome = Xo @ BO + rng.normal(0.0, SIGMA_OUT, n)\n\n    return pd.DataFrame({{\"feedstock\": feedstock, \"outcome\": outcome}})\n\"\"\"\nres = env.submit(code)\nprint(\"submit accepted:\", res.accepted)\nprint(\"submit error:\", getattr(res, \"error\", None))",
+      "tokens": {
+        "prompt": 9885,
+        "completion": 1235,
+        "reasoning": 0
+      },
+      "cell_result": {
+        "ok": true,
+        "stdout": "feedstock coefs: [5.515756871488863, 0.9820179257897437, -0.9097431001044145, -0.0021184594132645507, 0.009955729772031463]\nfeedstock resid sd: 1.0267098087343713\noutcome coefs: [42.05033540757239, 0.08523821668459508, -2.462254078703235, -0.026957833314297353, -0.05969670544748068]\nobserved outcome resid sd: 4.215186328220678\nde-noised process outcome resid sd: 3.9245694538522162\nstatus_quo_mid {'reject_rate': 0.1114, 'mean_feedstock': 5.921123830477587, 'mean_outcome': 29.80989099890669}\npremium_supplier_only {'reject_rate': 0.1004, 'mean_feedstock': 8.867177607846816, 'mean_outcome': 30.061007369146555}\nfix_hall_only_dry {'reject_rate': 0.00105, 'mean_feedstock': 8.65035313079083, 'mean_outcome': 37.429287873498446}\nworst_hall_humid {'reject_rate': 0.7631, 'mean_feedstock': 3.1918945301643435, 'mean_outcome': 22.190494124314935}\nsubmit accepted: True\nsubmit error: None\n",
+        "error": null,
+        "truncated": false
+      },
+      "verbs": [
+        {
+          "verb": "submit",
+          "args": {
+            "accepted": true
+          },
+          "cost": 0.0,
+          "budget_remaining": 220.0,
+          "note": "R=0.959 (server-side)"
+        }
+      ],
+      "submit_attempts": [
+        {
+          "verb": "submit",
+          "args": {
+            "accepted": true
+          },
+          "cost": 0.0,
+          "budget_remaining": 220.0,
+          "note": "R=0.959 (server-side)"
+        }
+      ],
+      "budget_remaining": 220.0
+    }
+  ],
+  "_vicio_vivo": {
+    "bloque": 1,
+    "seed": 76,
+    "wall_s": 57.5
+  }
+}
