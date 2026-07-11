@@ -182,6 +182,12 @@ simple, para medir el costo real de porteo — LA vía preferida de diversidad p
 el slot construir (fallbacks: semilla-paper → plantilla+arreglo).
 
 **Deudas técnicas (ordenadas por qué desbloquean, no por antigüedad)**:
+**D0 — ZONA MUERTA del score (ADR 0137, GATILLO: bloqueante ANTES de E2/entrenamiento; orden de
+Lucas 2026-07-11: "hay que retomarlo más adelante, ahora otras prioridades")**: la batería de
+first_story da R=1.0000 exacto a defectos de 17-90× el piso de fidelidad (meter sd=3, varianza
+×0.7, default-histórico-fijo) — un RL lo explotaría gratis. Receta lista en el ADR (peso al
+histórico + régimen de dispersión + revisar D_MAX); el gate del red-team (`redteam_score_0137.py`,
+~20 min CPU por mundo) ya rige para mundos nuevos; el arreglo de casos certificados espera GO. ·
 D1 `_canonical` estructural (ADR 0094 — desbloquea P3 + proto-designer MEDIO) · D2 definición
 mecánica del robot incremental (ADR 0106 — desbloquea certificados de mundos-aha) · D3 timebox ECHO
 (ADR 0106) · D4 κ (4 divergencias R vs |ΔP|) · D5 DS-seed3 chequeo-de-valor σ (ADR 0088) · D6
