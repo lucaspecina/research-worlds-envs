@@ -169,6 +169,36 @@ class EpisodeEvent(BaseModel):
     source: SourceConfig
 
 
+class RegisterConfig(BaseModel):
+    """Own-work worlds (lab largo, r21): the agent may REGISTER a provisional
+    model for one line; the world evaluates THE AGENT'S artifact on a rotating
+    private panel (zero-LLM, sandboxed) and delivers a COARSE diagnostic with
+    latency through begin_turn notices -- RMSE +- SE and the dominant residual
+    band among the pre-declared ones, never an exact spectrum (no tutoring;
+    r21: a free precise evaluator is an active-learning oracle). A flagged
+    band unlocks that line's focused mini-lot source. None = inert."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    lines: tuple[int, ...]
+    line_key: str = "line"               # regime key the panel sets per line
+    driver_key: str = "driver"
+    driver_lo: float = 0.0
+    driver_hi: float = 10.0
+    panel_n: int = 32                    # panel points per diagnostic
+    panel_reps: int = 6                  # replicated truth readings per point
+    bands: tuple[tuple[float, float], ...]
+    # flag = significance AND magnitude (v0.38 doctrine: a near-perfect model
+    # must not get flagged over statistically-visible-but-economically-nothing
+    # residuals): band > flag_se_mult*SE AND band > flag_abs_floor.
+    flag_se_mult: float = 2.0
+    flag_abs_floor: float = 0.25
+    diag_latency: int = 1                # turns until the diagnostic arrives
+    max_pending: int = 2
+    mini_rows: int = 10                  # unlocked focused lot: no subsidy
+    mini_cost_per_row: float = 20.0
+
+
 class EpisodeConfig(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
@@ -177,6 +207,8 @@ class EpisodeConfig(BaseModel):
     experiment: ExperimentCost
     # sealed mid-episode events (D4); empty for every event-less world (inert)
     events: list[EpisodeEvent] = Field(default_factory=list)
+    # own-work registration service (lab largo); None for every prior world
+    register: RegisterConfig | None = None
     # the DECLARED instrument experiments read (v0.58-2: positional conventions
     # are dummy-ism seeds -- two sources with different channels would bite
     # silently). Names the source whose channel is the case's meter; None only

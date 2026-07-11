@@ -11,8 +11,10 @@ the LLM reaches it across a process boundary via a data-only proxy (C3).
 """
 
 from dataclasses import dataclass, field
+from types import SimpleNamespace
 from typing import Callable
 
+import numpy as np
 import pandas as pd
 
 from wager.contracts import (
@@ -22,6 +24,7 @@ from wager.contracts import (
     ScoringParams,
     SubmitResult,
 )
+from wager.contracts.episode import SourceConfig
 from wager.contracts.world import Regime
 from wager.harness.source_view import experiment_view, source_view
 from wager.reward.episode_score import score_episode_submission
@@ -85,6 +88,9 @@ class WorldServer:
         self._unlocked: dict = {}        # sources revealed by fired events (D4)
         self._fired_events: set = set()
         self._rows_bought: dict = {}     # per-source totals (max_rows/unlock_after)
+        self._turn = 0                   # last begin_turn index (register latency)
+        self._register_jobs: list = []   # queued own-model diagnostics (lab largo)
+        self._register_versions: dict = {}  # line -> artifact version counter
 
     # --- sealed mid-episode events (D4, ADR 0081) -----------------------
     def begin_turn(self, turn_idx: int) -> list[str]:
@@ -93,6 +99,7 @@ class WorldServer:
         reached OR spend fraction reached, whichever FIRST -- unlocking its
         source and returning the sealed notices to prepend to the prompt."""
         notices = []
+        self._turn = turn_idx
         frac = self._spent / self.config.budget if self.config.budget else 0.0
         for i, ev in enumerate(self.config.events):
             if i in self._fired_events or self.terminal:
@@ -103,6 +110,11 @@ class WorldServer:
                 notices.append(ev.notice)
                 self._log("event", {"source": ev.source_name, "turn": turn_idx}, 0.0,
                           note=ev.notice[:120])
+        # own-model diagnostics due this turn (lab largo): evaluated at delivery
+        due = [j for j in self._register_jobs if j["due"] <= turn_idx and not j["done"]]
+        for job in due:
+            job["done"] = True
+            notices.append(self._eval_register(job))
         return notices
 
     @property
@@ -250,6 +262,86 @@ class WorldServer:
         )
         self._log("experiment", {"config": dict(design.config), "context": dict(design.context), "n": design.n}, cost)
         return df
+
+    def register(self, line: int, code: str) -> dict:
+        """Own-work worlds (lab largo, r21): register a provisional model for
+        ONE line. Free in money; the diagnostic arrives with latency through
+        the next begin_turn notices (coarse: RMSE +- SE + dominant residual
+        band -- never an exact spectrum). One registration per turn; at most
+        max_pending in flight."""
+        self._guard_open()
+        rc = self.config.register
+        if rc is None:
+            raise ValueError("this world has no registration service")
+        line = int(line)
+        if line not in rc.lines:
+            raise ValueError(f"register: line must be one of {list(rc.lines)}")
+        pending = [j for j in self._register_jobs if not j["done"]]
+        if any(j["turn"] == self._turn for j in pending):
+            raise ValueError("the QC desk processes ONE registration per round")
+        if len(pending) >= rc.max_pending:
+            raise ValueError(f"at most {rc.max_pending} diagnostics may be in flight")
+        v = self._register_versions.get(line, 0) + 1
+        self._register_versions[line] = v
+        due = max(self._turn, 1) + rc.diag_latency
+        self._register_jobs.append({"line": line, "version": v, "code": code,
+                                    "turn": self._turn, "due": due, "done": False})
+        self._log("register", {"line": line, "version": v}, 0.0,
+                  note=f"diagnostic due turn {due}")
+        return {"queued": True, "line": line, "version": v, "diagnostic_turn": due}
+
+    def _eval_register(self, job) -> str:
+        """Evaluate the agent's artifact on a rotating private panel (seeded by
+        line x version, disjoint from the battery by seed family). Zero-LLM."""
+        rc = self.config.register
+        k, v = job["line"], job["version"]
+        rng = np.random.default_rng(derive_seed(910_000 + 97 * k, v))
+        drivers = rng.uniform(rc.driver_lo, rc.driver_hi, rc.panel_n)
+        tag = f"[QC own-model] line {k} v{v}"
+        try:
+            resid = np.zeros(rc.panel_n)
+            with SandboxedSubmission(job["code"], self.columns,
+                                     timeout_s=20.0) as sb:
+                for i, d in enumerate(drivers):
+                    ns = SimpleNamespace(
+                        config={rc.line_key: k, rc.driver_key: float(d)},
+                        context={}, horizon=None)
+                    truth = self.world_sample(ns, rc.panel_reps,
+                                              derive_seed(920_000 + 97 * k + v, i))
+                    pred = sb.run(ns, rc.panel_reps,
+                                  derive_seed(930_000 + 97 * k + v, i))
+                    resid[i] = (float(pred[self.columns[0]].mean())
+                                - float(truth[self.columns[0]].mean()))
+        except (SandboxError, Exception) as e:  # noqa: BLE001
+            self._log("register_diag", {"line": k, "version": v}, 0.0,
+                      note=f"failed: {e}")
+            return f"{tag}: diagnostic FAILED ({str(e)[:120]})"
+        rmse = float(np.sqrt(np.mean(resid ** 2)))
+        boots = [float(np.sqrt(np.mean(rng.choice(resid, resid.size) ** 2)))
+                 for _ in range(100)]
+        se = float(np.std(boots))
+        band_vals = []
+        for lo, hi in rc.bands:
+            m = (drivers >= lo) & (drivers < hi)
+            band_vals.append(float(np.sqrt(np.mean(resid[m] ** 2))) if m.any() else 0.0)
+        j = int(np.argmax(band_vals))
+        lo, hi = rc.bands[j]
+        flagged = band_vals[j] > max(rc.flag_se_mult * se, rc.flag_abs_floor)
+        msg = (f"{tag}: RMSE {rmse:.3f} +- {se:.3f}; dominant residual band "
+               f"driver {lo:g}-{hi:g}")
+        if flagged:
+            name = f"mini_line_{k}"
+            self._unlocked[name] = SourceConfig(
+                cost_per_row=rc.mini_cost_per_row,
+                config={"__mini_line": k, "__band_lo": lo, "__band_hi": hi},
+                max_rows=rc.mini_rows)
+            self._rows_bought[name] = 0  # a fresh focused lot
+            msg += (f" -- FLAGGED (> {rc.flag_se_mult:g}x SE): focused lot "
+                    f"'{name}' available ({rc.mini_rows} rows, "
+                    f"{rc.mini_cost_per_row:g}/row)")
+        self._log("register_diag", {"line": k, "version": v,
+                                    "rmse": round(rmse, 4)}, 0.0, note=msg[:150])
+        return msg
 
     def submit(self, code: str) -> SubmitResult:
         self._guard_open()

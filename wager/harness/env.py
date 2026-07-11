@@ -25,5 +25,8 @@ class Env:
         )
         return self._backend.experiment(design)
 
+    def register(self, line: int, code: str):
+        return self._backend.register(line, code)
+
     def submit(self, code: str):
         return self._backend.submit(code)

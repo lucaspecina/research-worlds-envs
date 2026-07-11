@@ -70,6 +70,9 @@ def _make_env_proxy(conn):
                 "n": int(n), "horizon": horizon,
             })
 
+        def register(self, line, code):
+            return verb("register", {"line": int(line), "code": code})
+
         def submit(self, code):
             return verb("submit", {"code": code})
 
@@ -154,6 +157,9 @@ class KernelClient:
                 design = ExperimentDesign(**args)  # server-side validation (data-only)
                 df = self.server.experiment(design)
                 return {"type": "verb_result", "kind": "dataframe", "data": df.to_dict("list")}
+            if name == "register":
+                data = self.server.register(args["line"], args["code"])
+                return {"type": "verb_result", "kind": "json", "data": data}
             if name == "submit":
                 res = self.server.submit(args["code"])
                 return {"type": "verb_result", "kind": "submit", "accepted": res.accepted, "error": res.error}
