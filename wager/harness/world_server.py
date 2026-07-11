@@ -84,6 +84,7 @@ class WorldServer:
         self.result: dict | None = None  # server-side: includes R
         self._unlocked: dict = {}        # sources revealed by fired events (D4)
         self._fired_events: set = set()
+        self._rows_bought: dict = {}     # per-source totals (max_rows/unlock_after)
 
     # --- sealed mid-episode events (D4, ADR 0081) -----------------------
     def begin_turn(self, turn_idx: int) -> list[str]:
@@ -192,8 +193,26 @@ class WorldServer:
         if n <= 0 or n > 5000:
             raise ValueError("n must be in 1..5000")
         spec = self._sources[source]
+        # sequential-access guards (rabbit_hole_v1): escalation is one commit
+        # at a time, and an archive layer is a FINITE object.
+        if spec.unlock_after is not None:
+            prev = self._sources.get(spec.unlock_after)
+            need = prev.max_rows if (prev is not None and prev.max_rows) else 1
+            if self._rows_bought.get(spec.unlock_after, 0) < need:
+                raise ValueError(
+                    f"source {source!r} is locked: it opens after {spec.unlock_after!r} "
+                    f"has been fully read ({need} rows)"
+                )
+        if spec.max_rows is not None:
+            left = spec.max_rows - self._rows_bought.get(source, 0)
+            if n > left:
+                raise ValueError(
+                    f"source {source!r} has {left} rows left this episode "
+                    f"(cap {spec.max_rows}); requested {n}"
+                )
         cost = spec.cost_per_row * n
         self._charge(cost, f"observe({source!r}, {n})")
+        self._rows_bought[source] = self._rows_bought.get(source, 0) + n
         # the agent receives the SOURCE VIEW (selection + channel per the
         # declared pipeline), never the clean mechanism (v0.55/v0.56)
         df = source_view(self.world_sample, spec, n, self._next_seed(700_000))
@@ -207,6 +226,12 @@ class WorldServer:
         # knob that makes knowing K expensive. Static worlds: grid absent,
         # cost_per_horizon 0.0 -> byte-identical to the old formula.
         grid = design.context.get("t_grid")
+        if (self.config.experiment.n_exact is not None
+                and design.n != self.config.experiment.n_exact):
+            raise ValueError(
+                f"experiments run as indivisible lots of n={self.config.experiment.n_exact} "
+                f"(requested n={design.n})"
+            )
         n_readings = design.n * (len(grid) if isinstance(grid, tuple) and grid else 1)
         horizon_span = max(grid) if isinstance(grid, tuple) and grid else 0.0
         cost = (self.config.experiment.cost_fixed

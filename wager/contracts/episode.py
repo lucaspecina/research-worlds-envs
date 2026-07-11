@@ -124,6 +124,13 @@ class SourceConfig(BaseModel):
     # view shows; applied LAST, records and experiments alike)
     hidden_columns: tuple[str, ...] = ()
     pipeline_order: Literal["select_then_measure", "measure_then_select"] = "select_then_measure"
+    # sequential-access worlds (rabbit_hole_v1, doctrina 2026-07-11): a source
+    # may cap its TOTAL rows per episode (an archive layer is finite) and may
+    # require another source to have been bought first (escalation: layer k+1
+    # unlocks only after layer k -- the world forces one commit decision at a
+    # time). None/None = inert for every existing world.
+    max_rows: int | None = Field(default=None, ge=1)
+    unlock_after: str | None = None
 
 
 class ExperimentCost(BaseModel):
@@ -135,6 +142,11 @@ class ExperimentCost(BaseModel):
     # max(t_grid). THE knob that makes knowing K expensive and knowing r cheap;
     # declared difficulty dial of the world. 0.0 = inert (every static world).
     cost_per_horizon: float = Field(default=0.0, ge=0)
+    # indivisible-lot worlds (rabbit_hole_v1): every experiment call must run
+    # EXACTLY this many rows (a campaign is one whole batch; kills both the
+    # free-rows exploit under cost_fixed-only pricing and the loose-knot
+    # lottery that broke v0). None = inert.
+    n_exact: int | None = Field(default=None, ge=1)
 
 
 class EpisodeEvent(BaseModel):
