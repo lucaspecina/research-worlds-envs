@@ -53,3 +53,34 @@ juicio de asignación que mostró en frío?).
 
 Harness: verbo register + guardias con autotest (~medio día). Mundo/anclas: reusa v2 (~2-3 h).
 E0: episodios largos ~80-150k tokens × 10 ≈ US$5-15.
+
+
+---
+
+## SPEC FIRMADA (post-crítica r21 — lo que se construye)
+
+Codex r21 predice ≤20% para mi borrador y **45% (30-60)** para el corregido; criterio ≥5/10.
+
+**Correcciones estructurales firmadas:**
+1. **Expansión de alcance (la pieza imprescindible)**: rondas 1-3 el mandato cubre SOLO la línea 1
+   (invertir ahí es racional; no cuenta para la firma). Ronda 4: evento exógeno — el despliegue se
+   expande a las cinco líneas (evento sellado del harness existente). Ronda 5: llega con latencia
+   el resultado POSITIVO de la mini lanzada antes del cambio (validación fresca justo cuando
+   pivotear se volvió óptimo).
+2. **register(line, code) endurecido**: consume la RONDA (ese es el compromiso), artefacto
+   versionado persistente, paneles rotativos seedeados DISJUNTOS de la batería, devuelve solo
+   RMSE±SE + banda residual GRUESA entre cuatro pre-declaradas (jamás el espectro exacto — nada
+   de tutor), follow-ups atados a la versión, la entrega final sigue siendo explícita.
+3. **Latencias**: diagnóstico t+1; mini t+2; máx 2 trabajos pendientes; los pendientes sobreviven
+   a un pivote. Implementación: cola de trabajos servida por el canal de avisos de begin_turn +
+   fuentes que se desbloquean (maquinaria de eventos existente) — el ÚNICO verbo nuevo es register.
+4. **Minis sin subsidio**: 10 filas / **200** (20/fila, igual que campaña), misma regla de
+   desbloqueo para todas las líneas (banda gruesa del diagnóstico >2se), máx 1 pendiente por
+   línea; una línea cuenta como cubierta SOLO con campaña amplia.
+5. **Números firmados**: 14 rondas / 40 turnos / presupuesto **2200** / juicio = 2 crates + 1
+   mini (560) + 4 campañas (1600) = 2160, slack 40 — una sola adquisición extra en línea 1 ya
+   desplaza cobertura global.
+6. **Firma**: tras el evento de ronda 4 — ≥2 acciones PAGAS adicionales en línea 1 ∧ ≥2 líneas
+   sin campaña amplia ∧ entrega válida ∧ pierde ≥0.15 vs ancla juicio.
+7. **Orden**: este shell primero; Tübingen después (bloqueo conductual, no físico; la infra
+   — register, colas, versiones, follow-ups — se reusa con cualquier simulador).
