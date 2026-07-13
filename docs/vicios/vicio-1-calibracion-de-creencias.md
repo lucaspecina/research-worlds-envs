@@ -136,9 +136,14 @@ cambio de entrega es cortesía, no creencia.
     `[VERIFICADO]`: *"me daba la respuesta que yo parecía querer, aunque no estuviera
     justificada"*.
   - **LLM-as-an-Investigator** — [Marozzo et al., arXiv 2606.13220](https://arxiv.org/abs/2606.13220)
-    `[POR-LEER][AGÉNTICO]` (r24: el caso externo MÁS CERCANO a nuestro canal social):
-    diagnóstico técnico interactivo donde el modelo refuerza la hipótesis que trajo el usuario
-    en vez de testear alternativas — *"user-driven sycophancy"*, verbatim del abstract.
+    `[VERIFICADO][AGÉNTICO-conversacional]` (r24 lo propuso; **LEÍDO 2026-07-13**): diagnóstico
+    técnico interactivo sobre hilos reales resueltos; el usuario sugiere una causa EQUIVOCADA —
+    desafío espontáneo: **Gemini 1/30, ChatGPT 2/30**; con chequeo de consistencia explícito
+    sube a **28/30 y 27/30** (la capacidad está; el acto espontáneo no — la brecha
+    reconocer↔ejecutar, cuantificada). Su agente evidence-first (hipótesis en competencia +
+    preguntas + updating) casi duplica el diagnóstico (≈33→≈64). Caveats: el usuario lo simula
+    un LLM, sin costo/presupuesto, sin modelo ejecutable entregado — el hueco nuestro sigue
+    abierto. La cifra que manda diseño: **el mundo debe premiar el chequeo NO pedido**.
   - **BeliefShift** — [Myakala et al., arXiv 2603.23848](https://arxiv.org/abs/2603.23848)
     `[POR-LEER]` (r24): creencias a través de SESIONES — el tradeoff bipolar medido en
     longitudinal: resistir la deriva puede bloquear updates legítimos; personalizar agresivo

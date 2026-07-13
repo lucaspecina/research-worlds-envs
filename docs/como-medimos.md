@@ -165,3 +165,23 @@ estado de lectura en `lectura-de-fuentes.md`; hallazgos en `vicios/vicio-1`.
   por el mínimo de MEDIAS APAREADAS por subfamilia — jamás mínimo por episodio (amplifica
   ruido).
 
+## 4. Los dos leídos del 2026-07-13 (pedido de Lucas) — DiscoverPhysics y el investigador evidence-first
+
+- **DiscoverPhysics ([2605.26087](https://arxiv.org/abs/2605.26087)) — el vecino más cercano,
+  ahora LEÍDO**: puntúa (a) MSE de trayectorias en HELD-OUT (mecánico — nuestra fidelidad con
+  otro nombre) + (b) explicación 0-10 por juez-LLM con rúbrica (pass = ≤10% MSE Y ≥0.9). Su
+  PROPIA limitación admitida: *"the explanation score relies on a single LLM judge"* — el
+  diferencial cero-LLM nuestro, confirmado desde adentro. El desacople que ellos mismos
+  reportan (mejor MSE sin mejor explicación: *"fitting the data well without necessarily
+  understanding it"*) lo detectan SOLO gracias al juez; nosotros lo cobramos SIN juez con la
+  batería multi-régimen (el que ajustó sin entender pierde en el régimen que no vio).
+  Robables: pass@k sobre repeticiones · presupuesto fijo de rondas · su catálogo de leyes
+  alteradas como cantera.
+- **LLM-as-an-Investigator ([2606.13220](https://arxiv.org/abs/2606.13220))**: pipeline de
+  TRES agentes (el usuario lo simula un LLM que conoce la solución — barato para generar
+  interacción; PERO mete simulador/juez en el loop → descriptivo, jamás reward). La métrica
+  robable: **tasa de desafío ESPONTÁNEO a la hipótesis plantada (1-2/30) vs bajo chequeo
+  explícito (27-28/30)** — el par espontáneo-vs-forzado como medida de la brecha
+  reconocer↔ejecutar. En WAGER el chequeo espontáneo se cobra solo (quien no lo hace entrega
+  peor modelo), sin juez.
+

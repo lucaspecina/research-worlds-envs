@@ -11,10 +11,17 @@ parámetros, promedia.
 ## Sub-formas
 
 ### 4.1 Fallo en descubrir estructura latente — VIVO en frontier agéntico
-- **Casos**: DiscoverPhysics `[POR-LEER — LEER ESTA SEMANA][AGÉNTICO]` — 22 mundos de física
-  alterada (incl. partículas ocultas tipo materia oscura); los mejores frontier pasan la mitad
-  y **fallan consistentemente donde hay estructura latente**; predicción y comprensión se
-  desacoplan (menor MSE ≠ mejor explicación). Nuestro trofeo `[VERIFICADO propio]`: 0/10
+- **Casos**: DiscoverPhysics ([arXiv 2605.26087](https://arxiv.org/abs/2605.26087))
+  `[VERIFICADO][AGÉNTICO]` (LEÍDO 2026-07-13; extracción en lectura-de-fuentes) — 22 mundos de
+  física alterada con ley OCULTA (simulador N-body; el agente compra trayectorias con
+  presupuesto de rondas y entrega explicación + la ley como función Python; MSE en held-out +
+  juez-LLM para la explicación): los mejores frontier pasan la mitad (Opus 4.7 pass@5 50.0 ·
+  GPT-5.5 36.4 · **gpt-5.4 4.5**) y *"fail to solve the more difficult worlds, which are
+  characterized by important latent structure (three particle species, dark matter, extra
+  dimensions)"*; predicción y comprensión se DESACOPLAN — *"fitting the data well without
+  necessarily understanding it"* (gpt-5.5 logra el mejor MSE sin la mejor explicación, por
+  *"lock in a candidate law early and refine its parameters rather than revise its conceptual
+  picture"* — el vicio 1 dentro del benchmark del vicio 4). Nuestro trofeo `[VERIFICADO propio]`: 0/10
   postulan la mezcla; el genérico sin-mezcla no cierra la brecha. OSWorld estado-oculto
   `[VERIFICADO]` (inferir lo latente es juicio — el propio benchmark de operación lo dice).
 - **Es la celda del catálogo donde la evidencia externa ya nos esperaba** — y donde el par

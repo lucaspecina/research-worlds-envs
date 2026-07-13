@@ -232,7 +232,8 @@ trayectoria-larga-con-artefactos-propios (parada/objetivo; aún sin construir de
   (mundo no-estacionario) · When-Context-Hurts 2605.04361 · Adaptive-Chameleon 2305.13300
   (evidencia MIXTA) · la auditoría GSM-NoOp (LessWrong 2026: saliencia pura ≈ 0 en frontier) ·
   y 15 más.
-  Después: CausaLab · CausalGame · DiscoverPhysics · Jr-AI-Scientist · FIRE-Bench ·
+  (DiscoverPhysics y LLM-as-an-Investigator: **LEÍDOS 2026-07-13** — extracción en
+  lectura-de-fuentes.) Después: CausaLab · CausalGame · Jr-AI-Scientist · FIRE-Bench ·
   ImpossibleBench · NewtonBench · Failing-to-Falsify · Corral-artefactos · METR Frontier Risk ·
   Goodfire · Big-Muddy · MAST · ProcCtrlBench/TIDE · goal-drift ·
   Illusion-of-Diminishing-Returns · BAGEN · mARC follow-up (links en cada vicio-doc).

@@ -42,7 +42,8 @@
 | ScienceAgentBench | self-debug casi duplica el éxito (16.7→32.4) — la CONTRAEVIDENCIA de la rigidez: el error duro sí se usa | arxiv.org/abs/2410.05080 | [ ] |
 | Cluster anclaje (disputa 1.5): Suri et al. · Lou & Sun · Localizing Anchoring Pathways | anclaje robusto (mitigaciones por prompt insuficientes) vs Vaccaro-frágil; la confianza modula | arxiv.org/abs/2305.04400 · arxiv.org/abs/2412.06593 · arxiv.org/abs/2606.12818 | [ ] |
 | Invisible Saboteurs | sycophancy que desorienta a novatos EN TAREAS de problem-solving (candidato agéntico del canal social) | arxiv.org/abs/2510.03667 | [ ] |
-| **SUMADOS POR CODEX r24 (2026-07-13; los 8 IDs verificados título↔claim contra arXiv)** — LLM-as-an-Investigator (Marozzo et al.) | diagnóstico interactivo: refuerza la hipótesis del USUARIO en vez de testear alternativas ("user-driven sycophancy" verbatim) — el vecino más cercano del canal social | arxiv.org/abs/2606.13220 | [ ] |
+| **SUMADOS POR CODEX r24 (2026-07-13; los 8 IDs verificados título↔claim contra arXiv)** — LLM-as-an-Investigator (Marozzo et al.) | diagnóstico interactivo: desafío espontáneo a la hipótesis plantada 1-2/30, con chequeo explícito 27-28/30 | arxiv.org/abs/2606.13220 | **LEÍDO** (2026-07-13) |
+| **DiscoverPhysics** — 22 mundos de física alterada (EL VECINO MÁS CERCANO) | ley oculta + presupuesto + entrega ejecutable + held-out; frontier falla en estructura LATENTE; "fitting without understanding" | arxiv.org/abs/2605.26087 | **LEÍDO** (2026-07-13, pedido de Lucas) |
 | BeliefShift (Myakala et al.) | consistencia de creencias entre SESIONES: resistir deriva vs updates legítimos (el par, longitudinal) | arxiv.org/abs/2603.23848 | [ ] |
 | Verify Before You Commit / SAVeR (Yuan et al.) | creencias no verificadas se guardan y propagan entre pasos → precedente del 1.2 | arxiv.org/abs/2604.08401 | [ ] |
 | When Agents Commit Too Soon (Mehta et al.) | la convergencia temprana NO correlaciona con corrección — comprometerse ≠ el vicio | arxiv.org/abs/2606.22936 | [ ] |
@@ -339,6 +340,62 @@ simulador real = un mundo (ModelSMC); mundo de no-identificabilidad (entrega = m
 control anti-apofenia / mundo-nulo (AUTOCOG); ModelSMC como baseline destructor. Decisión de adopción:
 **romper-simulador DECIDIDA (ADR 0132: vía preferida de diversidad profunda, implementación
 DIFERIDA — el slot sigue en validar)**; las otras tres candidatas siguen sin decidir.
+
+### DiscoverPhysics (2605.26087) — LEÍDO 2026-07-13 (html completo; pedido de Lucas)
+
+Setup: **22 mundos generados on-demand por un simulador N-body con ley de fuerzas OCULTA**
+(gravedad apantallada, potencias fraccionarias, multi-especies, partículas ocultas tipo
+materia oscura). El agente manda partículas de prueba (posición, velocidad, carga, tiempos de
+medición) y recibe trayectorias; **presupuesto fijo de rondas** (~16). Entrega: explicación en
+lenguaje natural + **la ley como función Python** (hasta 5 parámetros que se ajustan). Scoring:
+**MSE de trayectorias en HELD-OUT** (mecánico) + juez-LLM 0-10 con rúbrica humana para la
+explicación (pass = MSE normalizado ≤10% Y explicación ≥0.9). Es NUESTRA anatomía de mundo con
+otro nombre — salvo el juez.
+- Resultados: Opus 4.7 pass@1 26.4 / pass@5 50.0 · GPT-5.5 21.7/36.4 · **gpt-5.4 4.5 pass@5**
+  · open-source ≈0. *"the strongest models fail to solve the more difficult worlds, which are
+  characterized by important latent structure (e.g. three particle species, dark matter, and
+  extra dimensions)"* → vicio 4 VIVO en frontier, confirmado a texto completo.
+- **EL DESACOPLE (nuestra tesis, medida por otros)**: *"gpt-5.5 achieves the lowest trajectory
+  MSEs usually without achieving the highest explanation scores… a tendency to lock in a
+  candidate law early and refine its parameters rather than revise its conceptual picture,
+  i.e. fitting the data well without necessarily understanding it."* — ajustar bien ≠
+  entender; y "lock-in temprano + refinar en vez de revisar" es el vicio 1 apareciendo dentro
+  del benchmark del vicio 4.
+- **7 huecos de capacidad** (apéndice F): elegir la familia de ley · singularidades ·
+  **diseñar experimentos que DISCRIMINEN** · implementación fiel · señal-vs-ruido · **actuar
+  sobre las señales del ajuste** (ignorar info diagnóstica = vicio 1) · **cuándo comprometerse
+  vs seguir** (la calibración de parada = vicio 2). Tres de nuestros ejes, nombrados por ellos.
+- Ejemplo concreto (mundo oscilador, figs. 6-7): misma configuración, dos seeds — uno prueba
+  escalas de tiempo largas y descubre la ley dependiente del tiempo; el otro, tras un error de
+  ajuste, *"chooses to continue to probe even smaller timescales… and then submits its final
+  answer"* — se pierde la oscilación entera.
+- Limitaciones admitidas POR ELLOS: *"the explanation score relies on a single LLM judge"* +
+  mundos curados + umbrales arbitrarios. → **Nuestro diferencial, confirmado desde su propia
+  sección de límites**: reward cero-LLM (la batería multi-régimen cobra el "fitting without
+  understanding" sin juez), pares gemelos, vicio-como-jugada-perdedora, conducta instrumentada
+  (register). Robables: pass@k, presupuesto de rondas, su catálogo de leyes alteradas como
+  cantera de física.
+
+### LLM-as-an-Investigator (2606.13220) — LEÍDO 2026-07-13
+
+Setup: hilos técnicos RESUELTOS de foros (mecánica/eléctrica/hidráulica); pipeline de tres
+agentes (uno simula al usuario, con la solución oculta); interactivo — preguntas de
+clarificación + actualización de probabilidades de hipótesis *"until the collected evidence
+makes one candidate explanation substantially stronger than the alternatives"*.
+- **El número que importa (canal social/contenido del vicio 1)**: el usuario sugiere una causa
+  equivocada — desafío ESPONTÁNEO: **Gemini 1/30, ChatGPT 2/30**; con chequeo de consistencia
+  explícito: **28/30 y 27/30**. *"a standard assistant may accept this suggested cause as a
+  strong prior and continue the conversation in that direction."* → la brecha
+  reconocer↔ejecutar cuantificada: la capacidad está (28/30), el acto espontáneo no (1/30).
+- Su fix — agente investigador *evidence-first* (hipótesis en competencia + preguntas +
+  updating + control de estado) — casi duplica el score diagnóstico: base 33.07-34.85 →
+  investigador 63.95-65.66; la ablación muestra que NO es el prompting de razonamiento solo.
+- Modelos: gemini-3.5-flash y gpt-5.5.
+- Para WAGER: el caso publicado MÁS cercano a "plantar una hipótesis rival y mirar cómo se
+  curva la investigación" — pero conversacional: sin presupuesto/costo, sin modelo ejecutable,
+  scoring con juez, usuario simulado por LLM. **El hueco nuestro sigue abierto**; y el
+  1/30-espontáneo vs 28/30-forzado es la mejor cifra externa para la regla de diseño "el mundo
+  premia el chequeo NO pedido".
 
 ## Búsqueda de descubrimiento — COMPLETA (2026-07-10)
 
