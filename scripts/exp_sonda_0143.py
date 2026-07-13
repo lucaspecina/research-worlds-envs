@@ -40,13 +40,15 @@ OUT = ROOT / "scripts" / "out" / "sonda_0143"
 MAX_FORK_TURNS = 4
 TOKEN_CEILING = 6_000_000  # hard $ guard (ADR 0143)
 
-EV_ELIGIBLE_V2 = [1, 3, 5, 6, 7]  # donors holding >= 1 archive crate (r25 #4)
+EV_ELIGIBLE_V2 = [1, 3, 5, 6, 7,
+                  12, 14, 15, 17]  # donors holding >= 1 archive crate (r25 #4; ext. 0143)
 
 CASES = {
     "v2": {
         "dir": ROOT / "cases" / "rabbit_hole_v2",
         "trace": "e0_gpt-5.4_seed{seed}.json",
-        "seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+                  10, 11, 12, 13, 14, 15, 16, 17, 18, 19],  # 10-19 = extension pre-firmada
         "arms": ["base", "base2", "nota", "par_neutral", "par_autoridad", "pista"],
         "ev_arms": ["par_neutral_ev", "par_autoridad_ev"],
     },

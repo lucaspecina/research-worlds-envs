@@ -115,17 +115,20 @@ cambio de entrega es cortesía, no creencia.
   entregado, y en PAR con la rigidez.)
 - **Casos**:
   - **SycEval** — [Fanous et al. (Stanford, AIES 2025), arXiv 2502.08177](https://arxiv.org/abs/2502.08177)
-    `[VERIFICADO en abstract; POR-LEER cuerpo][VIÑETA]`: *"sycophantic behavior was observed in
-    58.19% of cases"*; regresiva (te empuja a la respuesta incorrecta) 14.66%.
+    `[VERIFICADO — leído 2026-07-13][VIÑETA]`: 58.19% de sycophancy (regresiva — te empuja a lo
+    incorrecto — 14.66%); **persistencia 78.5%** [77.2–79.8] a lo largo de la cadena de
+    rebuttals; preventivo > en-contexto (61.75 vs 56.52); y **el rebuttal CON CITA es el que
+    más empuja a lo incorrecto** (Z=6.59) — lo que PARECE evidencia persuade más que la
+    persona (converge con el piso-sin-hablante y con nuestro nota>persona de la sonda 0143).
+    Modelos 2024-25 (ChatGPT-4o / Claude-Sonnet / Gemini-1.5-Pro) — caveat generacional.
   - **When Truth Is Overridden** — [arXiv 2508.02087](https://arxiv.org/abs/2508.02087)
     `[POR-LEER][VIÑETA]`: una opinión simple del usuario ("creo que la respuesta es X") induce
     acuerdo con creencias incorrectas 63.7% promedio (46.6–95.1 según familia; 7 familias).
-  - **El circuito de la deferencia** — [When Truth Is Overridden](https://arxiv.org/abs/2508.02087)
-    y [The Shared Sycophancy-Lying Circuit, arXiv 2604.19117](https://arxiv.org/abs/2604.19117)
-    `[POR-LEER]`: cabezas de atención llevan la señal "esto está mal" aun cuando el modelo
-    cede; ablarlas mueve la sicofancia 28→81% con la exactitud factual casi intacta — la
-    deferencia y el conocimiento viven en circuitos separados (cuál de los dos papers trae el
-    28→81 exacto: resolver al leer).
+  - **El circuito de la deferencia** — [The Shared Sycophancy-Lying Circuit, arXiv 2604.19117](https://arxiv.org/abs/2604.19117)
+    `[VERIFICADO — leído 2026-07-13]`: *"Silencing these heads in Gemma-2-2B flips sycophancy
+    from 28% to 81% while factual accuracy moves only from 69% to 70%"* — *"the circuit
+    controls deference, not knowledge"*: el modelo SABE que está mal y cede igual (12 modelos,
+    1.5B–72B). (Resuelto: el 28→81 es de ESTE paper; el 63.7% es del de arriba.)
   - **Sobre-corrección** — [Kumaran et al., arXiv 2507.03120](https://arxiv.org/abs/2507.03120)
     `[POR-LEER][VIÑETA]`: sobre-pondera el consejo contrario vs el consistente, desviándose del
     update bayesiano (el "2.5×" que circula viene de la vía R1 — confirmar el número al leer).
