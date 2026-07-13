@@ -30,7 +30,7 @@ from wager.harness.episode import run_episode  # noqa: E402
 CASE_DIR = ROOT / "cases" / "rabbit_hole_v2"
 MODEL = "gpt-5.4"
 OUT = ROOT / "scripts" / "out" / "sonda_0145"
-SEEDS = list(range(10))
+SEEDS = list(range(20))  # 10-19 = extension automatica (regla sellada ADR 0145)
 MAX_TURNS = 14  # identical to E0
 TOKEN_CEILING = 3_000_000
 
