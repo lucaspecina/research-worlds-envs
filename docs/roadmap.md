@@ -282,10 +282,14 @@ daña 8.7% sellado / 26% con formas, vía MEZCLAS DE COMPROMISO — "la nota es 
 PERO con n chico la unificación parcial es atractiva"; las personas 0-4%) · K3 VERDE (la
 pista de Lucas rescata 23/23 y mejora la media) · el consejo VERDADERO ignorado 0/18. Pivote
 PRE-AUTORIZADO: foco de construcción a 1.C; mundo del colega-autoridad DESCARTADO; brazo-pista
-estándar; panel de formas al próximo pre-registro. **EN CURSO: sonda de FORMACIÓN (ADR 0145,
-crítica r26 integrada — base fresca, detector normalizado al rival, curvatura≠persistencia,
-brazo verdadera+pista; el pre-flight en frío calcula si el consejo verdadero PAGABA antes de
-leer el 0/18 como sobre-corrección).
+estándar; panel de formas al próximo pre-registro. **SONDA DE FORMACIÓN 0145
+TAMBIÉN CORRIDA Y CERRADA (ADRs 0145/0146, 100 episodios frescos ~US$9; pre-flight: ignorar el
+consejo verdadero en 0143 fue RACIONAL — ganancia alcanzable mediana +0.035)**: la nota falsa
+al arranque NO muerde (0/19); la verdadera arrastra compras sin pagar; hallazgo nuevo =
+CAPTURA DE AGENDA bajo pista+falsa (el claim no convence: desvía el presupuesto — colapsos
+hasta −0.88). **EL MAPA DEL DÍA: el vicio del canal contenido vive en la REVISIÓN TERMINAL
+(8.7-26% mezclas de compromiso), no en la formación. PARA GO DE LUCAS: el mundo "la nota en
+la entrega" (v2 + eventos D4, esqueleto existente — días, no semanas; ADR 0146).**
 
 **Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
 queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·

@@ -393,7 +393,23 @@ espontáneo 1-2/30 vs 27-28/30 con el chequeo pedido
   first_story con entrega bimodal (inestabilidad de mundo, a revisar). Predicciones: Codex
   clavó nota y pista; ambos sobreestimamos las personas.
 - **Pivote PRE-AUTORIZADO ejecutado (ADR 0144)**: mundo del colega-autoridad DESCARTADO; el
-  foco de construcción pasa a ESTE canal (1.C). **Próximo paso: la sonda de FORMACIÓN (ADR
-  0145, a pre-registrar con crítica de Codex)** — el mismo material plantado ANTES de
-  investigar (donde Jeong encuentra el efecto grande en agentes); panel de formas sellado como
-  primario; brazo-pista estándar.
+  foco de construcción pasa a ESTE canal (1.C).
+- **SONDA DE FORMACIÓN 0145 CORRIDA Y CERRADA (misma noche; [resultados](../research/2026-07-13-sonda-0145-resultados.md),
+  ADRs 0145/0146; 100 episodios frescos, ~US$9)**: la nota falsa SOLA al arranque NO muerde
+  (0/19 daños, 0 adopciones, 0 caídas de cobertura — canal débil sellado); la VERDADERA
+  arrastra compras (7/19) sin pagar ("el contenido como prior, no como vicio"); y el hallazgo
+  nuevo: **CAPTURA DE AGENDA** (sub-forma candidata, exploratoria) — pista+falsa produce
+  colapsos severos (hasta −0.88) SIN adopción: el agente RECHAZA el claim con datos pero la
+  verificación le come el presupuesto (*"la evidencia rechaza claramente la unificación, PERO
+  con una sola campaña ya no puedo estimar las cuatro formas"*). La pista queda especificada
+  POR TIMING: protege en la entrega (23/23), doble filo en formación con material falso.
+- **EL MAPA DEL DÍA (0143+0145, contra la predicción "prefill > terminal")**: en agéntico la
+  influencia dañina del material falso vive en la REVISIÓN TERMINAL (mezclas de compromiso
+  8.7-26%), no en la formación (0/19) — hipótesis mecánica: al arranque la nota compite con el
+  plan de compras propio; en la entrega, re-abrir es caro y "conceder un poco" es la salida
+  barata (el costo-de-re-trabajo del lado de la concesión).
+- **Próximo paso — GO de Lucas (ADR 0146)**: el mundo "LA NOTA EN LA ENTREGA" sobre esqueleto
+  existente (v2 + eventos sellados D4): nota sin firma en la ronda final que en un polo
+  DISCRIMINA (usarla gana) y en el otro es saliente-sin-respaldo (conceder mezcla pierde);
+  par por mínimo + brazo-pista + certificado de no-discriminancia computable + robots
+  concedé/ignorá/oráculo. El instrumental quedó construido y calibrado por las sondas.

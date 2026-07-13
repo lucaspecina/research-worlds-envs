@@ -22,7 +22,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "scripts" / "out" / "sonda_0145"
-SEEDS = list(range(10))
+SEEDS = list(range(20))
 ARMS = ["base_fresca", "falsa", "verdadera", "falsa_pista", "verdadera_pista"]
 LVL_THR, SHP_THR, HARM_DR = 0.25, 0.30, -0.15
 PANEL_SEED = 777
