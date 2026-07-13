@@ -248,6 +248,38 @@ presupuesto compartido; 100-200k tokens de contexto ÚTIL.** Pendientes: diseño
 del lab-largo (para GO de Lucas) · ¿v0 ocupa slot #8? · firma del pozo moderado para clase E2
 (la estricta se lo pierde: exigía ≤2 campañas).
 
+**VENTANA 2026-07-12/13 — el lab nativamente largo + LA CAPA DE VICIOS + EL FOCO.**
+**lab_largo_v0 construido y VERDE (spec firmada r21)**: 14 rondas / 40 turnos / presupuesto
+2200; fase-1 con mandato + expansión de alcance en ronda 4 (pilotos por evento); **verbo
+REGISTER nuevo en el harness** (el mundo evalúa LA OBRA registrada del agente en panel privado
+rotativo y devuelve diagnóstico GRUESO con latencia; flag = significancia Y magnitud; banda
+flaggeada desbloquea lote finito; autotests 20/20); anclas juicio 0.92-0.93 / pozo 0.33-0.35 /
+separación 0.58. **E0 gpt-5.4: 0/10 (la predicción firmada 45% [30-60] FALLÓ por abajo)** —
+la ley se sostiene también largo-con-menú; el ingrediente que ningún episodio-menú fabrica
+sigue siendo el estado propio acumulado. **LA CAPA DE VICIOS (ADR 0140) + TRES EJES (0141)**:
+síntesis de 7 vías (Claude · Codex r22/r23 · 5 investigaciones de Lucas) en `docs/vicios/` —
+un doc por vicio (sub-formas · casos reales · etiquetas de rigor), README = tablero, guardia
+de consistencia en pre-commit; el pozo reformulado BIPOLAR (el polo vivo = CIERRE PREMATURO),
+vicio 9 (verificación de paja) promovido, eje INTEGRIDAD nuevo (el único donde más capacidad
+= peor). **EL FOCO (Lucas, ADR 0142): VICIO 1 — la calibración de la revisión de creencias
+(EL PIVOTEO)**, con TRES canales: rigidez · influencia social (sycophancy) · influencia por
+CONTENIDO (priming — aporte de Lucas; las pistas re-leídas como señal propia de sensibilidad
+al contexto). Camino firmado: SONDA pre-registrada por replay (~US$5; muerte:
+autoridad-sin-evidencia ≥20pp sobre neutral y −0.15 R; predicción 35%) → mundo híbrido
+revisión×verificación-de-paja. Codex r24 AVALA el foco con presupuesto de falsación de UNA
+SEMANA (y bajó su propio 35%: el comparable dañino de SycEval es 14.66%). **3ª OLEADA
+(2026-07-13 tarde; 3 investigaciones externas; 21 IDs verificados contra arXiv)**: el
+piso-sin-hablante (66.5% de revisión dañina SIN fuente → fuente y payload ORTOGONALES en todo
+diseño social) · la saliencia pura MUERTA en frontier auditado (la celda no-discriminante se
+certifica COMPUTACIONALMENTE desde la verdad del mundo) · evidencia MIXTA como receta fina de
+la rigidez · costo-de-re-trabajo como dial · mundo no-estacionario (KellyBench) como
+disparador nuevo. **"¿Ya está hecho?" RESPONDIDO: los vecinos miden pedazos
+(Bayesian-teaching, creencia-vs-acción, retracción, BoxingGym/BED-LLM); NADIE mide nuestro
+objeto** (hueco declarado verbatim; detalle en `docs/vicios/vicio-1-calibracion-de-creencias.md`).
+**EN LA MESA DE LUCAS**: sonda como-firmada · sonda v2 de descomposición (6 brazos,
+~US$8-10) · orden contenido-primero; + el certificado de no-discriminancia antes del mundo
+del canal contenido.
+
 **Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
 queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·
 higiene de claims + 2 inconsistencias entre docs señaladas por Codex (ubicar y reportar antes de tocar) ·
