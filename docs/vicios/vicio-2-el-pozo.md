@@ -1,11 +1,13 @@
-# Vicio 2 — El pozo: no soltar, no pivotear, no saber parar
+# Vicio 2 — La calibración de parada (el pozo… y su lado vivo, el cierre prematuro)
 
 > Etiquetas y marco: ver [README](README.md). Estado WAGER: el MÁS trabajado (v0 certificado,
 > v2 portafolio sep 0.57, lab_largo sep 0.58) + el hallazgo propio más fuerte del proyecto
 > (0/60 en frontier compacto, ADR 0139).
 
-**Qué es (paraguas).** Seguir invirtiendo en una línea cuyo valor marginal se agotó. La jornada
-del 0/60 + las cinco vías lo parten en CINCO sub-formas — y ahora sabemos cuáles disparan.
+**Qué es (paraguas).** Saber CUÁNDO seguir y cuándo soltar — bipolar (ADR 0141): **overstay**
+(seguir en la línea agotada; muerto en frontier-compacto: nuestro 0/60) y **understay / cierre
+prematuro** (entregar sin gastar el chequeo barato que habría refutado; el polo VIVO). Abajo:
+las cinco sub-formas del overstay (historia medida) y la reformulación completa.
 
 ## El hallazgo que ordena el vicio
 
