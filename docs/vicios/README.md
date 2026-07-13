@@ -59,18 +59,18 @@ vive; aún sin construir).
 
 ## Índice
 
-| Doc | Vicio | Estado generacional (global) | Mundos WAGER |
-|---|---|---|---|
-| [vicio-1](vicio-1-no-cambiar-de-idea.md) | No cambiar de idea ante la evidencia | VIVO (no-uptake 68%) con sub-formas muertas | first_story (control) |
-| [vicio-2](vicio-2-el-pozo.md) | El pozo / no soltar | CONDICIONAL (identidad/social/largo) | v0, v2, lab_largo + hallazgo 0/60 |
-| [vicio-3](vicio-3-no-verificar-inflar.md) | No verificar / inflar / fabricar | **CRECIENTE** | ninguno (prioridad #1) |
-| [vicio-4](vicio-4-estructura-escondida.md) | No postular la estructura escondida | VIVO (frontier agéntico) | latent_mix v2 (trofeo) |
-| [vicio-5](vicio-5-perder-el-hilo.md) | Perder el hilo (operación) | VIVO pero fuera de alcance | no se construye |
-| [vicio-6](vicio-6-adivinar-vs-preguntar.md) | Adivinar en vez de preguntar | VIVO | bloqueado (verbo ASK) |
-| [vicio-7](vicio-7-correlacion-causa.md) | Correlación vs causa | probablemente MUERTO en viñeta; vivo en dato observacional | 5 mundos (controles) |
-| [vicio-8](vicio-8-perder-el-objetivo.md) | Perder el objetivo / relevancia | CONDICIONAL (largo/proxy) | ninguno |
-| [vicio-9 CANDIDATO](vicio-9-overtrust-verificacion-CANDIDATO.md) | Over-trust en la verificación propia | **VIVO, dominante en frontier** | ninguno — **candidato a agregar (decisión de Lucas)** |
-| [ahas](ahas.md) | Las operaciones espejo | evidencia positiva POBRE (hallazgo en sí) | pares en v2/lab_largo |
+| Doc | Vicio | **Eje** (ADR 0141) | Estado generacional | Mundos WAGER |
+|---|---|---|---|---|
+| [vicio-1](vicio-1-no-cambiar-de-idea.md) | No cambiar de idea ↔ **dejarse influenciar** (par de 1ª clase) | Competencia | VIVO (no-uptake 68%); el espejo mejor documentado aún | first_story (control) |
+| [vicio-2](vicio-2-el-pozo.md) | Calibración de parada (bipolar: overstay ↔ **cierre prematuro**) | Competencia | overstay MUERTO en frontier; **understay VIVO** | v0, v2, lab_largo + hallazgo 0/60 |
+| [vicio-3](vicio-3-no-verificar-inflar.md) | No verificar / inflar / fabricar (8 sub-formas) | **Integridad** | **CRECIENTE** | ninguno (prioridades #2-#3) |
+| [vicio-4](vicio-4-estructura-escondida.md) | No postular la estructura escondida | Competencia | VIVO (frontier agéntico) | latent_mix v2 (trofeo) |
+| [vicio-5](vicio-5-perder-el-hilo.md) | Perder el hilo | Operación | VIVO pero fuera de alcance | no se construye |
+| [vicio-6](vicio-6-adivinar-vs-preguntar.md) | Adivinar en vez de preguntar | Competencia | VIVO | bloqueado (verbo ASK) |
+| [vicio-7](vicio-7-correlacion-causa.md) | Correlación vs causa | Competencia | MUERTO en viñeta; vivo en dato observacional | 5 mundos (controles) |
+| [vicio-8](vicio-8-perder-el-objetivo.md) | Perder el objetivo / relevancia | Competencia | CONDICIONAL (largo/proxy) | ninguno |
+| [vicio-9](vicio-9-overtrust-verificacion.md) | **La verificación de paja** (promovido 2026-07-13) | **Integridad** | **VIVO, dominante en frontier** | ninguno — par con cierre-prematuro |
+| [ahas](ahas.md) | Las operaciones espejo | — | evidencia positiva POBRE (hallazgo en sí) | pares en v2/lab_largo |
 
 ## Segunda ronda de síntesis (R4-auditoría + R5-barrido, 2026-07-13)
 

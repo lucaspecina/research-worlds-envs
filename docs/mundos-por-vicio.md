@@ -62,7 +62,11 @@ prominente corrido al inicio).
 **Estado.** `first_story` HECHO y validado con 2 modelos — y protocolo vicio-vivo corrido
 (2026-07-11): **en gpt-5.4 el vicio NO está vivo** (1/8 con la firma; 8/8 usan la escapatoria)
 → queda como CONTROL de facto para frontier actuales. Par confirmar/espejo: spec en cantera.
-Retracción y ancla: sin mundo.
+Retracción y ancla: sin mundo. **NUEVO (ADR 0141): el ESPEJO de este vicio — dejarse influenciar
+(sub-actualizar ante DATOS ↔ sobre-actualizar ante OPINIONES) — elevado a par de primera clase:
+dos mundos con la misma fachada donde en uno ceder es virtud (dato) y en el otro sostener es
+virtud (testimonio sin evidencia); firma computable = cambio de conclusión sin evidencia nueva.
+Candidato a contribución original; detalle en `docs/vicios/vicio-1-no-cambiar-de-idea.md`.**
 
 ---
 
@@ -105,7 +109,9 @@ que excava el señuelo hasta el fondo DEBE perder; el que lo prueba un poco y sa
 **Dial de dificultad (dato real de Kosmos): el LARGO permitido de la investigación — cuanto más
 largo, más se hunde el que no sabe cortar.**
 
-**Estado (2026-07-12, ADRs 0138/0139 — pasó de "el hueco más grave" a EL MÁS TRABAJADO en un día).**
+**Estado (2026-07-12/13, ADRs 0138/0139/0141 — reformulado BIPOLAR: el polo vivo es el CIERRE
+PREMATURO; el costo hundido queda pausado → experimento propio-vs-heredado; detalle en
+`docs/vicios/vicio-2-el-pozo.md`).**
 TRES mundos verificados: `rabbit_hole_v0` (certificado 19/19, claim estrecho: solo el pozo
 PROFUNDO), `rabbit_hole_v2` (portafolio de 5 líneas — separación 0.57: el robot-pozo paga de
 verdad) y `lab_largo_v0` (14 rondas, obra propia registrada + expansión de alcance en ronda 4 —
@@ -328,6 +334,27 @@ sub-problemas ES investigar) — el vicio es perder el ENSAMBLE, no descomponer.
 
 ---
 
+## Vicio 9 — La verificación de paja (PROMOVIDO 2026-07-13, ADR 0141; eje INTEGRIDAD)
+
+**Qué es.** El agente SÍ verifica — pero con un test que él mismo eligió y que pasa por
+construcción (el happy path, el panel que confirma), en vez del verificador que podría refutarlo.
+La ilusión de rigor. Distinto del vicio 3 (ahí no hay verificación; acá hay esfuerzo real con
+poder de refutación ~cero).
+
+**Dónde se lo vio EN AGENTES DE IA**: la clase de falla dominante en las taxonomías de agentes
+de terminal/código de 2026 (detalle y fuentes en `docs/vicios/vicio-9-overtrust-verificacion.md`;
+cola de lectura antes de citar números).
+
+**Estructuras → el mundo que lo caza.** Dos verificadores disponibles: el propio-configurable
+barato (degenerable en paja) y el discriminante caro (réplicas/hold-out). La firma es computable
+con nuestros gemelos: ¿su test distingue la verdad del gemelo? Si no, es paja. **Par espejo**:
+la paranoia de verificación (re-chequear sin fin y no entregar). Probablemente se construye como
+familia con el mundo del cierre prematuro.
+
+**Estado.** CERO mundos; prioridad alta (comparte esqueleto con la prioridad #1).
+
+---
+
 ## Los saltos creativos (el espejo — SIEMPRE de a pares)
 
 La evidencia EN MODELOS del lado creativo es la más flaca de todas (casi todo lo tipificado es
@@ -354,4 +381,5 @@ lado malo.
 | 6. Adivinar vs preguntar | la MÁS medida en modelos | Mundo B (diseñado) | bloqueado: falta el verbo "preguntar" |
 | 7. Causa y efecto | FUERTE (Corr2Cause al azar) | **5** | "mirar no alcanza"; colisionador |
 | **8. Perder el objetivo/relevancia (NUEVO)** | 2 fuentes (2601.03315; vibe-physics) | **0** | por diseñar — distinguirlo de la buena descomposición |
+| **9. La verificación de paja (PROMOVIDO 2026-07-13)** | dominante en taxonomías de agentes 2026 (cola de lectura) | **0** | par con el mundo del cierre prematuro (prioridad #1) |
 | Saltos (pares) | FLACA → nuestra oportunidad de medirla primero | v2 instancia uno | Vulcano, consiliencia, analogía |

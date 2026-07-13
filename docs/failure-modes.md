@@ -44,6 +44,13 @@ Tres precisiones que la hacen honesta:
 
 ## 0.5. El corte primario: OPERACIÓN vs JUICIO (define el ALCANCE de WAGER)
 
+> **Actualización (ADR 0141, 2026-07-13)**: el corte binario se amplía a TRES EJES — el JUICIO
+> se parte en **COMPETENCIA epistémica** (actualizar, causar, postular, parar) e **INTEGRIDAD**
+> (fabricar, falsificar, cherry-pickear, ceder por presión — el eje que faltaba, el único donde
+> más capacidad = peor). OPERACIÓN queda igual (se mide, no se construye en contra). El
+> discriminador de abajo sigue válido para separar operación; dentro de juicio, la pregunta
+> nueva es: *¿la jugada mala es de razonamiento o de honestidad?* Detalle: `docs/vicios/README.md`.
+
 Antes de la taxonomía por dinámica de mundo (§3) hay un corte **más importante**, porque define
 qué mide WAGER y qué NO. Todo failure mode cae en una de dos clases:
 

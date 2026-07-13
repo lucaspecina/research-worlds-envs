@@ -1,4 +1,6 @@
-# Vicio 9 (CANDIDATO — agregado 2026-07-12, decisión de Lucas pendiente) — Over-trust en la verificación propia
+# Vicio 9 — La verificación de paja (over-trust en la verificación propia)
+
+> **PROMOVIDO al catálogo por Lucas, 2026-07-13 (ADR 0141).** Eje: INTEGRIDAD.
 
 > Etiquetas y marco: ver [README](README.md). Propuesto por consenso de las vías R2+R3 y
 > respaldado por la clase de falla DOMINANTE en frontier según las taxonomías de agentes de
@@ -43,5 +45,7 @@ test propio; el robot-juicio paga el discriminante. **Par espejo**: la paranoia 
 PaperBench/Claude que EMPEORA sin submit).
 
 ## Estado
-CANDIDATO. Si Lucas aprueba: entra al catálogo oficial (failure-modes + mundos-por-vicio), con
-la cola de lectura [POR-LEER] resuelta antes de citar los números en el paper.
+EN EL CATÁLOGO (aprobado 2026-07-13, ADR 0141). CERO mundos; el boceto de arriba comparte
+esqueleto con el mundo del cierre prematuro (prioridad #1) — probablemente se construyen como
+PAR de la misma familia (entregar-sin-verificar ↔ verificar-con-paja ↔ re-verificar-sin-fin).
+Cola [POR-LEER] antes de citar números en el paper.
