@@ -52,8 +52,8 @@
 | Failing to Falsify | tarea 2-4-6 interactiva: pedir contraejemplos sube el descubrimiento 42→56 (vía R4) | arxiv.org/abs/2604.02485 | [ ] |
 | Huang et al. — Cannot Self-Correct Reasoning Yet | "revisá tu respuesta" SIN feedback externo degrada — la invitación a revisar no es evidencia | arxiv.org/abs/2310.01798 | [ ] |
 | Farmer et al. — probability transformations | contraevidencia que delimita: con protocolo limpio el update sale estructurado | arxiv.org/abs/2603.19262 | [ ] |
-| **3ª OLEADA (tres investigaciones externas de Lucas, 2026-07-13; los 21 IDs verificados título↔claim contra arXiv ese día)** — Hu et al., "Most LLM Conformity Needs No Speaker" | EL confound: el payload sin hablante ya causa 66.5% de revisión dañina — el brazo de control obligatorio de toda sonda social | arxiv.org/abs/2607.05545 | [ ] |
-| Qiu et al. — "Bayesian Teaching Enables Probabilistic Reasoning" (Nature Communications) | LLMs lejos del estándar bayesiano; imitar al normativo mejora y GENERALIZA (trainability + la objeción-de-review respondida) | arxiv.org/abs/2503.17523 | [ ] |
+| **3ª OLEADA (tres investigaciones externas de Lucas, 2026-07-13; los 21 IDs verificados título↔claim contra arXiv ese día)** — Hu et al., "Most LLM Conformity Needs No Speaker" | piso sin hablante 66.5% vs experto 79.4% (+12.9pp); persona anónima 57.4% (≤ piso); lo que sube el piso es PARECER EVIDENCIA (contenedor-referencia 80.4%) — ojo: 6 modelos abiertos CHICOS, MCQ, un turno | arxiv.org/abs/2607.05545 | **LEÍDO** (2026-07-13) |
+| Qiu et al. — "Bayesian Teaching Enables Probabilistic Reasoning" (Nature Communications) | oráculo = posterior exacta sobre funciones de recompensa (vuelos/hoteles/compras); LLMs 60-65% vs bayesiano 80%; SFT imitándolo → ~75% y GENERALIZA entre dominios | arxiv.org/abs/2503.17523 | **LEÍDO** (2026-07-13) |
 | Pal et al. — "Knowing What You Know Is Not Enough" | acciones contradicen las confidencias declaradas (apuesta contra su alta confianza; cede lo confiado bajo desafío) ⚠ el dossier lo describía como "Incoherent Beliefs"/Pima — resolver al leer | arxiv.org/abs/2511.13240 | [ ] |
 | Yang et al. — "When Do LLMs Admit Their Mistakes?" | la retractación la gobierna la creencia INTERNA (probe + steering causal); repo github.com/ayyyq/llm-retraction | arxiv.org/abs/2505.16170 | [ ] |
 | Grady et al. — KellyBench | temporada de apuestas secuencial: todos los frontier pierden (mejor −8%); no adaptan la estrategia — rigidez ante mundo NO-estacionario (disparador nuevo) | arxiv.org/abs/2604.27865 | [ ] |
@@ -354,6 +354,44 @@ simulador real = un mundo (ModelSMC); mundo de no-identificabilidad (entrega = m
 control anti-apofenia / mundo-nulo (AUTOCOG); ModelSMC como baseline destructor. Decisión de adopción:
 **romper-simulador DECIDIDA (ADR 0132: vía preferida de diversidad profunda, implementación
 DIFERIDA — el slot sigue en validar)**; las otras tres candidatas siguen sin decidir.
+
+### Hu et al. — "Most LLM Conformity Needs No Speaker" (2607.05545) — LEÍDO 2026-07-13
+
+Diseño: la MISMA respuesta afirmada bajo 4 marcos (sin-fuente "The answer is X" · "Person ii" ·
+par con nombre · panel de expertos), en ARC-Challenge/MMLU-Pro/TruthfulQA (N=500) + 4 BBH
+(N=250); 6 modelos abiertos chicos (Qwen2.5 1.5-7B, Llama-3.1-8B, Mistral-7B, Gemma-2-9B);
+revisión medida por log-probs pre/post, greedy, un turno.
+- **Los números**: re-preguntar solo = 10.3% de revisión dañina; afirmación SIN hablante =
+  **66.5%** (el piso); panel de expertos = 79.4% (**+12.9pp** sobre el piso); persona anónima
+  numerada = **57.4% — igual o DEBAJO del piso**.
+- **El hallazgo fino**: *"what does raise the floor is whether the inserted text reads as
+  evidence"* — un contenedor no-humano tipo referencia-recuperada llega a **80.4%**, empatando
+  al panel de expertos. Lo que persuade es PARECER EVIDENCIA, no la persona.
+- Recomendación metodológica (adoptada por nuestra sonda 0143 ANTES de leerlo): *"Before
+  crediting revision to social influence, a conformity benchmark should measure what remains
+  once the speaker is removed."*
+- **Límites que ELLOS declaran**: modelos chicos abiertos, opción múltiple, un turno, greedy →
+  el 66.5% NO se transfiere a agentes frontier con datos propios. **Cruce con lo nuestro (sonda
+  0143, mismo día)**: en revisión terminal agéntica gpt-5.4 el piso cae a ~8-15% (1-2/13
+  sellado; 3-5/13 con las mezclas-de-compromiso) — y nuestro patrón nota>persona REPLICA el
+  suyo (contenedor > etiqueta social) en formato agéntico.
+
+### Qiu et al. — "Bayesian Teaching..." (2503.17523, Nature Communications) — LEÍDO 2026-07-13
+
+Setup: inferencia secuencial de preferencias del usuario (vuelos: 3 opciones × 5 rondas;
+también hoteles y compras reales). Oráculo normativo = posterior EXACTA sobre funciones de
+recompensa enumerables (prior × likelihood-de-compatibilidad con la elección observada).
+- LLMs de fábrica: *"most of the models show little improvement after the first round"* —
+  meseta en ~60-65% vs ~80% del asistente bayesiano a la ronda 5.
+- Teaching: SFT imitando transcripciones del asistente bayesiano → ~75%, con la conducta clave
+  recuperada (mejora ronda a ronda) y **generalización** a 2-8 features, hoteles y compras
+  (menor que FT directo, muy superior al no-entrenado). Modelos: Gemma-2-9B, Llama-3-8B,
+  Qwen-2.5-7B (frontier solo evaluados sin tunear).
+- **Para WAGER, leído el detalle la complementariedad se afila**: el oráculo exige espacio de
+  hipótesis ENUMERABLE + likelihood de compatibilidad — exactamente lo que la investigación
+  abierta no da. Donde hay posterior computable: destilar (ellos); donde no: cobrar fidelidad
+  held-out (nosotros). El experimento-puente sigue en pie (¿un modelo bayesiano-enseñado
+  transfiere a un mundo WAGER tractable?).
 
 ### DiscoverPhysics (2605.26087) — LEÍDO 2026-07-13 (html completo; pedido de Lucas)
 
