@@ -382,6 +382,18 @@ espontáneo 1-2/30 vs 27-28/30 con el chequeo pedido
   sensibilidad al contexto (justifica la sonda del canal-contenido).
 - Crudos de la 3ª oleada: `../research/2026-07-13-vicio1-investigacion-externa-{A,B,C}.md`
   (+ Codex r24 en `../research/2026-07-13-codex-r24-foco-vicio1-mapa-evidencia.md`).
-- **Próximo paso — decisión de Lucas**: sonda como-firmada · sonda v2 de descomposición (6
-  brazos) · orden contenido-primero; + el certificado de no-discriminancia antes del mundo del
-  canal contenido. Con cualquiera: semana de falsación (r24).
+- **SONDA 0143 CORRIDA Y CERRADA (2026-07-13 noche; [resultados](../research/2026-07-13-sonda-0143-resultados.md),
+  ADR 0144; 156 celdas, 23 donantes, 2 mundos, ~US$7)**: **K1 ROJO** (el estatus agrega +4.3pp,
+  no 20) · **K2 ROJO** (EL CONTENIDO DOMINA: la nota sin firma daña 8.7% sellado / 26%
+  exploratorio, vía MEZCLAS DE COMPROMISO — "la nota es evidencia débil, PERO con n chico la
+  unificación parcial es atractiva" — mientras las personas dañan 0-4%) · **K3 VERDE** (la
+  pista de Lucas rescata 23/23 y hasta mejora la media) · K4 no (la influencia existe, chica,
+  concentrada en la nota). Colaterales: el consejo VERDADERO también se ignora (0/18 — el
+  anti-sycophancy sobre-generalizado: "usar el consejo cuando discrimina" hoy no pasa);
+  first_story con entrega bimodal (inestabilidad de mundo, a revisar). Predicciones: Codex
+  clavó nota y pista; ambos sobreestimamos las personas.
+- **Pivote PRE-AUTORIZADO ejecutado (ADR 0144)**: mundo del colega-autoridad DESCARTADO; el
+  foco de construcción pasa a ESTE canal (1.C). **Próximo paso: la sonda de FORMACIÓN (ADR
+  0145, a pre-registrar con crítica de Codex)** — el mismo material plantado ANTES de
+  investigar (donde Jeong encuentra el efecto grande en agentes); panel de formas sellado como
+  primario; brazo-pista estándar.

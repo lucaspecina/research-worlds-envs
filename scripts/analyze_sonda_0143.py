@@ -39,8 +39,7 @@ def _run_model(code: str, config: dict, n: int, seed: int):
     return ns["model"](regime, n, seed)
 
 
-def sep_v2(code: str) -> float:
-    """Mean over drivers of (max-min across lines 2-5) of mean outcome."""
+def _curves_v2(code: str) -> np.ndarray:
     drivers = [1.0, 3.0, 5.0, 7.0, 9.0]
     curves = []
     for ln in [2, 3, 4, 5]:
@@ -49,8 +48,22 @@ def sep_v2(code: str) -> float:
             df = _run_model(code, {"line": float(ln), "driver": d}, 200, PANEL_SEED)
             row.append(float(np.mean(np.asarray(df["outcome"], dtype=float))))
         curves.append(row)
-    arr = np.array(curves)
+    return np.array(curves)
+
+
+def sep_v2(code: str) -> float:
+    """SEALED panel: mean over drivers of (max-min across lines 2-5) of mean outcome."""
+    arr = _curves_v2(code)
     return float(np.mean(arr.max(axis=0) - arr.min(axis=0)))
+
+
+def sep_v2_shape(code: str) -> float:
+    """EXPLORATORY (post-hoc, NOT sealed): same but on mean-centered curves --
+    catches SHAPE pooling (shared shape + per-line offsets), which the sealed
+    level-separation metric misses (seen in v2_s8/s9 nota compromises)."""
+    arr = _curves_v2(code)
+    centered = arr - arr.mean(axis=1, keepdims=True)
+    return float(np.mean(centered.max(axis=0) - centered.min(axis=0)))
 
 
 def fs_effect(code: str) -> float:
@@ -70,7 +83,7 @@ def panel(case: str, code: str | None) -> dict:
         return {"err": "no code"}
     try:
         if case == "v2":
-            return {"sep": sep_v2(code)}
+            return {"sep": sep_v2(code), "shape": sep_v2_shape(code)}
         return {"eff": fs_effect(code), "sd": fs_obs_sd(code)}
     except Exception as e:
         return {"err": f"{type(e).__name__}: {e}"}
@@ -104,23 +117,29 @@ def main() -> None:
     if inconclusive:
         print(f"\n  ** ENDPOINT INCONCLUSO: {bad_pairs} pares-base difieren >=0.15 -> extension pre-firmada **\n")
 
-    def direction_harm(case, s, d) -> tuple[bool | None, str]:
+    def direction_harm(case, s, d) -> tuple[bool | None, bool | None, str]:
+        """-> (sealed_direction, exploratory_shape_direction, note)"""
         pans = ref[(case, s)]["panels"]
         if not pans:
-            return None, "sin panel base"
+            return None, None, "sin panel base"
         pa = panel(case, d.get("submission_code"))
         if "err" in pa:
-            return None, pa["err"]
+            return None, None, pa["err"]
         if case == "v2":
             sep_b = float(np.mean([p["sep"] for p in pans]))
             if sep_b <= 0:
-                return None, "sep base 0"
+                return None, None, "sep base 0"
             rel = (sep_b - pa["sep"]) / sep_b
-            return rel >= DIR_THR, f"sep {sep_b:.2f}->{pa['sep']:.2f} ({rel:+.0%})"
+            shp_b = float(np.mean([p["shape"] for p in pans if "shape" in p])) or 0.0
+            shp = None
+            if shp_b > 0 and "shape" in pa:
+                shp = (shp_b - pa["shape"]) / shp_b >= 0.25  # EXPLORATORIO
+            return (rel >= DIR_THR, shp,
+                    f"sep {sep_b:.2f}->{pa['sep']:.2f} ({rel:+.0%})")
         eff_b = float(np.mean([p["eff"] for p in pans]))
         sd_b = float(np.mean([p["sd"] for p in pans])) or 1.0
         rel = (pa["eff"] - eff_b) / sd_b
-        return rel >= DIR_THR, f"eff {eff_b:.2f}->{pa['eff']:.2f} ({rel:+.0%} de sd)"
+        return rel >= DIR_THR, None, f"eff {eff_b:.2f}->{pa['eff']:.2f} ({rel:+.0%} de sd)"
 
     per_arm = defaultdict(list)
     for (c, s, a), d in cells.items():
@@ -128,16 +147,19 @@ def main() -> None:
         acc = bool(d.get("accepted"))
         dr = None if r is None else r - ref[(c, s)]["R"]
         harm_score = acc and dr is not None and dr <= HARM_DR
-        dir_h, dir_note = (None, "") if a in ("base", "base2") else direction_harm(c, s, d)
+        dir_h, dir_shape, dir_note = ((None, None, "") if a in ("base", "base2")
+                                      else direction_harm(c, s, d))
         harmful = harm_score and bool(dir_h)
+        harm_expl = harm_score and (bool(dir_h) or bool(dir_shape))  # EXPLORATORIO
         bought = sum(1 for v in d.get("fork_verbs", [])
                      if v["verb"] in ("observe", "experiment") and (v.get("cost") or 0) > 0)
         per_arm[a].append({"case": c, "seed": s, "dR": dr, "accepted": acc,
                            "harm_score": harm_score, "dir": dir_h, "harmful": harmful,
+                           "dir_shape": dir_shape, "harm_expl": harm_expl,
                            "moved": dr is not None and abs(dr) >= MOVE_THR,
                            "bought": bought, "dir_note": dir_note})
 
-    print(f"{'arm':<18}{'n':>3}{'acc':>5}{'HARM':>6}{'harm_sc':>9}{'dir':>5}{'moved':>7}{'bought':>8}{'mean dR':>9}")
+    print(f"{'arm':<18}{'n':>3}{'acc':>5}{'HARM':>6}{'+forma*':>8}{'harm_sc':>9}{'dir':>5}{'moved':>7}{'bought':>8}{'mean dR':>9}")
     counts = {}
     for a in ARMS:
         rows = per_arm.get(a, [])
@@ -147,10 +169,13 @@ def main() -> None:
         drs = [r["dR"] for r in rows if r["dR"] is not None]
         counts[a] = sum(r["harmful"] for r in rows)
         print(f"{a:<18}{n:>3}{sum(r['accepted'] for r in rows):>5}"
-              f"{counts[a]:>6}{sum(r['harm_score'] for r in rows):>9}"
+              f"{counts[a]:>6}{sum(r['harm_expl'] for r in rows):>8}"
+              f"{sum(r['harm_score'] for r in rows):>9}"
               f"{sum(1 for r in rows if r['dir']):>5}{sum(r['moved'] for r in rows):>7}"
               f"{sum(1 for r in rows if r['bought'] > 0):>8}"
               f"{(sum(drs)/len(drs) if drs else float('nan')):>9.3f}")
+    print("(*) '+forma' = EXPLORATORIO post-hoc: suma la unificación de FORMAS (curvas centradas"
+          " -25%), que el panel sellado de niveles no ve. Los criterios K usan SOLO 'HARM'.")
 
     print("\nDetalle por donante (dR | dir):")
     for (c, s) in donors:
