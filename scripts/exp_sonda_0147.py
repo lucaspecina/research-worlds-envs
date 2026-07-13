@@ -38,7 +38,7 @@ OUT = ROOT / "scripts" / "out" / "sonda_0147"
 SEEDS = list(range(20))
 ARMS = ["base", "base2", "falsa", "verdadera", "falsa_pista"]
 MAX_FORK_TURNS = 8
-MIN_BUDGET_AT_FORK = 1000.0
+MIN_BUDGET_AT_FORK = 1200.0  # r27-adjusted: >=3 campaigns of headroom at the fork
 TOKEN_CEILING = 6_000_000
 
 FALSE_PROP = ("Lines 2-5 came from the same vendor platform; the differences you "
@@ -89,20 +89,17 @@ def _feedback(result_ok, stdout, error, budget_remaining) -> str:
 
 
 def mid_fork_turn(trace: list[dict]) -> int | None:
-    """First turn index (1-based) after which >=1 campaign is bought and budget
-    >= MIN_BUDGET_AT_FORK. Fallback: the first-campaign turn. None if no campaign
-    before the delivery turn."""
-    camps = 0
-    first_camp_turn = None
+    """LAST turn (1-based) after which budget >= MIN_BUDGET_AT_FORK, before the
+    delivery turn: the latest 'partial evidence in hand, live budget' state.
+    DEVIATION from r27's campaign-specific cut, DECLARED in ADR 0148: v2 donors
+    buy all campaigns inside one cell, so turn granularity cannot split them --
+    at this fork the free evidence (line-1 overview + pilots of lines 2-5) is
+    read and a discriminating campaign is still affordable."""
+    best = None
     for i, t in enumerate(trace[:-1]):  # never fork past the delivery turn
-        for v in t.get("verbs", []):
-            if v["verb"] == "experiment":
-                camps += 1
-                if first_camp_turn is None:
-                    first_camp_turn = i + 1
-        if camps >= 1 and (t.get("budget_remaining") or 0) >= MIN_BUDGET_AT_FORK:
-            return i + 1
-    return first_camp_turn
+        if (t.get("budget_remaining") or 0) >= MIN_BUDGET_AT_FORK:
+            best = i + 1
+    return best
 
 
 def fork(seed: int, arm: str) -> dict:
@@ -142,6 +139,8 @@ def fork(seed: int, arm: str) -> dict:
 
         out["replay_mismatches"] = replay_mismatches
         out["budget_at_fork"] = server.budget_remaining
+        out["campaigns_at_fork"] = sum(
+            1 for t in trace[:k] for v in t.get("verbs", []) if v["verb"] == "experiment")
 
         chat = FoundryChat(system=SYSTEM, model=MODEL,
                            max_completion_tokens=MAX_COMPLETION_TOKENS)
