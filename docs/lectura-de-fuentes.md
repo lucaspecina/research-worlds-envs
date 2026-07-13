@@ -73,6 +73,20 @@
 | Huang et al. — SynAnchors | anclaje de capas superficiales; no lo eliminan las estrategias convencionales; el razonamiento mitiga parcial | arxiv.org/abs/2505.15392 | [ ] |
 | Shi et al. — GSM-IC (ICML 2023) | el linaje original de la distracción por contexto irrelevante | arxiv.org/abs/2302.00093 | [ ] |
 | Xiang et al. — MemSyco-Bench | la memoria recuperada induce sycophancy (preferencias viejas ganan a la evidencia actual) — el material re-entra por RAG | arxiv.org/abs/2607.01071 | [ ] |
+| **IMPORTANTES QUE FALTABAN EN ESTE REGISTRO (pedido de Lucas 2026-07-13; 14 IDs verificados título↔claim)** — BoxingGym (Gandhi et al., Stanford) | 10 entornos de diseño experimental + descubrimiento de modelos (ganancia de información esperada); prior-vs-no-prior — lo que Lucas recordaba como "bayesian update" | arxiv.org/abs/2501.01540 | [ ] |
+| CausaLab (Yang et al.) | descubrimiento causal interactivo con SCM oculto y presupuesto: brecha exactitud-vs-mecanismo; el chequeo de consistencia ataca el CIERRE PREMATURO (vecino del vicio 2 vivo) | arxiv.org/abs/2605.26029 | [ ] |
+| NewtonBench (Zheng et al.) | descubrimiento de leyes con exploración interactiva; el intérprete de código EMPUJA a optimización prematura (tool paradox) | arxiv.org/abs/2510.07172 | [ ] |
+| CausalGame (Chen et al.) | 14 escenarios de protocolo experimental activo (selección, error de medición, confusores); 30 agentes, NINGUNO confiable (mejor 68% vs óptimo 78-85%) | arxiv.org/abs/2607.04293 | [ ] |
+| Jr. AI Scientist (Miyai et al.) | ⚠ el claim de R5 ("el reviewer pide ablaciones → las INVENTA y el score sube") NO está en el abstract (que enfatiza transparencia/risk-report) — VERIFICAR EN EL CUERPO antes de usarlo como fuente estrella de la fabricación reactiva (prioridad #3) | arxiv.org/abs/2511.04583 | [ ] |
+| FIRE-Bench (Wang et al.) | re-descubrir hallazgos de ML punta a punta: <50 F1; el cuello se corrió de coding a DISEÑO y CONCLUSIÓN | arxiv.org/abs/2602.02905 | [ ] |
+| ImpossibleBench (Zhong et al.) | specs vs tests en conflicto: mide la tasa de trampa; ⚠ el 76%/2.9% NO está en el abstract — verificar al leer (ya anotado en deudas) | arxiv.org/abs/2510.20270 | [ ] |
+| Sharma et al. (Anthropic, ICLR 2024) — Towards Understanding Sycophancy | sycophancy en asistentes RLHF; los modelos de preferencia a veces prefieren lo convincente-que-concuerda sobre lo correcto (la RAÍZ del canal social) | arxiv.org/abs/2310.13548 | [ ] |
+| The Cost of Consensus (Bertalanič et al.) | debate multi-agente homogéneo: colapso de consenso — el voto DESCARTA respuestas correctas ya presentes (oracle gap hasta 32.3pp) | arxiv.org/abs/2605.00914 | [ ] |
+| Easier to Mislead Than to Correct (Qu et al.) | el consenso de pares vuelve incorrectas las respuestas correctas más fácil que lo inverso; CoT/reflexión NO reducen selectivamente el daño (solo vuelven conservador) | arxiv.org/abs/2606.01637 | [ ] |
+| When Identity Skews Debate (Choi et al.) | la etiqueta propio-vs-par sesga el debate; ANONIMIZAR reduce el sesgo (palanca de diseño para el mundo del colega) | arxiv.org/abs/2510.07517 | [ ] |
+| BAGEN (Lin et al.) | agentes NO conscientes del presupuesto: sobre-optimismo sistemático; parar temprano ahorraría 28-64%; fuerza ≠ manejo de recursos (r=0.35); ES ENTRENABLE (SFT/RL) | arxiv.org/abs/2606.00198 | [ ] |
+| The Illusion of Diminishing Returns (Sinha et al.) | auto-condicionamiento: los errores propios en la historia CAUSAN errores futuros; el thinking lo mitiga (horizonte largo de ejecución) | arxiv.org/abs/2509.09677 | [ ] |
+| mARC follow-up (Shidara et al.) | los modelos de razonamiento fuertes ESQUIVAN las trampas Einstellung que volteaban a los viejos — la evidencia de "los vicios evaporan entre generaciones" | arxiv.org/abs/2601.11866 | [ ] |
 | The AI Scientist (Sakana) + críticas | Agente que genera papers de punta a punta | *(buscar URL)* | [ ] |
 | AI Co-Scientist (Google) | Sistema multi-agente de hipótesis científicas | *(buscar URL)* | [ ] |
 | SciAgentBench / DiscoveryWorld / DiscoveryBench | Benchmarks de descubrimiento con análisis de error | *(buscar URLs)* | [ ] |
