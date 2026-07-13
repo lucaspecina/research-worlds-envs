@@ -51,6 +51,27 @@
 | Failing to Falsify | tarea 2-4-6 interactiva: pedir contraejemplos sube el descubrimiento 42→56 (vía R4) | arxiv.org/abs/2604.02485 | [ ] |
 | Huang et al. — Cannot Self-Correct Reasoning Yet | "revisá tu respuesta" SIN feedback externo degrada — la invitación a revisar no es evidencia | arxiv.org/abs/2310.01798 | [ ] |
 | Farmer et al. — probability transformations | contraevidencia que delimita: con protocolo limpio el update sale estructurado | arxiv.org/abs/2603.19262 | [ ] |
+| **3ª OLEADA (tres investigaciones externas de Lucas, 2026-07-13; los 21 IDs verificados título↔claim contra arXiv ese día)** — Hu et al., "Most LLM Conformity Needs No Speaker" | EL confound: el payload sin hablante ya causa 66.5% de revisión dañina — el brazo de control obligatorio de toda sonda social | arxiv.org/abs/2607.05545 | [ ] |
+| Qiu et al. — "Bayesian Teaching Enables Probabilistic Reasoning" (Nature Communications) | LLMs lejos del estándar bayesiano; imitar al normativo mejora y GENERALIZA (trainability + la objeción-de-review respondida) | arxiv.org/abs/2503.17523 | [ ] |
+| Pal et al. — "Knowing What You Know Is Not Enough" | acciones contradicen las confidencias declaradas (apuesta contra su alta confianza; cede lo confiado bajo desafío) ⚠ el dossier lo describía como "Incoherent Beliefs"/Pima — resolver al leer | arxiv.org/abs/2511.13240 | [ ] |
+| Yang et al. — "When Do LLMs Admit Their Mistakes?" | la retractación la gobierna la creencia INTERNA (probe + steering causal); repo github.com/ayyyq/llm-retraction | arxiv.org/abs/2505.16170 | [ ] |
+| Grady et al. — KellyBench | temporada de apuestas secuencial: todos los frontier pierden (mejor −8%); no adaptan la estrategia — rigidez ante mundo NO-estacionario (disparador nuevo) | arxiv.org/abs/2604.27865 | [ ] |
+| Vigraham — "When Context Hurts" | doc IRRELEVANTE ≥ artefactos relevantes en diseño multi-agente; crossover ±(20×/−46%) predicho por exploración-base r=−0.82 (preprint autor único, sin repo) | arxiv.org/abs/2605.04361 | [ ] |
+| Bajaj et al. — "Who Do LLMs Trust?" | contenido idéntico pesa según la fuente: experto ≫ amigo/otro-LLM (aun equivocado) — el par genérico es débil | arxiv.org/abs/2602.13568 | [ ] |
+| Simhi et al. — "Old Habits Die Hard" | el estado conductual previo se arrastra turno a turno (trampa geométrica); cae con cambio de tema | arxiv.org/abs/2603.03308 | [ ] |
+| Xie et al. — "Adaptive Chameleon or Stubborn Sloth" (ICLR 2024) | camaleón ante contradicción única coherente; sesgo confirmatorio ante evidencia MIXTA — la receta fina de la rigidez | arxiv.org/abs/2305.13300 | [ ] |
+| Jeong et al. — persuasion propagation | creencia PRE-cargada: −26.9% búsquedas, −16.9% fuentes (la política se curva, el output parece normal); on-the-fly débil | arxiv.org/abs/2602.00851 | [ ] |
+| Arvin — "Check My Work?" | mencionar una opción (correcta/incorrecta) mueve accuracy ±15pp en contexto educativo | arxiv.org/abs/2506.10297 | [ ] |
+| Mirzadeh et al. — GSM-Symbolic (Apple) | una cláusula que PARECE relevante tira hasta 65% a todos los SOTA (pre-auditoría) | arxiv.org/abs/2410.05229 | [ ] |
+| Sturgeon — "Revisiting GSM-Symbolic" (LessWrong, 2026) | LA AUDITORÍA que mata el priming-por-saliencia en frontier: caídas auditadas ≈ 0; auditores frontier κ=0.32 → la celda "irrelevante" se certifica computable, no por juicio | lesswrong.com/posts/Ze4C99Dasj74YKCFh/revisiting-gsm-symbolic-do-2026-frontier-models-still-fail | [ ] |
+| Zhang et al. — "How LM Hallucinations Can Snowball" | se sobre-compromete con el error temprano y fabrica justificaciones que reconoce falsas por separado (67–87%) | arxiv.org/abs/2305.13534 | [ ] |
+| Barkett et al. — "Getting out of the Big-Muddy" | escalada de compromiso o4-mini, N=6.500: decisión INDIVIDUAL = racional con mínima escalada (replica nuestro 0/60); el vicio vive en deliberación entre pares | arxiv.org/abs/2508.01545 | [ ] |
+| Zhang et al. — RetailBench | descompone la falla larga: adquisición casi resuelta en frontier; el cuello es la CONVERSIÓN evidencia→acción | arxiv.org/abs/2606.15862 | [ ] |
+| Kim et al. — "Challenging the Evaluator" | la refutación CASUAL persuade más que la crítica formal; el razonamiento detallado persuade aunque concluya mal; acepta menos cuando su respuesta era correcta | arxiv.org/abs/2509.16533 | [ ] |
+| Kumarappan et al. — "Not Just RLHF" | los modelos BASE flipean igual o más que los instruct ante pares — la sycophancy no es (solo) el alignment | arxiv.org/abs/2605.12991 | [ ] |
+| Huang et al. — SynAnchors | anclaje de capas superficiales; no lo eliminan las estrategias convencionales; el razonamiento mitiga parcial | arxiv.org/abs/2505.15392 | [ ] |
+| Shi et al. — GSM-IC (ICML 2023) | el linaje original de la distracción por contexto irrelevante | arxiv.org/abs/2302.00093 | [ ] |
+| Xiang et al. — MemSyco-Bench | la memoria recuperada induce sycophancy (preferencias viejas ganan a la evidencia actual) — el material re-entra por RAG | arxiv.org/abs/2607.01071 | [ ] |
 | The AI Scientist (Sakana) + críticas | Agente que genera papers de punta a punta | *(buscar URL)* | [ ] |
 | AI Co-Scientist (Google) | Sistema multi-agente de hipótesis científicas | *(buscar URL)* | [ ] |
 | SciAgentBench / DiscoveryWorld / DiscoveryBench | Benchmarks de descubrimiento con análisis de error | *(buscar URLs)* | [ ] |

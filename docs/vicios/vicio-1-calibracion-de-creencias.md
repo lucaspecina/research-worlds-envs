@@ -70,6 +70,37 @@ cambio de entrega es cortesía, no creencia.
     `[POR-LEER]` (r24): con evidencia y protocolo LIMPIOS la actualización sale bastante
     estructurada — el vicio vive en la ambigüedad, la fuente y el compromiso, no en el update
     mecánico.
+- **Condiciones FINAS del disparo (3ª oleada: tres investigaciones externas, 2026-07-13 —
+  crudos en `../research/2026-07-13-vicio1-investigacion-externa-{A,B,C}.md`; 21 IDs
+  verificados título↔claim el mismo día)**:
+  - **La evidencia tiene que ser MIXTA, no solo ambigua** — [Xie et al., arXiv 2305.13300](https://arxiv.org/abs/2305.13300)
+    (ICLR 2024 Spotlight) `[POR-LEER][VIÑETA]`: ante contradicción ÚNICA y coherente el modelo
+    es "camaleón" (se mueve); el sesgo confirmatorio aparece cuando llegan confirmación Y
+    contradicción JUNTAS — elige la que confirma (*"strong confirmation bias when the external
+    evidence contains some information that is consistent with their parametric memory"*).
+  - **El auto-condicionamiento por la propia historia**: se sobre-compromete con el error
+    temprano y fabrica justificaciones — pudiendo reconocer 67–87% de esas afirmaciones como
+    falsas por separado ([snowballing, Zhang et al., arXiv 2305.13534](https://arxiv.org/abs/2305.13534)
+    `[POR-LEER][VIÑETA]`); y el estado conductual previo se ARRASTRA turno a turno, más fuerte
+    a mayor cercanía temática ([Old Habits Die Hard, Simhi et al., arXiv 2603.03308](https://arxiv.org/abs/2603.03308)
+    `[POR-LEER]`).
+  - **La variable escondida candidata: el COSTO DE RE-TRABAJO** (hipótesis de la vía A,
+    testeable): el mismo modelo que se mueve gratis en QA ignora el 68% en agente — en QA
+    actualizar es cambiar una palabra; en agente es re-modelar, tirar experimentos comprados,
+    re-planificar. Nuestro mundo puede manipular ese costo como dial (evidencia que pide tocar
+    UN parámetro vs re-estructurar el modelo entregable).
+  - **Disparador NUEVO no catalogado: el mundo que CAMBIA debajo del agente** —
+    [KellyBench, Grady et al., arXiv 2604.27865](https://arxiv.org/abs/2604.27865)
+    `[POR-LEER][AGÉNTICO]`: temporada simulada de apuestas (500–1000 tool-calls); TODOS los
+    frontier pierden plata (el mejor −8%) y fallan en adaptar la estrategia al fracaso —
+    rigidez ESTRATÉGICA ante no-estacionariedad, distinta de la nuestra (mecanismo fijo +
+    evidencia nueva). Candidato a arquetipo propio: "el mecanismo cambia a mitad del episodio".
+  - **Separar creencia-no-movida de creencia-movida-acción-no**: el cuello frontier es la
+    CONVERSIÓN evidencia→acción, no la adquisición ([RetailBench, arXiv 2606.15862](https://arxiv.org/abs/2606.15862)
+    `[POR-LEER]`); y las confidencias declaradas contradicen las acciones — abandona respuestas
+    de ALTA confianza bajo desafío y defiende las de baja ([Pal et al., arXiv 2511.13240](https://arxiv.org/abs/2511.13240)
+    `[POR-LEER]`). Instrumento nuestro YA construido: el diff mecánico entre modelo provisional
+    registrado (verbo register) y modelo entregado separa las dos sub-formas sin LLM.
 - **En nuestra mesa**: gpt-5.4 NO exhibe la forma primera-historia en compacto
   ([first_story_v0](../../cases/first_story_v0/), 1/8 — control); DeepSeek SÍ (0.36→0.89 con
   advertencia — [réplica](../research/2026-07-09-replica-deepseek-adr0098.json)). El polo no
@@ -119,6 +150,33 @@ cambio de entrega es cortesía, no creencia.
   redacciones (tono/nombre/prestigio no pueden dominar); verdad-por-suerte se neutraliza en la
   distribución apareada; medir por separado compras / modelo-pre-post / score (la autoridad
   puede cambiar el ESFUERZO sin cambiar la creencia).
+- **La 3ª oleada AFINA el canal (2026-07-13)**:
+  - **EL CONFOUND MAYOR — la mayor parte de la "conformidad" NO necesita hablante**:
+    [Hu et al., arXiv 2607.05545](https://arxiv.org/abs/2607.05545) `[POR-LEER]` — la misma
+    respuesta afirmada SIN hablante explícito ya causa revisión dañina en el **66.5%** de los
+    casos inicialmente correctos; la etiqueta social agrega un plus MENOR que ese piso.
+    Consecuencia de diseño: **fuente y payload como factores ORTOGONALES** (mismo contenido
+    con y sin hablante), o el "canal social" mide en realidad contenido.
+  - **El PAR genérico puede ser DÉBIL en frontier**: la deferencia escala con la etiqueta de
+    EXPERTO, no de amigo/par ([Bajaj et al., arXiv 2602.13568](https://arxiv.org/abs/2602.13568)
+    `[POR-LEER]`: se mueve hacia el "experto humano" incluso cuando está mal); la refutación
+    CASUAL persuade más que la crítica formal, y el razonamiento detallado persuade aunque
+    concluya mal ([Kim et al., arXiv 2509.16533](https://arxiv.org/abs/2509.16533)
+    `[POR-LEER]`); y NO es (solo) el RLHF: los modelos BASE flipean igual o más que los
+    instruct ante el desacuerdo de pares ([Kumarappan et al., arXiv 2605.12991](https://arxiv.org/abs/2605.12991)
+    `[POR-LEER]`). Justicia medible: la confiabilidad del par se ENSEÑA programáticamente
+    (historial de aciertos observable — 50% = testimonio sin poder, 80% = testimonio que SÍ
+    discrimina), jamás descripta ("es confiable").
+  - **Contraevidencia que BAJA la predicción**: GPT-5 fue post-entrenado explícitamente contra
+    la sycophancy (system card de OpenAI: prevalencia −69–75% en A/B; números del dossier
+    externo, link a verificar) `[POR-LEER]`; el modelo acepta MENOS el contraargumento cuando
+    su respuesta original era correcta (Kim et al., arriba) — y nuestro agente tiene 60
+    réplicas encima: esperar tasas MENORES que las de viñeta. La escalada individual con
+    contabilidad es racional también afuera ([Big-Muddy, Barkett et al., arXiv 2508.01545](https://arxiv.org/abs/2508.01545)
+    `[POR-LEER][VIÑETA]`: *"strong rational cost-benefit logic with minimal escalation"* en
+    decisión individual, N=4.000 — replica nuestro 0/60; el vicio social vive en la
+    deliberación ENTRE PARES).
+  - **Una vez cedido, persiste**: 78.5% de persistencia (SycEval, cuerpo — vía C) `[POR-LEER]`.
 
 ### 1.C Influenciable, canal CONTENIDO — el sesgo por lo mostrado (priming)
 - **Qué es** (aporte de Lucas, 2026-07-13): no hace falta que nadie te ORDENE nada — te
@@ -157,6 +215,81 @@ cambio de entrega es cortesía, no creencia.
   lo reconsidere" tampoco es evidencia: la sola invitación a revisar, sin feedback externo,
   degrada ([Huang et al., arXiv 2310.01798](https://arxiv.org/abs/2310.01798) `[POR-LEER]`) —
   la pista no equivale a evidencia.
+- **La 3ª oleada AFINA el canal (2026-07-13) — con la advertencia MÁS seria del foco**:
+  - **El priming por mera saliencia SE ESTÁ MURIENDO en frontier cuando la relevancia se
+    resuelve "desde el sillón"**. El linaje: una oración irrelevante degrada la resolución
+    ([GSM-IC, Shi et al., ICML 2023, arXiv 2302.00093](https://arxiv.org/abs/2302.00093)
+    `[POR-LEER][VIÑETA]`) → una cláusula que PARECE relevante tira hasta 65% a todos los SOTA
+    ([GSM-Symbolic, Mirzadeh et al./Apple, arXiv 2410.05229](https://arxiv.org/abs/2410.05229)
+    `[POR-LEER]`) → **NO sobrevivió la auditoría 2026**: re-generando y AUDITANDO los
+    distractores, toda caída auditada es estadísticamente indistinguible de CERO en frontier —
+    y los dos auditores frontier acordaron entre sí apenas κ=0.32
+    ([Sturgeon, LessWrong 2026](https://www.lesswrong.com/posts/Ze4C99Dasj74YKCFh/revisiting-gsm-symbolic-do-2026-frontier-models-still-fail)
+    `[POR-LEER]`). **Dos lecciones para nuestro mundo**: (1) el canal vive SOLO si la
+    relevancia del material es IRRESOLUBLE sin investigar — la única forma de saber si el
+    paper aplica tiene que ser COMPRAR el dato; la trampa griceana ("si me lo mostraron, por
+    algo será") no se desactiva razonando, se desactiva investigando; y la entrega debe ser
+    ecológica (carpeta heredada del equipo anterior — que "me lo dieron" no implique
+    "importa"). (2) La celda "no-discriminante" NO puede certificarse por juicio (ni humano ni
+    LLM: κ=0.32) — **se certifica COMPUTACIONALMENTE desde la verdad del mundo** (condicionar
+    en el material mostrado no cambia la posterior sobre mecanismos ni el score alcanzable).
+    Nosotros podemos; los benchmarks estáticos no. Va al certificado del mundo ANTES de
+    construir.
+  - **El vecino agéntico más cercano** — [When Context Hurts, Vigraham, arXiv 2605.04361](https://arxiv.org/abs/2605.04361)
+    `[POR-LEER][AGÉNTICO; preprint de autor único, sin repo]`: en diseño multi-agente de
+    software, un documento IRRELEVANTE rinde igual o mejor que todo artefacto relevante en
+    varias tareas; el mismo artefacto mejora hasta 20× o degrada 46% según la tarea, y la
+    dirección la predice UNA variable — la exploración de base sin contexto (r=−0.82). El
+    material mostrado curva SIEMPRE; si para bien o para mal depende del estado del agente —
+    validación independiente del principio de PARES.
+  - **El TIMING y la política invisible**: la creencia PRE-CARGADA al inicio cambia la
+    conducta del agente (−26.9% búsquedas, −16.9% fuentes únicas) mientras la persuasión a
+    mitad de tarea hace poco — y el output final puede verse NORMAL con la política de
+    exploración ya curvada ([Jeong et al., arXiv 2602.00851](https://arxiv.org/abs/2602.00851)
+    `[POR-LEER][AGÉNTICO]`) → medir las COMPRAS, no solo la entrega. Y el material puede
+    RE-ENTRAR por memoria/RAG ([MemSyco-Bench, Xiang et al., arXiv 2607.01071](https://arxiv.org/abs/2607.01071)
+    `[POR-LEER]`).
+  - **Advertencia [HUMANO]**: la analogía humana de ESTE canal es la más débil de las tres —
+    el priming social conductual humano NO replicó (de 70 réplicas cercanas, 94% con efectos
+    menores al original y solo 17% significativas en la dirección esperada — Mac Giolla et
+    al. 2024, link a verificar). El efecto agéntico se demuestra de nuevo o no existe; no
+    apoyarse en la analogía.
+
+## ¿No está ya hecho? — los vecinos que miden actualización de creencias (pregunta de Lucas, 2026-07-13)
+
+**Respuesta con el mapa en la mano: hay MUCHOS midiendo PEDAZOS; nadie mide nuestro objeto.**
+- **Update bayesiano medido y hasta ENTRENADO** — [Qiu et al., arXiv 2503.17523](https://arxiv.org/abs/2503.17523)
+  (Nature Communications) `[POR-LEER]`: *"LLMs fall far short of the standard defined by the
+  Bayesian framework"* — y enseñarles a imitar al modelo bayesiano normativo mejora
+  dramáticamente Y generaliza. **La objeción de review que nos regala, con su respuesta**: "si
+  destilar Bayes lo arregla, ¿para qué mundos con reward?" → el teaching necesita un ORÁCULO
+  normativo computable (posterior conocida); en investigación abierta no existe — la única
+  señal disponible es la fidelidad en regímenes held-out, que ES WAGER. Regímenes
+  complementarios; y un experimento-puente barato: ¿un modelo bayesiano-enseñado transfiere a
+  un mundo WAGER con posterior tractable?
+- **Creencia declarada vs ACCIÓN** — [Pal et al., arXiv 2511.13240](https://arxiv.org/abs/2511.13240)
+  `[POR-LEER]` (⚠ el dossier externo lo describía como "Incoherent Beliefs" con un experimento
+  distinto; el título real en ese ID es *"Knowing What You Know Is Not Enough"* — resolver al
+  leer). Y [Yang et al., arXiv 2505.16170](https://arxiv.org/abs/2505.16170) `[POR-LEER]`: la
+  retractación la gobierna la creencia INTERNA momentánea (probe + steering causal).
+- **Diseño experimental bayesiano en agentes** (lo que Lucas recordaba): BoxingGym
+  ([arXiv 2501.01540](https://arxiv.org/abs/2501.01540) — prior-vs-no-prior, regret de
+  información esperada) y BED-LLM ([arXiv 2508.21184](https://arxiv.org/abs/2508.21184),
+  leído) — miden ELEGIR la pregunta; no manipulan una hipótesis rival ni cobran el modelo
+  entregado. (CausaLab es OTRO vecino — SCM+presupuesto, vicios 2/7 — no éste.)
+- **Los huecos DECLARADOS por las vías externas** (vía C, verbatim): *"NADIE manipuló una
+  hipótesis inicial específica y competidora como variable experimental en un agente
+  científico y midió el cambio downstream en el plan de compras/experimentos"*; y la
+  distinción saliencia-vs-discriminancia *"NO está operacionalizada en ningún paper (ni
+  siquiera en la literatura humana)"* — nuestro aporte más original Y nuestro mayor riesgo. El
+  campo sigue desenredando el confound social-vs-contenido HOY (el paper del piso-sin-hablante
+  es de julio 2026).
+
+**Conclusión**: el objeto WAGER — agente con evidencia COMPRADA propia + modelo ENTREGADO
+ejecutable cobrado en held-out + pares gemelos + cero-LLM en el reward + la INTERACCIÓN
+fuente×discriminancia — **no está publicado**. Los vecinos aportan instrumentos de medición
+(probes, pisos-sin-hablante, oráculos normativos) para VALIDAR nuestros mundos, no el
+instrumento mismo. Métodos robables: `como-medimos.md` §3.
 
 ## El diseño justo (el mundo/los mundos del foco)
 
@@ -197,6 +330,20 @@ replica en un segundo mundo distinto. (6) **Presupuesto de falsación: UNA SEMAN
 transferencia → suite de fallas, no capacidad única. (7) La nota-por-mínimo: endpoint de
 EVALUACIÓN (held-out), no señal inicial de RL — el peor canal aplastaría el gradiente.
 
+**Y la 3ª oleada AGREGA a la mesa (a decidir junto con lo anterior)**: (8) **sonda v2 "de
+descomposición"** — los mismos ~20 estados, SEIS brazos: sin-mensaje · nota-sin-hablante ·
+par-neutral · par-autoridad × con/sin-evidencia donde aplica — un solo experimento (~US$8–10)
+separa el PISO del contenido (66.5% en viñeta) del PLUS social, y disuelve la disputa de orden
+(las vías B y C dicen "contenido primero"; r24 dijo "social como está firmada" — la v2 mide
+ambos a la vez sin romper el pre-registro: los 4 brazos firmados son subconjunto). (9) El
+**certificado de no-discriminancia COMPUTACIONAL** antes de construir el mundo del canal
+contenido (lección GSM-NoOp: sin él la celda "no-discriminante" es atacable — a dos frontiers
+auditando les dio κ=0.32; nosotros lo computamos desde la verdad del mundo). (10) Expectativa
+re-calibrada: el plus social probablemente CHICO en frontier (GPT-5 post-entrenado en contra;
+el par genérico débil; el agente con datos propios protege) y el piso de contenido
+probablemente GRANDE — la sorpresa esperable es que el canal de Lucas (contenido) sea el
+principal.
+
 ## Sub-formas históricas (detalle previo, sigue válido)
 
 - **1.1 No-incorporación** · **1.2 No-retractación del compromiso propio** · **1.3
@@ -215,7 +362,10 @@ EVALUACIÓN (held-out), no señal inicial de RL — el peor canal aplastaría el
   instrumento del canal-contenido.
 - El verbo register ([lab_largo_v0](../../cases/lab_largo_v0/)) habilita el compromiso-público
   (endurece 1.2).
-- Los experimentos de pistas (ADRs 0118/0121/0129, links arriba) = evidencia propia del
-  canal-contenido (re-leída como activo).
-- **Próximo paso: la SONDA del canal social (arriba), con su criterio de muerte — y sobre la
-  mesa de Lucas, los refinamientos r24 (tres sondas apareadas, semana de falsación).**
+- Los experimentos de pistas (ADRs 0118/0121/0129, links arriba) = evidencia propia de
+  sensibilidad al contexto (justifica la sonda del canal-contenido).
+- Crudos de la 3ª oleada: `../research/2026-07-13-vicio1-investigacion-externa-{A,B,C}.md`
+  (+ Codex r24 en `../research/2026-07-13-codex-r24-foco-vicio1-mapa-evidencia.md`).
+- **Próximo paso — decisión de Lucas**: sonda como-firmada · sonda v2 de descomposición (6
+  brazos) · orden contenido-primero; + el certificado de no-discriminancia antes del mundo del
+  canal contenido. Con cualquiera: semana de falsación (r24).

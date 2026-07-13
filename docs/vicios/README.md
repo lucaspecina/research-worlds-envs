@@ -224,6 +224,14 @@ trayectoria-larga-con-artefactos-propios (parada/objetivo; aún sin construir de
   2603.23848 · SAVeR 2604.08401 · When-Agents-Commit-Too-Soon 2606.22936 ·
   Words-Speak-Louder-Than-Code 2606.30587 · FALSIFYBENCH 2606.04751 · Cannot-Self-Correct
   2310.01798 · Farmer-probability-updates 2603.19262.
+  **3ª oleada (tres investigaciones externas de Lucas, 2026-07-13 — 21 IDs verificados; links
+  en [vicio-1](vicio-1-calibracion-de-creencias.md) y lectura-de-fuentes; crudos en
+  `docs/research/2026-07-13-vicio1-investigacion-externa-{A,B,C}.md`)**: piso-sin-hablante
+  2607.05545 (el confound social/contenido) · Bayesian-teaching 2503.17523 (¿ya está hecho? →
+  no: mide/entrena con oráculo, no agente-con-evidencia-comprada) · KellyBench 2604.27865
+  (mundo no-estacionario) · When-Context-Hurts 2605.04361 · Adaptive-Chameleon 2305.13300
+  (evidencia MIXTA) · la auditoría GSM-NoOp (LessWrong 2026: saliencia pura ≈ 0 en frontier) ·
+  y 15 más.
   Después: CausaLab · CausalGame · DiscoverPhysics · Jr-AI-Scientist · FIRE-Bench ·
   ImpossibleBench · NewtonBench · Failing-to-Falsify · Corral-artefactos · METR Frontier Risk ·
   Goodfire · Big-Muddy · MAST · ProcCtrlBench/TIDE · goal-drift ·

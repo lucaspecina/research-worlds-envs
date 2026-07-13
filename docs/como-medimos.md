@@ -128,3 +128,40 @@ de ideas/hipótesis* — justo el polo aha que a nosotros nos cuesta puntuar.
 
 *(Doc vivo. Cada paper nuevo que MIDA juicio/vicios/ideas entra acá con su método + reflexión, además
 de a `lectura-de-fuentes.md` con su hallazgo.)*
+
+## 3. Los que miden la ACTUALIZACIÓN DE CREENCIAS (el cluster del foco — 3ª oleada, 2026-07-13)
+
+Métodos robables (todos DESCRIBEN; ninguno entra al reward — cero-LLM intacto). Links y
+estado de lectura en `lectura-de-fuentes.md`; hallazgos en `vicios/vicio-1`.
+
+- **Oráculo normativo + destilación** ([Qiu, 2503.17523](https://arxiv.org/abs/2503.17523)):
+  computa la posterior bayesiana exacta del setting y mide la distancia del modelo; después
+  ENTRENA imitando al normativo (y generaliza). Robable como VALIDADOR en mundos con posterior
+  tractable; imposible como reward general — en investigación abierta no hay oráculo (nuestro
+  lugar: fidelidad en held-out).
+- **El piso sin hablante como brazo de control** ([Hu, 2607.05545](https://arxiv.org/abs/2607.05545)):
+  mismo payload con y sin fuente — separa contenido de social. Obligatorio en toda sonda
+  nuestra del canal social (sin ese brazo, "social" mide contenido).
+- **Probe de creencia interna + steering causal** ([Yang, 2505.16170](https://arxiv.org/abs/2505.16170)):
+  mide la creencia aparte de la salida y la manipula para probar causalidad. Necesita pesos →
+  descriptivo puro, útil en E2 con modelos abiertos.
+- **Creencia declarada vs ACCIÓN** ([Pal, 2511.13240](https://arxiv.org/abs/2511.13240)):
+  confidencias elicitadas vs conducta (apostar, buscar info, defender bajo desafío) — la
+  brecha reconocer→actuar como métrica separada de la creencia.
+- **El predictor de crossover** ([Vigraham, 2605.04361](https://arxiv.org/abs/2605.04361)):
+  la exploración de base SIN material predice si el material mostrado ayuda o daña (r=−0.82) —
+  barato en nuestros mundos (correr la base sin material primero).
+- **La lección del distractor auditado** ([Sturgeon 2026, LessWrong](https://www.lesswrong.com/posts/Ze4C99Dasj74YKCFh/revisiting-gsm-symbolic-do-2026-frontier-models-still-fail)):
+  la celda "irrelevante" NO se certifica por juicio (a dos frontiers les dio κ=0.32) — en
+  WAGER se certifica COMPUTABLE desde la verdad del mundo: condicionar en el material no
+  cambia la posterior sobre mecanismos ni el score alcanzable. Diferencial nuestro; va al
+  certificado del mundo del canal contenido.
+- **Del dossier externo (vía B)**: puntuar la actualización en LOG-ODDS contra el generativo
+  del mundo (rigidez = cambio < normativo · sobre-reacción = > · deriva = cambio con LR≈1 ·
+  testimonio virtuoso = cambio ∝ confiabilidad demostrada de la fuente); verbo
+  `registrar_creencia({H: p})` en checkpoints (la prosa no puntúa) contrastado con la creencia
+  REVELADA (predicciones held-out + elección del próximo experimento bajo costo); confiabilidad
+  del par ENSEÑADA programáticamente (historial 50% vs 80%, misma frase); y la nota del par
+  por el mínimo de MEDIAS APAREADAS por subfamilia — jamás mínimo por episodio (amplifica
+  ruido).
+
