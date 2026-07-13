@@ -1,5 +1,10 @@
 # Failure modes del juicio investigativo — catálogo y scaffold de diseño
 
+> **Capa fina (ADR 0140)**: las SUB-FORMAS de cada vicio (mecanismo · disparador ·
+> firma · borde) con casos reales etiquetados están en **`docs/vicios/`** (síntesis de
+> cinco vías, 2026-07-12). Este doc mantiene la tesis, la definición operativa y el
+> scaffold de diseño.
+
 > **Documento vivo (ADR 0099).** El corazón del proyecto: de un failure mode DOCUMENTADO
 > → a la especificación de un mundo que lo pone de manifiesto de forma PUNTUABLE. No es una
 > lista de memoria — es un scaffold para *ir a la literatura con paciencia, razonar, y

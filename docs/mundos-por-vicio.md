@@ -1,5 +1,9 @@
 # Mundos por vicio — dónde fallan los AGENTES DE IA investigadores, y qué mundo caza cada falla
 
+> **Capa fina (ADR 0140)**: la descomposición de cada vicio en SUB-FORMAS con casos
+> reales etiquetados (verificación × tipo × estado generacional) vive en **`docs/vicios/`**
+> — este doc deriva mundos; aquél detalla el fenómeno.
+
 > **Qué es este documento (ADR 0113, re-enfocado por ADR 0114).** El foco es **IA**: por cada vicio,
 > **dónde está documentado EN AGENTES DE IA haciendo investigación** — qué paper/benchmark, qué
 > estaba haciendo el agente, cómo se manifestó, con qué número. La psicología humana y la historia
@@ -267,8 +271,12 @@ elegir la pregunta/experimento que de verdad discrimina — **ya tiene mundo dis
 ## Vicio 7 — Confundir "pasan juntas" con "una causa la otra"
 
 **Dónde se lo vio EN AGENTES DE IA (haciendo qué):**
-- **Corr2Cause (Jin et al., 2023)** — 17 modelos (hasta GPT-4) decidiendo si una relación causal se
-  sigue de correlaciones puras: **al nivel del azar** (200 mil ítems). El ancla dura del vicio.
+- **Corr2Cause (Jin et al., 2023)** — 17 modelos decidiendo si una relación causal se sigue de
+  correlaciones puras (200 mil ítems): verbatim *"the best performance is 33.38% F1 by BART MNLI...
+  even higher than GPT-4... many models are worse than random guess"*. **OJO (corrección 2026-07-12,
+  ADR 0140): es VIÑETA, 2023, pre-razonamiento — probablemente MUERTO en frontier de razonamiento**
+  (follow-up 2507.23488 con o3-mini/R1 + algoritmo PC lo supera; por leer). El ancla del vicio pasa
+  a ser NUESTRA evidencia agéntica (la pendiente espuria heredada, abajo).
 - **Ríos-García et al. (2604.18805; leído)** — la evaluación por RESULTADO esconde el proceso: un
   agente ejecuta bien y razona basura (ignora evidencia 68%). *CORREGIDO: su setup son 8 dominios de
   química, NO "CLadder/QRData".* Por eso importa la TRAZA (nuestra doctrina, confirmada afuera).
