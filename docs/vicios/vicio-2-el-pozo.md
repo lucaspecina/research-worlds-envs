@@ -57,6 +57,26 @@ medir el pozo agéntico limpio — si construye contra las sub-formas que dispar
   `[POR-LEER]`; UI-CUBE/TheAgentCompany loops `[POR-LEER]`. Aparece incluso en compacto con
   feedback pobre. No construir mundos de juicio contra esto.
 
+## REFORMULACIÓN (R4-auditoría, 2026-07-13): "política de parada mal calibrada" — BIPOLAR
+
+El constructo defendible no es "el pozo" sino la CALIBRACIÓN DE CONTINUACIÓN, con dos polos:
+
+- **Overstay (sobrepersistencia)**: lo que veníamos cazando. En frontier-compacto: MUERTO
+  (nuestro 0/60). El costo hundido queda **PAUSADO como constructo** hasta tener contraste
+  causal limpio — la evidencia pública no alcanza (hueco declarado del campo). El diseño
+  correcto si se testea: **aleatorizar SOLO la historia** (propio-vs-heredado con el MISMO
+  estado presente; inversión alta/baja ídem) — firma = interacción propiedad × inversión.
+- **Understay (CIERRE PREMATURO)**: **el polo VIVO en frontier** `[POR-LEER, evidencia fuerte]`:
+  CausaLab — corridas fallidas dejan ~mitad del presupuesto SIN USAR y entregan modelos que
+  contradicen sus propios datos; UN chequeo de consistencia sube exactitud 48→60. NewtonBench —
+  el intérprete de código EMPUJA a modelos capaces a explotar demasiado pronto (tool paradox).
+  Cruza con nuestro 8.2 (corte afirmando completitud) y con el vicio-9 candidato.
+
+**Consecuencia de diseño (GIRO de prioridad)**: el próximo mundo de esta familia NO es el
+pozo-identidad — es el de **cierre prematuro / verificación barata omitida** (el chequeo de
+consistencia disponible y no usado; gana quien lo paga, pierde quien entrega sin él). El
+pozo-identidad baja a EXPERIMENTO de contraste (propio-vs-heredado), no mundo.
+
 ## Condiciones de emergencia (síntesis de las cinco vías)
 El pozo dispara con la CONJUNCIÓN, no de a uno (nuestra escalera probó de a uno — por eso 0/60):
 **identidad-en-la-obra + contabilidad fuera de vista + objetivo difuso + pagar-localmente
@@ -68,6 +88,8 @@ debe PAGAR un poco siempre ("defendible ex ante, erróneo ex post").
 - Activos: v0 (certificado, claim estrecho pozo-profundo), v2 portafolio (sep 0.57; control de
   asignación + candidato E2), lab_largo (sep 0.58; toda la maquinaria de rondas/obra-propia).
 - Firma pre-registrada disponible y probada; 60 trazas de contraevidencia frontier.
-- **Siguiente construcción (pendiente GO de Lucas)**: el pozo-identidad — los 4 factores
-  combinados sobre el esqueleto lab_largo; el umbral pre-declarado de R3: si con los 4 factores
-  sigue 0/N → reportar "disciplina internalizada" como hallazgo positivo del campo.
+- **Siguiente construcción (REVISADA por R4/R5, pendiente GO de Lucas)**: (1) el mundo del
+  CIERRE PREMATURO (polo vivo; CausaLab-pattern: el chequeo de consistencia barato disponible,
+  la entrega sin él pierde); (2) el costo-hundido como EXPERIMENTO de contraste aleatorizado
+  (propio-vs-heredado, mismo estado presente) sobre el esqueleto lab_largo — no otro mundo;
+  (3) el pozo-identidad queda tercero (su evidencia es viñeta).

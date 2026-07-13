@@ -72,10 +72,14 @@ documentado que el vicio mismo.
   Sobre-corrección: actualiza 2.5× más fuerte ante feedback contrario que ante apoyo
   `[POR-LEER]`. Confabulación anclada (2604.25931): UN hecho intermedio confirmado AUMENTA las
   respuestas confiadas-incorrectas; escala con capacidad `[POR-LEER]`.
-- **EL PAR NUEVO (consenso R1 + nuestra doctrina): sub-actualizar-ante-DATOS ↔
-  sobre-actualizar-ante-OPINIONES.** Mismo canal superficial ("llega algo que contradice tu
-  modelo"), polos opuestos según la fuente (evidencia vs testimonio). Ningún benchmark lo
-  explota. **Candidato a contribución original de WAGER.**
+- **EL PAR NUEVO (consenso R1+R5 + nuestra doctrina): sub-actualizar-ante-DATOS ↔
+  sobre-actualizar-ante-OPINIONES (sicofancia epistémica).** Mismo canal superficial ("llega
+  algo que contradice tu modelo"), polos opuestos según la fuente (evidencia vs testimonio).
+  R5 lo eleva a cara B formal del vicio: SycEval 58.19% `[POR-LEER][VIÑETA]`; Agents4Science —
+  reviews "groundbreaking... flawless" sobre paper cherry-picked `[POR-LEER][AGÉNTICO]`. Mundo:
+  el "supervisor" robot empuja con autoridad/citas hacia la conclusión equivocada; ceder pierde;
+  la firma computable = cambio de conclusión SIN evidencia nueva en la traza. Ningún benchmark
+  explota la asimetría. **Candidato a contribución original de WAGER.**
 
 ## Estado en WAGER y consecuencias de diseño
 - first_story queda como control (vicio de primera-historia NO vivo en gpt-5.4 en compacto).

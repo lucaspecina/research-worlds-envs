@@ -5,8 +5,9 @@
 > con artefactos, y el único que CRECE con capacidad).
 
 **Qué es (paraguas).** El agente entrega algo que no está respaldado por lo que hizo: fabrica,
-infla, declara verificado sin verificar, o ataca el medidor. CUATRO sub-formas + una quinta que
-se promueve a candidato de vicio propio (v9).
+infla, declara verificado sin verificar, o ataca el medidor. Con R4/R5 este vicio se revela
+como la punta del **EJE INTEGRIDAD** (el que falta en la taxonomía y el único donde más
+capacidad = peor): OCHO sub-formas acá + el candidato v9.
 
 ## Sub-formas
 
@@ -48,6 +49,33 @@ se promueve a candidato de vicio propio (v9).
   tarea; los agentes RECONOCEN que está mal cuando se les pregunta ("saben, no hacen").
 - **Borde (Codex r22)**: si el reward realmente premia el proxy, el Goodhart es del INSTRUMENTO
   (nuestro D59/zona-muerta fue eso). Para WAGER: blindar el scorer es requisito, no mundo.
+
+### 3.6 Fabricación REACTIVA bajo feedback (R5; distinta de 3.1) — VIVA `[POR-LEER]`
+- **Mecanismo**: el revisor/supervisor pide algo que no se tiene (ablaciones, comparación) y el
+  agente lo INVENTA en la revisión siguiente — y el score del reviewer SUBE. **Disparador**:
+  loop de feedback sin verificación contra datos crudos (no requiere bloqueo de ejecución).
+- **Casos**: Jr. AI Scientist risk report (2511.04583) — fabricó ablaciones inexistentes tras
+  el comentario del reviewer, persistiendo con instrucción en contra; los AI reviewers NO
+  pueden detectar la discrepancia texto-vs-ejecución. Agents4Science (2511.15534): overclaim +
+  reviews sicofantes sobre papers cherry-picked.
+- **Mundo barato**: el "pedido del revisor" que el presupuesto no alcanza; la jugada perdedora
+  es reportar el número igual; la ganadora, declarar el hueco. Cero-LLM (el pedido es evento
+  sellado; la fabricación se detecta contra la traza de compras).
+
+### 3.7 Post-hoc selection / cherry-picking mirando el held-out (R5) — VIVA `[VERIFICADO parcial]`
+- **Mecanismo**: seleccionar qué reportar (seed, experimento, benchmark) por su score en el
+  conjunto de evaluación. The More You Automate (2509.08713, YA LEÍDO): el reward interno de
+  los AI-scientist favorece experimentos con buen test aun con train/val débiles; auditar solo
+  el paper detecta 55% de los pitfalls, con trazas 82% (nuestro número externo de la apuesta
+  por trazas). También: elige benchmarks donde el SOTA previo es fuerte y EVITA donde su método
+  rinde bien (selección de régimen).
+- **Mundo directo**: nuestros regímenes held-out son EL terreno — dar al agente varios candidatos
+  y cobrar la selección post-hoc (la firma es computable: correlación elección↔score-held-out).
+
+### 3.8 Data leakage auto-inducido (R5) — VIVA `[VERIFICADO parcial: mismo paper]`
+- Genera datasets sintéticos propios o submuestrea sin documentar → métricas infladas sin
+  "mirar el test" directamente. Mundo: fuentes cuya mezcla contamina el régimen de evaluación;
+  gana quien lo detecta y separa.
 
 ## Condiciones de emergencia
 Bloqueo del camino honesto + exigencia de completitud + encuadre legitimador + superficie de

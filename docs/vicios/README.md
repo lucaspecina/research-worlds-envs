@@ -72,12 +72,42 @@ vive; aún sin construir).
 | [vicio-9 CANDIDATO](vicio-9-overtrust-verificacion-CANDIDATO.md) | Over-trust en la verificación propia | **VIVO, dominante en frontier** | ninguno — **candidato a agregar (decisión de Lucas)** |
 | [ahas](ahas.md) | Las operaciones espejo | evidencia positiva POBRE (hallazgo en sí) | pares en v2/lab_largo |
 
+## Segunda ronda de síntesis (R4-auditoría + R5-barrido, 2026-07-13)
+
+**Propuesta estructural en la mesa (decisión de Lucas): TRES EJES.** La taxonomía mezcla ejes
+que deberían ser ortogonales — **COMPETENCIA epistémica** (actualización, causalidad, estructura,
+parada) / **OPERACIÓN** (contexto, loops — se mide, no se construye) / **INTEGRIDAD** (fabricar,
+falsificar, cherry-pick, sicofancia — EL EJE QUE FALTA, y el único donde más capacidad = peor).
+R4 propone además el reframe por variables latentes (la tabla "no confundir con"). Los 9+
+vicios se cuelgan de esos ejes sin renumerarse.
+
+**Prioridades de construcción REVISADAS (consenso 7 vías)**:
+
+| # | Constructo | Por qué | Evidencia |
+|---|---|---|---|
+| 1 | **Cierre prematuro / verificación barata omitida** (v2-understay × v9) | el polo VIVO de la parada en frontier; automático; barato | CausaLab 48→60 con UN chequeo; NewtonBench tool-paradox `[POR-LEER]` |
+| 2 | **Fabricación reactiva bajo feedback** (3.6) | integridad; el reviewer-pide→inventa con score subiendo | Jr-AI-Scientist `[POR-LEER]` |
+| 3 | **Post-hoc selection en held-out** (3.7) | nuestro terreno exacto; firma computable | The-More-You-Automate `[VERIFICADO]` |
+| 4 | Endpoint-correcto-mecanismo-incorrecto | ya es nuestra arquitectura (batería vs entrega) | CausaLab/CausalGame `[POR-LEER]` |
+| — | PAUSADO: costo hundido como mundo | sin contraste causal limpio en el campo | queda como EXPERIMENTO propio-vs-heredado |
+
+**Metodología adoptada de R4**: cada vicio como CONTRASTE CAUSAL mínimo (dos mundos casi
+idénticos, UN factor distinto) · factoriales 2×2 en vez de narrativas que cambian todo junto ·
+scorear TRES objetos (outcome / mecanismo / POLÍTICA de investigación — VOI, paradas,
+revisiones) · firmas desde compromisos externos (predicciones registradas, rankings), no desde
+el chain-of-thought. La condición maestra de emergencia: **horizonte × messiness × calidad del
+gradiente × capacidad** ("largo" solo no predice).
+
 ## Deudas de esta capa
 
-- Cola de lectura [POR-LEER] priorizada: DiscoverPhysics (2605.26087, el vecino más cercano) ·
-  ImpossibleBench · Corral-artefactos (HF jablonkagroup/corral) · Big-Muddy (verificar formato) ·
-  MAST (HF mcemri/MAD, corpus minable) · ProcCtrlBench/TIDE (firmas robables) · goal-drift
-  (2505.02709) · RadLE · BAGEN · mARC follow-up.
+- Cola de lectura [POR-LEER] priorizada (ampliada por R4/R5): **CausaLab (2605.26029)** y
+  **CausalGame (2607.04293)** — vecinos directos con el understay medido · DiscoverPhysics
+  (2605.26087) · **Jr-AI-Scientist (2511.04583)** y **FIRE-Bench (2602.02905)** ·
+  ImpossibleBench · NewtonBench (2510.07172) · Failing-to-Falsify (2604.02485) · Corral-
+  artefactos (HF jablonkagroup/corral) · METR Frontier Risk (Sunlight/MirrorCode) · Goodfire
+  post-mortem · Big-Muddy · MAST (HF mcemri/MAD) · ProcCtrlBench/TIDE · goal-drift (2505.02709)
+  · Illusion-of-Diminishing-Returns (2509.09677) · Agents4Science (2511.15534) · RadLE · BAGEN
+  · mARC follow-up · SycEval (2502.08177).
 - Tensión abierta a resolver leyendo: anclaje (Vaccaro dice frágil `[VERIFICADO]`; R1 dice
   robusto-y-peor-con-capacidad `[POR-LEER]`) — probablemente se resuelve por sub-forma/formato.
 - Verificar el 76% exacto de ImpossibleBench (figura por variante) antes de citarlo en el paper.
