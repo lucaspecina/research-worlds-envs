@@ -76,16 +76,21 @@ def run_episode(
     max_tokens: int = MAX_TOKENS,
     cell_timeout_s: float = CELL_TIMEOUT_S,
     system_suffix: str = "",
+    initial_note: str = "",
 ) -> dict:
     # system_suffix (ADR 0095): appended to the base SYSTEM to activate a
     # general good-conduct DISPOSITION (careful/skeptical scientist) WITHOUT
     # leaking any world's specific answer -- the construct-validity manipulation.
     # Empty = the standard "free" condition every prior E0 used.
+    # initial_note (ADR 0145): an ecological attachment appended AFTER the brief in
+    # the FIRST user prompt only (formation-time material). Empty = byte-identical
+    # to every prior episode.
     chat = FoundryChat(system=SYSTEM + system_suffix, model=model,
                        max_completion_tokens=MAX_COMPLETION_TOKENS)
     sheet = server.describe()
     prompt = (
         "Here is the brief:\n\n" + sheet["brief"]
+        + (("\n\n" + initial_note) if initial_note else "")
         + "\n\nMachine-readable sheet:\n"
         + json.dumps({k: v for k, v in sheet.items() if k != "brief"}, indent=2)
         + "\n\nReason briefly about your opening plan, then write your first cell. "

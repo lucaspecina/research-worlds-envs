@@ -276,9 +276,16 @@ la rigidez · costo-de-re-trabajo como dial · mundo no-estacionario (KellyBench
 disparador nuevo. **"¿Ya está hecho?" RESPONDIDO: los vecinos miden pedazos
 (Bayesian-teaching, creencia-vs-acción, retracción, BoxingGym/BED-LLM); NADIE mide nuestro
 objeto** (hueco declarado verbatim; detalle en `docs/vicios/vicio-1-calibracion-de-creencias.md`).
-**EN LA MESA DE LUCAS**: sonda como-firmada · sonda v2 de descomposición (6 brazos,
-~US$8-10) · orden contenido-primero; + el certificado de no-discriminancia antes del mundo
-del canal contenido.
+**SONDA 0143 CORRIDA Y CERRADA (noche; ADRs 0143/0144; 156 celdas, 23 donantes, ~US$7)**:
+K1 ROJO (el estatus agrega +4.3pp, no 20) · K2 ROJO (EL CONTENIDO DOMINA: la nota-sin-firma
+daña 8.7% sellado / 26% con formas, vía MEZCLAS DE COMPROMISO — "la nota es evidencia débil,
+PERO con n chico la unificación parcial es atractiva"; las personas 0-4%) · K3 VERDE (la
+pista de Lucas rescata 23/23 y mejora la media) · el consejo VERDADERO ignorado 0/18. Pivote
+PRE-AUTORIZADO: foco de construcción a 1.C; mundo del colega-autoridad DESCARTADO; brazo-pista
+estándar; panel de formas al próximo pre-registro. **EN CURSO: sonda de FORMACIÓN (ADR 0145,
+crítica r26 integrada — base fresca, detector normalizado al rival, curvatura≠persistencia,
+brazo verdadera+pista; el pre-flight en frío calcula si el consejo verdadero PAGABA antes de
+leer el 0/18 como sobre-corrección).
 
 **Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
 queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·
