@@ -287,9 +287,11 @@ TAMBIÉN CORRIDA Y CERRADA (ADRs 0145/0146, 100 episodios frescos ~US$9; pre-fli
 consejo verdadero en 0143 fue RACIONAL — ganancia alcanzable mediana +0.035)**: la nota falsa
 al arranque NO muerde (0/19); la verdadera arrastra compras sin pagar; hallazgo nuevo =
 CAPTURA DE AGENDA bajo pista+falsa (el claim no convence: desvía el presupuesto — colapsos
-hasta −0.88). **EL MAPA DEL DÍA: el vicio del canal contenido vive en la REVISIÓN TERMINAL
-(8.7-26% mezclas de compromiso), no en la formación. PARA GO DE LUCAS: el mundo "la nota en
-la entrega" (v2 + eventos D4, esqueleto existente — días, no semanas; ADR 0146).**
+hasta −0.88). **CORRECCIÓN DE LUCAS
+(vuelta, noche): las sondas midieron las PUNTAS — el MEDIO, donde los casos reales reportan
+el vicio (Corral/Investigator/vibe-physics: la influencia llega a mitad de investigación con
+evidencia parcial y presupuesto vivo), quedó sin medir → SONDA 0147 (medio) en curso; el
+mundo del foco pondrá la nota donde los datos digan, con el timing como dial (eventos D4).**
 
 **Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
 queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·
