@@ -26,14 +26,14 @@ tiene su propio perfil de mañas (hallazgo propio: PERFILES DE VICIO POR MODELO)
 revisa poco, no triangula.
 
 **Dónde se lo vio EN AGENTES DE IA (haciendo qué):**
-- **Análisis de trazas por grafo epistémico (arxiv 2604.18805, 2026)** — agentes resolviendo tareas
+- **Análisis de trazas por grafo epistémico (arxiv [2604.18805](https://arxiv.org/abs/2604.18805), 2026)** — agentes resolviendo tareas
   de razonamiento científico (CLadder, QRData, DiscoveryBench), traza anotada paso a paso: la
   evidencia que contradice la hipótesis se **ignora en el 68%** de los casos; la creencia refutada se
   **revisa solo el 26%**; triangular con tests independientes es raro (**6-13%** según modelo). Y el
   dato estructural: el modelo base explica el 41.4% de la varianza del proceso; el andamiaje solo el
   1.5% — el vicio vive en el modelo, no en el prompt (y darle un ejemplo bueno en contexto NO lo
   arregla).
-- **BED-LLM (arXiv 2508.21184, 2025)** — agente juntando información activamente (estilo 20
+- **BED-LLM (arXiv [2508.21184](https://arxiv.org/abs/2508.21184), 2025)** — agente juntando información activamente (estilo 20
   preguntas): propone hipótesis **incompatibles con lo que ya observó** y su confianza CRECE con la
   historia — cuanto más lleva, menos revisa.
 - **Benchmark de apuestas por temporada (corpus de Lucas)** — el agente no actualiza cuando el mundo
@@ -84,11 +84,11 @@ sigue invirtiendo en la línea muerta.
 - **Trehan & Chopra (2601.03315; leído)** — investigación de ML end-to-end: **loop de cada-vez-más-
   detalle sin pivotear** (ej. real: se clavó en un error de convolución, 31×31→79×79, ambos mal,
   quemando iteraciones); se ata al prototipo inicial (POC-fixation).
-- **SciAgentGym (Shen et al., 2602.12984; leído)** — tareas científicas con herramientas: los modelos
+- **SciAgentGym (Shen et al., [2602.12984](https://arxiv.org/abs/2602.12984); leído)** — tareas científicas con herramientas: los modelos
   **responden a solo el 32.9% de las señales de error** (loop-escape 35.7%: ~2 de cada 3 caen en
   repetición idéntica). *CORREGIDO 2026-07-09: nuestro "67%" era el "Caso 67" (un ejemplo), NO un
   porcentaje — se leyó el paper.*
-- **HORIZON (Wang et al., 2604.11978; leído)** — su "loop de acción-fallida-repetida" *lo tenía acá,
+- **HORIZON (Wang et al., [2604.11978](https://arxiv.org/abs/2604.11978); leído)** — su "loop de acción-fallida-repetida" *lo tenía acá,
   pero CORREGIDO: el paper lo enmarca como error de EJECUCIÓN (repetición mecánica), no pozo cognitivo
   → pertenece al vicio 5, no al pozo.* Se deja la nota para no volver a mapearlo mal.
 - **Vibe-physics (corpus de Lucas)** — no sabe **cuándo parar**; sigue elaborando cuando lo correcto
@@ -134,7 +134,7 @@ clase 4-8B.
 le falta.
 
 **Dónde se lo vio EN AGENTES DE IA (haciendo qué):**
-- **MLR-Bench (Chen et al., 2505.19955; leído)** — agentes en investigación de ML abierta: **~80% de
+- **MLR-Bench (Chen et al., [2505.19955](https://arxiv.org/abs/2505.19955); leído)** — agentes en investigación de ML abierta: **~80% de
   resultados fabricados/inválidos** (8 de 10 tareas con datos placeholder/sintéticos). *Ejemplo real:
   Claude Code, ante un fallo de ejecución, "tomó un atajo generando resultados simulados, priorizando
   completitud sobre corrección"; y persiste aun instruido "no fabriques" — "aprendió a saltear los
@@ -149,19 +149,19 @@ le falta.
   retirada como si fuera una mejora.
 - **Kosmos (Edison; reporte leído)** — sobre-afirma (overclaiming): reclama más de lo que sus corridas
   sostienen; su propio reporte lo admite.
-- **Robin (Ghareeb et al., 2505.13400; leído)** — overclaiming que se AUTO-CONTRADICE: se anuncia como
+- **Robin (Ghareeb et al., [2505.13400](https://arxiv.org/abs/2505.13400); leído)** — overclaiming que se AUTO-CONTRADICE: se anuncia como
   *"el primer sistema en automatizar TOTALMENTE los pasos intelectuales de la ciencia"* y *"el primer
   sistema en descubrir y validar autónomamente un candidato terapéutico"* — mientras el mismo abstract
   lo llama *"semi-autónomo"* y "lab-in-the-loop" (con humano). El reclamo contradice lo que admite ser.
 - **Vaccaro 2026 (2606.11217; leído)** — grados de libertad "**fáciles de explotar y difíciles de
   detectar**". *OJO (CORREGIDO): el paper habla de los INVESTIGADORES humanos que estudian agentes, NO
   del agente p-hackeándose; el agente-que-lo-hace es extrapolación NUESTRA (estructura transferible).*
-- **Sakana AI Scientist (Beel & Kan, 2502.14297; leído)** — 4 de 7 papers (**57%**) con números
+- **Sakana AI Scientist (Beel & Kan, [2502.14297](https://arxiv.org/abs/2502.14297); leído)** — 4 de 7 papers (**57%**) con números
   fabricados. *Ej. real: un estudio de "eficiencia energética" reclamó mejora de RMSE mientras el
   tiempo bajaba 116→115s pero la memoria SUBÍA, sin justificar — y "su propio mecanismo de review no
   lo detectó".* De fondo: *"no puede evaluar críticamente sus propios resultados; no detecta fallos
   metodológicos".*
-- **Crítica CMU (Luo, Kasirzadeh & Shah, 2509.08713; leído)** — 4 fallas de tipo p-hacking en agentes
+- **Crítica CMU (Luo, Kasirzadeh & Shah, [2509.08713](https://arxiv.org/abs/2509.08713); leído)** — 4 fallas de tipo p-hacking en agentes
   investigadores, con ejemplo real: **cherry-picking de benchmarks** (Agent Laboratory elige los
   primeros 4 de la lista el **82.4%** de las veces, sin importar la dificultad — sesgo de POSICIÓN);
   data-leakage no documentado; mal uso de métricas según el ORDEN en que se presentan; sesgo de
@@ -197,14 +197,14 @@ mecanismos, otro marco) — y el agente se queda con el modelo de manual.
   **concebirla** es lo que faltó.
 - **OSWorld-V2 (corpus de Lucas)** — los agentes **se hunden justo en las tareas que dependen de
   recuperar un estado oculto** (lo latente es su punto ciego).
-- **arxiv 2601.03315 (corpus de Lucas)** — investigación de ML end-to-end: **deriva de
+- **arxiv [2601.03315](https://arxiv.org/abs/2601.03315) (corpus de Lucas)** — investigación de ML end-to-end: **deriva de
   implementación hacia lo simple-familiar** (reimplementa con las librerías que conoce, se aleja de
   la idea original); sesgo del dato de entrenamiento.
 - **Vibe-physics (corpus de Lucas)** — no logra **sostener una convención no-estándar** que él mismo
   escribió: vuelve a los defaults de manual una y otra vez.
 - **HLER (2026)** — generación de hipótesis autónoma: sin anclar a la estructura del dataset, solo el
   **41%** de las hipótesis son factibles (vs 87% ancladas) — el lado generativo, medido.
-- **Sakana AI Scientist (Beel & Kan, 2502.14297; leído)** — *taste débil, medido*: juzgó *"las 10
+- **Sakana AI Scientist (Beel & Kan, [2502.14297](https://arxiv.org/abs/2502.14297); leído)** — *taste débil, medido*: juzgó *"las 10
   ideas generadas y las 2 semilla como NOVEDOSAS"* usando *"keyword matching en vez de síntesis
   profunda"* — ej. real: llamó novedoso al micro-batching para SGD, técnica ya documentada (Jain et
   al. 2018). No distingue lo conocido de lo nuevo.
@@ -216,7 +216,7 @@ mecanismos, otro marco) — y el agente se queda con el modelo de manual.
 - **Lewis & Mitchell (2024)** — razonamiento por analogía: el desempeño **colapsa en variantes
   contrafácticas** donde los humanos aguantan — mapea por parecido superficial, no por estructura
   profunda (campo en disputa, pero el colapso en variantes es robusto).
-- **★ Chen, Zhao & Cohan 2026 ("Measuring the Gap...", 2607.01233; leído; TIER A, la evidencia más
+- **★ Chen, Zhao & Cohan 2026 ("Measuring the Gap...", [2607.01233](https://arxiv.org/abs/2607.01233); leído; TIER A, la evidencia más
   fuerte de este vicio)** — 9 modelos generan ideas desde el mismo contexto de literatura que un paper
   humano real. El vicio con número: el **REFLEJO DE SÍNTESIS** — sobre-producen "conectá/combiná estas
   dos cosas" (ideas de puente **12% humano vs 47-64% LLM**; operación "integrar" **34.2% modelo vs
@@ -281,7 +281,7 @@ elegir la pregunta/experimento que de verdad discrimina — **ya tiene mundo dis
   correlaciones puras (200 mil ítems): verbatim *"the best performance is 33.38% F1 by BART MNLI...
   even higher than GPT-4... many models are worse than random guess"*. **OJO (corrección 2026-07-12,
   ADR 0140): es VIÑETA, 2023, pre-razonamiento — probablemente MUERTO en frontier de razonamiento**
-  (follow-up 2507.23488 con o3-mini/R1 + algoritmo PC lo supera; por leer). El ancla del vicio pasa
+  (follow-up [2507.23488](https://arxiv.org/abs/2507.23488) con o3-mini/R1 + algoritmo PC lo supera; por leer). El ancla del vicio pasa
   a ser NUESTRA evidencia agéntica (la pendiente espuria heredada, abajo).
 - **Ríos-García et al. (2604.18805; leído)** — la evaluación por RESULTADO esconde el proceso: un
   agente ejecuta bien y razona basura (ignora evidencia 68%). *CORREGIDO: su setup son 8 dominios de
@@ -314,7 +314,7 @@ irrelevante, o resolviendo prolijo un sub-problema que no es la pregunta).
   pensamiento de portafolio y seguían angostando el foco"*.
 - **Schwartz / Anthropic "vibe-physics" (leído)** — Claude en física de QCD (102 tareas, 7 etapas):
   *"solo maneja pasos chicos y pierde la dirección fácilmente."*
-- **PaperBench (Starace et al., OpenAI, 2504.01848; leído)** — replicando papers de ML: *"todos los
+- **PaperBench (Starace et al., OpenAI, [2504.01848](https://arxiv.org/abs/2504.01848); leído)** — replicando papers de ML: *"todos los
   modelos salvo Claude 3.5 Sonnet cortaban ANTES, afirmando que habían terminado o que habían chocado
   un problema"*; *"todos fallaron en estrategizar cómo replicar el paper dado el tiempo limitado"*.
   **Evidencia CAUSAL**: o1 con "BasicAgent" saca 13.2%; con "IterativeAgent" (que le SACA la opción de
@@ -374,7 +374,7 @@ lado malo.
 | Vicio | Evidencia EN AGENTES | Mundos hechos | El hueco |
 |---|---|---|---|
 | 1. No cambiar de idea | FUERTE y cuantificada (68%/26%; BED-LLM; nuestra mesa ×2 modelos) | 1 (+1 spec); **vicio NO vivo en frontier → control** | retracción, ancla, par confirmar/espejo |
-| 2. El pozo | FUERTE y repetida (Kosmos —empeora con el largo—, 2601.03315, SciAgentGym) + **NUESTRA: 0/60 en frontier compacto (6 diseños pre-registrados, ADR 0139); señal en DeepSeek** | **3** (v0 certificado; v2 portafolio 0.57; lab_largo 0.58) | corridas largas SIN presupuesto explícito (Kosmos real); clase 4-8B |
+| 2. El pozo | FUERTE y repetida (Kosmos —empeora con el largo—, [2601.03315](https://arxiv.org/abs/2601.03315), SciAgentGym) + **NUESTRA: 0/60 en frontier compacto (6 diseños pre-registrados, ADR 0139); señal en DeepSeek** | **3** (v0 certificado; v2 portafolio 0.57; lab_largo 0.58) | corridas largas SIN presupuesto explícito (Kosmos real); clase 4-8B |
 | 3. No verificar / fabricar | FUERTE (MLR-Bench 80%; Vaccaro; vibe-physics; nuestra mesa) | 0 dedicados | los 2 diseños baratos |
 | 4. Estructura escondida | FUERTE y PROPIA (v2 0/10; OSWorld estado-oculto; deriva-a-lo-familiar) | 1 (el trofeo) | partir-en-dos, cebada, PAR Vulcano |
 | 5. Hilo largo | fortísima pero es "operación" | — | no se construye (a propósito) |

@@ -118,7 +118,7 @@ funciona. Los pares/gemelos (principio 10) son un agregado valioso, **no** el ej
   que no midió; la nota se lo cobró), retirada a la arquitectura familiar (v2). Todo apareció
   con número en nuestros mundos.
 - **★ JUSTIFICACIÓN EXTERNA DEL PROYECTO ENTERO — el "gusto" investigativo de los LLMs tiene un
-  hueco sistemático y MEDIBLE (Chen, Zhao & Cohan 2026, "Measuring the Gap...", 2607.01233;
+  hueco sistemático y MEDIBLE (Chen, Zhao & Cohan 2026, "Measuring the Gap...", [2607.01233](https://arxiv.org/abs/2607.01233);
   Yale/UChicago; 9 modelos, 11.683 ideas; tier A).** Esto es la prueba independiente de que lo que
   WAGER existe para medir —el juicio/taste de investigación— es real, mensurable y le falta a los
   modelos: dados los mismos trabajos previos que precedieron a un paper humano, los LLMs ocupan una
@@ -362,7 +362,7 @@ verifican/completan minando papers (ver §5); lo de abajo es el seed de lo que y
   *near*, basadas en homología (40 mismo-organismo, 57 otro-organismo). *Dato de diseño para D:
   premiar la analogía estructural CERCANA correcta, no el salto vistoso — el mito del "insight
   lejano" no es donde vive el research taste.*
-- **`[dr ~]` Diversidad de exploración** (arxiv 2510.10472, *sin verificar — los 3 votos erroraron
+- **`[dr ~]` Diversidad de exploración** (arxiv [2510.10472](https://arxiv.org/abs/2510.10472), *sin verificar — los 3 votos erroraron
   por el límite de API*): la exploración angosta/baja-varianza sería jugada perdedora documentada en
   ML research autónomo. *Anotado, pendiente de verificación.*
 
@@ -503,7 +503,7 @@ taxonomía de 4 fallas, Shelley 2003). · **Tier A en el polo vicio**: GPT/Claud
 contrafácticas donde el humano aguanta (Lewis-Mitchell 2024) — *campo EN DISPUTA (Webb-Holyoak
 argumentan analogía emergente; el claim "LLMs igualan al humano" fue REFUTADO 0-3 en esta corrida):
 hallazgo documentado, no consenso.* · **Pago: predicción → construible.**
-> **★ El polo-vicio de A1, ahora TIER A con números (Chen/Zhao/Cohan 2026, 2607.01233).** El vicio no
+> **★ El polo-vicio de A1, ahora TIER A con números (Chen/Zhao/Cohan 2026, [2607.01233](https://arxiv.org/abs/2607.01233)).** El vicio no
 > es solo "analogía de superficie" puntual: es un **REFLEJO DE SÍNTESIS** sistemático — el gatillo
 > "unir/integrar por defecto" aunque las dos cosas no compartan estructura (apofenia a nivel ideación).
 > Medido en 9 modelos: síntesis/unificación como método **5.1% humano vs 22.5-38.7% LLM**; "integrar"
@@ -611,7 +611,7 @@ de operación no son blanco de WAGER y mezclarlos diluye el foco que es toda la 
 
 ### JUICIO — el blanco de WAGER (el andamiaje NO los arregla)
 Cuantificados (la vara empírica que nos faltaba), del análisis por grafo epistémico
-(arxiv 2604.18805) y afines:
+(arxiv [2604.18805](https://arxiv.org/abs/2604.18805)) y afines:
 - **Evidencia IGNORADA en el 68% de los traces** (A): tiene en contexto un resultado que
   contradice su hipótesis y sigue como si nada. *Juicio puro — la info está, la jugada no.*
 - **Revisión de creencia refutada solo en el 26%** (A): ante evidencia contraria, casi nunca
@@ -637,7 +637,7 @@ Vicio nuevo, de frontera:
 ### OPERACIÓN — NO es blanco de WAGER (lo resuelve el andamiaje; el campo ya está en esto)
 Se listan para **NO confundirlos** con los de juicio, no para construir mundos:
 - **Perder restricciones · no registrar info mid-way · adivinar en vez de preguntar · saltear
-  verificación · <7% del presupuesto en auto-repararse** (OSWorld 2.0, 2606.29537): el trabajador
+  verificación · <7% del presupuesto en auto-repararse** (OSWorld 2.0, [2606.29537](https://arxiv.org/abs/2606.29537)): el trabajador
   desprolijo. Memoria / checklists / planners / loops de reparación → territorio de ingeniería.
   · **⚠ TENSIÓN (leído 2026-07-09, ADR 0115)**: los autores de OSWorld 2.0 argumentan que NO son
   operación sino JUICIO — *"ejecutan bien las acciones locales pero fallan en el RAZONAMIENTO:
@@ -666,7 +666,7 @@ Straddle (parte operación, parte juicio — se anota el corte, no se mezcla):
   resultado no puede detectar estas fallas; hasta que el razonamiento sea un objetivo de
   entrenamiento, el conocimiento no puede justificarse por el proceso"* = **exactamente** nuestra
   doctrina "conducta observada" (§2.1). Confirmación externa fuerte, de un grupo de química de afuera.
-- **2ª confirmación externa, aún más directa (Luo, Kasirzadeh & Shah, CMU — 2509.08713, "The More You
+- **2ª confirmación externa, aún más directa (Luo, Kasirzadeh & Shah, CMU — [2509.08713](https://arxiv.org/abs/2509.08713), "The More You
   Automate, the Less You See"; leído)**: *"usar solo el paper final como objetivo de evaluación pierde
   la oportunidad de encontrar muchos failure modes críticos, particularmente los que involucran el
   proceso de decisión durante la experimentación"*; con acceso a las TRAZAS la detección sube a 74%

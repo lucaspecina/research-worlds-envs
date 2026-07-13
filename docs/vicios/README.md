@@ -49,7 +49,7 @@ pre-registrado → el mundo híbrido revisión×verificación-de-paja si la sond
 
 | # | Constructo | Predicción de caída gpt-5.4 | Por qué / mecanismo |
 |---|---|---:|---|
-| 1 | **Dejarse influenciar** (v1) — **EL FOCO** | **35%** (7/20 en la sonda) | la autoridad/el contenido mostrado se convierte en evidencia y reescribe una conclusión ya respaldada; muerte pre-registrada: si autoridad-sin-evidencia no daña ≥20pp más que el desacuerdo neutral, se mata el polo antes de construir |
+| 1 | **Dejarse influenciar** (v1) — **EL FOCO** | **35%** (7/20 en la sonda) | la autoridad/el contenido mostrado se convierte en evidencia y reescribe una conclusión ya respaldada; muerte pre-registrada: si autoridad-sin-evidencia no daña ≥20pp más que el desacuerdo neutral, se mata el polo antes de construir. *Calibración r24: Codex bajó su propio 35% de categoría — el comparable "dañino" de SycEval es 14.66%, no 58.19%; el 35% queda firmado pero ya no es prior fundado* |
 | 2 | Cierre prematuro × verificación de paja (v2×v9) | **50%** (10/20) | el artefacto ejecutable dispara sensación de completitud; el test propio legitima cerrar — máxima probabilidad, menor originalidad |
 | 3 | Fabricación reactiva (v3.6) | 30% (6/20) | pedido del revisor + no-medible + presión de completar → relleno plausible; el contrato DEBE permitir declarar "unknown" o el mundo es corrupto |
 | 4 | Selección post-hoc (v3.7) | 20% (4/20) | necesita el loop explícito; si el mundo muestra los scores, usarlos es racional (ya no son held-out) |
@@ -208,13 +208,29 @@ trayectoria-larga-con-artefactos-propios (parada/objetivo; aún sin construir de
 
 ## Deudas de esta capa
 
-- Cola de lectura [POR-LEER] priorizada: **sycophancy/influencia cluster (EL FOCO: SycEval,
-  Fanous, sobre-corrección, confabulación anclada 2604.25931)** · CausaLab · CausalGame ·
-  DiscoverPhysics · Jr-AI-Scientist · FIRE-Bench · ImpossibleBench · NewtonBench ·
-  Failing-to-Falsify · Corral-artefactos · METR Frontier Risk · Goodfire · Big-Muddy · MAST ·
-  ProcCtrlBench/TIDE · goal-drift · Illusion-of-Diminishing-Returns · Agents4Science · RadLE ·
-  BAGEN · mARC follow-up.
-- Tensión abierta: anclaje (Vaccaro frágil `[VERIFICADO]` vs R1 robusto `[POR-LEER]`).
+- Cola de lectura [POR-LEER] priorizada — **primero el cluster del FOCO (sycophancy /
+  influencia; IDs verificados contra arXiv 2026-07-13, URLs también en
+  [lectura-de-fuentes](../lectura-de-fuentes.md))**:
+  [SycEval/Fanous 2502.08177](https://arxiv.org/abs/2502.08177) ·
+  [When-Truth-Is-Overridden 2508.02087](https://arxiv.org/abs/2508.02087) ·
+  [circuito sycophancy-lying 2604.19117](https://arxiv.org/abs/2604.19117) ·
+  [sobre-corrección DeepMind 2507.03120](https://arxiv.org/abs/2507.03120) ·
+  [confabulación anclada 2604.25931](https://arxiv.org/abs/2604.25931) ·
+  [framing de código 2603.18740](https://arxiv.org/abs/2603.18740) ·
+  [RadLE 2509.25559](https://arxiv.org/abs/2509.25559) ·
+  [Agents4Science 2511.15534](https://arxiv.org/abs/2511.15534).
+  Sumados por r24 (2026-07-13, IDs verificados; links en [vicio-1](vicio-1-calibracion-de-creencias.md)):
+  LLM-as-an-Investigator 2606.13220 (el vecino más cercano del canal social) · BeliefShift
+  2603.23848 · SAVeR 2604.08401 · When-Agents-Commit-Too-Soon 2606.22936 ·
+  Words-Speak-Louder-Than-Code 2606.30587 · FALSIFYBENCH 2606.04751 · Cannot-Self-Correct
+  2310.01798 · Farmer-probability-updates 2603.19262.
+  Después: CausaLab · CausalGame · DiscoverPhysics · Jr-AI-Scientist · FIRE-Bench ·
+  ImpossibleBench · NewtonBench · Failing-to-Falsify · Corral-artefactos · METR Frontier Risk ·
+  Goodfire · Big-Muddy · MAST · ProcCtrlBench/TIDE · goal-drift ·
+  Illusion-of-Diminishing-Returns · BAGEN · mARC follow-up (links en cada vicio-doc).
+- Tensión abierta: anclaje ([Vaccaro 2606.11217](https://arxiv.org/abs/2606.11217) frágil
+  `[VERIFICADO]` vs [Suri 2305.04400](https://arxiv.org/abs/2305.04400) +
+  [Lou & Sun 2412.06593](https://arxiv.org/abs/2412.06593) robusto `[POR-LEER]`).
 - Verificar el 76% exacto de ImpossibleBench antes del paper.
 
 ## Mantenimiento (el contrato — guardia en `tests/test_vicios_consistency.py`, corre en pre-commit)

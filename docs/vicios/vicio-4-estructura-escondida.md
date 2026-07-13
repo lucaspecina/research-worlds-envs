@@ -30,7 +30,7 @@ parámetros, promedia.
   no ayuda confiable); vibe-physics `[VERIFICADO]` (*"revierte a convenciones de manual"*);
   Trehan `[VERIFICADO]` (reescribe a Actor-Critic — el default del training — racionalizándolo).
 - Einstellung clínico `[POR-LEER][VIÑETA]`: **MURIÓ entre generaciones** (mARC 2025 → follow-up
-  2601.11866: los de razonamiento alcanzan nivel humano). Lección generacional: las sub-formas
+  [2601.11866](https://arxiv.org/abs/2601.11866): los de razonamiento alcanzan nivel humano). Lección generacional: las sub-formas
   de viñeta evaporan; las agénticas-latentes persisten.
 
 ### 4.4 El gemelo del aha de síntesis: integrar-como-reflejo
