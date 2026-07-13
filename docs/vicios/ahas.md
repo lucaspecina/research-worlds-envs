@@ -22,7 +22,7 @@ generarlos en casa (robots + protocolos).
   tiene aún el par anomalía-real/ruido validado — hueco propio.
 - **A1.3 Promoverla a hipótesis nueva**: **el cuello real**. Contraevidencia nuestra: el trofeo
   (0/10 promovieron la anomalía a composición oculta) `[VERIFICADO propio]`; DiscoverPhysics
-  (fallan justo donde hay que postular lo latente) `[POR-LEER]`; "LLMs can't jump"
+  (fallan justo donde hay que postular lo latente) `[VERIFICADO — leído 2026-07-13]`; "LLMs can't jump"
   `[VERIFICADO]` (abducción como el faltante estructural; parche-Vulcano como la jugada
   perdedora). No se conocen 2 casos verificables de agentes logrando esto autónomo.
 
