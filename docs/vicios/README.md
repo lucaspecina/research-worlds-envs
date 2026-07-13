@@ -188,6 +188,12 @@ evidencia positiva publicada es POBRE — los pares se calibran en casa.
 
 ## El marco transversal (condiciones de emergencia, 7 vías)
 
+> **REGLA DURA (Lucas, 2026-07-13 — está en CLAUDE.md y failure-modes §2.0): los mundos
+> reproducen cada fenómeno COMO APARECE EN LOS CASOS REALES REPORTADOS — en sus condiciones,
+> situaciones y momento del flujo, con esos casos citados (links) en el diseño.** Las
+> condiciones de abajo no son inspiración: son la especificación. La conveniencia de
+> implementación no es criterio de diseño.
+
 1. **La jugada viciosa tiene que PAGAR localmente** (76% de trampa cuando paga vs 2.9% cuando
    no `[POR-LEER]`) — un pozo seco con cartel examina, no tienta.
 2. **Encuadre legítimo**: el vicio necesita una historia que lo justifique `[POR-LEER]`.

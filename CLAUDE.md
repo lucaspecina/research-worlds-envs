@@ -51,6 +51,10 @@ propone la edición del doc + un ADR nuevo en `docs/adr/`.
   (ARCHITECTURE §7, carga diferencial ≥2 coordenadas) antes de entrar a una suite.
 - Las conductas del agente se **observan** (traces, firmas), nunca se premian (el vicio se vuelve la jugada
   perdedora del mundo; el juez cobra la consecuencia).
+- **FIDELIDAD A LOS CASOS REALES** (Lucas 2026-07-13, regla dura): los mundos y experimentos reproducen los
+  fenómenos **como aparecen en los casos reales reportados — en sus condiciones, situaciones y momento del
+  flujo** (con los links de esos casos citados en el diseño). La conveniencia de implementación NO es criterio
+  de diseño; toda desviación de las condiciones reportadas se declara y justifica en el pre-registro.
 - Rivales y batería se **derivan** del caso declarado en `meta.json`; nunca se autorean a mano por caso.
 - La librería de operadores **crece a demanda de semillas reales**, nunca por imaginación suelta. El solver jamás
   ve la taxonomía de operadores.

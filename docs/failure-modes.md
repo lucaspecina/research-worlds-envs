@@ -160,6 +160,14 @@ funciona. Los pares/gemelos (principio 10) son un agregado valioso, **no** el ej
 
 ## 2. Principios de diseño (los que ganamos con dolor — no negociables)
 
+0. **FIDELIDAD A LOS CASOS REALES (regla dura de Lucas, 2026-07-13 — manda sobre todos)**: el
+   mundo/experimento reproduce el fenómeno **como aparece en los casos reales reportados — en
+   sus condiciones, situaciones y momento del flujo**, con esos casos CITADOS (links) en el
+   diseño. La lección que la parió: las sondas 0143/0145 probaron el arranque y la entrega
+   porque eran los momentos BARATOS con la maquinaria — y los casos reales (Corral, el
+   Investigator, vibe-physics) reportan la influencia A MITAD de la investigación. La
+   conveniencia de implementación no es criterio de diseño; toda desviación de las condiciones
+   reportadas se declara y justifica en el pre-registro.
 1. **Consecuencia cobrada, conducta observada** (Ethos §2.1/2.6): el vicio es la jugada
    perdedora; la firma de trace diagnostica, nunca premia.
 2. **Certificado de trampa necesaria** (ADR 0082): dos robots scripteados — el **vicioso**
@@ -736,6 +744,7 @@ de fuentes y sacando failure modes CONCRETOS con su cita:
 
 ```
 vicio documentado (§4/§5)
+   -> ¿EN QUÉ CASOS REALES aparece, en qué condiciones/momento del flujo? (links; regla dura §2.0)
    -> ¿qué DINÁMICA de mundo lo fuerza de forma puntuable? (§3)
    -> deliverable puntuable (predecir comportamiento) + cero-LLM
    -> diseñar el CERTIFICADO DE TRAMPA NECESARIA (robot vicioso pierde / cuidadoso gana)
