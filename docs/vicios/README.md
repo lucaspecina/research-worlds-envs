@@ -81,3 +81,21 @@ vive; aún sin construir).
 - Tensión abierta a resolver leyendo: anclaje (Vaccaro dice frágil `[VERIFICADO]`; R1 dice
   robusto-y-peor-con-capacidad `[POR-LEER]`) — probablemente se resuelve por sub-forma/formato.
 - Verificar el 76% exacto de ImpossibleBench (figura por variante) antes de citarlo en el paper.
+
+
+## Mantenimiento (el contrato — guardia en `tests/test_vicios_consistency.py`, corre en pre-commit)
+
+**Dónde entra cada cosa nueva (una regla, una casa):**
+
+| Evento | Se actualiza |
+|---|---|
+| Paper/fuente nueva leída a texto completo | `lectura-de-fuentes.md` (cita) + el caso en su `vicios/vicio-N.md` pasa de [POR-LEER] a [VERIFICADO] |
+| Evidencia/caso nuevo de un vicio | SOLO `vicios/vicio-N.md` (+ fila del tablero si cambia el estado) |
+| Mundo construido/certificado/medido | `vicios/vicio-N.md` (Estado) + `mundos-por-vicio.md` (Estado del mundo) + `roadmap.md` |
+| Sub-forma nueva o cambio de estado generacional | `vicios/vicio-N.md` + tablero (esta página) |
+| Vicio nuevo | doc nuevo `vicio-N-*.md` + fila del tablero + entrada en `mundos-por-vicio.md` + ADR |
+| Decisión de diseño | ADR (append-only) — jamás editar esta capa sin rastro |
+
+**El guardia automático verifica**: todo doc de vicio tiene fila en este tablero (y viceversa,
+sin links muertos) · los docs viejos conservan el puntero a esta capa · cada doc mantiene sus
+secciones (sub-formas/firma + estado). Un doc olvidado ROMPE el commit — no depende de memoria.

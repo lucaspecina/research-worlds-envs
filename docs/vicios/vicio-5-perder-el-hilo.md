@@ -23,3 +23,9 @@
 MAST `[POR-LEER]`: 1.600+ trazas multi-agente anotadas (HF mcemri/MAD, κ=0.88, 14 modos) —
 ~41.8% especificación, ~36.9% desalineación inter-agente, ~21.3% verificación. Confirma que la
 mayoría es sistema/operación. Útil para calibrar nuestros clasificadores de firma.
+
+## Estado
+VIVO y masivo, pero fuera del alcance de construcción (operación; lo trabaja medio campo). Se
+MIDE cuando aparece en nuestras trazas (los clasificadores de firma lo etiquetan para no
+confundirlo con juicio). Única excepción anotada: la deriva-por-inacción (5.3) tiene componente
+de juicio — queda en el cuaderno, no cerrada.
