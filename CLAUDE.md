@@ -14,10 +14,17 @@ Mapa de docs (abrí el que la tarea pida, no todos):
 - **`docs/failure-modes.md`** — el corazón. La **definición operativa** del juicio (§0, dos polos) +
   el catálogo de failure modes (vicios) Y operaciones de aha, de a **PARES**, + scaffold de diseño
   (de un vicio/aha documentado → un mundo puntuable; taxonomía por dinámica de mundo).
-- **`docs/mundos-por-vicio.md`** — la derivación oficial vicio→mundo EN LLANO (ADRs 0113/0114), con
-  **foco IA**: por cada vicio, dónde está documentado EN AGENTES DE IA investigadores (paper +
-  haciendo-qué + número; lo humano al margen), sus estructuras, y el mundo que lo caza (exista o no).
-  **Catálogo-primero: lo construido no manda.** El catálogo es la evidencia; este doc, el diseño.
+- **`docs/vicios/`** — la DESCOMPOSICIÓN FINA de cada vicio (ADR 0140): un doc por vicio con sus
+  **sub-formas** (mecanismo · disparador · firma · borde operación/juicio) y casos reales
+  etiquetados (verificación × tipo-de-evidencia × estado generacional). Su **`README.md` es EL
+  TABLERO**: la vista de síntesis para razonar el conjunto (estado de todos en una tabla + marco
+  transversal + cola de lecturas + contrato de mantenimiento con su tabla de gatillos).
+  **La evidencia nueva de vicios entra SOLO acá.** Guardia de consistencia en pre-commit
+  (`tests/test_vicios_consistency.py`): un doc olvidado o desincronizado ROMPE el commit.
+- **`docs/mundos-por-vicio.md`** — la derivación oficial vicio→mundo EN LLANO (ADRs 0113/0114):
+  por cada vicio, sus estructuras y el mundo que lo caza (exista o no) + estado de los mundos.
+  **Catálogo-primero: lo construido no manda.** El fenómeno fino vive en `docs/vicios/`; este
+  doc deriva mundos.
 - **`docs/lectura-de-fuentes.md`** — registro AUDITABLE de qué papers/artículos de fallas de AI
   researchers se leyeron a TEXTO COMPLETO (con cita real), qué falta, y las correcciones que la
   lectura destapó (ADR 0115). Evidencia cruda de las búsquedas: **`docs/research/`** (JSON).
