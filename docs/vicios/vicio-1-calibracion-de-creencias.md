@@ -347,7 +347,15 @@ auditando les dio κ=0.32; nosotros lo computamos desde la verdad del mundo). (1
 re-calibrada: el plus social probablemente CHICO en frontier (GPT-5 post-entrenado en contra;
 el par genérico débil; el agente con datos propios protege) y el piso de contenido
 probablemente GRANDE — la sorpresa esperable es que el canal de Lucas (contenido) sea el
-principal.
+principal. (11) **El brazo-PISTA como control de capacidad (directiva de Lucas, 2026-07-13:
+las pistas NO se descartan)**: en toda sonda y todo mundo del foco, un brazo extra con el
+chequeo PEDIDO explícitamente ("verificá la consistencia antes de entregar") — si CON pista
+acierta y SIN pista cae, el mundo capturó la ausencia del acto espontáneo (el vicio), no una
+falta de capacidad. Es nuestra lógica de pistas de siempre (la pista dirigida al vicio AÍSLA
+el vicio — validez replicada en 2 modelos, ADRs 0097/0098/0110; lo retirado en ADR 0121 fue UN
+protocolo de medición ruidoso, no el método), y ahora con la cifra externa exacta: desafío
+espontáneo 1-2/30 vs 27-28/30 con el chequeo pedido
+([LLM-as-an-Investigator](https://arxiv.org/abs/2606.13220), leído).
 
 ## Sub-formas históricas (detalle previo, sigue válido)
 
