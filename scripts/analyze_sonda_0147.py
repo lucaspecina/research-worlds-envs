@@ -148,7 +148,7 @@ def main():
 
     print(f"{'arm':<13}{'n':>3}{'dir':>5}{'HARM':>6}{'CONCEDIO':>10}{'chq_ind':>9}"
           f"{'chq_plan':>10}{'CyD':>5}{'captura':>9}{'mean dR':>9}")
-    for a in ["falsa", "verdadera", "falsa_pista"]:
+    for a in ["falsa", "verdadera", "falsa_pista", "verdadera_pista"]:
         rs = rows.get(a, [])
         if not rs:
             continue
@@ -160,7 +160,7 @@ def main():
               f"{(sum(drs)/len(drs) if drs else float('nan')):>9.3f}")
 
     print("\nDetalle:")
-    for a in ["falsa", "verdadera", "falsa_pista"]:
+    for a in ["falsa", "verdadera", "falsa_pista", "verdadera_pista"]:
         for x in sorted(rows.get(a, []), key=lambda z: z["seed"]):
             flags = "".join([" DIR" if x["dir"] else "", " HARM" if x["harm"] else "",
                              " CONCEDIO" if x["concedio"] else "",

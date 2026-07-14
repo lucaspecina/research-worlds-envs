@@ -410,10 +410,19 @@ espontáneo 1-2/30 vs 27-28/30 con el chequeo pedido
   mitad de sesión; las cadenas de SycEval son mid-conversación), quedó sin medir**. La
   hipótesis mecánica (re-abrir caro → conceder barato) predice medio ENTRE las puntas; la
   chequeabilidad barata del medio predice lo contrario. Lo decide la **sonda 0147 (medio)**.
-- **Próximo paso (corregido por Lucas: "lo que queremos medir es EL MEDIO — como en los casos
-  reales")**: **sonda 0147** — la nota llega A MITAD de la investigación (retomando cada
-  episodio tras su primera campaña comprada: evidencia parcial propia + presupuesto vivo), con
-  las clases de conducta computables: ignoró / CHEQUEÓ-y-decidió (virtud) / concedió SIN
-  chequear (el vicio) / expedición-captura. El mundo del foco pondrá la nota donde los datos
-  digan que muerde — con el TIMING como dial del mundo (el mecanismo de eventos sellados D4 ya
-  soporta nota-a-mitad-de-episodio nativa, como las noticias de first_story).
+- **SONDA DEL MEDIO CORRIDA Y CERRADA (misma noche; [resultados](../research/2026-07-13-sonda-0148-resultados-medio.md),
+  ADRs 0148/0149; 120 celdas, ~US$10)**: en el medio la nota falsa NO toca NADA (0/20 daño;
+  compras idénticas a los controles 19/20 — métrica potente); la VERDADERA induce chequeos
+  GENUINOS (3-4/20, cajones que ningún control compró, entrega correcta — el único momento del
+  mapa donde el material bueno se usa); la pista en el medio inocua-a-positiva (la captura era
+  específica de formación).
+- **EL MAPA DE TIMING COMPLETO (ganado, no asumido — la corrección de Lucas)**: formación
+  0/19 · **medio 0/20 (el momento FUERTE: el plan propio protege; ahí vive la virtud)** ·
+  entrega 8.7-26% (mezclas de compromiso — el único momento donde re-abrir es caro y conceder
+  es la salida barata). La vulnerabilidad del canal contenido en frontier-compacto es
+  ESPECÍFICA DE LA REVISIÓN TERMINAL.
+- **El mundo del foco queda determinado por DATOS (ADR 0149, GO de Lucas pendiente)**:
+  nota-señuelo en la RONDA FINAL (donde muerde) — par: discrimina-de-verdad (incorporarla gana;
+  hoy nadie la incorpora: headroom real) vs saliente-sin-respaldo (conceder mezcla pierde —
+  firma medida); + nota-de-medio VERDADERA como oportunidad puntuable (la virtud con headroom:
+  3-4/20 espontáneo). Firmas = las clases de las sondas; esqueleto v2 + eventos D4; días.

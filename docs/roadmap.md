@@ -288,10 +288,13 @@ consejo verdadero en 0143 fue RACIONAL — ganancia alcanzable mediana +0.035)**
 al arranque NO muerde (0/19); la verdadera arrastra compras sin pagar; hallazgo nuevo =
 CAPTURA DE AGENDA bajo pista+falsa (el claim no convence: desvía el presupuesto — colapsos
 hasta −0.88). **CORRECCIÓN DE LUCAS
-(vuelta, noche): las sondas midieron las PUNTAS — el MEDIO, donde los casos reales reportan
-el vicio (Corral/Investigator/vibe-physics: la influencia llega a mitad de investigación con
-evidencia parcial y presupuesto vivo), quedó sin medir → SONDA 0147 (medio) en curso; el
-mundo del foco pondrá la nota donde los datos digan, con el timing como dial (eventos D4).**
+(regla dura 0147: fidelidad a los casos reales) → SONDA DEL MEDIO corrida (0148/0149): el
+MAPA DE TIMING quedó COMPLETO Y GANADO — formación 0/19 · medio 0/20 (compras intactas; ahí
+vive la VIRTUD: chequeo genuino 3-4/20 con material verdadero) · entrega 8.7-26% (mezclas de
+compromiso). La vulnerabilidad es ESPECÍFICA de la revisión terminal. EL MUNDO DEL FOCO QUEDA
+DETERMINADO POR DATOS (GO de Lucas): nota-señuelo en la ronda final (par discrimina-vs-paja)
++ nota-de-medio verdadera puntuable; firmas y detectores calibrados por las sondas; ~US$30-35
+el programa completo del día.**
 
 **Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
 queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·
