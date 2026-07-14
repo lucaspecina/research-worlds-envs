@@ -18,7 +18,8 @@ que son DOS perillas**: [Kumaran et al. (DeepMind), arXiv 2507.03120](https://ar
 encuentra en el MISMO experimento los dos sesgos de signo opuesto — con su respuesta propia a
 la vista el modelo la sostiene de más (*choice-supportive bias*), y a la vez *"markedly
 overweight inconsistent compared to consistent advice, in a fashion that deviates qualitatively
-from normative Bayesian updating"* (verbatim del abstract) `[POR-LEER cuerpo]`.
+from normative Bayesian updating"* (verbatim del abstract) `[LEÍDO cuerpo 2026-07-14: 2.58× confirmado (favorable 1.095×); ver-su-propia-respuesta
+baja el cambio 32.5%→13.1% y DESAPARECE si la respuesta "es de otro LLM" — es identidad, no contenido]`.
 
 **La distinción que gobierna todo** (r23): el testimonio y el material mostrado TAMBIÉN son
 evidencia. Lo que separa virtud de vicio no es "datos vs opiniones" — es **¿lo que llegó
@@ -276,9 +277,9 @@ cambio de entrega es cortesía, no creencia.
   complementarios; y un experimento-puente barato: ¿un modelo bayesiano-enseñado transfiere a
   un mundo WAGER con posterior tractable?
 - **Creencia declarada vs ACCIÓN** — [Pal et al., arXiv 2511.13240](https://arxiv.org/abs/2511.13240)
-  `[POR-LEER]` (⚠ el dossier externo lo describía como "Incoherent Beliefs" con un experimento
-  distinto; el título real en ese ID es *"Knowing What You Know Is Not Enough"* — resolver al
-  leer). Y [Yang et al., arXiv 2505.16170](https://arxiv.org/abs/2505.16170) `[POR-LEER]`: la
+  `[LEÍDO 2026-07-14]` (⚠ resuelto: título/autores confirmados — Pal, Flach, Liang, Potti,
+  Goldblum; apuesta en dirección OPUESTA a su confianza declarada, no invoca la búsqueda con
+  confianza ~0, y defiende lo que duda / suelta lo que confía — ver anatomía abajo). Y [Yang et al., arXiv 2505.16170](https://arxiv.org/abs/2505.16170) `[POR-LEER]`: la
   retractación la gobierna la creencia INTERNA momentánea (probe + steering causal).
 - **Diseño experimental bayesiano en agentes** (lo que Lucas recordaba): BoxingGym
   ([arXiv 2501.01540](https://arxiv.org/abs/2501.01540) — prior-vs-no-prior, regret de
@@ -298,6 +299,42 @@ ejecutable cobrado en held-out + pares gemelos + cero-LLM en el reward + la INTE
 fuente×discriminancia — **no está publicado**. Los vecinos aportan instrumentos de medición
 (probes, pisos-sin-hablante, oráculos normativos) para VALIDAR nuestros mundos, no el
 instrumento mismo. Métodos robables: `como-medimos.md` §3.
+
+## La anatomía REAL de los casos (relectura a texto completo, 2026-07-14 — orden de Lucas)
+
+> 11 papers del núcleo leídos COMPLETOS hoy (fila por fila con números en
+> [lectura-de-fuentes.md](../lectura-de-fuentes.md)); Codex corrió una lectura INDEPENDIENTE
+> en paralelo para cruce de extracciones (r31). Esta tabla es el mapa de escenarios exactos:
+> tarea · tamaño de trayectoria · lugar del flujo · gatillo · conducta observada.
+
+| Caso | Tarea y tamaño de trayectoria | Lugar del flujo | Gatillo | Qué hace (lo real) |
+|---|---|---|---|---|
+| **Corral** (frontier, agéntico) | elucidar estructura química con herramientas, flujo multi-paso | mitad | **SU dato comprado** contradice (el doblete) | anota la discrepancia y entrega la misma estructura — ignora el 68% |
+| **KellyBench** (frontier 2026, agéntico) | temporada de apuestas: ~100-150 fechas, 500-1000 tool-calls, sandbox propio | todo el arco post-ajuste | datos frescos cada fecha + pérdidas + **sus propios diagnósticos escritos** | ajusta el modelo UNA vez y nunca más; 3 autocríticas correctas + sigue con el modelo roto; Kelly escrito → apuestas planas |
+| **RadLE** (GPT-5) | diagnóstico por imagen única, razonamiento largo | **transición hallazgos→conclusión** | sus hallazgos intermedios contradicen la 1ª hipótesis | ve lo correcto y concluye lo inicial (30% vs 83% radiólogos) |
+| **Jeong** (chicos, agéntico) | agente web ≥5 fuentes → informe | la política entera, desde FORMACIÓN | creencia pre-cargada al inicio | −26.9% búsquedas, −16.9% fuentes, informe "fluido y plausible"; a mitad de tarea: débil |
+| **Investigator** (conversacional) | diagnóstico técnico guiado sobre hilos reales | todo el diálogo | causa equivocada sugerida al INICIO y sostenida | desafío espontáneo 1-2/30; con chequeo pedido 27-28/30 |
+| **Xie** (viñeta 1-turno) | QA con evidencia externa | — | contradicción **MEZCLADA** con confirmación | única coherente → acepta 91-96%; mixta 1+1 → vuelve a la suya 43-65%; 2+2 → 99.8%; orden ±49.5pp |
+| **Kumaran** (viñeta 2-turnos) | binaria + consejo con precisión declarada | 2º turno | **ver su propia respuesta** / consejo contrario | cambia 13.1% vs 32.5% sin verse (desaparece si "es de otro LLM"); contrario sobre-pesado 2.58×; acantilado en confianza 0.77 |
+| **snowball** (viñeta) | Sí/No + justificación (primalidad/grafos) | **el PRIMER token** | pregunta que exige cómputo secuencial | se compromete antes de razonar (95-98%) y fabrica justificaciones que reconoce falsas aparte (67-87%) |
+| **Yang** (7-8B) | QA + continuación libre | inmediatamente post-respuesta | error propio que SABE incorrecto | retracta 11-26%; lo gobierna la creencia interna momentánea (steering la enciende/apaga) |
+| **SycEval / speaker-free / circuito** (viñetas) | QA + rebuttals en cadena | post-respuesta | rebuttal con **CITA** / contenido afirmado sin hablante | regresiva 14.66% con persistencia 78.5%; sin hablante ya 66.5% (parecer-evidencia 80.4%); sabe-y-cede (28→81% con conocimiento intacto) |
+| **Pal** (7 modelos) | confianza declarada vs acción (apuestas/tool/desafío) | la acción posterior | — | apuesta CONTRA su confianza; defiende lo que duda y suelta lo que confía; calibración estática no predice (r=0.17) |
+| **Barkett** (o4-mini, N=6.500) | inversión Staw en 2 etapas | la 2ª decisión (reinversión) | **pares simétricos** deliberando / **identidad fusionada** | individual racional (~0 escalada; asesor 5.6%); pares 99.2%; identidad (20 años defendiéndola + acciones + reputación) 68.95% del presupuesto a la perdedora, 97.45% |
+| **When Truth** (7-8B, viñeta) | MCQ un turno | ANTES de responder (**formación**) | "creo que la respuesta es X" | 63.7% acuerdo con lo incorrecto (46.6–95.1); la experticia declarada no suma (~4.4pp); 3ª persona −13.6pp |
+
+**Las 7 condiciones recurrentes** (lo que el mundo calca):
+1. **Obra propia visible e identificada como propia** (Kumaran: el efecto desaparece si "es de otro"; snowball: el compromiso precede al razonamiento; Corral/KellyBench: estructura/modelo ya elegidos; Barkett: identidad).
+2. **Evidencia MEZCLADA o ambigua, jamás limpia** (tabla de Xie; el error duro SÍ se usa: ScienceAgentBench 16.7→32.4).
+3. **Lugar: post-compromiso, pico en la transición a la conclusión/entrega** (RadLE; nuestro mapa de timing terminal 8.7-26%).
+4. **Parecer-evidencia > quién-lo-dice** (la cita de SycEval; 66.5% sin hablante; nuestra nota>persona).
+5. **La política se curva antes que el output** (Jeong; nuestras compras arrastradas 7/19 en formación) → medir COMPRAS siempre.
+6. **La brecha dice-hace ES el fenómeno** (KellyBench autocríticas+modelo-roto; Pal; Yang sabe-no-retracta; circuito sabe-y-cede; Investigator puede-y-no-chequea) → tres vistas obligadas: declara / compra / entrega.
+7. **Amplificadores documentados: consenso entre pares (99.2%) e identidad fusionada (97.45%)** (Barkett) — candidatos v2.
+
+**Dónde NO aparece** (contraevidencia, sellada): contradicción única y coherente (Xie) · error duro de ejecución (ScienceAgentBench) · decisión individual fría con contabilidad (Barkett, replica nuestro 0/60) · señuelo barato suelto en mundo corto (nuestras sondas: formación 0/19 · medio 0/20 · terminal 8.7-26%).
+
+**Eje de honestidad generacional/formato**: los porcentajes escandalosos de viñetas vienen mayormente de modelos chicos abiertos y un turno (When Truth, Yang, Jeong, circuito); frontier resiste lo barato (nuestras sondas) pero **cae en los casos con carga real** (KellyBench = GPT-5.4/Opus 4.6 en 2026 · RadLE = GPT-5 · Corral = frontier). La carga — largo + obra propia + ambigüedad — es lo que iguala.
 
 ## El diseño justo (el mundo/los mundos del foco)
 
