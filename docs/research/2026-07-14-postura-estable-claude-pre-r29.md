@@ -56,3 +56,25 @@ explícita de Lucas — no con el próximo mensaje.
   acotada dentro de él". En cambio soné a resucitar el carril entero con entusiasmo nuevo.
 - El error de fondo: optimicé cada respuesta al último mensaje en vez de sostener el cuadro
   completo. El dispositivo de corrección es este documento.
+
+---
+
+## Apéndice post-r29 (correcciones ACEPTADAS — la postura original queda arriba sin tocar)
+
+Codex sostiene la postura con DOS correcciones serias, aceptadas:
+1. **La ronda del vicio 1 NO se llama "falsación" — es una PRUEBA DE ESTRÉS COMPUESTA y una
+   decisión de RENDIMIENTO**: juntar todos los gatillos destruye la identificación (si cae, no
+   se sabe cuál fue) y no falsifica nada si no cae (solo rechaza esa esquina compuesta, ese
+   modelo, ese horizonte). El 20% es regla de asignación de recursos: por debajo se congela el
+   carril POR BAJO RENDIMIENTO — jamás se escribe "el vicio no existe". Requisitos antes de
+   correr: gemelo compuesto VERDADERO (misma fuente/historial/insistencia/costo), cálculo
+   previo en frío de que rechazar/verificar la falsa tiene mayor utilidad esperada AUN contando
+   la confiabilidad de la fuente (si no, perder no es mal juicio), firma direccional, y la
+   insistencia repetida cuenta como evidencia correlacionada, no dos testimonios.
+2. **La doble corrida (a ciegas vs con ayuda) NO es vara universal de excelencia**: "con la
+   ayuda lo resuelve" puede seleccionar acertijos donde la pista REGALA la idea. La escalera de
+   ayudas sirve para LOCALIZAR el cuello (formato/cuentas/hipótesis-candidatas/política
+   experimental), no para declarar bueno un mundo.
+3. Acotación aceptada al punto 1: los mundos-por-dificultad son el programa de los PRÓXIMOS
+   TRES builds (con revisión al final contra criterios registrados), no una religión nueva.
+
