@@ -451,6 +451,160 @@ makes one candidate explanation substantially stronger than the alternatives"*.
   1/30-espontáneo vs 28/30-forzado es la mejor cifra externa para la regla de diseño "el mundo
   premia el chequeo NO pedido".
 
+### RELECTURA DEL NÚCLEO DEL VICIO 1 — 11 papers, LEÍDOS 2026-07-14 (orden de Lucas: "revisemos LO REAL")
+
+> Escritas con paciencia y sin jerga, para que cualquier sesión futura las entienda sin
+> re-leer los papers. El mapa consolidado (escenario × lugar × gatillo) vive en
+> [vicio-1-calibracion-de-creencias.md](vicios/vicio-1-calibracion-de-creencias.md).
+
+#### Xie et al. — "Adaptive Chameleon or Stubborn Sloth" (2305.13300, ICLR 2024)
+
+**Qué hicieron**: le preguntan al modelo algo que sabe de fábrica ("¿quién es el científico
+jefe de DeepMind?") y guardan su respuesta con su justificación. Después fabrican evidencia
+externa EN CONTRA — coherente y bien escrita (la genera ChatGPT; no un burdo cambio de
+palabras) — y se la presentan de distintas maneras. **Qué encontraron**: (a) si la ÚNICA
+evidencia presente es esa contradicción coherente, el modelo la acepta casi siempre — se queda
+con lo suyo apenas 3.7% (ChatGPT) / 8.9% (GPT-4) de las veces: "camaleón"; (b) si la evidencia
+llega MEZCLADA (una pieza que confirma lo suyo + una que lo contradice), vuelve a lo suyo 43%
+(ChatGPT) / 65% (GPT-4); con dos piezas de cada lado: **99.8%** — "perezoso terco"; (c) el
+ORDEN de presentación mueve el resultado hasta 49.5 puntos (PaLM2, Llama2); (d) con hechos
+populares (muy vistos en entrenamiento) la terquedad sube (GPT-4: 80%). **Para WAGER**: la
+condición del vicio no es "hay contradicción" — es "la contradicción CONVIVE con confirmación".
+El mundo tiene que entregar la evidencia así: mezclada, como llega en la realidad.
+
+#### RadLE (2509.25559) — radiología, GPT-5 vs radiólogos
+
+**Qué hicieron**: 50 casos difíciles de diagnóstico por imagen, SOLO la imagen (sin historia
+clínica). Compararon radiólogos certificados, residentes y los mejores modelos, y clasificaron
+los errores leyendo los razonamientos. **Qué encontraron**: radiólogos 83%, residentes 45%,
+GPT-5 30%, o3 23%, Claude Opus 4.1 1%. La categoría de error que nos importa: **"discordancia
+hallazgos-conclusión"** — el razonamiento intermedio identifica el hallazgo correcto y la
+conclusión final vuelve a otra cosa. Ejemplo real: identificó la elevación de la clavícula (la
+pista correcta) y diagnosticó "luxación posterior de hombro". Verbatim: *"early fixation on
+initial diagnostic hypotheses with subsequent favouring of supporting evidence, despite
+identifying contradictory findings"*. **Para WAGER**: el lugar exacto del vicio es la
+TRANSICIÓN del análisis a la conclusión — el mismo lugar donde nuestro mapa de timing encontró
+las mezclas de compromiso en la entrega.
+
+#### KellyBench — Grady et al. (2604.27865) — la temporada de apuestas
+
+**Qué hicieron**: el agente juega una temporada COMPLETA de apuestas de la Premier League
+(~100-150 fechas, 500-1000 llamadas a herramientas). Arranca con £100.000, tiene datos
+históricos desde 1993, un sandbox para programar sus propios modelos estadísticos; cada fecha
+ve las cuotas, apuesta, recibe resultados y datos nuevos. La estrategia matemática correcta
+para dimensionar apuestas (criterio de Kelly) existe y es conocida. **Qué encontraron**: ningún
+modelo termina con promedio positivo (el mejor: GPT-5.4, −7.9%; solo 3 de 25 corridas en
+verde). Verbatim clave: *"la mayoría de las corridas ajustó su modelo estadístico UNA vez al
+principio de la temporada y no lo re-entrenó jamás, a pesar de recibir datos frescos tras cada
+fecha"*. Las corridas que sí se re-ajustaban: −11.1%; las estáticas: −70%. El caso estrella:
+**GLM-5 escribió TRES documentos de autocrítica identificando correctamente la causa de sus
+pérdidas** ("predije 40% de victorias locales y solo gana ~30%") **y no cambió nada**. Y la
+brecha dice-hace: casi todos ESCRIBEN Kelly en su razonamiento y apuestan montos planos; uno
+(Kimi) escribió la función de Kelly correcta y nunca la llamó desde su loop — terminó con una
+apuesta accidental de ~£114.000. **Para WAGER**: el caso agéntico más parecido a nuestro mundo
+(temporada larga + modelo propio + evidencia que llega sola + frontier 2026), con el fenómeno
+completo: no re-ajustar, autocriticarse sin actuar, decir sin hacer.
+
+#### Kumaran et al. (DeepMind, 2507.03120) — los dos sesgos en el mismo experimento
+
+**Qué hicieron**: preguntas binarias (¿la latitud de tal ciudad es a o b?). El modelo responde;
+en un segundo turno recibe el consejo de "otro modelo" con precisión declarada (50-100%) y
+decide de nuevo. El truco: a veces le MUESTRAN su respuesta anterior y a veces se la OCULTAN
+(pueden, porque la confianza se extrae de los logits sin crear memoria — imposible con
+humanos). **Qué encontraron**: los dos sesgos opuestos a la vez. (a) Con su respuesta VISIBLE
+cambia de opinión 13.1% vs 32.5% con la respuesta oculta — y si le dicen que esa respuesta la
+dio OTRO modelo, el efecto DESAPARECE (p>0.1): defiende lo propio POR ser propio. (b) A la vez
+el consejo CONTRARIO pesa 2.58× más de lo que la cuenta bayesiana manda (el favorable, casi
+perfecto: 1.095×). (c) El cambio no es gradual: acantilado en confianza ~0.77 — debajo cambia
+casi siempre, arriba casi nunca. **Para WAGER**: rigidez y sobre-reacción NO son extremos de
+una perilla — coexisten en el mismo modelo. Por eso la nota del par va por el MÍNIMO y el
+gemelo estable (que castiga sobre-reaccionar) es tan necesario como el gemelo con cambio.
+
+#### When Truth Is Overridden (2508.02087) — "creo que la respuesta es X"
+
+**Qué hicieron**: opción múltiple (MMLU) de UN turno donde, ANTES de que el modelo responda,
+el usuario dice "creo que la respuesta es B" (incorrecta). **Qué encontraron**: 63.7% promedio
+de acuerdo con la opinión incorrecta (rango 46.6–95.1 en 7 familias) — **en modelos abiertos
+chicos** (Llama3.1-8B, Falcon…). Decir "soy profesor" o "soy principiante" no cambia casi nada
+(~4.4 puntos): la mera opinión alcanza. En tercera persona ("ellos creen…") baja 13.6 puntos.
+**Advertencia de lectura (importante)**: la opinión llega ANTES de la respuesta — esto mide
+FORMACIÓN sesgada, no revisión de una creencia ya formada; y son modelos chicos — no proyectar
+estos números a frontier.
+
+#### Yang et al. (2505.16170) — la perilla interna de la retractación
+
+**Qué hicieron**: hacen que el modelo dé una respuesta incorrecta ("nombrá un político nacido
+en Nueva York" → "Hillary Clinton"), verificando APARTE que el modelo sabe que es incorrecta
+(contesta bien las preguntas de verificación). Lo dejan continuar y miden si se retracta solo.
+**Qué encontraron**: se retracta apenas 11–26% de las veces, aun sabiendo. Con sondas sobre
+las activaciones internas: lo que predice la retractación es la "creencia interna" del momento
+(AUROC 0.7-0.8), NO el conocimiento real (~0.5 = azar). Con steering causal (sumar/restar un
+vector interno) la retractación se enciende (70%+) o se apaga (~0%) a voluntad; transfiere a
+matemática (GSM8k: +20% corrigiendo en el punto del error). **Para WAGER**: existe una perilla
+interna de "me lo creo / no me lo creo" SEPARADA del conocimiento — el vicio es un estado, no
+una carencia. (Modelos 7-8B.)
+
+#### Pal et al. (2511.13240) — "Knowing What You Know Is Not Enough"
+
+**Qué hicieron**: miden la confianza declarada del modelo (por logits, por muestreo, por número
+verbal) y la comparan con sus ACCIONES en tres escenarios: apostar según sus creencias, decidir
+si usar un buscador, y defender o soltar su respuesta cuando lo desafían. **Qué encontraron**:
+apuesta en dirección CONTRARIA a su confianza declarada (el mejor modelo: apenas 79% de
+consistencia direccional); NO invoca el buscador teniendo confianza casi cero (correlación
+0.472); y la inversión: **defiende con terquedad respuestas en las que declara POCA confianza
+y suelta las de ALTA confianza**. La calibración estática no predice la coherencia en acción
+(r=0.17) — Gemini 2.5 Pro, bien calibrado, es de los más incoherentes. **Para WAGER**:
+preguntar la creencia no alcanza JAMÁS — hay que mirar qué hace. Las tres vistas del diseño
+(declara / compra / entrega) salen de acá.
+
+#### Zhang et al. (2305.13534) — el snowball: comprometido en el primer token
+
+**Qué hicieron**: preguntas Sí/No que requieren cómputo (¿es primo 9677? ¿hay ruta entre A y
+B?). El modelo responde y justifica. **Qué encontraron**: el modelo se compromete con el Sí/No
+en el PRIMER token (95-98% de las veces) — antes de razonar — y después fabrica la
+justificación que lo sostenga (una factorización falsa, un vuelo inexistente). Lo clave:
+mostradas POR SEPARADO, el mismo modelo reconoce esas justificaciones como falsas (ChatGPT
+67%, GPT-4 87%). "Pensá paso a paso" mejora el acierto pero en los fallos el 95% sigue
+fabricando. **Para WAGER**: el compromiso precede al razonamiento; la fabricación es presión
+de coherencia con lo ya dicho. La obra propia empieza en la primera palabra.
+
+#### ScienceAgentBench (2410.05080) — la contraevidencia: el error duro SÍ se usa
+
+**Qué hicieron**: 102 tareas reales de descubrimiento con datos (de 44 papers publicados); el
+agente escribe un programa que resuelve la tarea. Con "self-debug": ejecuta su código, ve los
+errores reales, itera. **Qué encontraron**: el feedback de ejecución casi DUPLICA el éxito
+(Claude-3.5-Sonnet: 16.7%→32.4%, ×1.94 — y 17 veces más barato que el framework más complejo).
+El error DURO e inequívoco se usa y bien. Lo que NO arregla ni con feedback: errores ambiguos
+de procesamiento de datos científicos heterogéneos y APIs de dominio alucinadas. **Para
+WAGER**: delimita el vicio por el otro lado — no vive en la señal dura, vive en la ambigua.
+El mundo debe habitar la ambigüedad calibrada.
+
+#### Barkett et al. (2508.01545) — escalada de compromiso: identidad y consenso
+
+**Qué hicieron**: el paradigma clásico de Staw ("Big Muddy"): invertís $10M en una división;
+años después ves resultados (buenos o malos); decidís cómo repartir $20M más. Probaron:
+decisión individual, rol de asesor, deliberación entre agentes, y un rol con la identidad
+FUSIONADA (sos el VP que defendió esa división 20 años, con acciones, reputación, divorcio y
+matrícula del hijo colgando de la decisión). **Qué encontraron**: individual = racional (tras
+malas noticias asigna $4.65M vs $14.41M tras buenas: desinvierte; ~cero escalada). Asesor:
+apoya escalar solo 5.6%. Deliberando entre PARES SIMÉTRICOS: **99.2% escala**. Identidad
+fusionada: **68.95% del presupuesto a la división perdedora** (97.45% de escalada alta,
+d=2.00). **Para WAGER**: replica nuestro 0/60 del pozo (individual frío = racional) Y muestra
+dónde vive el fenómeno: identidad + consenso. Candidato v2 documentado: "vos defendiste este
+modelo" / "lleguen a consenso".
+
+#### Jeong et al. (2602.00851) — la creencia pre-cargada curva la política
+
+**Qué hicieron**: agentes con herramientas (investigación web con informe final; y código).
+Manipulan creencias de dos maneras: PRE-cargada en el prompt inicial, o persuasión a MITAD de
+la tarea. **Qué encontraron**: la pre-cargada curva la CONDUCTA: −26.9% búsquedas, −16.9%
+fuentes únicas (significativo), sostenido a lo largo de tres tareas seguidas — y el informe
+final queda *"fluent and superficially plausible"* (baja la cobertura y la calidad, pero no se
+nota a simple vista). La persuasión a mitad de tarea: débil y errática. (Modelos
+chicos-medianos.) **Para WAGER**: converge con nuestro mapa de timing (la formación arrastra
+la política; el medio no muerde) y con nuestra sonda de formación (compras arrastradas 7/19
+sin daño visible). Moraleja de medición: mirar las COMPRAS, no solo la entrega.
+
 ## Búsqueda de descubrimiento — COMPLETA (2026-07-10)
 
 Corrida `wq9k0l8oh` (108 agentes, 23 claims verificados 3-0). Crudo:

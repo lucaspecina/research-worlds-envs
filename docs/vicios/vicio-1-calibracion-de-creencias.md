@@ -300,6 +300,57 @@ fuente×discriminancia — **no está publicado**. Los vecinos aportan instrumen
 (probes, pisos-sin-hablante, oráculos normativos) para VALIDAR nuestros mundos, no el
 instrumento mismo. Métodos robables: `como-medimos.md` §3.
 
+## La conclusión en llano (2026-07-14) — el fenómeno contado sin jerga
+
+> Para entender el estado del conocimiento sin leer los 50 papers. Escrito a pedido de Lucas,
+> en el idioma en que se lo contamos a él. La tabla con los detalles finos está en la sección
+> siguiente; los números de cada paper, en [lectura-de-fuentes.md](../lectura-de-fuentes.md).
+
+**Primero: el vicio NO es "los modelos ignoran la evidencia".** Cuando la contradicción es
+limpia y única, la aceptan casi siempre (91-96% de las veces). Cuando el error es duro — el
+código explota, el test falla — lo usan y lo arreglan (el self-debug casi duplica el éxito).
+Ahí no hay vicio. Por eso las trampas baratas en mundos cortos no muerden: son versiones
+demasiado limpias del fenómeno.
+
+**El vicio aparece cuando se juntan tres cosas, y las tres tienen que estar:**
+1. **Ya hay obra propia — y el agente sabe que es suya.** En el experimento de DeepMind, si el
+   modelo ve su propia respuesta anterior se aferra (cambia de opinión 13% en vez de 32%)...
+   pero si le dicen que esa misma respuesta la dio OTRO modelo, el efecto desaparece por
+   completo. No defiende la idea: se defiende a sí mismo. Y el compromiso nace ridículamente
+   temprano — en la primera palabra de la respuesta, antes de razonar (el snowball).
+2. **La evidencia en contra llega sucia**: mezclada con algo que confirma, o discutible
+   ("puede ser ruido del sensor"). Ante la mezcla elige leer la mitad que le conviene: con una
+   pieza a favor y una en contra vuelve a su idea la mitad de las veces; con dos y dos, el
+   99.8% (la tabla de Xie).
+3. **Cambiar cuesta algo**: rehacer el modelo, tirar trabajo comprado, quedar mal con lo que
+   ya firmó.
+
+**Y aparece en un lugar preciso de la trayectoria: después del compromiso, con pico en el
+momento de CERRAR.** El radiólogo digital ve el hallazgo correcto en su propio razonamiento y
+en la conclusión vuelve a su primera idea. El químico escribe "esto no cuadra con mi
+estructura" y la entrega igual. El apostador ajusta su modelo estadístico UNA vez al principio
+de la temporada y nunca más — y llegó a escribir tres documentos de autocrítica diagnosticando
+exactamente por qué perdía plata... y siguió apostando con el modelo roto.
+
+**La conclusión más importante: la brecha entre lo que DICE y lo que HACE es el fenómeno
+mismo.** Saben la estrategia correcta y no la ejecutan (Kelly escrito en el razonamiento,
+apuestas planas en la mesa). Saben que su respuesta está mal — verificable — y no la retractan
+(11-26%). Apuestan plata en dirección contraria a su propia confianza declarada. Pueden hacer
+el chequeo si se lo pedís (28 de 30) y no lo hacen solos (1 de 30). Por eso la medición va en
+TRES vistas separadas — qué declara, qué compra, qué entrega — y ninguna alcanza sola.
+
+**El amplificador que no teníamos en el radar: identidad y consenso.** Solo y con contabilidad
+delante, el modelo decide racional (casi cero escalada — igual que nuestro pozo 0/60). Pero
+deliberando entre pares iguales: 99.2% escala la apuesta perdedora. Con la identidad fusionada
+al proyecto ("hace 20 años que defendés esta división"): 97%. El gatillo no es la plata — es
+la identidad y el consenso.
+
+**¿Y los modelos de frontera?** Resisten las versiones baratas (nuestras sondas: 0/19 en
+formación, 0/20 en el medio) pero los casos donde caen son de frontera y de este año: el
+apostador es GPT-5.4 y Opus 4.6 (2026), el radiólogo es GPT-5, el químico es frontier. Lo que
+los alcanza es la CARGA: trayectoria larga + obra propia + ambigüedad. Esa carga es
+exactamente lo que el mundo v1 del pivoteo tiene que tener — y por diseño tiene.
+
 ## La anatomía REAL de los casos (relectura a texto completo, 2026-07-14 — orden de Lucas)
 
 > 11 papers del núcleo leídos COMPLETOS hoy (fila por fila con números en
