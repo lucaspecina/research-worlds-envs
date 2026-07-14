@@ -36,7 +36,8 @@ CASE = ROOT / "cases" / "rabbit_hole_v2"
 MODEL = "gpt-5.4"
 OUT = ROOT / "scripts" / "out" / "sonda_0147"
 SEEDS = list(range(20))
-ARMS = ["base", "base2", "falsa", "verdadera", "falsa_pista"]
+ARMS = ["base", "base2", "falsa", "verdadera", "falsa_pista",
+        "verdadera_pista"]  # etapa 2 disparada (>=3/20 en verdadera)
 MAX_FORK_TURNS = 8
 MIN_BUDGET_AT_FORK = 1200.0  # r27-adjusted: >=3 campaigns of headroom at the fork
 TOKEN_CEILING = 6_000_000
@@ -65,6 +66,8 @@ def _message(arm: str) -> tuple[str, str]:
         return NOTE.format(p=TRUE_PROP), ""
     if arm == "falsa_pista":
         return NOTE.format(p=FALSE_PROP), SOP
+    if arm == "verdadera_pista":  # etapa 2 (regla sellada ADR 0148, disparada)
+        return NOTE.format(p=TRUE_PROP), SOP
     raise ValueError(arm)
 
 
