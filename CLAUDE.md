@@ -74,6 +74,11 @@ propone la edición del doc + un ADR nuevo en `docs/adr/`.
   **grep de la regla vieja en TODOS los docs** y enumera cada ubicación que edita. Principio **"una regla, una casa"**.
 - **Auditoría código-vs-docs por iniciativa propia**: ante una inconsistencia, **reportar con ubicación exacta +
   fix propuesto, nunca arreglar en silencio**; aplicar recién con aprobación.
+- **Titulares con alcance + tabla-de-casos primero** (ADR 0152, nacida de cazarnos el vicio 1 a
+  nosotros mismos): toda conclusión empírica se escribe con su alcance EN el titular
+  (modelos × mundos × n × wording) — la salvedad que no viaja con el titular no existe; y ningún
+  diseño de mundo del catálogo se firma sin contrastar antes la tabla de anatomía de casos
+  reales de su vicio (`docs/vicios/`).
 - **LEDGER DE PENDIENTES ABIERTOS** (ADR 0086, reclamo repetido → estructura): todo reporte de
   cierre a Lucas TERMINA con el ledger — pre-registros firmados sin correr, autopsias sin
   partir, GOs sin ejecutar — cada ítem tildado ✓ o explícitamente VIVO con su próximo paso.
