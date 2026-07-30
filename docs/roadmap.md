@@ -333,6 +333,18 @@ de 0150 aplicado; el próximo build), (2) dato-propio-que-contradice a mitad de 
 (3) temporada larga sobre lab_largo (KellyBench), (4) formación (first_story), (5) amplificadores
 pares/identidad (Barkett). Los mundos nota-final quedan como UN punto del mapa, no el centro.
 
+**BUILD EN CURSO (misma noche) — `overgen_v0` + `overgen_twin_v0` (escenario 1 de 0152), WIP**:
+los dos polos construidos (física, robots del par juicio/sobre-generaliza/fragmenta, certificador,
+brief, meta); crítica de Codex ADOPTADA (pilotos asimétricos d={1,3,5,8} ×2 réplicas, desviaciones
+sutiles ~1-1.5σ con patrón, par = agrupar-vs-fragmentar con chequeo gratis siempre ganador; la fase
+'consagrar la ley como obra propia' anotada para v1 larga; crudo en tasks de la sesión). Calibración
+ronda 3: el reflejo sobre-generalizador YA paga (0.38-0.55) y fragmentar paga más (0.02-0.34), pero
+el ancla de juicio no llega al umbral (0.65-0.73 vs gate 0.75; el scoring castiga ~0.4 por doblar σ —
+más estricto que la sutileza diseñada). PRÓXIMO PASO CONCRETO: medir la contribución por línea del
+robot juicio para localizar la fuga (estimador vs física), y decidir sutileza-en-pilotos vs divergencia
+en-los-bordes (la desviación puede crecer FUERA del rango pilotado — cobra en extrapolación sin
+alarmar al piloto). El certificado del gemelo corre tras cerrar el polo vicio. E0 10×2 después.
+
 **Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
 queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·
 higiene de claims + 2 inconsistencias entre docs señaladas por Codex (ubicar y reportar antes de tocar) ·
