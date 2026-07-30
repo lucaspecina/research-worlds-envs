@@ -7,6 +7,18 @@
 
 ## Estado actual `[VOLÁTIL — mantener al día]`
 
+> ## ★ LA PREGUNTA ÚNICA DEL PROYECTO (REFOCO, decisión de Lucas 2026-07-30 — ADR 0153)
+>
+> **¿En qué condiciones los modelos dejan de actualizar sus creencias en proporción a la
+> evidencia — medido por lo que ENTREGAN, no por lo que dicen?** El MAPA DE CARGA: ejes
+> candidatos v1 = compromiso propio × costo de re-abrir × calidad de la evidencia (cola de
+> ejes excluidos y regla de autocorrección en el ADR). Instrumentos ya construidos:
+> fork-por-replay + registro + triple mirada declara/compra/entrega. **Toda propuesta nueva se
+> evalúa con una vara: ¿llena una celda del mapa? Si no, a la cantera.** Todo lo abierto
+> (overgen WIP, resolubilidad, ahas, fábrica) queda PAUSADO como celdas/temas futuros.
+> Codex atacando el plan (sesión en curso); sus correcciones van al pre-registro de la
+> pasada 1 (~12-16 celdas × 10-20 forks, gpt-5.4 + DeepSeek, ~US$20-40).
+
 **Verde**: reward path (Slice 1) + harness (C1+C2+C3) + factory de derivación completos;
 `pytest` ~127 verdes. Infra de mundos-trayectoria lista (ADR 0068). Docs reestructurados
 (ADR 0070) + re-skin a "línea de proceso" (ADR 0071).
