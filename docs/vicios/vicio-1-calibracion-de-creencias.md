@@ -514,3 +514,18 @@ espontáneo 1-2/30 vs 27-28/30 con el chequeo pedido
   hoy nadie la incorpora: headroom real) vs saliente-sin-respaldo (conceder mezcla pierde —
   firma medida); + nota-de-medio VERDADERA como oportunidad puntuable (la virtud con headroom:
   3-4/20 espontáneo). Firmas = las clases de las sondas; esqueleto v2 + eventos D4; días.
+
+## Caso histórico humano releído (2026-07-30) `[HUMANO]` (ADR 0150)
+
+La relectura completa de ["LLMs can't jump"](https://openreview.net/forum?id=klU4737opt)
+(extracción en [lectura-de-fuentes](../lectura-de-fuentes.md)) mostró que el caso
+Einstein/Relatividad General CONTIENE este vicio: 1913-15 defendiendo el "Entwurf" deforme — obra
+propia publicada (*"working harder and harder to justify a theory that was, at its core,
+misshapen"*) — y soltó solo con evidencia ACUMULADA aplastante más un competidor (Hilbert) en la
+nuca; el pivote fue VOLVER a su propia intuición de 1912 (autoría: se sale del vicio por la puerta
+propia). **Espejo nuevo**: el "error fatal" de 1913 — descartar el tensor CORRECTO por obedecer un
+chequeo mal aplicado — muestra que la deferencia ciega al verificador también es falla de
+calibración; conecta con la rama feedback-duro-vs-semántico (el feedback duro también puede estar
+MAL armado). **Matiz de firma**: la terquedad de Einstein fue con IDEALES (unificación,
+covariancia), no con OBRAS — la configuración inversa al vicio; en el checkpoint de pivote, medir
+qué suelta y qué retiene.

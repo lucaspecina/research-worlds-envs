@@ -394,6 +394,24 @@ recompensa enumerables (prior × likelihood-de-compatibilidad con la elección o
   abierta no da. Donde hay posterior computable: destilar (ellos); donde no: cobrar fidelidad
   held-out (nosotros). El experimento-puente sigue en pie (¿un modelo bayesiano-enseñado
   transfiere a un mundo WAGER tractable?).
+- **RELECTURA COMPLETA 2026-07-30 (pedida por Lucas; hallazgos NUEVOS sobre la extracción de
+  arriba; ADR 0150)**: (1) **el caso Einstein CONTIENE el vicio 1**: 1913-15 defendiendo el
+  Entwurf deforme (*"working harder and harder to justify a theory that was, at its core,
+  misshapen"*); suelta solo con evidencia ACUMULADA aplastante + Hilbert compitiendo; y el pivote
+  es VOLVER a su propia intuición de 1912 (autoría) — vicio y aha son tramos del mismo flujo.
+  (2) El **"error fatal" de 1913 es el ESPEJO del vicio 1**: descartaron el tensor CORRECTO por
+  obedecer un chequeo mal aplicado (*"the error lay not in the geometry, but in the assumption
+  about the static field itself"*) → el juicio también audita al verificador. (3) El aha
+  **re-significa el dato más banal y verificado** (mi=mg, 300 años a la vista de todos); Mercurio
+  — la anomalía famosa — NO fue motor sino certificado de aterrizaje (18-nov-1915) →
+  re-jerarquizar ≠ detectar; la clave de diseño: esconder en lo obvio-que-nadie-mira, lo raro de
+  señuelo. (4) El camino es **anti-MDL** (*"logical simplicity is often a retrospective
+  property"*): la complejidad sube antes de bajar → requisito para mundos de aha: el premio del
+  salto vive en la EXTRAPOLACIÓN (régimen no visitado), jamás en el fit local — si no,
+  parchar-con-Vulcano gana siempre. (5) El cierre que casi nadie cita: automatizar la invención
+  puede exigir sistemas CON CONVICCIONES (*"hold strong beliefs or priors about how that world
+  should be structured"*) — la convicción alimenta AMBOS polos; Einstein fue terco con IDEALES y
+  desprendido con OBRAS (la configuración inversa al vicio 1).
 
 ### DiscoverPhysics (2605.26087) — LEÍDO 2026-07-13 (html completo; pedido de Lucas)
 

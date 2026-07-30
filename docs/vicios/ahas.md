@@ -51,9 +51,36 @@ generarlos en casa (robots + protocolos).
 - BED-LLM `[VERIFICADO]` (45%→93% adaptando la pregunta); Mundo B diseñado (bloqueado con v6).
 - Nuestro robot-cuidadoso lo instancia (menú discriminante completo) `[VERIFICADO propio]`.
 
+## El caso Einstein releído (2026-07-30) — refinamientos del par (ADR 0150)
+
+Relectura completa de ["LLMs can't jump"](https://openreview.net/forum?id=klU4737opt) (citas en
+[lectura-de-fuentes](../lectura-de-fuentes.md)):
+
+- **A1 se afila**: el salto histórico NO detectó una anomalía nueva — RE-JERARQUIZÓ el dato más
+  banal y verificado (la caída igual de los cuerpos, 300 años a la vista); la anomalía famosa
+  (Mercurio) fue certificado de aterrizaje, no motor. Diseño: la clave vive en lo
+  obvio-que-nadie-mira; lo llamativo, de señuelo.
+- **Cara nueva del par: auditar el TEST.** El "error fatal" de 1913 (descartar el tensor correcto
+  por un chequeo mal aplicado) es el espejo de la terquedad: obedecer ciego al verificador también
+  es vicio. Candidato: mundo/rama donde el chequeo oficial tiene un supuesto roto y la jugada
+  ganadora es dudar del instrumento, no del candidato.
+- **A2 con autoría**: el pivote de 1915 fue volver a la intuición PROPIA descartada. En el
+  checkpoint de pivote, medir QUÉ suelta y qué retiene: soltar la obra reteniendo el criterio =
+  aha; soltar el criterio reteniendo la obra = vicio 1.
+- **La terquedad alimenta ambos polos**: Einstein terco con ideales de forma (unificación),
+  desprendido con productos (tiró el Entwurf); el vicio 1 es la configuración inversa.
+
 ## Consecuencia de diseño
 
 Los mundos de aha deben generar su PROPIA evidencia positiva (robots que logran el salto +
 protocolos que detectan cuándo un modelo real lo logra), porque la literatura no la trae. El
 par mínimo por mundo sigue siendo obligatorio — con el agregado (jornada 0/60) de que el
 "éxito del examen" para frontier puede ser evidencia de aha, no solo ausencia de vicio.
+
+**Requisito nuevo (relectura 2026-07-30, ADR 0150): el premio del salto vive en la
+EXTRAPOLACIÓN.** El camino real es anti-MDL (la complejidad sube antes de bajar): si el mundo paga
+por fit del régimen visitado, el parche-Vulcano gana siempre. El pago del salto debe vivir en el
+régimen NO visitado (held-out de régimen, computable cero-LLM desde la verdad). El **contrato de
+resolubilidad** ("certificar el paisaje, no el camino"; espec en ADR 0150) queda diseñado y
+**DIFERIDO** por orden de Lucas: primero reproducir los failure modes; se retoma al abrir mundos
+de aha.

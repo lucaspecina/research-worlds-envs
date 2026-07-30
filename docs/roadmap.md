@@ -296,6 +296,22 @@ DETERMINADO POR DATOS (GO de Lucas): nota-señuelo en la ronda final (par discri
 + nota-de-medio verdadera puntuable; firmas y detectores calibrados por las sondas; ~US$30-35
 el programa completo del día.**
 
+**VENTANA 2026-07-30 (conversación de dirección con Lucas; ADR 0150)**: (1) **el nombre queda
+WAGER** (el método que nombra — creencia comprometida, el mundo cobra — quedó MÁS literal con la
+mutación; renombrar el repo queda opcional). (2) **Relectura COMPLETA de "LLMs can't jump"
+integrada** (lectura-de-fuentes + ahas.md + vicio-1): el caso Einstein contiene el vicio 1 adentro
+(2 años defendiendo el Entwurf; la salida ES el aha), el "error fatal" = espejo (soltar lo correcto
+por obedecer un chequeo mal armado → el juicio audita también a los verificadores), re-jerarquizar
+lo banal con la anomalía famosa de señuelo, y el requisito para mundos de aha: **el premio del
+salto vive en la EXTRAPOLACIÓN, no en el fit local**. (3) **CONTRATO DE RESOLUBILIDAD diseñado y
+DIFERIDO (orden de Lucas)**: certificar el PAISAJE, no el camino (existencia con privilegio +
+ciegos sembrados en estados de conocimiento que progresan por CUALQUIER ruta, medidos contra la
+verdad; un mundo, un salto; espec completa en ADR 0150). NO se implementa ahora: **la prioridad
+absoluta sigue siendo REPRODUCIR los failure modes** ("sin eso no hay nada"); se retoma al abrir
+mundos de aha. (4) Contexto de mercado registrado (anuncio Andrew Ho, ex-OpenAI): la ola comercial
+viene por la capa CAPACIDAD (datasets gradeables); el diferencial WAGER es la capa JUICIO en
+flujo; su benchmark GeneBench-Pro queda POR-BUSCAR.
+
 **Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
 queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·
 higiene de claims + 2 inconsistencias entre docs señaladas por Codex (ubicar y reportar antes de tocar) ·
