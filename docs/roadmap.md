@@ -16,8 +16,16 @@
 > fork-por-replay + registro + triple mirada declara/compra/entrega. **Toda propuesta nueva se
 > evalúa con una vara: ¿llena una celda del mapa? Si no, a la cantera.** Todo lo abierto
 > (overgen WIP, resolubilidad, ahas, fábrica) queda PAUSADO como celdas/temas futuros.
-> Codex atacando el plan (sesión en curso); sus correcciones van al pre-registro de la
-> pasada 1 (~12-16 celdas × 10-20 forks, gpt-5.4 + DeepSeek, ~US$20-40).
+> **PASADA 1 CORRIDA Y CERRADA (misma noche, autónoma; ADRs 0154 pre-registro / 0155
+> resultados)**: diseño de Codex adoptado íntegro (factorial autoría×compromiso×evidencia,
+> 252 forks apareados, snapshot canónico); piso del instrumento verificado ANTES (0.25σ
+> visible); **calibración PASÓ** (CLEAN 0.045 > MIXED 0.014 > PLACEBO 0.000) y la primera
+> celda firme del mapa quedó medida: **la evidencia SUCIA domina** (F: limpia≈0.97 vs
+> mezclada 0.14-0.53 — el fenómeno de Xie EN ACTO, con consecuencia cobrada);
+> autoría/compromiso ATRIBUIDOS solos NO muerden (H1/H2 planas; H3 señal débil 5+/1− en
+> bound×mixed → pasada 2). **Pasada 2 = carga VIVIDA** (donantes del lab largo con obra
+> propia registrada) — el contraste atribuida-vs-vivida es EL siguiente experimento; antes:
+> clasificar las 28 no-entregas y el gate de DeepSeek.
 
 **Verde**: reward path (Slice 1) + harness (C1+C2+C3) + factory de derivación completos;
 `pytest` ~127 verdes. Infra de mundos-trayectoria lista (ADR 0068). Docs reestructurados
