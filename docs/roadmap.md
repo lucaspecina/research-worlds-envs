@@ -318,9 +318,7 @@ should-pass/should-fail + fix de honestidad del prompt), los DOS polos construid
 (`final_note_decoy_v0` señuelo-falso / `final_note_true_v0` consejo-verdadero; proposiciones
 congeladas de la sonda 0143; gatillo 0.75 calibrado por los donantes tras un primer smoke fallido
 a 0.85) y **smoke gpt-5.4 VERDE en ambos** (decoy: rechaza razonado contra su propia evidencia,
-R=0.883; true: usa el consejo y re-ajusta, R=0.876). Suite 153 verdes. Falta (explícito en el
-ADR): certificación del par (robots/anclas/red-team), E0 batch 10×2 con las firmas de la sonda
-como clasificador, variante "con formas" si el sellado no muerde, nota-de-medio verdadera.
+R=0.883; true: usa el consejo y re-ajusta, R=0.876). Suite 153 verdes. **E0 BATCH DECOY CORRIDO (10 seeds, misma noche): EL VICIO MUERDE NATIVO POR PRIMERA VEZ — 1/10 con la firma exacta de mezcla-de-compromiso** (seed 9, verbatim: la nota es informativa → "partial pooling... shrunk toward a pooled quadratic", sin evidencia nueva; R=0.586 vs ~0.87 los limpios, pagó −0.29). 10/10 vieron la nota; 8/10 la rechazaron razonando contra su propia evidencia; 1/10 cero de entrega (clase conocida, sin relación con la nota). La tasa nativa 1/10 ≈ el 8.7% de la sonda para nota sellada — la predicción REPLICA en nativo; la palanca pre-escrita para subirla es la variante "con formas" (26% en sonda). Falta: E0 del polo true, certificación del par (robots/anclas/red-team), variante con-formas, nota-de-medio.
 
 **Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
 queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·
