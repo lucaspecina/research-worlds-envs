@@ -312,6 +312,16 @@ mundos de aha. (4) Contexto de mercado registrado (anuncio Andrew Ho, ex-OpenAI)
 viene por la capa CAPACIDAD (datasets gradeables); el diferencial WAGER es la capa JUICIO en
 flujo; su benchmark GeneBench-Pro queda POR-BUSCAR.
 
+**MISMA VENTANA, tarde — EL MUNDO DEL FOCO ARRANCADO (GO de Lucas; ADR 0151)**: la espec de 0149
+hecha carne — eventos SOLO-NOTA en el contrato (reclamo sellado sin fuente, con par de tests
+should-pass/should-fail + fix de honestidad del prompt), los DOS polos construidos como mundos
+(`final_note_decoy_v0` señuelo-falso / `final_note_true_v0` consejo-verdadero; proposiciones
+congeladas de la sonda 0143; gatillo 0.75 calibrado por los donantes tras un primer smoke fallido
+a 0.85) y **smoke gpt-5.4 VERDE en ambos** (decoy: rechaza razonado contra su propia evidencia,
+R=0.883; true: usa el consejo y re-ajusta, R=0.876). Suite 153 verdes. Falta (explícito en el
+ADR): certificación del par (robots/anclas/red-team), E0 batch 10×2 con las firmas de la sonda
+como clasificador, variante "con formas" si el sellado no muerde, nota-de-medio verdadera.
+
 **Cantera adicional (ADR 0117)**: par NEPTUNO/VULCANO (aha — estacionado; su test de viabilidad gratis
 queda listo para un rato ocioso) · mundo causa-efecto familia G (sigue tras D1, compite con P3) ·
 higiene de claims + 2 inconsistencias entre docs señaladas por Codex (ubicar y reportar antes de tocar) ·

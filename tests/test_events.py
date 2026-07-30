@@ -60,7 +60,9 @@ def test_event_source_invisible_then_unlocked_by_turn():
         s.observe("log", 10)
     assert s.begin_turn(1) == [] and s.begin_turn(2) == []
     notices = s.begin_turn(3)                            # turn trigger
-    assert notices == ["the log appeared"]
+    # data events announce their unlocked source inline (note-only ones don't)
+    assert len(notices) == 1 and notices[0].startswith("the log appeared")
+    assert "newly available source" in notices[0]
     assert "log" in s.describe()["sources"]
     df = s.observe("log", 20)                            # should-pass after
     assert list(df.columns) == ["secret"]                # the sealed payload
@@ -71,4 +73,4 @@ def test_event_fires_early_by_spend_fraction():
     s = _server()
     s.observe("registros", 600)                          # 600/1000 = 60% >= 50%
     notices = s.begin_turn(2)                            # before trigger_turn=3
-    assert notices == ["the log appeared"]
+    assert len(notices) == 1 and notices[0].startswith("the log appeared")

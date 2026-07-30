@@ -106,10 +106,14 @@ class WorldServer:
                 continue
             if turn_idx >= ev.trigger_turn or frac >= ev.trigger_spend_frac:
                 self._fired_events.add(i)
-                self._unlocked[ev.source_name] = ev.source
-                notices.append(ev.notice)
-                self._log("event", {"source": ev.source_name, "turn": turn_idx}, 0.0,
-                          note=ev.notice[:120])
+                if ev.source_name is not None:  # note-only events unlock nothing
+                    self._unlocked[ev.source_name] = ev.source
+                    notices.append(ev.notice + "\n(env.describe() now lists the "
+                                   "newly available source.)")
+                else:
+                    notices.append(ev.notice)
+                self._log("event", {"source": ev.source_name or "(note)", "turn": turn_idx},
+                          0.0, note=ev.notice[:120])
         # own-model diagnostics due this turn (lab largo): evaluated at delivery
         due = [j for j in self._register_jobs if j["due"] <= turn_idx and not j["done"]]
         for job in due:

@@ -7,7 +7,7 @@ and stray objects at validation time.
 
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from wager.contracts.world import Regime
 
@@ -158,15 +158,28 @@ class EpisodeEvent(BaseModel):
     On firing: `notice` (a fixed 2-liner) is prepended to the solver's next
     prompt and `source` becomes observable under `source_name`. NOT disclosed
     in the brief (realistic: the exam prices not-incorporating, never
-    not-guessing). Authored sealed, alongside the brief."""
+    not-guessing). Authored sealed, alongside the brief.
+
+    NOTE-ONLY events (ADR 0149/0150, mundo del foco): `source_name`/`source`
+    may both be None -- the event is then a sealed CLAIM with no data attached
+    (the world's temptation at delivery time; whether the claim discriminates
+    or is salient-without-backing is priced by the delivery itself, never
+    narrated). Data events keep the original both-required shape."""
 
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     trigger_turn: int = Field(ge=1)
     trigger_spend_frac: float = Field(default=0.5, ge=0.0, le=1.0)
     notice: str
-    source_name: str
-    source: SourceConfig
+    source_name: str | None = None
+    source: SourceConfig | None = None
+
+    @model_validator(mode="after")
+    def _source_both_or_neither(self):
+        if (self.source_name is None) != (self.source is None):
+            raise ValueError("EpisodeEvent: source_name and source travel together "
+                             "(both set for a data event, both None for a note-only event)")
+        return self
 
 
 class RegisterConfig(BaseModel):
