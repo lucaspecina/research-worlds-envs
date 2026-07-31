@@ -16,6 +16,16 @@
 > corresponda cambiar la acción, ver caso 2); (3) se agregan las definiciones matemáticas
 > exactas (§8-bis) que faltaban: F_prop, umbral de reapertura estéril, métrica y región de
 > asimilación, "equivalente dentro del ruido", y seguridad como penalización declarada.
+> **2ª pasada de la auditoría (mismo día, revisión final de Codex — GO conceptual):** (4) la
+> pendiente de penalización pasa a ser FIJA para todo el probe (adaptarla por instancia
+> filtraba la respuesta — mismo error que el costo adaptativo; el mundo se adapta al
+> instrumento fijo, nunca al revés); (5) el oráculo-bajo-la-creencia-del-agente queda definido
+> como referencia MONTE CARLO (muestras y semillas fijas, evaluación exhaustiva de las 8
+> acciones, regla de empate, marca de indeterminación); (6) los márgenes quedan como
+> desigualdades concretas y los criterios de §11 como umbrales computables (nada de
+> "direccionalmente"); (7) la frase vieja de correlación en MODIFICAR reemplazada por baja
+> coherencia. Con esto: GO definitivo para implementar el paso 1 (generador + costos +
+> oráculos, sin agentes).
 
 ## 0. Decisión de arquitectura que este probe pone a prueba
 
@@ -86,10 +96,11 @@ riesgo, menos la pérdida por parada si reabrió. Sin juez-LLM en ningún punto.
 
 - Dos niveles de costo de reapertura FIJOS para todo el probe (definidos en unidades de la
   escala de utilidad típica; independientes de la instancia).
-- El generador **selecciona** instancias donde la ganancia correcta (calculada desde el
-  posterior exacto) cae CLARAMENTE entre ambos costos (margen de selección pre-registrado:
-  ≥30% de separación respecto de cada costo) — el mundo se adapta a los costos, jamás el
-  costo a la ganancia (un costo adaptativo filtraría la respuesta normativa).
+- El generador **selecciona** instancias por estas desigualdades concretas sobre la ganancia
+  correcta `G*` (calculada desde el posterior exacto): instancias-revisar →
+  `G* ≥ 1.3 × costo_bajo` **y** `G* ≤ 0.7 × costo_alto`; instancias-mantener →
+  `G* ≤ 0.7 × costo_bajo`. El mundo se adapta a los costos fijos, jamás el costo a la
+  ganancia (un costo adaptativo filtraría la respuesta normativa).
 - Certificación: el costo por sí solo NO permite adivinar ni el escenario ni la decisión
   correcta (trivial por construcción al ser fijo; se chequea igual).
 
@@ -160,12 +171,20 @@ es hundido al momento de elegir el plan nuevo). `a*_M = argmax_a U_M(a)` sobre l
    |diferencia de asimilación con-política − sin-política| por donante debe ser ≤ **1.5×** la
    mediana de |diferencia entre las dos continuaciones BASE del mismo donante| (la vara de
    ruido de bases dobles de la casa).
-6. **La seguridad es PENALIZACIÓN declarada, no restricción dura**: la utilidad descuenta una
-   penalización lineal declarada en el brief por cada unidad en que el percentil 10 del
-   resultado (bajo la distribución que corresponda al cómputo) cae por debajo del umbral. La
-   pendiente se fija por instancia tal que, bajo el posterior exacto, la acción óptima NUNCA
-   viola el umbral (certificado) — funciona como restricción de facto para un agente
-   racional, sin utilidades indefinidas ni filos de factibilidad.
+6. **La seguridad es PENALIZACIÓN declarada, no restricción dura — con pendiente ÚNICA Y FIJA
+   para todo el probe** (2ª auditoría): la utilidad descuenta una penalización lineal
+   declarada en el brief por cada unidad en que el percentil 10 del resultado cae por debajo
+   del umbral. La pendiente NO se adapta por instancia (eso filtraría la respuesta): es una
+   constante del instrumento, y el generador SELECCIONA mundos donde, bajo el posterior
+   exacto, la acción óptima respeta el umbral (certificado por instancia). Sin utilidades
+   indefinidas ni filos de factibilidad.
+7. **El oráculo bajo la creencia del agente es una referencia MONTE CARLO, no una exactitud**
+   (2ª auditoría — el modelo registrado es un generador arbitrario): `U_b(a)` se estima con
+   m=400 muestras por acción, semillas fijas por (instancia, acción); evaluación EXHAUSTIVA de
+   las 8 acciones de la grilla; error de muestreo por bootstrap; **regla de empate**: si las
+   dos mejores acciones difieren menos que 2× el error de muestreo, el episodio se marca
+   **INDETERMINADO** para coherencia/F_prop (se cuenta y reporta, no se computa); en empate
+   exacto gana el nivel más prudente (más bajo).
 
 ## 9. Certificaciones antitrampa por instancia (antes de mostrarla a un agente)
 
@@ -194,17 +213,18 @@ es hundido al momento de elegir el plan nuevo). `a*_M = argmax_a U_M(a)` sobre l
 
 **APROBAR** (pasa a piloto congelado) si:
 1. ≥80% de registros y entregas válidos;
-2. los cuatro casos se separan direccionalmente (más reaperturas en costo-bajo-con-ganancia
-   que en costo-alto; mantener domina en el gemelo-mantener; prudencia aparece en el
-   gemelo-dudar);
+2. en cada caso, la fracción de agentes cuya decisión coincide con la decisión NORMATIVA del
+   caso alcanza el umbral pre-registrado: caso 1 (reabrir) ≥0.6 · caso 2 (mantener con
+   creencia movida) ≥0.6 · caso 3 (mantener) ≥0.8 · caso 4 (movida prudente cuando su propia
+   creencia ensanchada la justifica) ≥0.6 — nada de "se separan direccionalmente";
 3. las decisiones son COHERENTES con el propio modelo registrado (tasa de coherencia §8-bis.3
    ≥0.7 en R6 y R9; y F_prop mediana >0.5 en las reaperturas donde aplica);
 4. el brazo sin-política muestra asimilación equivalente (diferencia dentro del ruido de
    bases).
 
 **MODIFICAR** (ficha v1, cambio explicado, semillas nuevas) si la política se comporta como
-casillero (cambios de plan no correlacionados con cambios de modelo) → reforzar el acople de
-utilidad; o si el filo de algún criterio resulta mal calibrado.
+casillero — **baja coherencia respecto del óptimo bajo su propia creencia (tasa <0.5)** —
+→ reforzar el acople de utilidad; o si el filo de algún criterio resulta mal calibrado.
 
 **ABANDONAR V2** (caer a modelo-solo + propagación como extensión posterior) si tras UNA
 iteración v1 el diseño sigue sin separar limpiamente creencia, reapertura y aplicación.
