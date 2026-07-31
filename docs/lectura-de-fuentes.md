@@ -648,3 +648,28 @@ modes**; agentes de matemática/teoremas; MLE-bench/RE-Bench. "adivinar-vs-pregu
 "no-actualizar" ausente en esta pasada. **Cluster de benchmarks de análisis de datos
 (DiscoveryBench/QRData/BLADE/DSBench/ScienceAgentBench): NO leídos a fondo (decisión de Lucas —
 refuerzan vicios 7/3 ya cubiertos).**
+
+
+## Cluster POSICIONAMIENTO del mapa de carga — LEÍDOS COMPLETOS 2026-07-31 (4 lectores en paralelo; extracción con citas verbatim, un archivo por paper en `docs/research/2026-07-31-lectura-*.md`)
+
+Tras el refoco (ADR 0153) y los 4 repasos (`2026-07-31-repaso-final-{claude,codex}{,2}.md`), los 16
+trabajos más cercanos se leyeron A TEXTO COMPLETO. Una línea por fuente; el detalle vive en su archivo:
+
+| Fuente | Una línea (leída, no de resumen) | Veredicto |
+|---|---|---|
+| BeliefTrack / When Should Models Change Their Minds ([2605.30219](https://arxiv.org/abs/2605.30219)) | pares limpio/ruido bifurcados + reward simbólico cero-LLM + RL que baja fallas 99%→0-30% — en espacio de hipótesis discretas, sin entrega ni carga | COMPITE parcial |
+| Model Discovery experimental ([2607.06413](https://arxiv.org/abs/2607.06413)) | único que puntúa modelo ejecutable contra verdad oculta (KL); la KL es métrica de salida, no dosis; sin forks ni trabajo previo | COMPITE parcial |
+| Causal Agent Replay ([2606.08275](https://arxiv.org/abs/2606.08275)) | do()+re-ejecución; validación solo en SCMs sintéticos (mayormente teórico); "LLM judge injects its own noise" | VALIDA método |
+| BACKTRACE ([2607.27484](https://arxiv.org/abs/2607.27484)) | lo AFIRMADO no predice lo USADO (AFS<0.43); "fixes everything except the one manipulated variable" | VALIDA + vigilar |
+| BayesBench ([2606.30850](https://arxiv.org/abs/2606.30850)) | infieren la estructura, no la traducen a predicción; oráculo cerrado solo en 2/4 entornos | VALIDA |
+| Bayesian Teaching ([2503.17523](https://arxiv.org/abs/2503.17523)) | imitar la POSTERIOR generaliza mejor que imitar la respuesta (→ E2) | VALIDA |
+| BASIL ([2508.16846](https://arxiv.org/abs/2508.16846)) | el empujón EMPEORA a los que sobre-actualizan y MEJORA por accidente a los que sub-actualizan → estratificar F por régimen basal del donante | CAMBIA DISEÑO |
+| Not-consistently-Bayesian ([2605.06915](https://arxiv.org/abs/2605.06915)) | a veces Bayes-exacto pierde contra el prior implícito → F baja ≠ apego sin descartar prior competitivo (defensa: mundos frescos) | CAMBIA DISEÑO |
+| STALE ([2605.06527](https://arxiv.org/abs/2605.06527)) | reconoce-que-venció y actúa igual; TODO el scoring con juez-LLM | VALIDA fenómeno |
+| Seeing Isn't Believing ([2604.17252](https://arxiv.org/abs/2604.17252)) | inercia medida por acciones, reward binario del entorno cero-LLM; andamiaje estimar-verificar-actualizar (+18pp) → brazo comparador nuestro | CAMBIA DISEÑO |
+| LURE ([2605.26438](https://arxiv.org/abs/2605.26438)) | ranking de sycophancy INVERTIDO (ρ=−0.88) entre benchmark posado y replay realista; scoring 100% juez-LLM | VALIDA fuerte |
+| MemSyco-Bench ([2607.01071](https://arxiv.org/abs/2607.01071)) | sycophancy por memoria DEL USUARIO, no obra propia — vecino más lejano de lo que parecía | menor |
+| Martingale Score ([2512.02914](https://arxiv.org/abs/2512.02914)) | score = pendiente OLS de Δb sobre b_prior; su versión depende de juez elicitando creencia verbal → NO portable tal cual; la FORMA sí (creencia escalar leída de la ENTREGA) | CAMBIA DISEÑO |
+| GeneBench-Pro (OpenAI) ([PDF](https://cdn.openai.com/pdf/21938268-21af-442f-af93-3b2249afb241/genebench-pro.pdf)) | grading por scripts con tolerancias POR CAMPO (eval_config leído); todo-o-nada declarado como limitación — lo que F resuelve | ANCLA posicionam. |
+| Context Rot (Chroma) ([reporte](https://www.trychroma.com/research/context-rot)) | 18 modelos, 194k llamadas: el relleno degrada según posición/coherencia/similitud → igualar TODO eso entre brazos o el efecto es contexto, no creencias | CAMBIA DISEÑO |
+| PABU ([2602.09138](https://arxiv.org/abs/2602.09138)) | homónimo engañoso ("belief update" = qué retener del historial por eficiencia) | descartado |
