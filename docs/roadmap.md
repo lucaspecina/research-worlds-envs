@@ -25,6 +25,19 @@
 > SESOI y techos de gasto pre-firmados. **Vara para toda propuesta: ¿sirve a esta
 > descomposición? Si no, cantera.** (ADR 0153 y las pasadas 0154/0155 quedan como historia.)
 >
+> **EN CURSO (2026-07-31): rondas de DISEÑO con Codex — dirección de diseño, NO experimento
+> firmado.** El registro vinculante será el CONTRATO DEL PAPER (recién tras storyboards v2 +
+> último ataque adversarial). Decisiones ya inclinadas: mundos GEMELOS con prefijo común
+> byte-idéntico (región inicial idéntica en los 3 mundos; la diagnóstica se habilita a mitad
+> con la maquinaria de eventos existente) · registro del modelo GENÉRICO y rutinario (rondas
+> fijas 4/8/12; candidata: cuantiles por línea sobre grilla fija) · DOS presupuestos en
+> estudios sucesivos (reparación-completa-posible primero; triage después) · control mecánico
+> HUMILDE (diagnóstico de capacidad; el claim se acota en el contrato) · score con pesos
+> justificados (los derivados diagnostican, no multiplican el error) · certificación por
+> instancia generada (robots anti-reflejo, anti-fuga, anti-registro-vago). Material:
+> `docs/research/2026-07-31-storyboards-codex-cinco-lineas.md` + arquitecturas/re-assessments
+> del mismo día. El ida-y-vuelta con Codex lo hace SIEMPRE Lucas (regla 2026-07-31).
+>
 > **PASADA 1 CORRIDA Y CERRADA (2026-07-30, autónoma; ADRs 0154 pre-registro / 0155
 > resultados)**: diseño de Codex adoptado íntegro (factorial autoría×compromiso×evidencia,
 > 252 forks apareados, snapshot canónico); piso del instrumento verificado ANTES (0.25σ
