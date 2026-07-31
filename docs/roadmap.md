@@ -25,18 +25,63 @@
 > SESOI y techos de gasto pre-firmados. **Vara para toda propuesta: ¿sirve a esta
 > descomposición? Si no, cantera.** (ADR 0153 y las pasadas 0154/0155 quedan como historia.)
 >
-> **EN CURSO (2026-07-31): rondas de DISEÑO con Codex — dirección de diseño, NO experimento
-> firmado.** El registro vinculante será el CONTRATO DEL PAPER (recién tras storyboards v2 +
-> último ataque adversarial). Decisiones ya inclinadas: mundos GEMELOS con prefijo común
-> byte-idéntico (región inicial idéntica en los 3 mundos; la diagnóstica se habilita a mitad
-> con la maquinaria de eventos existente) · registro del modelo GENÉRICO y rutinario (rondas
-> fijas 4/8/12; candidata: cuantiles por línea sobre grilla fija) · DOS presupuestos en
-> estudios sucesivos (reparación-completa-posible primero; triage después) · control mecánico
-> HUMILDE (diagnóstico de capacidad; el claim se acota en el contrato) · score con pesos
-> justificados (los derivados diagnostican, no multiplican el error) · certificación por
-> instancia generada (robots anti-reflejo, anti-fuga, anti-registro-vago). Material:
-> `docs/research/2026-07-31-storyboards-codex-cinco-lineas.md` + arquitecturas/re-assessments
-> del mismo día. El ida-y-vuelta con Codex lo hace SIEMPRE Lucas (regla 2026-07-31).
+> **EN CURSO (2026-07-31, fin de jornada): rondas de DISEÑO con Codex — dirección de diseño,
+> NO experimento firmado.** El registro vinculante será el CONTRATO DEL PAPER (tras la
+> comparación de arquitecturas + último ataque). El ida-y-vuelta con Codex lo hace SIEMPRE
+> Lucas. Material: `docs/research/2026-07-31-storyboards-codex-cinco-lineas.md` +
+> arquitecturas/re-assessments del mismo día; las rondas finas viven en el chat de la sesión
+> y en la sesión Codex "WAGER-actual".
+>
+> **CERRADO en las rondas (consenso Claude+Codex+Lucas):**
+> · **M0 y Mbelief = MODELO EJECUTABLE bajo el contrato histórico** (`model(regime,n,seed)` →
+>   tabla de outcomes, puntuado por distribuciones muestreadas) — la tabla de cuantiles MUERE
+>   como formulario (los cuantiles los extrae el server para reportar); el esquema estructurado
+>   muere como requisito. Corrección de Lucas que lo destrabó: la creencia operacional YA era
+>   el modelo ejecutable (nota de dirección §3) — estábamos derivando.
+> · **Registro SILENCIOSO nuevo a construir**: guarda el modelo completo, no devuelve nada
+>   (ni QC ni score), inválidos cuentan como falla; se reusa sandbox/versionado del REGISTER
+>   del lab largo PERO es variante nueva (el actual registra una línea, da feedback y
+>   desbloquea datos; y en las 10 trazas existentes los agentes lo usaron CERO veces).
+>   Registros en rondas FIJAS (4/8/12), tanda de evidencia siempre antes de la 8.
+> · **Mundos GEMELOS con prefijo común byte-idéntico**: región inicial idéntica en los 3
+>   mundos (idénticos ante CUALQUIER experimento permitido pre-checkpoint — restricción de
+>   experimentos a esa región en el estudio 1); la región diagnóstica se habilita a mitad
+>   (maquinaria de eventos existente) y su información llega SOLO en la tanda servida (nada
+>   comprable ahí en el estudio 1). El modelo previo debe tener predicción DEFINIDA en la zona
+>   nueva (conoce otras líneas en todo el rango, la objetivo en parte) — si no, es aprendizaje
+>   desde cero, no revisión.
+> · **NORMA**: para la compuerta bilateral, MUNDO CERRADO EXACTO — el brief declara la receta
+>   generativa completa (familias + bandas + PRIOR + ruido + instrumentos) → la actualización
+>   legal es el posterior único. Familias+bandas solas NO alcanzan (corrección de Codex). Si
+>   el estudio principal no puede conservar exactitud sin volverse menú, lenguaje honesto de
+>   "actualizador de referencia" pre-registrado.
+> · **DOS presupuestos en estudios sucesivos** (reparación-completa-posible primero — lo no
+>   reparado no tiene excusa de triage; triage con presupuesto insuficiente después), ambos
+>   calculados RELATIVOS por instancia. Control mecánico HUMILDE (diagnóstico de capacidad;
+>   el claim de especificidad epistémica se ACOTA en el contrato). Score con pesos
+>   justificados (los derivados diagnostican, no multiplican el mismo error).
+> · **Certificación por instancia generada**: prefijo byte-idéntico e igualmente probable bajo
+>   las 3 verdades · robot-solo-texto y robot-solo-presupuesto a nivel azar · cambiar-siempre
+>   / mantener-siempre / ensanchar-siempre PIERDEN · registrar-vago no gana · el oráculo legal
+>   se separa de las bases EN la región diagnóstica por encima de umbral · instrumento de
+>   medición DECLARADO en el brief.
+>
+> **SECUENCIA ACEPTADA (próximos pasos al retomar):**
+> 1. **Compuerta bilateral con modelo-solo** en mundo cerrado exacto, con n serio (¿sabe
+>    cambiar / conservar / aumentar incertidumbre?) — sección importante del paper, no
+>    necesariamente paper completo.
+> 2. **Comparación conceptual de TRES arquitecturas de entrega** (SIN código; un episodio
+>    completo escrito por opción): modelo-solo / **modelo + POLÍTICA OPERATIVA** (decisiones
+>    con consecuencias reales: qué línea recibe el control extra, qué configuración bajo
+>    restricción de riesgo — NO copiar cuantiles que el server ya calcula; fricción de
+>    compromisos reales del mundo, no de "hacer cuentas") / modelo + aplicaciones ricas.
+>    Preferencia provisional de ambos: la del medio.
+> 3. **Estudio principal con modelo+política SOLO SI**: decisión operativa natural + utilidad
+>    matemática clara + costo de revisión real + sin doble conteo + oráculo factible bajo
+>    presupuesto. 4. Aplicaciones ricas después, si aportan.
+>
+> **ABIERTO**: diseño fino de la política operativa y su fricción · si el estudio principal
+> conserva norma exacta o pasa a referencia · definición final de Mdeliver.
 >
 > **PASADA 1 CORRIDA Y CERRADA (2026-07-30, autónoma; ADRs 0154 pre-registro / 0155
 > resultados)**: diseño de Codex adoptado íntegro (factorial autoría×compromiso×evidencia,
