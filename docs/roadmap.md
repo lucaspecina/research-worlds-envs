@@ -7,16 +7,25 @@
 
 ## Estado actual `[VOLÁTIL — mantener al día]`
 
-> ## ★ LA PREGUNTA ÚNICA DEL PROYECTO (REFOCO, decisión de Lucas 2026-07-30 — ADR 0153)
+> ## ★ LA PREGUNTA OFICIAL DEL PROYECTO (REFOCO 2, decisión de Lucas 2026-07-31 — ADR 0156)
 >
-> **¿En qué condiciones los modelos dejan de actualizar sus creencias en proporción a la
-> evidencia — medido por lo que ENTREGAN, no por lo que dicen?** El MAPA DE CARGA: ejes
-> candidatos v1 = compromiso propio × costo de re-abrir × calidad de la evidencia (cola de
-> ejes excluidos y regla de autocorrección en el ADR). Instrumentos ya construidos:
-> fork-por-replay + registro + triple mirada declara/compra/entrega. **Toda propuesta nueva se
-> evalúa con una vara: ¿llena una celda del mapa? Si no, a la cantera.** Todo lo abierto
-> (overgen WIP, resolubilidad, ahas, fábrica) queda PAUSADO como celdas/temas futuros.
-> **PASADA 1 CORRIDA Y CERRADA (misma noche, autónoma; ADRs 0154 pre-registro / 0155
+> **Cuando evidencia nueva justifica una revisión conocida, ¿cómo se reparte el error entre
+> ASIMILACIÓN de la evidencia, DECISIÓN de reabrir, y PROPAGACIÓN de la revisión hasta el
+> artefacto ejecutable — y cómo lo modifican la trayectoria endógena y el costo material de
+> reparar dependencias?** Documento OFICIAL (el nuevo objetivo y análisis completo):
+> **`docs/research/2026-07-31-reassessment-pivote-codex.md`**, adoptado por Lucas tras el
+> cruce con el re-assessment independiente de Claude (`...-reassessment-claude.md`, segunda
+> opinión convergente: mismo veredicto GO-con-refoco; se le suman velocidad y gobernanza).
+> Objeto = TRES estados observables `M0 → Mbelief → Mdeliver` contra DOS varas (update legal /
+> mejor artefacto bajo presupuesto). Lenguaje RETIRADO por ADR 0156: "mapa de carga",
+> "vivido", PARTIAL-como-categoría. **Próximo paso: pre-registro del programa** Gate 1
+> (fidelidad de estado: nativa/replay/snapshot sin tratamiento) + Gate 2 (instrumento
+> bilateral con Mbelief medido antes de reparar) → experimento principal target × trayectoria
+> × fricción EN UN MISMO MUNDO — con potencia simulada desde la varianza de la pasada 1,
+> SESOI y techos de gasto pre-firmados. **Vara para toda propuesta: ¿sirve a esta
+> descomposición? Si no, cantera.** (ADR 0153 y las pasadas 0154/0155 quedan como historia.)
+>
+> **PASADA 1 CORRIDA Y CERRADA (2026-07-30, autónoma; ADRs 0154 pre-registro / 0155
 > resultados)**: diseño de Codex adoptado íntegro (factorial autoría×compromiso×evidencia,
 > 252 forks apareados, snapshot canónico); piso del instrumento verificado ANTES (0.25σ
 > visible); **calibración PASÓ** (CLEAN 0.045 > MIXED 0.014 > PLACEBO 0.000) y la primera
