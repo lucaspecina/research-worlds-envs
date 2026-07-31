@@ -10,11 +10,13 @@ El camino **sí puede producir un paper interesante**, pero la ventana de noveda
 
 El competidor conceptual más próximo es ahora [When Should Models Change Their Minds? / BeliefTrack](https://arxiv.org/abs/2605.30219): ya usa dos mundos cerrados, un oráculo simbólico por turno y separa error bajo estado estable, error después de una corrección y degradación por ruido irrelevante. [BayesBench](https://arxiv.org/abs/2606.30850) mide trayectorias multi-turno contra referencias bayesianas; [LLMs are not (consistently) Bayesian](https://arxiv.org/abs/2605.06915) separa subactualización, sobreactualización y dirección errónea; [STALE](https://arxiv.org/abs/2605.06527) encuentra una brecha entre reconocer una actualización y aplicarla; [Seeing Isn't Believing](https://arxiv.org/abs/2604.17252) estudia inercia de creencias en agentes que actúan; y [BoxingGym](https://arxiv.org/abs/2501.01540) ya combina mundos generativos, experimentación y revisión de modelos.
 
+Dos anclas adicionales estrechan todavía más el claim: [Autonomous Model Discovery](https://arxiv.org/abs/2607.06413) ya hace que agentes de código entreguen un simulador ejecutable puntuado por KL y distancia distribucional contra una verdad oculta, sin juez LLM; y [GeneBench-Pro](https://cdn.openai.com/pdf/21938268-21af-442f-af93-3b2249afb241/genebench-pro.pdf) ya puntúa determinísticamente trabajo científico multi-etapa sobre DGPs conocidos y reporta una brecha entre notar señales locales y propagarlas a la decisión. Ninguno inyecta evidencia dosificada en un modelo previo ni mide costo de reabrirlo, pero ambos ocupan parte importante de la forma de evaluación.
+
 Eso **no mata WAGER**. Sí mata una versión genérica del claim: “primer benchmark multi-turno de belief revision”, “primero en medir cuándo cambiar/conservar/ignorar”, “primer replay contrafactual de agentes”, “primer uso de mundos ocultos y scoring predictivo” o “primero sin juez LLM”. Todas esas piezas ya tienen prior art.
 
 La contribución todavía defendible es más precisa:
 
-> **Estimar cómo interactúan el valor probatorio de la evidencia, la exposición a una trayectoria previa y el costo real de reparación para producir desviación respecto de la actualización legal en un artefacto ejecutable —incluidos revisar, reforzar, conservar y cambiar sólo parcialmente—.**
+> **Estimar cómo interactúan el valor probatorio de la evidencia, la exposición a una trayectoria previa y el costo real de reparación para producir desviación respecto de la actualización legal en un artefacto ejecutable —tanto en dirección (alejarse, reforzar o conservar) como en magnitud (desde parcial hasta fuerte)—.**
 
 Ninguna fuente revisada permite estimar esa interacción sobre una entrega ejecutable con una referencia legal programática. Ese **estimando** —no la mera suma de componentes— es la posible novedad. El método de fork no es por sí mismo novedoso: [Causal Agent Replay](https://arxiv.org/abs/2606.08275) ya formaliza intervenciones y reejecución downstream. WAGER sólo podrá llamarlo causal para los factores manipulados de forma apareada dentro del mismo mundo y checkpoint; comparar escenarios distintos demuestra generalización o heterogeneidad, no identifica por sí solo el efecto de “haber vivido” el trabajo.
 
@@ -28,16 +30,15 @@ La pregunta fuerte no es si los modelos “cambian de opinión”. Es:
 
 > **Dado un modelo previo, una cantidad conocida de evidencia nueva y una respuesta legalmente alcanzable —incluido no cambiar—, ¿qué determina la distancia entre la actualización que debería ocurrir y la que efectivamente aparece en la entrega?**
 
-La respuesta correcta puede ser cualquiera de estas cuatro:
+La respuesta legal tiene dos componentes: **dirección** y **magnitud**.
 
-| Estado probatorio | Conducta correcta | Falla relevante |
-|---|---|---|
-| La evidencia refuta materialmente el modelo previo | Revisar | Rigidez o subactualización |
-| La evidencia no discrimina o es placebo | Conservar | Influenciabilidad o cambio espurio |
-| La evidencia confirma de manera informativa | Reforzar sólo en la magnitud justificada | No incorporar confirmación o volverse injustificadamente dogmático |
-| La evidencia cambia parcialmente el balance | Revisar en grado intermedio | Subactualización, sobreactualización o cambio de dirección equivocada |
+| Estado probatorio | Dirección correcta | Magnitud correcta | Falla relevante |
+|---|---|---|---|
+| La evidencia refuta el modelo previo | Alejarse de él | Proporcional a la fuerza probatoria | Rigidez, sub/sobreactualización o signo equivocado |
+| La evidencia confirma de manera informativa | Reforzarlo o concentrarlo | Proporcional a la fuerza probatoria | Ignorar confirmación o volverse injustificadamente dogmático |
+| La evidencia no discrimina o es placebo | Cero: conservar | Cero | Influenciabilidad o cambio espurio |
 
-`PARTIAL` describe magnitud, no dirección: una actualización parcial puede alejarse del modelo previo o reforzarlo. El análisis debe conservar ambos signos en vez de reducir todo a “cambió/no cambió”.
+`PARTIAL` no es una cuarta conducta: describe una magnitud intermedia que puede alejarse del modelo previo o reforzarlo. El análisis debe cruzar dirección × magnitud en vez de reducir todo a “cambió/no cambió”.
 
 La variable dependiente tampoco debería ser sólo una probabilidad declarada. Hay al menos cuatro niveles separables:
 
@@ -68,9 +69,12 @@ El outcome primario debe ser la **desviación de la entrega respecto de la respu
 | [Seeing Isn't Believing](https://arxiv.org/abs/2604.17252) | Sí | Trayectoria de acciones | Principalmente corregir estado contradicho | Éxito en entorno embodied | Intervención de scaffold, no mapa de carga |
 | [BoxingGym](https://arxiv.org/abs/2501.01540) | Sí | Sí, experimentación acumulada | Implícita en datos sucesivos | Predicciones y modelo/explicación | No aísla causalmente una revisión |
 | [Agentic Automata Learning](https://arxiv.org/abs/2606.16576) | Sí | Sí, queries e hipótesis | Contraejemplos formales | DFA ejecutable aceptado/rechazado | No aísla señal, trayectoria o fricción |
+| [Autonomous Model Discovery](https://arxiv.org/abs/2607.06413) | Una sesión agéntica de model discovery | Construye desde cero; no revisa un modelo comprometido | No hay actualización post-evidencia | Simulador ejecutable, KL/DLD contra verdad oculta | Full vs half-data apareado; no fork de un prefijo |
+| [GeneBench-Pro](https://cdn.openai.com/pdf/21938268-21af-442f-af93-3b2249afb241/genebench-pro.pdf) | Sí, análisis científico multi-etapa | Sí, decisiones dependientes | Implícita; no trayectoria normativa de creencia | Estimando final, grader determinista pass/fail | No inyecta evidencia ni bifurca un checkpoint |
 | [HEP](https://arxiv.org/abs/2607.09195) | Sí | Sí, hipótesis persistentes | Probabilidad y lifecycle explícitos | Informe científico; registro auditable | Compara harnesses, no dosis de evidencia |
 | [FCPAgent](https://arxiv.org/abs/2607.24167) | Sí | Plan, skills y dependencias | Confirmar / falsar / reparar por alcance | Éxito funcional en WebArena | Ablaciones de sistema; no revisión natural apareada |
 | [Corral](https://arxiv.org/abs/2604.18805) / [KellyBench](https://arxiv.org/abs/2604.27865) | Sí | Sí | Observada post hoc | Resultado/decisión real del entorno | No aíslan el mecanismo causal |
+| [BACKTRACE / BackroomBench](https://arxiv.org/abs/2607.27484) | No; decisiones aisladas | No | Dependencia causal de un skill, no revisión graduada | Respuesta discreta y reliance determinista | Sí: fija todo salvo skill/asignación |
 
 La tabla muestra la oportunidad y el peligro. Los componentes individuales ya existen. La originalidad no puede defenderse como “nadie juntó estas piezas”: debe estar en un estimando que los trabajos previos no recuperan, idealmente la interacción causal entre valor probatorio, trayectoria y costo de reparación sobre la desviación *oracle-relative* de una entrega ejecutable.
 
@@ -98,6 +102,7 @@ Los rótulos significan:
 | [BeliefShift](https://arxiv.org/abs/2603.23848) — Myakala et al., preprint, marzo de 2026 | Benchmark longitudinal de 10–50 sesiones que separa estabilidad, revisión por evidencia, contradicción y deriva sin evidencia. Su propia limitación reconoce que la evidencia es binaria y reclama calidad graduada. En realidad sigue la representación que el asistente mantiene de **las creencias del usuario**, no la revisión de un modelo científico propio. | **COMPITE CON EL ENCUADRE + VALIDA + CAMBIA EL DISEÑO.** Refuerza la simetría adaptar/resistir y la zona intermedia. No ocupa nuestra entrega ejecutable. Precaución: no encontré enlace público a código/dataset en el paper y sus artefactos/escala deben auditarse antes de tratar sus cifras como evidencia firme. |
 | [BoxingGym](https://arxiv.org/abs/2501.01540) — Gandhi et al., Stanford, 2025; [código](https://github.com/kanishkg/boxing-gym) | Diez mundos probabilísticos, experimentación activa, EIG, predicción y revisión de teorías. Incluso documenta supuestos previos que no se revisan y modelos explícitos que no se aprovechan bien. | **COMPITE FUERTE.** “Mundo generativo + agente científico + predicción” no es novedad. WAGER debe presentarse como una disección causal de la revisión dentro de esa clase de tareas, no como una nueva clase de mundos. |
 | [Can LLM Agents Infer World Models? Evidence from Agentic Automata Learning](https://arxiv.org/abs/2606.16576) — Menaged et al., preprint, junio de 2026; [proyecto](https://reefmenaged.github.io/Agentic_Automata_Learning/) | El agente consulta un DFA oculto mediante membership/equivalence queries, recibe contraejemplos y entrega un DFA verificable. Tiene presupuesto, complejidad graduada, baselines algorítmicos fuertes y análisis de fallas de integración de evidencia. | **COMPITE FUERTE + CAMBIA EL DISEÑO.** Ya existe un mundo oculto con hipótesis formal ejecutable y refutaciones. La diferencia defendible de WAGER es el fork causal pre/post y la manipulación de costo de reabrir. También eleva el estándar: conviene tener al menos un baseline algorítmico/oráculo, no sólo comparar LLMs. |
+| [An Experimental Design Approach to Evaluating Agentic AI's Autonomous Model Discovery](https://arxiv.org/html/2607.06413) — He et al., julio de 2026 | Agentes de código construyen modelos predictivos y un simulador ABM ejecutable sobre un juego oculto. El ABM se puntúa contra el DGP mediante KL sobre seis magnitudes y distancia distribucional basada en Levenshtein, sin juez LLM. Analiza 140 corridas y tiene un contraste matched full-vs-half-data, pero cada run descubre desde cero: no hay checkpoint con una creencia previa ni evidencia post-hoc que obligue a revisarla. | **COMPITE FUERTE EN LA FORMA DE ENTREGA + CAMBIA EL CLAIM.** Ya ocupa “agente entrega modelo ejecutable contra verdad oculta con score distribucional y cero juez”. WAGER debe diferenciarse por revisión causal pre/post, dosis, conservación correcta y costo de reabrir. También sugiere reportar calidad, costo y proceso como coordenadas separadas. |
 
 ### 3.2 Fuentes que validan la brecha “saber no implica aplicar”
 
@@ -108,6 +113,7 @@ Los rótulos significan:
 | [Seeing Isn't Believing: Mitigating Belief Inertia via Active Intervention in Embodied Agents](https://arxiv.org/abs/2604.17252) — Wang et al., Findings ACL 2026; [código](https://github.com/WangHanLinHenry/EVU) | En ALFWorld, VirtualHome y ScienceWorld, agentes observan feedback que contradice su estado previo pero siguen actuando desde la creencia vieja. El mecanismo Estimate–Verify–Update mejora task success y el efecto persiste aun truncando a dos turnos, por lo que no es sólo long-context crowding. | **VALIDA FUERTE + COMPITE PARCIAL.** Ya hay belief inertia medida por acciones y reward del entorno. WAGER se diferencia por evidencia graduada, conservar/parcial, trabajo acumulado y medición causal del freno. EVU es un excelente baseline de mitigación para una etapa posterior, no para contaminar primero la medición natural. |
 | [Toward Auditable AI Scientists: A Hypothesis Evolution Protocol](https://arxiv.org/abs/2607.09195) — Takahara y Mizoguchi, preprint, julio de 2026 | HEP registra hipótesis, probabilidades, evidencia, linaje y estados `supported/refuted/dormant`. En tareas de materiales, el harness fuerza un ciclo hipótesis–test–evidencia–belief que no aparece espontáneamente en el baseline. Pero el propio agente valida evidencia y asigna las probabilidades; la comparación principal usa sólo tres corridas por condición. | **COMPITE + VALIDA + CAMBIA EL DISEÑO.** `REGISTER` y creencias persistentes ya tienen un vecino claro. La contribución de WAGER es auditar si el registro corresponde al modelo entregado y a la verdad server-side. También advierte que registrar no es medición pasiva: es una intervención que puede mejorar la revisión. Debe permanecer idéntico entre brazos. |
 | [Falsifiable Commitment Planning for Self-Correcting Web Agents](https://arxiv.org/html/2607.24167) — Liu et al., v1 del 27 de julio de 2026 | FCPAgent convierte cada paso del plan en una unidad con evidencia confirmatoria, falsadores y confianza. Durante la ejecución decide `continue/advance/repair` y, si hay contradicción, modifica el alcance mínimo: acción, skill o sufijo del plan. Usa verificación híbrida —tests ligeros + diagnóstico LLM— y validators funcionales de WebArena; reporta 65,3% frente a 57,4% del mejor baseline. El paper usa un solo backbone y no localicé un repo enlazado, así que el resultado requiere réplica. | **VALIDA FUERTE + COMPITE EN LA PUNTA APLICADA.** Ya existe una respuesta de ingeniería al problema “un compromiso debe saber cuándo deja de ser válido” con dependencias y consecuencia funcional. No mide la tendencia natural a revisar, no dosifica evidencia y no usa forks apareados. Para WAGER su taxonomía de alcance de reparación ofrece un control crucial: distinguir revisión epistémica de capacidad de reparar la implementación. |
+| [GeneBench-Pro](https://cdn.openai.com/pdf/21938268-21af-442f-af93-3b2249afb241/genebench-pro.pdf) — Li y Ho, OpenAI, junio de 2026 | 129 análisis científicos multi-etapa sobre DGPs simulados conocidos, con una mediana de seis decisiones dependientes. Un grader programático exige que todos los campos numéricos caigan dentro de tolerancias pre-especificadas. Reporta una brecha consistente entre notar señales diagnósticas locales y propagar sus consecuencias a la decisión; su limitación explícita es que el pass/fail equipara progreso parcial con falla total. | **ANCLA DE POSICIONAMIENTO + VALIDA FUERTE.** Ya ocupa trabajo científico “sucio”, verdad recuperable y grading determinista sin juez. No estudia revisión pre/post ni evidencia dosificada. WAGER puede medir de forma continua el fenómeno noticing→acting que GeneBench-Pro observa cualitativamente, pero no debe reclamar ser el primero en puntuar trabajo científico contra un DGP oculto. |
 | [AI scientists produce results without reasoning scientifically](https://arxiv.org/abs/2604.18805) — Ríos-García et al., 2026 | En 25.000+ corridas científicas, la evidencia se ignora con frecuencia y la revisión refutacional es rara; es análisis observacional de trayectorias complejas. | **VALIDA FUERTE.** Justifica relevancia en agentes científicos reales, pero no identifica el mecanismo causal. WAGER puede ocupar precisamente esa explicación. |
 | [KellyBench](https://arxiv.org/abs/2604.27865) — 2026 | En decisiones secuenciales largas, agentes describen correcciones que luego no implementan y mantienen modelos obsoletos ante datos nuevos. | **VALIDA FUERTE.** Es evidencia de carga alta y brecha dice–hace; no sustituye los brazos apareados ni la dosis server-side. |
 
@@ -118,7 +124,7 @@ Los rótulos significan:
 | [When Agents Commit Too Soon](https://arxiv.org/abs/2606.22936) — Mehta, preprint, junio de 2026 | La convergencia representacional predice que la trayectoria se estabilizó, **pero no si es correcta**. Inducir compromiso reduce variación sin mejorar accuracy: afianza tanto caminos buenos como malos. | **VALIDA + CAMBIA EL DISEÑO.** “Compromiso” no puede codificarse como vicio por definición. Hay que cruzarlo con un modelo previo correcto e incorrecto y medir adaptación **y** resistencia. |
 | [Old Habits Die Hard](https://arxiv.org/abs/2603.03308) — Simhi et al., 2026; [código](https://github.com/technion-cs-nlp/OldHabitsDieHard) | La historia conversacional sesga generaciones posteriores y produce persistencia conductual/geometría de trayectoria. | **VALIDA + CAMBIA EL DISEÑO.** Apoya que una trayectoria “vivida” puede importar más que una etiqueta, pero también implica que el efecto puede ser simple exposición al historial. Hay que describir el eje como historia/estado observable, no atribuir psicología al modelo. |
 | [When Context Hurts](https://arxiv.org/abs/2605.04361) — Vigraham, preprint, mayo de 2026 | En diseño multiagente, el mismo artefacto contextual ayuda en unos problemas y perjudica en otros; incluso documentos irrelevantes pueden cambiar la exploración. El signo depende del régimen de convergencia basal. | **CAMBIA EL DISEÑO.** La mezcla puede alterar exploración, no sólo ocultar evidencia. Necesitamos bases por donante, fillers semánticamente auditados y evitar interpretar un efecto heterogéneo como una ley universal. Es preprint de un autor y sin repo localizado: evidencia sugerente, no ancla. |
-| [PABU: Progress-Aware Belief Update](https://arxiv.org/abs/2602.09138) — Jiang et al., 2026 | Condicionar acciones al historial completo introduce información irrelevante; seleccionar qué conservar mejora éxito y eficiencia. | **VALIDA + CAMBIA EL DISEÑO.** “Evidencia mezclada” puede medir gestión de contexto, no revisión epistémica. Longitud, posición y tipo de filler deben controlarse o medirse por separado. |
+| [PABU: Progress-Aware Belief Update](https://arxiv.org/abs/2602.09138) — Jiang et al., 2026 | Su “belief” es un estado compacto de progreso que decide qué acciones/observaciones retener para actuar con menos contexto; no una creencia sobre el mundo revisada por evidencia. | **DESCARTAR COMO PRIOR EPISTÉMICO.** Es un homónimo útil para no confundir vocabularios. Como antecedente de compresión de contexto aporta poco que Context Rot no sostenga mejor. |
 | [Context Rot](https://www.trychroma.com/research/context-rot) — Chroma Technical Report, 2025; [código](https://github.com/chroma-core/context-rot) | En 18 modelos, el rendimiento cae de forma no uniforme al aumentar longitud aun en tareas simples; tipo de distractor y similitud importan. | **CAMBIA EL DISEÑO.** CLEAN vs MIXED sin un control de longitud/token y filler sería ambiguo. Este confundidor puede explicar todo el efecto de señal si no se aísla. |
 | [The α-Law of Observable Belief Revision](https://arxiv.org/abs/2603.19262) — Farmer et al., preprint, febrero de 2026 | Propone una ley multiplicativa para revisiones de probabilidades bajo verificación/revisión repetida. Se limita a probabilidades observables en tareas de respuesta, no a proyectos con herramientas. | **COMPITE CON EL LENGUAJE DE “CURVA/LEY”.** Antes de prometer una ley de carga, debe leerse y auditarse a fondo. Si WAGER encuentra una curva, tendrá que explicar por qué no es simplemente otra parametrización de dinámica probabilística sin trayectoria. |
 | [Martingale Score: An Unsupervised Metric for Bayesian Rationality in LLM Reasoning](https://arxiv.org/html/2512.02914) — He et al., diciembre de 2025 | Regresa `Δb` sobre la creencia previa; un coeficiente positivo indica que el prior predice su propio refuerzo. Encuentra score positivo en 51/54 setups CoT y asociación con peor Brier donde hay verdad. Pero `b` es asignado a cada paso por un juez LLM; el estudio se concentra en razonamiento extendido, no principalmente en evidencia externa. | **VALIDA + PUEDE CAMBIAR UN DISEÑO FUTURO.** La estimación publicada necesita muchos pares comparables prior→posterior; no exige en principio una única trayectoria larga, y WAGER podría construir escalares desde el artefacto. Aun así, no puede aplicarse “gratis” a la pasada 1: las 252 ramas reutilizan sólo 14 priors y la evidencia se eligió en función de `M0/KL`, violando el nulo exógeno que se querría interpretar. Sólo la usaría en una tanda diseñada con eventos escalares comunes, muchos donantes independientes y evidencia no seleccionada por el prior. |
@@ -130,8 +136,9 @@ Los rótulos significan:
 |---|---|---|
 | [Causal Agent Replay: Counterfactual Attribution for LLM-Agent Failures](https://arxiv.org/html/2606.08275) — Shah, v1, junio de 2026; [código](https://github.com/jaineet17/causal-agent-replay) | Conserva factual el prefijo de una trayectoria, interviene un paso (`do_resample/action/observation/context/policy`) y reejecuta todo downstream varias veces. Formaliza efectos distribucionales, intervalos, point-of-commitment y Shapley para interacciones. Su validación publicada es pequeña: SCM sintéticos plantados y un demo con herramientas simuladas. El outcome puede ser computable o judge-based; el paper recomienda rule-based. | **PRIOR ART METODOLÓGICO + CAMBIA EL LENGUAJE.** WAGER no inventó el counterfactual replay. Su intervención se parece a `do_observation/do_context`, pero el estimando es distinto: efecto de señal/carga sobre revisión, no atribución del paso culpable. Además, WAGER serializa un snapshot en una conversación nueva; eso no es replay fiel del historial exacto. Hay que reclamar novedad en la pregunta, la norma legal y la entrega, y reportar el efecto total/ruido downstream. |
 | [LURE: Live-Usage Replay Evaluations for Reducing Evaluation Awareness](https://arxiv.org/html/2605.26438) — Ivanov y Africa, 2026 | Registra trayectorias, las adapta y las usa como *prefill* antes de añadir un test. En sycophancy, conversaciones sintéticas largas generadas por Opus cambian fuertemente tasas y rankings frente a SYCON: `ρ=-0,56`, `p=0,09`; al excluir un outlier, `ρ=-0,88`, `p=0,002`. Los replays de programación real pertenecen a Scheming/Sabotage, no al experimento de inversión de ranking. Los autores no dicen haber recuperado el ranking “verdadero” y usan jueces LLM. | **VALIDA + AMENAZA LA VALIDEZ DEL FORK.** No compite con la norma epistémica, pero muestra que formato, naturalidad y *evaluation awareness* pueden cambiar el fenómeno. WAGER necesita una pequeña equivalencia `continuación nativa ↔ snapshot/replay`, registrar ruptura estilística/awareness y mantener idéntica la naturalidad entre brazos. “Los tests cortos mienten” y “trabajo real invirtió el ranking” son resúmenes demasiado fuertes. |
+| [BACKTRACE / BackroomBench: Skill Use or Skill Theater?](https://arxiv.org/html/2607.27484) — Hu et al., julio de 2026 | Fija instancia, modelo, prompt y decoding, y cambia sólo el skill o su asignación. Define reliance por la diferencia causal entre decisión con/sin skill y la contrasta con lo que el agente afirma haber usado. En matemática ningún modelo-condición supera `AFS=0,43`; detectores observacionales de mención o similitud de traza predicen mal la dependencia real. Todo el score es determinista. | **VALIDA FUERTE LA BRECHA DICE–HACE Y LA DISCIPLINA APAREADA.** No mide revisión de creencias ni dosis, pero ocupa el claim amplio “lo declarado no revela lo usado” y ofrece una formulación experimental limpia: fijar todo salvo una variable. WAGER debe medir incorporación desde la entrega, no inferirla de la narración del agente. |
 
-La consecuencia estratégica es doble. Conviene citar CAR y renunciar a novelty sobre replay; y conviene usar LURE para convertir un posible defecto del snapshot en un control explícito. Esto favorece un preprint temprano **después** de un piloto bilateral y de equivalencia del fork, no publicar deprisa un método sin ese control.
+La consecuencia estratégica es triple. Conviene citar CAR y renunciar a novelty sobre replay; usar LURE para convertir un posible defecto del snapshot en un control explícito; y usar BACKTRACE para justificar por qué la dependencia se demuestra con intervención y outcome, no con autodescripción. Esto favorece un preprint temprano **después** de un piloto bilateral y de equivalencia del fork, no publicar deprisa un método sin ese control.
 
 ### 3.5 Señales de práctica y de la comunidad — no sustituyen evidencia científica
 
@@ -141,7 +148,7 @@ La consecuencia estratégica es doble. Conviene citar CAR y renunciar a novelty 
 | [Microsoft STATE-Bench](https://opensource.microsoft.com/blog/2026/05/19/introducing-state-bench-a-benchmark-for-ai-agent-memory/) — mayo de 2026; [repo](https://github.com/microsoft/STATE-Bench) | La comunidad de agentes se está moviendo de retrieval QA a tareas stateful con herramientas, costo y assertions determinísticas sobre el estado final. | **VALIDA LA FORMA DE EVALUACIÓN.** Refuerza puntuar consecuencias reales y no sólo texto. No estudia belief revision en sí. |
 | [Anthropic: Trustworthy agents in practice](https://www.anthropic.com/research/trustworthy-agents) — abril de 2026 | Enmarca al agente como loop plan–act–observe–adjust y destaca que los errores tienen consecuencias cuando herramientas, harness y entorno interactúan. | **VALIDA RELEVANCIA GENERAL.** Es posicionamiento industrial, no prior art experimental. |
 
-Los foros de agentes y memoria contienen muchos reportes de “stale context”, contradicciones y agentes que recuerdan decisiones obsoletas. No los uso como sustento científico: son buenos generadores de escenarios, pero STALE, PABU y Context Rot ya ofrecen evidencia más auditable del mismo dolor.
+Los foros de agentes y memoria contienen muchos reportes de “stale context”, contradicciones y agentes que recuerdan decisiones obsoletas. No los uso como sustento científico: son buenos generadores de escenarios, pero STALE y Context Rot ya ofrecen evidencia más auditable del mismo dolor. PABU pertenece a compresión de estado para eficiencia, no a revisión epistémica.
 
 ### 3.6 Ajustes factuales al resumen inicial de estas fuentes
 
@@ -171,7 +178,7 @@ Además, definir `Regret(M)=L(M)-L(M*)` y luego restar el regret pre/post **no r
 - `Mtreat`: entrega de la rama tratada;
 - `M*`: referencia predictiva legal construida sólo con la información permitida en ese punto.
 
-Todos deben compararse en el mismo momento de medición. Para la entrega final, donde ya hubo nuevas acciones y costos, hace falta la referencia factible de §4.4.
+Todos deben compararse en el mismo momento de medición. La adherencia limpia a una evidencia común se mide **inmediatamente después de la inyección y antes de nuevas compras**, contra el mismo `M*`. Para la entrega final, donde las ramas pueden haber adquirido información distinta y pagado otros costos, ese `M*` inicial queda obsoleto: hace falta la referencia factible y condicionada a toda la información legal de cada rama descrita en §4.4.
 
 **1. Consecuencia contra la verdad.** Con una pérdida propia donde menos es mejor:
 
@@ -196,6 +203,8 @@ Un valor positivo significa que el tratamiento cerró parte de la distancia a la
 - cambio ortogonal o colateral fuera de la rebanada afectada.
 
 En `RETAIN`, donde la dirección legal es cero y cualquier fracción puede ser inestable, se reportan directamente `Dlegal`, magnitud de deriva y daño contra la verdad, sin dividir por un denominador diminuto. Los dos outcomes —`Δtruth` y `Δlegal`— deben quedar co-primarios o con una jerarquía pre-registrada; uno no sustituye al otro.
+
+También estratificaría por el régimen basal del donante —ya subactualiza, sobreactualiza o está cerca del target— usando mediciones previas/independientes. BASIL muestra por qué: el mismo empujón puede empeorar a un sobre-actualizador y mejorar por accidente a un sub-actualizador. Un promedio cercano a cero puede esconder ambos daños. La estratificación debe pre-registrarse y protegerse contra regresión a la media con las dobles bases.
 
 ### 4.2 La bilateralidad y la dosis intermedia deben estar en la calibración inicial
 
@@ -250,7 +259,7 @@ FCPAgent sugiere además registrar **qué alcance exigía la reparación**: acci
 Este punto obliga a usar dos referencias distintas:
 
 - `M*belief`: la actualización informacional correcta al recibir la evidencia, sin cobrar todavía el trabajo de implementación;
-- `M*deliver,budget`: la mejor entrega alcanzable con exactamente el presupuesto, reward y costo de reparación disponibles.
+- `M*deliver,budget`: la mejor entrega alcanzable con toda la información legal adquirida por esa rama y exactamente el presupuesto, reward y costo de reparación disponibles.
 
 Si reparar cuesta más de lo que puede devolver en reward, mantener la entrega vieja puede ser una decisión racional aunque la creencia haya cambiado. Por eso mediría `M*belief` inmediatamente en el registro, antes de nuevas compras o ediciones, y la entrega final contra una referencia factible bajo presupuesto. Si esa segunda referencia no puede construirse de forma creíble, el paper no debe llamar “falla de creencia” a toda falta de reparación final.
 
@@ -301,6 +310,8 @@ Las dobles bases miden ruido de continuación, pero no prueban que el snapshot r
 Un juez LLM podría usarse de forma **secundaria** para auditar *evaluation awareness*, pero nunca como reward ni outcome primario. Si nativo y snapshot difieren mucho bajo tratamiento nulo, la pasada 2 no mide limpiamente “vivido”; mide también representación del estado.
 
 El fork identifica causalmente la intervención que cambia entre sus ramas —por ejemplo, la evidencia inyectada—. No vuelve causal por arrastre una comparación entre donantes que llegaron con historias distintas ni entre mundos distintos. Cada claim debe indicar qué variable fue realmente randomizada/apareada y cuál es sólo un descriptor del escenario.
+
+El claim ejecutivo es una **interacción** `valor probatorio × trayectoria × fricción`. Para estimarla, los tres factores deben cruzarse dentro del mismo mundo, checkpoint y población de donantes. Pasadas separadas que cambian también de mundo sólo estiman efectos simples en escenarios distintos; no autorizan a afirmar la interacción. Si el factorial completo es inviable, conviene rebajar el claim a uno o dos efectos causales pre-especificados.
 
 ### 4.9 La unidad estadística sigue siendo el donante
 
@@ -354,7 +365,7 @@ Ese resultado derribaría una intuición antropomórfica popular y simplificarí
 6. Hay réplica en al menos dos familias de mundo y más de una familia de modelo.
 7. La inferencia trata al donante —no a cada fork— como unidad de independencia y la potencia se planifica a ese nivel.
 8. Las no-entregas e inválidos permanecen en el outcome.
-9. Cualquier claim causal sobre trayectoria proviene de una manipulación dentro del mismo mundo; lo demás se presenta como generalización.
+9. Cualquier claim de interacción causal cruza evidencia, trayectoria y fricción dentro del mismo mundo/checkpoint; pasadas entre mundos se presentan como generalización.
 10. El análisis produce una regularidad compacta, no una taxonomía creciente.
 
 ### Parar o pivotear si
@@ -369,30 +380,34 @@ Ese resultado derribaría una intuición antropomórfica popular y simplificarí
 
 ---
 
-## 7. Cola recomendada para lectura completa y cruce con Claude
+## 7. Prioridad para el cruce curado con Claude
 
-Esta es una recomendación de triage; **no actualicé el registro oficial**.
+Esta es mi priorización independiente. Durante el cierre, Claude completó varias lecturas y actualizó el registro oficial; **yo no edité `docs/lectura-de-fuentes.md`**.
 
-| Prioridad | Fuente | Motivo para leerla completa antes de preregistrar |
+| Prioridad | Fuente | Por qué importa en el cruce |
 |---:|---|---|
-| 1 | [BeliefTrack](https://arxiv.org/html/2605.30219) | Competidor conceptual directo; fija exactamente qué claims de `stay/update/isolate`, oráculo simbólico y clean/noise ya están ocupados. |
-| 2 | [BayesBench](https://arxiv.org/pdf/2606.30850) | Competidor más cercano al claim de trayectoria y proporcionalidad; hay que comparar tareas, métricas y limitaciones línea por línea. |
-| 3 | [Causal Agent Replay](https://arxiv.org/html/2606.08275) | Prior art del fork ejecutado; obliga a definir el estimando, fidelidad de estado, no-determinismo y efecto total. |
-| 4 | [LURE](https://arxiv.org/html/2605.26438) | Amenaza directa a la validez del snapshot/replay y fundamento para un control de continuación nativa. |
-| 5 | [LLMs are not (consistently) Bayesian](https://arxiv.org/html/2605.06915) | Formaliza proporcionalidad y contiene la objeción más seria contra usar Bayes elicitado como norma. |
-| 6 | [Bayesian Teaching](https://arxiv.org/html/2503.17523) | Predecesor normativo multi-ronda y evidencia fuerte de la brecha belief→prediction. |
-| 7 | [BASIL](https://arxiv.org/html/2508.16846) | Mejora la taxonomía/reporting de under/over y muestra compensación accidental, con una norma más débil que la de WAGER. |
-| 8 | [STALE](https://arxiv.org/html/2605.06527) | Predecesor inmediato de la brecha reconocer–aplicar y de invalidación propagada. |
-| 9 | [Seeing Isn't Believing](https://arxiv.org/html/2604.17252) | Competidor en acción/reward y baseline natural de intervención. |
-| 10 | [FCPAgent](https://arxiv.org/html/2607.24167) | Vecino recién publicado de compromiso falsable, reparación por dependencias y consecuencia funcional. |
-| 11 | [BoxingGym](https://arxiv.org/html/2501.01540) | Determina qué no podemos reclamar sobre mundos, experimentación y revisión de teorías. |
-| 12 | [Agentic Automata Learning](https://arxiv.org/pdf/2606.16576) | Eleva el estándar para hipótesis ejecutables, oráculos y baselines algorítmicos. |
-| 13 | [MemSyco-Bench](https://arxiv.org/html/2607.01071) | Vecino de memoria persistente y del trade-off usar/ignorar, pero permite demarcarlo de obra propia. |
-| 14 | [HEP](https://arxiv.org/html/2607.09195) | Vecino directo de `REGISTER`, creencias persistentes y científico auditable. |
-| 15 | [Martingale Score](https://arxiv.org/html/2512.02914) | Métrica complementaria de atrincheramiento; leer antes de decidir una tanda futura, no para reanalizar automáticamente la pasada 1. |
-| 16 | [When Agents Commit Too Soon](https://arxiv.org/html/2606.22936) | Obliga a separar compromiso de corrección y evita interpretar estabilidad como falla. |
-| 17 | [BeliefShift](https://arxiv.org/html/2603.23848) | Importante para bilateralidad, pero primero hay que auditar disponibilidad y consistencia de sus artefactos. |
-| 18 | [The α-Law](https://arxiv.org/abs/2603.19262) | Necesario antes de usar lenguaje de ley o curva universal. |
+| 1 | [BeliefTrack](https://arxiv.org/html/2605.30219) | Competidor conceptual directo; fija qué claims de `stay/update/isolate`, oráculo simbólico y clean/noise ya están ocupados. |
+| 2 | [BayesBench](https://arxiv.org/pdf/2606.30850) | Competidor más cercano en trayectoria normativa y proporcionalidad. |
+| 3 | [Autonomous Model Discovery](https://arxiv.org/html/2607.06413) | Ocupa modelo ejecutable contra verdad oculta con score distribucional cero-LLM. |
+| 4 | [Causal Agent Replay](https://arxiv.org/html/2606.08275) | Prior art del fork ejecutado; obliga a definir estimando, fidelidad y ruido downstream. |
+| 5 | [LURE](https://arxiv.org/html/2605.26438) | Amenaza directa a la validez del snapshot y fundamento del control de continuación nativa. |
+| 6 | [LLMs are not (consistently) Bayesian](https://arxiv.org/html/2605.06915) | Formaliza proporcionalidad y objeta usar Bayes auto-elicitado como norma. |
+| 7 | [BASIL](https://arxiv.org/html/2508.16846) | Exige separar under/over/wrong-direction y detectar mejoras accidentales. |
+| 8 | [Context Rot](https://www.trychroma.com/research/context-rot) | Fija controles de longitud, posición, coherencia y similitud del filler. |
+| 9 | [BACKTRACE](https://arxiv.org/html/2607.27484) | Prior art apareado para dependencia causal y brecha entre uso declarado y uso real. |
+| 10 | [Bayesian Teaching](https://arxiv.org/html/2503.17523) | Predecesor normativo multi-ronda y brecha belief→prediction. |
+| 11 | [GeneBench-Pro](https://cdn.openai.com/pdf/21938268-21af-442f-af93-3b2249afb241/genebench-pro.pdf) | Ancla de trabajo científico, DGP oculto, grading determinista y noticing→acting. |
+| 12 | [STALE](https://arxiv.org/html/2605.06527) | Predecesor inmediato de reconocer sin aplicar e invalidación propagada. |
+| 13 | [Seeing Isn't Believing](https://arxiv.org/html/2604.17252) | Competidor en acción/reward y baseline natural de intervención. |
+| 14 | [FCPAgent](https://arxiv.org/html/2607.24167) | Vecino de compromiso falsable, dependencias y reparación funcional. |
+| 15 | [BoxingGym](https://arxiv.org/html/2501.01540) | Delimita claims sobre mundos, experimentación y revisión de teorías. |
+| 16 | [Agentic Automata Learning](https://arxiv.org/pdf/2606.16576) | Eleva el estándar de hipótesis ejecutables, oráculos y baselines algorítmicos. |
+| 17 | [MemSyco-Bench](https://arxiv.org/html/2607.01071) | Demarca memoria del usuario de obra construida por el agente. |
+| 18 | [HEP](https://arxiv.org/html/2607.09195) | Vecino directo de `REGISTER` y creencias persistentes. |
+| 19 | [Martingale Score](https://arxiv.org/html/2512.02914) | Forma complementaria de atrincheramiento; requiere una tanda diseñada para ella. |
+| 20 | [When Agents Commit Too Soon](https://arxiv.org/html/2606.22936) | Evita interpretar estabilidad/compromiso como falla por definición. |
+| 21 | [BeliefShift](https://arxiv.org/html/2603.23848) | Importante para bilateralidad; sus artefactos requieren auditoría adicional. |
+| 22 | [The α-Law](https://arxiv.org/abs/2603.19262) | Necesario antes de usar lenguaje de ley o curva universal. |
 
 ---
 
@@ -411,11 +426,11 @@ Cuando fue posible se inspeccionó el HTML/PDF primario y el enlace de código. 
 
 ## Conclusión final
 
-WAGER sigue teniendo una oportunidad real, pero ya no puede apoyarse en que “nadie estudió belief revision multi-turno”. BeliefTrack ocupa `stay/update/isolate` con verificación simbólica; BayesBench y Bayesian Teaching ocupan gran parte de la norma secuencial; CAR ocupa replay contrafactual; y FCPAgent ya conecta falsación, reparación de dependencias y éxito funcional. La literatura de 2026 avanzó demasiado para cualquier claim amplio basado en una sola de esas piezas.
+WAGER sigue teniendo una oportunidad real, pero ya no puede apoyarse en que “nadie estudió belief revision multi-turno”. BeliefTrack ocupa `stay/update/isolate` con verificación simbólica; BayesBench y Bayesian Teaching ocupan gran parte de la norma secuencial; Autonomous Model Discovery y GeneBench-Pro ocupan modelo/trabajo científico contra verdad oculta con grading cero-LLM; CAR ocupa replay contrafactual; BACKTRACE ocupa dependencia dice–hace por intervención; y FCPAgent ya conecta falsación, reparación de dependencias y éxito funcional. La literatura de 2026 avanzó demasiado para cualquier claim amplio basado en una sola de esas piezas.
 
 La oportunidad está en una pregunta más difícil y, a mi juicio, más interesante:
 
-> **Cuando evidencia nueva justifica revisar, reforzar, conservar o cambiar parcialmente, ¿cuánto se desvía el modelo ejecutable de esa respuesta legal, y cómo modifican esa desviación la trayectoria previa y el costo de reparar la entrega?**
+> **Cuando evidencia nueva justifica alejarse, reforzar o conservar —en una magnitud conocida—, ¿cuánto se desvía el modelo ejecutable de esa respuesta legal, y cómo modifican esa desviación la trayectoria previa y el costo de reparar la entrega?**
 
 Si el proyecto mide eso de forma bilateral, causal, apareada y con referencias programáticas tanto para la actualización informacional como para la entrega factible bajo presupuesto, puede ser una contribución clara para evaluación de agentes científicos y de largo horizonte. Debe separar cercanía al oráculo de mejora contra la verdad; la brecha entre reconocer y entregar sería un mecanismo adicional, no la definición del fenómeno. La novedad defendible es el **estimando de desviación aplicada bajo valor probatorio, trayectoria y fricción**, especialmente en el régimen parcial; no el fork, el mundo cerrado ni el scoring automático por separado.
 
