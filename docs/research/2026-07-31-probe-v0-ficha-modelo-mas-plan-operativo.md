@@ -6,6 +6,16 @@
 > documento nuevo, se explica el cambio, y se queman semillas nuevas.
 > Autores: Codex + Claude (rondas de diseño 2026-07-31, con arbitraje de Lucas). Contexto:
 > ADR 0156 (pregunta oficial) + cabecera de `docs/roadmap.md` (estado de las rondas).
+>
+> **ENMIENDA DE AUDITORÍA PREVIA A EJECUCIÓN (Codex, 2026-07-31 — aplicada antes de correr
+> nada; mismas semillas, sin v1):** (1) se agrega el registro `Mpre_commit` en R6 inmediatamente
+> antes del compromiso (la versión original registraba en R4 y comprometía en R6 con dos rondas
+> de investigación en el medio — no se sabía qué creencia produjo el plan); (2) la firma de
+> "naturalidad" por correlación plan↔modelo se reemplaza por COHERENCIA (¿eligió lo óptimo
+> según su propia creencia registrada, dado el costo? — un modelo puede cambiar sin que
+> corresponda cambiar la acción, ver caso 2); (3) se agregan las definiciones matemáticas
+> exactas (§8-bis) que faltaban: F_prop, umbral de reapertura estéril, métrica y región de
+> asimilación, "equivalente dentro del ruido", y seguridad como penalización declarada.
 
 ## 0. Decisión de arquitectura que este probe pone a prueba
 
@@ -20,8 +30,9 @@ no separa limpiamente creencia, reapertura y aplicación.**
 ## 1. Pregunta que responde el probe
 
 1. ¿La tarea se entiende? (validez de registros y entregas)
-2. ¿El plan operativo es NATURAL? (firma: los cambios de plan siguen a los cambios de modelo,
-   no son un casillero ni un decorado)
+2. ¿El plan operativo es NATURAL? (firma: COHERENCIA — dado su modelo registrado y el costo,
+   ¿eligió la decisión óptima según su PROPIA creencia? Un modelo puede cambiar sin que
+   corresponda cambiar la acción — la correlación plan↔modelo NO es la vara)
 3. ¿El mecanismo MANTENER/REABRIR y los costos muerden? (alguien mantiene por costo; alguien
    reabre por ganancia)
 4. ¿Pedir la política distorsiona la actualización del modelo? (brazo sin-política)
@@ -39,19 +50,22 @@ habilita a mitad y su información llega SOLO en la tanda servida.
 - **R1-R6 (investigación)**: el agente conoce las líneas no-objetivo en todo el rango del
   driver; la línea OBJETIVO (varía entre instancias — jamás "siempre la 5") solo en el rango
   inicial. Compra datos, modela.
-- **R4 — registro silencioso #1** (modelo ejecutable completo, contrato histórico
-  `model(regime,n,seed)`; no devuelve nada; inválido = falla).
-- **R6 — COMPROMISO del plan operativo** (antes de toda evidencia nueva): elige el nivel de
-  operación de la línea objetivo para el próximo trimestre (§3). Queda asentado.
+- **R4 — registro silencioso #1** (fotografía temprana; modelo ejecutable completo, contrato
+  histórico `model(regime,n,seed)`; no devuelve nada; inválido = falla).
+- **R6 — registro silencioso #2 = `Mpre_commit` e INMEDIATAMENTE el COMPROMISO del plan**
+  (enmienda): el agente registra su modelo y, sin ninguna información ni acción intermedia
+  (el harness lo fuerza: registro y compromiso son consecutivos), compromete el nivel de
+  operación de la línea objetivo (§3). Así la relación modelo → decisión inicial queda
+  identificada. Queda asentado.
 - **R7 — se habilita la zona diagnóstica y llega LA TANDA** (única información de esa zona;
   nada comprable ahí). Según el gemelo sorteado: refuta / es-compatible / muestra dispersión
   estructurada.
-- **R8 — registro silencioso #2 = Mbelief** (mismo contrato). Acá se CONGELA la compra de
+- **R8 — registro silencioso #3 = Mbelief** (mismo contrato). Acá se CONGELA la compra de
   datos.
 - **R9 — se revela el costo de reconfiguración y el agente ejecuta el verbo explícito
   MANTENER o REABRIR.** REABRIR paga una pérdida real por parada de planta (se descuenta de la
   utilidad) y habilita cambiar el plan. MANTENER conserva el plan comprometido.
-- **R10-R12 — fase final y entrega**: modelo final + plan final. (Registro silencioso #3 en
+- **R10-R12 — fase final y entrega**: modelo final + plan final. (Registro silencioso #4 en
   R12 = el modelo entregado.)
 
 ## 3. Política inicial y espacio de acciones
@@ -93,9 +107,9 @@ riesgo, menos la pérdida por parada si reabrió. Sin juez-LLM en ningún punto.
 - Mismo prefijo de donante (mismo M0, mismo compromiso de R6) continuado en los gemelos
   (escenario sorteado) y bifurcado en R9 en costo BAJO vs ALTO — contrastes dentro del mismo
   donante.
-- **Brazo SIN política**: los mismos episodios sin compromiso de R6 ni verbo de R9
-  (modelo-solo), para comparar la calidad de Mbelief con y sin protocolo de política
-  (¿pedir decisiones distorsiona la actualización?).
+- **Brazo SIN política**: parte del MISMO snapshot de R6 (mismo `Mpre_commit`, enmienda) y
+  sigue sin compromiso ni verbo de R9 (modelo-solo), para comparar la calidad de Mbelief con
+  y sin protocolo de política (¿pedir decisiones distorsiona la actualización?).
 
 ## 8. Oráculos y métricas
 
@@ -115,6 +129,43 @@ agente (base de F_prop).
 5. **Validez**: registros/entregas inválidas como falla co-primaria (jamás se excluyen en
    silencio).
 6. **Distorsión del protocolo**: distancia de asimilación con-política vs sin-política.
+
+## 8-bis. Definiciones matemáticas exactas (enmienda — cerradas ANTES de correr)
+
+Notación: `U_M(a)` = utilidad esperada de la acción `a` computada bajo la distribución `M`
+(server-side, incluye la penalización de riesgo de §4; NO incluye el costo de reapertura, que
+es hundido al momento de elegir el plan nuevo). `a*_M = argmax_a U_M(a)` sobre la grilla.
+
+1. **F_prop (fracción de propagación capturada)** — solo para episodios donde el agente
+   REABRIÓ. Sea `b = Mbelief` (su modelo registrado en R8), `a_com` el plan comprometido en R6
+   y `a_fin` el plan final:
+   `F_prop = [U_b(a_fin) − U_b(a_com)] / [U_b(a*_b) − U_b(a_com)]`.
+   **Aplica solo si el denominador `G_own = U_b(a*_b) − U_b(a_com) ≥ ε_prop`**, con
+   `ε_prop = 5%` de la escala de utilidad típica de la instancia (certificada). Si reabrió con
+   `G_own < ε_prop`, NO se computa F_prop y el episodio se clasifica **"reapertura
+   incoherente"** (pagó la parada cuando su propia creencia no veía nada que ganar).
+2. **Reapertura estéril**: REABRIÓ con `G_own ≥ ε_prop` y **`F_prop < 0.2`** (umbral
+   pre-registrado).
+3. **Coherencia de decisión** (en R6 y en R9): la acción elegida está a ≤ `δ_coh = 5%` de
+   la utilidad de la óptima BAJO SU PROPIA creencia registrada en ese momento
+   (`Mpre_commit` para R6; `Mbelief` + costo de la rama para el verbo de R9). Tasa de
+   coherencia = fracción de decisiones coherentes.
+4. **Métrica y región de asimilación**: distancia de energía entre muestras (m=200, semillas
+   fijas) de `Mbelief` y del posterior exacto, evaluada en el set congelado: 5 puntos del
+   driver que cubren la región diagnóstica de la línea objetivo (peso 0.8) + 3 puntos de
+   control en la región inicial (peso 0.2, detectan movimientos colaterales). Se reportan
+   además los corrimientos de media y de p10/p90 en los puntos diagnósticos (dirección /
+   magnitud / anchura).
+5. **"Equivalente dentro del ruido"** (brazo sin-política, criterio 4 de §11): la mediana de
+   |diferencia de asimilación con-política − sin-política| por donante debe ser ≤ **1.5×** la
+   mediana de |diferencia entre las dos continuaciones BASE del mismo donante| (la vara de
+   ruido de bases dobles de la casa).
+6. **La seguridad es PENALIZACIÓN declarada, no restricción dura**: la utilidad descuenta una
+   penalización lineal declarada en el brief por cada unidad en que el percentil 10 del
+   resultado (bajo la distribución que corresponda al cómputo) cae por debajo del umbral. La
+   pendiente se fija por instancia tal que, bajo el posterior exacto, la acción óptima NUNCA
+   viola el umbral (certificado) — funciona como restricción de facto para un agente
+   racional, sin utilidades indefinidas ni filos de factibilidad.
 
 ## 9. Certificaciones antitrampa por instancia (antes de mostrarla a un agente)
 
@@ -146,8 +197,8 @@ agente (base de F_prop).
 2. los cuatro casos se separan direccionalmente (más reaperturas en costo-bajo-con-ganancia
    que en costo-alto; mantener domina en el gemelo-mantener; prudencia aparece en el
    gemelo-dudar);
-3. las decisiones son coherentes con el propio modelo registrado (F_prop mediana >0.5 en las
-   reaperturas);
+3. las decisiones son COHERENTES con el propio modelo registrado (tasa de coherencia §8-bis.3
+   ≥0.7 en R6 y R9; y F_prop mediana >0.5 en las reaperturas donde aplica);
 4. el brazo sin-política muestra asimilación equivalente (diferencia dentro del ruido de
    bases).
 
@@ -157,6 +208,15 @@ utilidad; o si el filo de algún criterio resulta mal calibrado.
 
 **ABANDONAR V2** (caer a modelo-solo + propagación como extensión posterior) si tras UNA
 iteración v1 el diseño sigue sin separar limpiamente creencia, reapertura y aplicación.
+
+## 11-bis. Secuencia de ejecución (enmienda — orden obligatorio)
+
+1. Implementar SOLO generador, costos y oráculos.
+2. Verificar que producen los cuatro casos con márgenes suficientes y sin fugas
+   (certificaciones §9 corriendo en verde sobre un lote de instancias).
+3. Uno o dos episodios técnicos (detectar roturas de harness/prompt; no cuentan para nada).
+4. Recién entonces los 27-36 episodios registrados.
+5. Aplicar LITERALMENTE aprobar/modificar/abandonar (§11).
 
 ## 12. Qué NO es esta ficha
 
