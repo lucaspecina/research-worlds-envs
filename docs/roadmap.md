@@ -80,8 +80,23 @@
 >    matemática clara + costo de revisión real + sin doble conteo + oráculo factible bajo
 >    presupuesto. 4. Aplicaciones ricas después, si aportan.
 >
-> **ABIERTO**: diseño fino de la política operativa y su fricción · si el estudio principal
-> conserva norma exacta o pasa a referencia · definición final de Mdeliver.
+> **ARQUITECTURA DECIDIDA (cierre de las rondas, consenso Claude+Codex; 2026-07-31 noche)**:
+> compuerta = modelo-solo · estudio principal = **modelo + PLAN OPERATIVO** (una decisión: el
+> nivel de operación de la línea objetivo, grilla finita, restricción de riesgo declarada;
+> verbo explícito MANTENER/REABRIR tras conocer el costo; REABRIR paga parada real) ·
+> aplicaciones ricas AFUERA salvo insuficiencia. Costos de reapertura FIJOS e independientes
+> del mundo (el generador selecciona instancias donde la ganancia cae claramente entre ambos
+> — jamás costo adaptado a la ganancia, filtraría la respuesta). Métrica nueva: **F_prop**
+> (fracción de la mejora operativa según SU propio modelo actualizado que llegó a la decisión;
+> "reapertura estéril" = reabrió con F_prop≈0). Los 4 casos incluyen la joya: evidencia que
+> exige cambiar el MODELO pero el costo hace racional CONSERVAR la decisión.
+> **→ FICHA DEL PROBE v0 (diseño exploratorio CONGELADO, no pre-registro del estudio):**
+> **`docs/research/2026-07-31-probe-v0-ficha-modelo-mas-plan-operativo.md`** — episodio exacto,
+> 4 casos, ramas apareadas + brazo sin-política, oráculos/métricas, certificaciones,
+> aprobar/modificar/abandonar, semillas 90000-90999 QUEMADAS, techo US$60.
+> **PRÓXIMO PASO AL RETOMAR: revisión final de la ficha CONTRA EL DOCUMENTO (no contra
+> recuerdos del chat) por Lucas+Codex+Claude → correr el probe → veredicto → contrato del
+> paper.** ABIERTO: solo detalles que la revisión final marque.
 >
 > **PASADA 1 CORRIDA Y CERRADA (2026-07-30, autónoma; ADRs 0154 pre-registro / 0155
 > resultados)**: diseño de Codex adoptado íntegro (factorial autoría×compromiso×evidencia,
