@@ -7,6 +7,16 @@
 
 ## Estado actual `[VOLÁTIL — mantener al día]`
 
+> **REGLA DE NAVEGACIÓN (Lucas, 2026-07-31): avanzar y volver a mirar un paso arriba.**
+> Trabajamos con una hipótesis concreta, la probamos pronto y usamos el resultado para decidir;
+> no intentamos resolver por discusión todos los detalles antes de construir. Al cerrar CADA
+> etapa (certificación, probe, piloto o estudio), antes de optimizar la siguiente se reevalúa
+> explícitamente: **¿sigue siendo interesante la pregunta?, ¿el diseño mide el constructo que
+> creemos?, ¿apareció una explicación o dirección mejor?, ¿conviene mantener, modificar o
+> pivotear?** Ninguna arquitectura ni hipótesis queda protegida por el trabajo ya invertido.
+> Los detalles que no amenacen validez o interpretación se resuelven probando; todo pivote se
+> registra con su evidencia y motivo para no reescribir la historia después.
+
 > ## ★ LA PREGUNTA OFICIAL DEL PROYECTO (REFOCO 2, decisión de Lucas 2026-07-31 — ADR 0156)
 >
 > **Cuando evidencia nueva justifica una revisión conocida, ¿cómo se reparte el error entre
