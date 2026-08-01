@@ -431,6 +431,16 @@ class WorldServer:
 
     def submit(self, code: str) -> SubmitResult:
         self._guard_open()
+        if (
+            self.config.submit_requires_all_events
+            and len(self._fired_events) < len(self.config.events)
+        ):
+            error = (
+                "final handoff is unavailable until the scheduled operational "
+                "milestone completes; keep `working_model` current and continue"
+            )
+            self._log("submit", {"accepted": False}, 0.0, note=error)
+            return SubmitResult(accepted=False, error=error)
         error = self._smoke(code)
         if error is not None:
             self._log("submit", {"accepted": False}, 0.0, note=error)

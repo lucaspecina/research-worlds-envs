@@ -241,6 +241,19 @@ Antes de firmar un mundo, interpretar una corrida o pivotear el programa, respon
 7. ¿El resultado generaliza o estamos convirtiendo el último caso observado en todo el proyecto?
 8. ¿Después de esta etapa conviene mantener, modificar o abandonar la hipótesis?
 
+### Regla de investigación ante un resultado negativo
+
+Que una primera implementación no reproduzca un vicio **no refuta el fenómeno** y tampoco
+autoriza a saltar automáticamente al caso siguiente. Primero se hace una autopsia de trazas,
+modelos ejecutables y datos para separar al menos tres posibilidades: el fenómeno no apareció,
+el escenario no creó sus condiciones necesarias, o el instrumento no lo reconoció.
+
+El ciclo normal es: **observar → formular explicaciones rivales → cambiar una sola decisión de
+contenido → probar pronto con agentes reales → comparar → reevaluar un nivel arriba**. Se evita
+tanto construir infraestructura a ciegas como abandonar una hipótesis al primer intento. Solo se
+abandona un fenómeno o una familia tras variantes informativas con criterios explícitos; un slice
+particular sí puede pausarse cuando su autopsia identifica una alternativa de mayor valor.
+
 Una discrepancia entre mundos se interpreta primero como **falta de generalización**, no como
 prueba automática de un eje nuevo. Una idea no queda protegida por el trabajo ya invertido.
 

@@ -12,6 +12,10 @@ import copy
 import json
 import sys
 from pathlib import Path
+from types import SimpleNamespace
+
+import numpy as np
+import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -36,6 +40,92 @@ FIXED_PREFIX_TURNS = 4
 FIXED_MAX_TURNS = 18
 ELIGIBLE_MAX_PREFIX_TURNS = 12
 ELIGIBLE_MAX_TURNS = 25
+
+
+def _paired_low_grid_sample(base_sample):
+    """Same 96-row report, with low-range anchors shared across all lines."""
+    def sample(regime, n, seed):
+        if "__qualification" not in regime.config:
+            return base_sample(regime, n, seed)
+        if n > 96:
+            raise ValueError("paired-low exploratory report contains at most 96 rows")
+        rng = np.random.default_rng(seed)
+        anchors = (0.5, 1.5, 2.5, 3.5)
+        designs = [(1, float(d)) for d in rng.uniform(0.0, 10.0, 32)]
+        designs.extend((1, d) for d in anchors for _ in range(4))
+        for line in (2, 3, 4, 5):
+            designs.extend((line, d) for d in anchors for _ in range(3))
+        order = rng.permutation(len(designs))
+        rows = []
+        for j, index in enumerate(order):
+            line, driver = designs[int(index)]
+            row = base_sample(
+                SimpleNamespace(
+                    config={"line": line, "driver": driver},
+                    context={}, horizon=None,
+                ),
+                1,
+                int(seed + 10_000 + j),
+            ).iloc[0]
+            rows.append({
+                "line": float(line),
+                "driver": float(driver),
+                "outcome": float(row["outcome"]),
+            })
+        return pd.DataFrame(rows[:n])
+    return sample
+
+
+def _apply_content_variant(server, variant):
+    if variant == "paired_low":
+        server.world_sample = _paired_low_grid_sample(server.world_sample)
+    return server
+
+
+def _mixed_commissioning_sample(base_sample):
+    """Preserve the 64 diagnostic rows and hide them among 192 routine rows."""
+    def sample(regime, n, seed):
+        if "__commissioning" not in regime.config or n != 256:
+            return base_sample(regime, n, seed)
+        diagnostic = base_sample(regime, 64, seed).copy()
+        diagnostic["__diagnostic"] = 1.0
+        rng = np.random.default_rng(seed + 31_337)
+        designs = [(1, float(d)) for d in rng.uniform(0.0, 10.0, 64)]
+        anchors = (0.5, 1.5, 2.5, 3.5)
+        for line in (2, 3, 4, 5):
+            designs.extend((line, d) for d in anchors for _ in range(8))
+        filler = []
+        for j, (line, driver) in enumerate(designs):
+            row = base_sample(
+                SimpleNamespace(
+                    config={"line": line, "driver": driver},
+                    context={}, horizon=None,
+                ),
+                1,
+                int(seed + 40_000 + j),
+            ).iloc[0]
+            filler.append({
+                "line": float(line),
+                "driver": float(driver),
+                "outcome": float(row["outcome"]),
+                "__diagnostic": 0.0,
+            })
+        combined = pd.concat([diagnostic, pd.DataFrame(filler)], ignore_index=True)
+        return combined.iloc[rng.permutation(len(combined))].reset_index(drop=True)
+    return sample
+
+
+def _apply_report_variant(server, variant):
+    if variant != "mixed":
+        return server
+    event = server.config.events[0]
+    source = event.source.model_copy(
+        update={"max_rows": 256, "hidden_columns": ("__diagnostic",)}
+    )
+    mixed_event = event.model_copy(update={"source": source, "auto_deliver_n": 256})
+    server.config = server.config.model_copy(update={"events": [mixed_event]})
+    server.world_sample = _mixed_commissioning_sample(server.world_sample)
+    return server
 
 
 def _initial_prompt(server):
@@ -92,8 +182,11 @@ def _record(turn, reply, cell, result, server, notices, trajectory_start=0):
     }
 
 
-def run_prefix(model, seed_offset, checkpoint="fixed", max_prefix_turns=ELIGIBLE_MAX_PREFIX_TURNS):
-    server = build_world_server(LIMITED, seed_offset=seed_offset)
+def run_prefix(model, seed_offset, checkpoint="fixed", max_prefix_turns=ELIGIBLE_MAX_PREFIX_TURNS,
+               content_variant=None):
+    server = _apply_content_variant(
+        build_world_server(LIMITED, seed_offset=seed_offset), content_variant
+    )
     chat = FoundryChat(system=SYSTEM, model=model,
                        max_completion_tokens=MAX_COMPLETION_TOKENS)
     prompt = _initial_prompt(server)
@@ -139,7 +232,7 @@ def run_prefix(model, seed_offset, checkpoint="fixed", max_prefix_turns=ELIGIBLE
                 }
                 break
             prompt = _feedback(result, server)
-            if checkpoint == "eligible":
+            if checkpoint in ("eligible", "formed"):
                 observed = sum(
                     int(event.args.get("n", 0))
                     for event in server.trajectory
@@ -149,18 +242,21 @@ def run_prefix(model, seed_offset, checkpoint="fixed", max_prefix_turns=ELIGIBLE
                 code = result.working_model
                 gates = {
                     "qualification_complete": observed >= 96,
-                    "quiet_turn": not any(
-                        event.verb in ("observe", "experiment", "event") for event in new_events
-                    ),
                     "cell_ok": bool(result.ok),
                     "artifact_present": code is not None,
-                    "artifact_changed_this_turn": code is not None and code != previous_code,
                     "artifact_scoreable": (
                         code is not None and server.validate_model(code) is None
                     ),
                 }
+                if checkpoint == "eligible":
+                    gates["quiet_turn"] = not any(
+                        event.verb in ("observe", "experiment", "event") for event in new_events
+                    )
+                    gates["artifact_changed_this_turn"] = (
+                        code is not None and code != previous_code
+                    )
                 phenotype = None
-                if all(gates.values()):
+                if checkpoint == "eligible" and all(gates.values()):
                     phenotype = shared_transfer_phenotype(code)
                     gates["target_shared_transfer_belief"] = phenotype["eligible"]
                 if all(gates.values()):
@@ -190,8 +286,11 @@ def run_prefix(model, seed_offset, checkpoint="fixed", max_prefix_turns=ELIGIBLE
 
 
 def replay_and_continue(case_dir, prefix, model, seed_offset, checkpoint="fixed",
-                        max_turns=FIXED_MAX_TURNS):
-    server = build_world_server(case_dir, seed_offset=seed_offset)
+                        max_turns=FIXED_MAX_TURNS, content_variant=None,
+                        report_variant=None):
+    server = _apply_report_variant(_apply_content_variant(
+        build_world_server(case_dir, seed_offset=seed_offset), content_variant
+    ), report_variant)
     replay_checks = []
     branch_trace = []
     with KernelClient(server, cell_timeout_s=CELL_TIMEOUT_S) as kernel:
@@ -221,7 +320,7 @@ def replay_and_continue(case_dir, prefix, model, seed_offset, checkpoint="fixed"
         first_branch_turn = prefix["trace"][-1]["turn"] + 1
         for turn in range(first_branch_turn, max_turns + 1):
             notices = server.begin_turn(turn, fire_events=(checkpoint == "fixed"))
-            if checkpoint == "eligible" and turn == first_branch_turn:
+            if checkpoint in ("eligible", "formed") and turn == first_branch_turn:
                 notices.extend(server.fire_event(0, turn_idx=turn))
             deliveries = server.pop_deliveries()
             report_count += len(deliveries)
@@ -299,26 +398,38 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", default="DeepSeek-V3.2")
     parser.add_argument("--seed-offset", type=int, default=91000)
-    parser.add_argument("--checkpoint", choices=("fixed", "eligible"), default="fixed")
+    parser.add_argument(
+        "--checkpoint", choices=("fixed", "eligible", "formed"), default="fixed"
+    )
     parser.add_argument("--max-prefix-turns", type=int, default=ELIGIBLE_MAX_PREFIX_TURNS)
     parser.add_argument("--max-turns", type=int, default=None)
+    parser.add_argument("--content-variant", choices=("paired_low",), default=None)
+    parser.add_argument("--include-mixed-arms", action="store_true")
     parser.add_argument("--out", default=None)
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
-    tag = "" if args.checkpoint == "fixed" else "_eligible"
+    tag = "" if args.checkpoint == "fixed" else f"_{args.checkpoint}"
     target = (Path(args.out) if args.out else
               OUT / f"technical_{args.model}_seed{args.seed_offset}{tag}.json")
 
     max_turns = args.max_turns or (
         FIXED_MAX_TURNS if args.checkpoint == "fixed" else ELIGIBLE_MAX_TURNS
     )
-    prefix = run_prefix(args.model, args.seed_offset, args.checkpoint, args.max_prefix_turns)
+    prefix = run_prefix(
+        args.model,
+        args.seed_offset,
+        args.checkpoint,
+        args.max_prefix_turns,
+        args.content_variant,
+    )
     if not prefix["eligibility"]["eligible"]:
         payload = {
             "kind": "technical_live_history_fork_not_behavioral_evidence",
             "model": args.model,
             "seed_offset": args.seed_offset,
             "checkpoint": args.checkpoint,
+            "content_variant": args.content_variant,
+            "include_mixed_arms": args.include_mixed_arms,
             "prefix": {k: v for k, v in prefix.items() if k != "messages"},
             "branches": {},
             "gates": {"eligible_prefix": False},
@@ -327,15 +438,23 @@ def main():
         target.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
         print(json.dumps({"out": str(target), "gates": payload["gates"], "all": False}, indent=2))
         return
-    branches = {
-        "limited": replay_and_continue(
-            LIMITED, prefix, args.model, args.seed_offset, args.checkpoint, max_turns
-        ),
-        "transfer": replay_and_continue(
-            TRANSFER, prefix, args.model, args.seed_offset, args.checkpoint, max_turns
-        ),
+    branch_specs = {
+        "limited": (LIMITED, None),
+        "transfer": (TRANSFER, None),
     }
-    for name, case_dir in (("limited", LIMITED), ("transfer", TRANSFER)):
+    if args.include_mixed_arms:
+        branch_specs.update({
+            "limited_mixed": (LIMITED, "mixed"),
+            "transfer_mixed": (TRANSFER, "mixed"),
+        })
+    branches = {
+        name: replay_and_continue(
+            case_dir, prefix, args.model, args.seed_offset, args.checkpoint, max_turns,
+            args.content_variant, report_variant,
+        )
+        for name, (case_dir, report_variant) in branch_specs.items()
+    }
+    for name, (case_dir, _) in branch_specs.items():
         scorer = CheckpointScorer(case_dir)
         reference_code, reference_diagnostics = build_reference_from_ledger(
             branches[name]["evidence_ledger"],
@@ -367,6 +486,8 @@ def main():
         "model": args.model,
         "seed_offset": args.seed_offset,
         "checkpoint": args.checkpoint,
+        "content_variant": args.content_variant,
+        "include_mixed_arms": args.include_mixed_arms,
         "prefix": {k: v for k, v in prefix.items() if k != "messages"},
         "branches": branches,
         "gates": gates,

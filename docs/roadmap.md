@@ -16,6 +16,9 @@
 > pivotear?** Ninguna arquitectura ni hipótesis queda protegida por el trabajo ya invertido.
 > Los detalles que no amenacen validez o interpretación se resuelven probando; todo pivote se
 > registra con su evidencia y motivo para no reescribir la historia después.
+> **Un negativo no dispara abandono automático:** primero se inspeccionan trazas y artefactos,
+> se proponen explicaciones rivales y se prueban cambios mínimos de contenido con agentes reales.
+> No confundimos “esta versión no creó el fenómeno” con “el fenómeno no existe”.
 
 > ## ★ ALINEACIÓN OFICIAL ACTUAL (2026-07-31 — ADR 0161)
 >
@@ -35,11 +38,13 @@
 > siguiente acción del probe con panel señalado + costo + MANTENER/REABRIR. El harness técnico
 > de ADR 0160 se conserva; no habilita inferencia conductual.
 >
-> **SIGUIENTE ACCIÓN ÚNICA:** **NO correr más agentes.** Escribir el contrato del piloto:
-> estimando co-primario de consecuencia + revisión estructural, efecto mínimo relevante, potencia
-> a nivel donante, sensibilidad y réplica en una segunda estructura. La réplica gpt-5.4 pasó y el
-> gate superior mantiene el enfoque ([resultado](research/2026-08-01-resultado-replica-sota-y-gate-superior-overgen-v0.md),
-> ADR 0168). No ampliar n/ejes antes de firmar ese contrato.
+> **SIGUIENTE ACCIÓN ÚNICA:** clean vs mixed no atenuó la revisión en el donante SOTA y no se
+> perseguirá el efecto agregando relleno (ADR 0171). Mantener la baseline apareada y retirar el
+> reporte servido: el hito solo habilita el rango, y la evidencia debe surgir de las campañas que
+> el agente elija. Escribir una ficha mínima, certificar polos y correr agente barato + una réplica
+> SOTA si la mecánica pasa. Esto prueba búsqueda e incorporación natural dentro del mismo mundo.
+> Resultado y gate: [probe natural](research/2026-08-01-resultado-probe-timing-natural-overgen-v0.md),
+> ADR 0169.
 >
 > Todo el bloque histórico posterior conserva decisiones y resultados, pero cualquier
 > “próximo paso” anterior queda supersedido por esta cabecera.
@@ -52,9 +57,11 @@
 | **1. Selección** | Elegir el primer caso por fidelidad, información científica, contraste bilateral y reutilización real | [Contrato corto](research/2026-08-01-contrato-slice-overgen-longitudinal-v0.md): caso, fenómeno, gemelo, llegada natural de evidencia, qué mide y qué no | **CERRADA — MANTENER; ADR 0162** |
 | **2. Slice mínimo** | Construir verdad, evidencia, registro, oráculo y scoring necesarios; nada extra | Robots/reflejos certificados + camino completo verde | **CERRADA — ambos polos PASS** |
 | **3. Agente real temprano** | Smoke barato para comprensión/UX y después una corrida SOTA | [2 modelos × 2 polos + autopsia](research/2026-08-01-resultado-smoke-overgen-stream-v0.md) | **CERRADA — MANTENER mundo / MODIFICAR inferencia** |
-| **4. Probe apareado** | Pocas ramas/semillas quemadas, criterios escritos antes | Señal suficiente para mantener, modificar o abandonar el instrumento | **CERRADO — GO al enfoque / STOP exploratorio; ADR 0168** |
-| **5. Piloto y réplica** | Pre-registro pequeño, más de un modelo y una segunda estructura | Estimando con incertidumbre + prueba de generalización | Pendiente |
-| **6. Escala** | Generador dinámico, suite y eventualmente entrenamiento | Solo si los fenómenos anteriores sobrevivieron | Diferido |
+| **4. Probe apareado** | Pocas ramas/semillas quemadas, criterios escritos antes | Señal suficiente para mantener, modificar o abandonar el instrumento | **CERRADO — resultado negativo informativo; autopsia abierta, ADR 0169** |
+| **5. Iteración de contenido** | Hipótesis rivales desde las trazas; una modificación por variante; agentes reales rápidos | Saber qué condiciones naturales forman y ponen a prueba la creencia objetivo | **BASELINE PASS; mixed nulo; siguiente dato propio, ADR 0171** |
+| **6. Segunda estructura real** | Dato propio contradictorio a mitad del flujo; slice mínimo + agente barato + réplica SOTA | Probar generalización fuera de `overgen` | Pendiente |
+| **7. Piloto y réplica** | Pre-registro pequeño, más de un modelo y dos estructuras | Estimando con incertidumbre + prueba de generalización | Pendiente |
+| **8. Escala** | Generador dinámico, suite y eventualmente entrenamiento | Solo si los fenómenos anteriores sobrevivieron | Diferido |
 
 La etapa siguiente no se activa por inercia. Al final de **cada etapa**, ante un resultado
 inesperado importante y antes de optimizar el mismo diseño, se ejecuta esta revisión:

@@ -43,7 +43,7 @@ def main():
             "seed": payload["seed_offset"],
             "arms": {},
         }
-        for arm in ("limited", "transfer"):
+        for arm in payload["branches"]:
             donor["arms"][arm] = {}
             for name, code in _codes(payload, arm).items():
                 if code is None:

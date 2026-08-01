@@ -236,6 +236,10 @@ class EpisodeConfig(BaseModel):
     experiment: ExperimentCost
     # sealed mid-episode events (D4); empty for every event-less world (inert)
     events: list[EpisodeEvent] = Field(default_factory=list)
+    # Staged operational worlds may make a final handoff invalid until every
+    # scheduled milestone has occurred. Default false keeps all prior worlds
+    # unchanged; this is workflow validity, not a score or belief intervention.
+    submit_requires_all_events: bool = False
     # own-work registration service (lab largo); None for every prior world
     register: RegisterConfig | None = None
     # the DECLARED instrument experiments read (v0.58-2: positional conventions

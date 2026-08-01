@@ -113,3 +113,14 @@ def test_event_can_be_held_and_fired_at_a_formed_belief_checkpoint():
     notices = server.fire_event(0, turn_idx=21)
     assert len(notices) == 1 and "log" in server.describe()["sources"]
     assert server.fire_event(0, turn_idx=22) == []  # exactly once
+
+
+def test_staged_world_rejects_final_handoff_before_required_event():
+    server = _server()
+    server.config = server.config.model_copy(
+        update={"submit_requires_all_events": True}
+    )
+    result = server.submit("not even parsed before the workflow guard")
+    assert not result.accepted
+    assert "scheduled operational milestone" in result.error
+    assert not server.terminal
