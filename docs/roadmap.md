@@ -44,7 +44,38 @@
 > Todo el bloque histórico posterior conserva decisiones y resultados, pero cualquier
 > “próximo paso” anterior queda supersedido por esta cabecera.
 
-> ## ★ LA PREGUNTA OFICIAL DEL PROYECTO (REFOCO 2, decisión de Lucas 2026-07-31 — ADR 0156)
+### Plan activo — ciclos cortos con reevaluación obligatoria
+
+| Etapa | Trabajo concreto | Salida verificable | Estado |
+|---|---|---|---|
+| **0. Cobertura** | Cruzar fenómenos/casos de la guía con `overgen`, cinco líneas, `lab_largo`, mundos de nota y maquinaria común | Tabla `ya existe / adaptar / construir`, sin correr agentes | **EN CURSO — próximo paso** |
+| **1. Selección** | Elegir el primer caso por fidelidad, información científica, contraste bilateral y reutilización real | Contrato corto: caso, fenómeno, gemelo, llegada natural de evidencia, qué mide y qué no | Pendiente |
+| **2. Slice mínimo** | Construir verdad, evidencia, registro, oráculo y scoring necesarios; nada extra | Robots/reflejos certificados + camino completo verde | Pendiente |
+| **3. Agente real temprano** | Smoke barato para comprensión/UX y después una corrida SOTA | Traza completa; autopsia de demanda, fugas y explicaciones operativas | Pendiente |
+| **4. Probe apareado** | Pocas ramas/semillas quemadas, criterios escritos antes | Señal suficiente para mantener, modificar o abandonar el instrumento | Pendiente |
+| **5. Piloto y réplica** | Pre-registro pequeño, más de un modelo y una segunda estructura | Estimando con incertidumbre + prueba de generalización | Pendiente |
+| **6. Escala** | Generador dinámico, suite y eventualmente entrenamiento | Solo si los fenómenos anteriores sobrevivieron | Diferido |
+
+La etapa siguiente no se activa por inercia. Al final de **cada etapa**, ante un resultado
+inesperado importante y antes de optimizar el mismo diseño, se ejecuta esta revisión:
+
+> **GATE “UN NIVEL ARRIBA”**
+>
+> 1. **Pregunta:** ¿sigue siendo científicamente interesante y potencialmente publicable?
+> 2. **Fidelidad:** ¿reproducimos el caso real o construimos una versión cómoda/artificial?
+> 3. **Constructo:** ¿medimos revisión de creencias o atención, memoria, protocolo/código?
+> 4. **Alternativas:** ¿qué explicación más simple podría producir el mismo resultado?
+> 5. **Alcance:** ¿estamos generalizando desde una celda, modelo o ejemplo aislado?
+> 6. **Prioridad:** con lo aprendido, ¿el siguiente paso sigue siendo el de mayor valor?
+> 7. **Decisión explícita:** **MANTENER / MODIFICAR / PIVOTEAR / ABANDONAR**, con evidencia y
+>    cambio de creencia del equipo registrados.
+
+**Cadencia:** al comenzar una sesión se leen guía + cabecera del roadmap; al cerrar una etapa
+se actualizan esta tabla y el gate. Un detalle local se resuelve probando; una amenaza al
+constructo obliga a subir inmediatamente de nivel. Ninguna cantidad de código ya escrito
+constituye evidencia para continuar.
+
+> ## HISTÓRICO — REFOCO 2 (supersedido como pregunta rectora por ADR 0161)
 >
 > **Cuando evidencia nueva justifica una revisión conocida, ¿cómo se reparte el error entre
 > ASIMILACIÓN de la evidencia, DECISIÓN de reabrir, y PROPAGACIÓN de la revisión hasta el
