@@ -18,11 +18,16 @@ sys.path.insert(0, str(ROOT))
 
 from wager.agent.cells import extract_cell  # noqa: E402
 from wager.agent.llm_client import FoundryChat  # noqa: E402
+from wager.factory.overgen_stream_tools import build_reference_from_ledger  # noqa: E402
 from wager.harness.case_episode import build_world_server  # noqa: E402
 from wager.harness.episode import (CELL_TIMEOUT_S, MAX_COMPLETION_TOKENS,  # noqa: E402
                                    SYSTEM)
 from wager.harness.kernel_proc import KernelClient  # noqa: E402
-from wager.report.checkpoint_score import CheckpointScorer  # noqa: E402
+from wager.report.checkpoint_score import (  # noqa: E402
+    CheckpointScorer,
+    captured_reference_fraction,
+)
+from wager.report.overgen_belief import shared_transfer_phenotype  # noqa: E402
 
 LIMITED = ROOT / "cases" / "overgen_stream_v0"
 TRANSFER = ROOT / "cases" / "overgen_stream_twin_v0"
@@ -112,7 +117,27 @@ def run_prefix(model, seed_offset, checkpoint="fixed", max_prefix_turns=ELIGIBLE
             new_events = server.trajectory[traj_before:]
             trace.append(_record(turn, reply, cell, result, server, notices, traj_before))
             if server.terminal:
-                raise RuntimeError("donor submitted before the scheduled report")
+                eligibility = {
+                    "eligible": False,
+                    "turn": None,
+                    "gates": {},
+                    "reason": "submitted_before_checkpoint",
+                    "failed_turn": turn,
+                }
+                break
+            if (
+                not result.ok
+                and result.error
+                and result.error.startswith("cell exceeded ")
+            ):
+                eligibility = {
+                    "eligible": False,
+                    "turn": None,
+                    "gates": {},
+                    "reason": "cell_timeout",
+                    "failed_turn": turn,
+                }
+                break
             prompt = _feedback(result, server)
             if checkpoint == "eligible":
                 observed = sum(
@@ -134,8 +159,17 @@ def run_prefix(model, seed_offset, checkpoint="fixed", max_prefix_turns=ELIGIBLE
                         code is not None and server.validate_model(code) is None
                     ),
                 }
+                phenotype = None
                 if all(gates.values()):
-                    eligibility = {"eligible": True, "turn": turn, "gates": gates}
+                    phenotype = shared_transfer_phenotype(code)
+                    gates["target_shared_transfer_belief"] = phenotype["eligible"]
+                if all(gates.values()):
+                    eligibility = {
+                        "eligible": True,
+                        "turn": turn,
+                        "gates": gates,
+                        "phenotype": phenotype,
+                    }
                     break
                 if code is not None:
                     previous_code = code
@@ -146,6 +180,7 @@ def run_prefix(model, seed_offset, checkpoint="fixed", max_prefix_turns=ELIGIBLE
         eligibility = {"eligible": False, "turn": None, "gates": {}}
     return {
         "trace": trace,
+        "evidence_ledger": server.export_evidence_ledger(),
         "messages": copy.deepcopy(chat.messages),
         "next_prompt": prompt,
         "tokens": chat.usage.total_tokens,
@@ -221,23 +256,43 @@ def replay_and_continue(case_dir, prefix, model, seed_offset, checkpoint="fixed"
         "R": final.get("R"),
         "submission_code": final.get("code"),
         "trace": branch_trace,
+        "evidence_ledger": server.export_evidence_ledger(),
         "tokens_continuation": chat.usage.total_tokens,
     }
 
 
 def _checkpoint_codes(prefix, branch):
     pre = prefix["trace"][-1]["working_model"]["code"]
-    first_post = None
-    for row in branch["trace"]:
-        code = row["working_model"]["code"]
-        if code is not None:
-            first_post = code
-            break
-    return {"M_pre": pre, "M_post_first": first_post, "M_final": branch["submission_code"]}
+    first_seen = next(
+        (row["working_model"]["code"] for row in branch["trace"]
+         if row["working_model"]["code"] is not None),
+        None,
+    )
+    first_changed = next(
+        (row["working_model"]["code"] for row in branch["trace"]
+         if row["working_model"]["code"] is not None
+         and row["working_model"]["code"] != pre),
+        None,
+    )
+    return {
+        "M_pre": pre,
+        "M_post_first_seen": first_seen,
+        "M_post_first_changed": first_changed,
+        "M_final": branch["submission_code"],
+    }
 
 
-def score_checkpoints(prefix, branch, scorer):
-    return scorer.score_many(_checkpoint_codes(prefix, branch))
+def score_checkpoints(prefix, branch, scorer, reference_code):
+    codes = _checkpoint_codes(prefix, branch)
+    codes["M_reference"] = reference_code
+    scores = scorer.score_many(codes)
+    fractions = {
+        name: captured_reference_fraction(
+            scores["M_pre"], scores[name], scores["M_reference"]
+        )
+        for name in ("M_post_first_changed", "M_final")
+    }
+    return scores, fractions
 
 
 def main():
@@ -282,13 +337,29 @@ def main():
     }
     for name, case_dir in (("limited", LIMITED), ("transfer", TRANSFER)):
         scorer = CheckpointScorer(case_dir)
-        branches[name]["checkpoint_scores"] = score_checkpoints(prefix, branches[name], scorer)
+        reference_code, reference_diagnostics = build_reference_from_ledger(
+            branches[name]["evidence_ledger"]
+        )
+        scores, fractions = score_checkpoints(
+            prefix, branches[name], scorer, reference_code
+        )
+        branches[name]["reference"] = {
+            "code": reference_code,
+            "diagnostics": reference_diagnostics,
+            "captured_fraction_diagnostic": fractions,
+        }
+        branches[name]["checkpoint_scores"] = scores
 
     gates = {
         "M_pre_string": prefix["trace"][-1]["working_model"]["code"] is not None,
         "replay_exact_both": all(branch["replay_exact"] for branch in branches.values()),
         "one_report_each": all(branch["report_count"] == 1 for branch in branches.values()),
         "accepted_both": all(branch["accepted"] for branch in branches.values()),
+        "prefix_evidence_replay_exact_both": all(
+            branch["evidence_ledger"][:len(prefix["evidence_ledger"])]
+            == prefix["evidence_ledger"]
+            for branch in branches.values()
+        ),
     }
     payload = {
         "kind": "technical_live_history_fork_not_behavioral_evidence",

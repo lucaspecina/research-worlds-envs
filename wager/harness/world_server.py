@@ -34,6 +34,17 @@ from wager.reward.seeds import derive_seed
 SMOKE_N = 200
 
 
+def _ledger_scalar(value):
+    """Convert a DataFrame cell to JSON-safe Python without rounding floats."""
+    if isinstance(value, np.generic):
+        value = value.item()
+    if isinstance(value, (pd.Timestamp, pd.Timedelta)):
+        return value.isoformat()
+    if pd.isna(value):
+        return None
+    return value
+
+
 class BudgetError(RuntimeError):
     pass
 
@@ -96,6 +107,9 @@ class WorldServer:
         self._register_jobs: list = []   # queued own-model diagnostics (lab largo)
         self._register_versions: dict = {}  # line -> artifact version counter
         self._pending_deliveries: list[tuple[str, pd.DataFrame]] = []
+        # Researcher-side audit trail of the exact DATA views made available
+        # to the agent.  It records returned views, never world/truth samples.
+        self._evidence_ledger: list[dict] = []
 
     # --- sealed mid-episode events (D4, ADR 0081) -----------------------
     def begin_turn(self, turn_idx: int, *, fire_events: bool = True) -> list[str]:
@@ -149,6 +163,14 @@ class WorldServer:
                     self._rows_bought.get(ev.source_name, 0) + ev.auto_deliver_n
                 )
                 self._pending_deliveries.append((ev.delivery_variable, df))
+                self._record_evidence(
+                    "event_report",
+                    source=ev.source_name,
+                    request={"n": ev.auto_deliver_n},
+                    frame=df,
+                    delivery_variable=ev.delivery_variable,
+                    turn=turn_idx,
+                )
                 notices = [
                     ev.notice
                     + f"\nThe report is already loaded as DataFrame `{ev.delivery_variable}`."
@@ -277,6 +299,9 @@ class WorldServer:
         # declared pipeline), never the clean mechanism (v0.55/v0.56)
         df = source_view(self.world_sample, spec, n, self._next_seed(700_000))
         self._log("observe", {"source": source, "n": n}, cost)
+        self._record_evidence(
+            "observe", source=source, request={"n": n}, frame=df
+        )
         return df
 
     def experiment(self, design: ExperimentDesign) -> pd.DataFrame:
@@ -311,6 +336,17 @@ class WorldServer:
             hidden_columns=meter_hidden,
         )
         self._log("experiment", {"config": dict(design.config), "context": dict(design.context), "n": design.n}, cost)
+        self._record_evidence(
+            "experiment",
+            source=None,
+            request={
+                "config": dict(design.config),
+                "context": dict(design.context),
+                "n": design.n,
+                "horizon": design.horizon,
+            },
+            frame=df,
+        )
         return df
 
     def register(self, line: int, code: str) -> dict:
@@ -458,6 +494,49 @@ class WorldServer:
     def _guard_open(self) -> None:
         if self.terminal:
             raise RuntimeError("episode is terminal (already submitted)")
+
+    def _record_evidence(
+        self,
+        kind: str,
+        *,
+        source: str | None,
+        request: dict,
+        frame: pd.DataFrame,
+        delivery_variable: str | None = None,
+        turn: int | None = None,
+    ) -> None:
+        """Archive only the view returned/delivered to the agent.
+
+        Keeping the DataFrame copy in memory avoids any later mutation by the
+        kernel or caller.  Export is JSON-safe and preserves column/row order.
+        """
+        self._evidence_ledger.append({
+            "sequence": len(self._evidence_ledger) + 1,
+            "turn": self._turn if turn is None else int(turn),
+            "kind": kind,
+            "source": source,
+            "request": dict(request),
+            "delivery_variable": delivery_variable,
+            "frame": frame.copy(deep=True),
+        })
+
+    def export_evidence_ledger(self) -> list[dict]:
+        """Return an immutable-by-convention, JSON-safe evidence audit log."""
+        exported = []
+        for record in self._evidence_ledger:
+            frame = record["frame"]
+            data = {
+                "columns": list(frame.columns),
+                "dtypes": [str(dtype) for dtype in frame.dtypes],
+                "data": [
+                    [_ledger_scalar(value) for value in row]
+                    for row in frame.itertuples(index=False, name=None)
+                ],
+            }
+            exported.append({
+                key: value for key, value in record.items() if key != "frame"
+            } | {"data": data})
+        return exported
 
     def _log(self, verb: str, args: dict, cost: float, note: str = "") -> None:
         self.trajectory.append(

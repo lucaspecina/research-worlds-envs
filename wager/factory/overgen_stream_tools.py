@@ -12,6 +12,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import numpy as np
+import pandas as pd
 
 from wager.contracts import Battery, BatteryItem, ExperimentDesign
 from wager.contracts.world import Regime
@@ -143,9 +144,82 @@ def run_adaptive(server):
 
 
 def np_concat_rows(a, b):
-    import pandas as pd
-
     return pd.concat([a, b], ignore_index=True)
+
+
+def _ledger_frame(record):
+    """Reconstruct one agent-visible DataFrame from a JSON-safe ledger row."""
+    payload = record["data"]
+    return pd.DataFrame(payload["data"], columns=payload["columns"])
+
+
+def build_reference_from_ledger(ledger, *, update_threshold=1.35):
+    """Build the frozen v0 legal reference using only agent-visible rows.
+
+    This deliberately implements the already-certified adaptive recipe.  It is
+    a reference updater, not a claim of a unique Bayesian posterior: learn the
+    shared law from the qualification report, then specialize a line only when
+    later high-range residuals clear the prospectively fixed threshold.
+    """
+    qualification = [
+        _ledger_frame(record)
+        for record in ledger
+        if record.get("kind") == "observe"
+        and record.get("source") == "qualification_report"
+    ]
+    if not qualification:
+        raise ValueError("ledger has no qualification_report observation")
+    prefix = pd.concat(qualification, ignore_index=True)
+    required = {"line", "driver", "outcome"}
+    if not required <= set(prefix.columns):
+        raise ValueError("qualification ledger rows lack line/driver/outcome")
+
+    later = [
+        _ledger_frame(record)
+        for record in ledger
+        if not (
+            record.get("kind") == "observe"
+            and record.get("source") == "qualification_report"
+        )
+        and required <= set(record.get("data", {}).get("columns", []))
+    ]
+    post = (
+        pd.concat(later, ignore_index=True)
+        if later else pd.DataFrame(columns=list(required))
+    )
+
+    a, b, sd, tables, sds = _base_model(prefix)
+    evidence_by_line = {}
+    updated_lines = []
+    for line in (2, 3, 4, 5):
+        diagnostic = post[(post["line"] == line) & (post["driver"] > 4.0)]
+        if diagnostic.empty:
+            evidence = None
+        else:
+            residual = diagnostic["outcome"].to_numpy(float) - _law_values(
+                a, b, diagnostic["driver"].to_numpy(float)
+            )
+            evidence = float(np.mean(np.abs(residual)) / max(sd, 1e-6))
+        evidence_by_line[str(line)] = evidence
+        if evidence is not None and evidence >= update_threshold:
+            local = pd.concat(
+                [prefix[prefix["line"] == line], post[post["line"] == line]],
+                ignore_index=True,
+            )
+            tables[line] = _pchip_values(local)
+            sds[line] = sd
+            updated_lines.append(line)
+
+    diagnostics = {
+        "kind": "frozen_v0_reference_not_unique_posterior",
+        "ledger_records": len(ledger),
+        "qualification_rows": int(len(prefix)),
+        "later_rows": int(len(post)),
+        "update_threshold": float(update_threshold),
+        "standardized_mean_abs_residual": evidence_by_line,
+        "updated_lines": updated_lines,
+    }
+    return _submission(tables, sds), diagnostics
 
 
 ROBOTS = {

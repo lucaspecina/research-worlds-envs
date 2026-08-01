@@ -58,6 +58,47 @@ def normalized_group_score(
     }
 
 
+def captured_reference_fraction(
+    pre_score,
+    observed_score,
+    reference_score,
+    *,
+    group="diagnostic",
+    min_reference_gain=0.05,
+):
+    """Fraction of a legal reference improvement captured by an artifact.
+
+    Unclipped local scores preserve direction and overshoot. The result stays
+    unresolved when the reference offers too little gain; should-maintain
+    cases are judged by movement/damage, not by dividing through near-zero.
+    """
+    values = []
+    for score in (pre_score, observed_score, reference_score):
+        if not score or not score.get("scoreable"):
+            return {"resolved": False, "fraction": None, "reason": "unscoreable"}
+        row = score.get("groups", {}).get(group, {})
+        if not row.get("resolved") or row.get("R_unclipped") is None:
+            return {"resolved": False, "fraction": None, "reason": "group_unresolved"}
+        values.append(float(row["R_unclipped"]))
+    pre, observed, reference = values
+    gain = reference - pre
+    if gain < float(min_reference_gain):
+        return {
+            "resolved": False,
+            "fraction": None,
+            "reason": "reference_gain_too_small",
+            "reference_gain": gain,
+            "observed_gain": observed - pre,
+        }
+    return {
+        "resolved": True,
+        "fraction": (observed - pre) / gain,
+        "reason": None,
+        "reference_gain": gain,
+        "observed_gain": observed - pre,
+    }
+
+
 class CheckpointScorer:
     """Score many executable checkpoints against one cached world side."""
 

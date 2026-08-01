@@ -35,11 +35,11 @@
 > siguiente acción del probe con panel señalado + costo + MANTENER/REABRIR. El harness técnico
 > de ADR 0160 se conserva; no habilita inferencia conductual.
 >
-> **SIGUIENTE ACCIÓN ÚNICA:** persistir el ledger exacto de observaciones/experimentos/reportes
-> que vio cada donante y construir desde él el actualizador legal de referencia. Scorer temporal,
-> replay vivido y elegibilidad condicionada ya pasaron (DeepSeek elegible en turno 3, ADR 0165).
-> Después de verificar `M_pre → M_ref` por región/línea se firma el probe pequeño; no antes.
-> [Resultado de elegibilidad](research/2026-08-01-resultado-elegibilidad-mpre-deepseek-v0.md).
+> **SIGUIENTE ACCIÓN ÚNICA:** ejecutar los tres donantes DeepSeek 94000–94002 de la
+> [ficha congelada](research/2026-08-01-ficha-probe-pequeno-overgen-v0.md), sin cambiar el
+> instrumento entre ellos. La validación prospectiva 93001 pasó fenotipo, replay, ledger,
+> referencia y entrega 2/2 ([resultado](research/2026-08-01-resultado-gate-fenotipo-deepseek-v0.md)).
+> Al terminar los tres, gate superior obligatorio antes de gpt/SOTA o escala.
 >
 > Todo el bloque histórico posterior conserva decisiones y resultados, pero cualquier
 > “próximo paso” anterior queda supersedido por esta cabecera.
@@ -52,7 +52,7 @@
 | **1. Selección** | Elegir el primer caso por fidelidad, información científica, contraste bilateral y reutilización real | [Contrato corto](research/2026-08-01-contrato-slice-overgen-longitudinal-v0.md): caso, fenómeno, gemelo, llegada natural de evidencia, qué mide y qué no | **CERRADA — MANTENER; ADR 0162** |
 | **2. Slice mínimo** | Construir verdad, evidencia, registro, oráculo y scoring necesarios; nada extra | Robots/reflejos certificados + camino completo verde | **CERRADA — ambos polos PASS** |
 | **3. Agente real temprano** | Smoke barato para comprensión/UX y después una corrida SOTA | [2 modelos × 2 polos + autopsia](research/2026-08-01-resultado-smoke-overgen-stream-v0.md) | **CERRADA — MANTENER mundo / MODIFICAR inferencia** |
-| **4. Probe apareado** | Pocas ramas/semillas quemadas, criterios escritos antes | Señal suficiente para mantener, modificar o abandonar el instrumento | **EN CURSO — fork/scorer/elegibilidad PASS; referencia legal pendiente** |
+| **4. Probe apareado** | Pocas ramas/semillas quemadas, criterios escritos antes | Señal suficiente para mantener, modificar o abandonar el instrumento | **EN CURSO — ficha de 3 donantes congelada; ADR 0166** |
 | **5. Piloto y réplica** | Pre-registro pequeño, más de un modelo y una segunda estructura | Estimando con incertidumbre + prueba de generalización | Pendiente |
 | **6. Escala** | Generador dinámico, suite y eventualmente entrenamiento | Solo si los fenómenos anteriores sobrevivieron | Diferido |
 
