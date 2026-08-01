@@ -1,0 +1,1267 @@
+{
+  "kind": "technical_live_history_fork_not_behavioral_evidence",
+  "model": "DeepSeek-V3.2",
+  "seed_offset": 91000,
+  "prefix": {
+    "trace": [
+      {
+        "turn": 1,
+        "notices": [],
+        "reply_text": "**REASONING:** The first step is to inspect the free qualification report to understand the data we have initially. This report contains lines 1\u20135, but lines 2\u20135 are only qualified in the low range (0\u20134). Observing this report will reveal the basic relationship between driver and outcome across lines, any line-to-line differences, and the noise characteristics. This will inform what kind of model we might start with (e.g., linear per line? shared slope? variance structure?) and what uncertainties we need to reduce with experiments. Since experiments are expensive (300 each for 20 samples), we must be strategic: likely we will need to run some experiments on lines 2\u20135 in the low range before the range extension, and possibly on line 1 across the full range to anchor the model. But first, let\u2019s look at the data.\n\n```python\nimport pandas as pd\nimport numpy as np\n\n# Get the free qualification report\ndf_qual = env.observe(\"qualification_report\", 96)\nprint(df_qual.head())\nprint(df_qual.shape)\nprint(\"\\nDriver range per line:\")\nprint(df_qual.groupby('line')['driver'].agg(['min', 'max']))\nprint(\"\\nBasic stats per line:\")\nprint(df_qual.groupby('line')['outcome'].describe())\n```",
+        "cell": "import pandas as pd\nimport numpy as np\n\n# Get the free qualification report\ndf_qual = env.observe(\"qualification_report\", 96)\nprint(df_qual.head())\nprint(df_qual.shape)\nprint(\"\\nDriver range per line:\")\nprint(df_qual.groupby('line')['driver'].agg(['min', 'max']))\nprint(\"\\nBasic stats per line:\")\nprint(df_qual.groupby('line')['outcome'].describe())",
+        "cell_result": {
+          "ok": true,
+          "stdout": "   line    driver    outcome\n0   1.0  0.202159  14.386830\n1   2.0  0.500000  14.920741\n2   1.0  2.611023  19.525025\n3   3.0  0.500000  14.999988\n4   1.0  8.399173  19.032960\n(96, 3)\n\nDriver range per line:\n           min       max\nline                    \n1.0   0.101343  9.502417\n2.0   0.500000  3.500000\n3.0   0.500000  3.500000\n4.0   0.500000  3.500000\n5.0   0.500000  3.500000\n\nBasic stats per line:\n      count       mean       std  ...        50%        75%        max\nline                              ...                                 \n1.0    48.0  19.579771  2.567203  ...  20.296768  21.324692  23.149012\n2.0    12.0  18.672260  2.315277  ...  18.685257  20.308041  22.238181\n3.0    12.0  18.733443  2.486213  ...  18.755803  20.510000  22.329940\n4.0    12.0  18.625239  2.595113  ...  19.569310  21.095443  21.211334\n5.0    12.0  18.608473  2.391857  ...  18.998894  20.534749  21.936152\n\n[5 rows x 8 columns]\n",
+          "error": null,
+          "truncated": false
+        },
+        "working_model": {
+          "status": "missing",
+          "code": null
+        },
+        "budget_remaining": 900.0,
+        "trajectory": [
+          {
+            "verb": "observe",
+            "args": {
+              "source": "qualification_report",
+              "n": 96
+            },
+            "cost": 0.0,
+            "note": ""
+          }
+        ]
+      },
+      {
+        "turn": 2,
+        "notices": [],
+        "reply_text": "**REASONING:** The qualification report shows line 1 has driver range 0\u2013~9.5, while lines 2\u20135 only have driver 0.5\u20133.5 (so indeed low range). The outcome means for lines 2\u20135 are around 18.6\u201318.7, while line 1 mean is higher (~19.6). However, line 1's drivers span high values, so the mean may be misleading. I need to see the relationship between driver and outcome. Likely outcome increases with driver (positive slope). Need to check if lines share a slope or have different intercepts. Also need to estimate noise variance. A quick scatterplot or regression per line will help. Since we can't plot, we can compute linear fits using OLS on line 1 (full range) and lines 2\u20135 (low range). That will give initial model parameters and uncertainty. After that, we can decide whether to run experiments on line 1 (full range) to refine the slope estimate, or on lines 2\u20135 in low range to reduce uncertainty before their range extension. Since experiments are expensive, we want to maximize information gain. Possibly run a campaign on line 1 across full range to better estimate the global slope. But first, let's quantify.\n\n```python\nimport statsmodels.api as sm\n\n# Fit linear model for line 1 (full range)\ndf1 = df_qual[df_qual['line'] == 1].copy()\nX1 = sm.add_constant(df1['driver'])\ny1 = df1['outcome']\nmodel1 = sm.OLS(y1, X1).fit()\nprint(\"Line 1 OLS results:\")\nprint(model1.summary())\nprint(\"Residual std:\", np.std(model1.resid))\n\n# Fit linear model for lines 2-5 pooled (low range)\ndf_low = df_qual[df_qual['line'] >= 2].copy()\nX_low = sm.add_constant(df_low['driver'])\ny_low = df_low['outcome']\nmodel_low = sm.OLS(y_low, X_low).fit()\nprint(\"\\nLines 2-5 pooled OLS results:\")\nprint(model_low.summary())\nprint(\"Residual std:\", np.std(model_low.resid))\n\n# Check if intercepts differ across lines 2-5\nlines = [2,3,4,5]\nfor l in lines:\n    dfl = df_qual[df_qual['line'] == l]\n    Xl = sm.add_constant(dfl['driver'])\n    mod = sm.OLS(dfl['outcome'], Xl).fit()\n    print(f\"Line {l}: intercept {mod.params[0]:.3f}, slope {mod.params[1]:.3f}\")\n```",
+        "cell": "import statsmodels.api as sm\n\n# Fit linear model for line 1 (full range)\ndf1 = df_qual[df_qual['line'] == 1].copy()\nX1 = sm.add_constant(df1['driver'])\ny1 = df1['outcome']\nmodel1 = sm.OLS(y1, X1).fit()\nprint(\"Line 1 OLS results:\")\nprint(model1.summary())\nprint(\"Residual std:\", np.std(model1.resid))\n\n# Fit linear model for lines 2-5 pooled (low range)\ndf_low = df_qual[df_qual['line'] >= 2].copy()\nX_low = sm.add_constant(df_low['driver'])\ny_low = df_low['outcome']\nmodel_low = sm.OLS(y_low, X_low).fit()\nprint(\"\\nLines 2-5 pooled OLS results:\")\nprint(model_low.summary())\nprint(\"Residual std:\", np.std(model_low.resid))\n\n# Check if intercepts differ across lines 2-5\nlines = [2,3,4,5]\nfor l in lines:\n    dfl = df_qual[df_qual['line'] == l]\n    Xl = sm.add_constant(dfl['driver'])\n    mod = sm.OLS(dfl['outcome'], Xl).fit()\n    print(f\"Line {l}: intercept {mod.params[0]:.3f}, slope {mod.params[1]:.3f}\")",
+        "cell_result": {
+          "ok": false,
+          "stdout": "",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\wager\\harness\\kernel_proc.py\", line 131, in _worker\n    exec(compile(msg[\"code\"], \"<cell>\", \"exec\"), ns)  # noqa: S102\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<cell>\", line 1, in <module>\nModuleNotFoundError: No module named 'statsmodels'\n",
+          "truncated": false
+        },
+        "working_model": {
+          "status": "missing",
+          "code": null
+        },
+        "budget_remaining": 900.0,
+        "trajectory": [
+          {
+            "verb": "observe",
+            "args": {
+              "source": "qualification_report",
+              "n": 96
+            },
+            "cost": 0.0,
+            "note": ""
+          }
+        ]
+      },
+      {
+        "turn": 3,
+        "notices": [],
+        "reply_text": "**REASONING:** The environment doesn't have statsmodels. We'll have to compute linear regression manually with numpy or use simple descriptive stats. Let's compute slope and intercept for each line via least squares manually. We'll also compute residual variance. This will give us a preliminary model: maybe a common slope with line-specific intercepts? Let's examine.\n\n```python\ndef linear_fit(x, y):\n    # returns intercept, slope\n    A = np.vstack([np.ones(len(x)), x]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    return params[0], params[1]\n\n# Fit line 1\ndf1 = df_qual[df_qual['line'] == 1]\nx1 = df1['driver'].values\ny1 = df1['outcome'].values\nintercept1, slope1 = linear_fit(x1, y1)\nresid1 = y1 - (intercept1 + slope1 * x1)\nsigma1 = np.std(resid1)\nprint(f\"Line 1: intercept {intercept1:.3f}, slope {slope1:.3f}, residual std {sigma1:.3f}\")\nprint(f\"  driver range: {x1.min():.2f} to {x1.max():.2f}\")\n\n# Fit lines 2-5 individually\nlines = [2,3,4,5]\nfor l in lines:\n    dfl = df_qual[df_qual['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    intercept, slope = linear_fit(x, y)\n    resid = y - (intercept + slope * x)\n    sigma = np.std(resid)\n    print(f\"Line {l}: intercept {intercept:.3f}, slope {slope:.3f}, residual std {sigma:.3f}\")\n    print(f\"  driver range: {x.min():.2f} to {x.max():.2f}\")\n\n# Also compute overall slope from lines 2-5 pooled\ndf_low = df_qual[df_qual['line'] >= 2]\nx_low = df_low['driver'].values\ny_low = df_low['outcome'].values\nintercept_low, slope_low = linear_fit(x_low, y_low)\nresid_low = y_low - (intercept_low + slope_low * x_low)\nsigma_low = np.std(resid_low)\nprint(f\"\\nLines 2-5 pooled: intercept {intercept_low:.3f}, slope {slope_low:.3f}, residual std {sigma_low:.3f}\")\n```",
+        "cell": "def linear_fit(x, y):\n    # returns intercept, slope\n    A = np.vstack([np.ones(len(x)), x]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    return params[0], params[1]\n\n# Fit line 1\ndf1 = df_qual[df_qual['line'] == 1]\nx1 = df1['driver'].values\ny1 = df1['outcome'].values\nintercept1, slope1 = linear_fit(x1, y1)\nresid1 = y1 - (intercept1 + slope1 * x1)\nsigma1 = np.std(resid1)\nprint(f\"Line 1: intercept {intercept1:.3f}, slope {slope1:.3f}, residual std {sigma1:.3f}\")\nprint(f\"  driver range: {x1.min():.2f} to {x1.max():.2f}\")\n\n# Fit lines 2-5 individually\nlines = [2,3,4,5]\nfor l in lines:\n    dfl = df_qual[df_qual['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    intercept, slope = linear_fit(x, y)\n    resid = y - (intercept + slope * x)\n    sigma = np.std(resid)\n    print(f\"Line {l}: intercept {intercept:.3f}, slope {slope:.3f}, residual std {sigma:.3f}\")\n    print(f\"  driver range: {x.min():.2f} to {x.max():.2f}\")\n\n# Also compute overall slope from lines 2-5 pooled\ndf_low = df_qual[df_qual['line'] >= 2]\nx_low = df_low['driver'].values\ny_low = df_low['outcome'].values\nintercept_low, slope_low = linear_fit(x_low, y_low)\nresid_low = y_low - (intercept_low + slope_low * x_low)\nsigma_low = np.std(resid_low)\nprint(f\"\\nLines 2-5 pooled: intercept {intercept_low:.3f}, slope {slope_low:.3f}, residual std {sigma_low:.3f}\")",
+        "cell_result": {
+          "ok": true,
+          "stdout": "Line 1: intercept 18.142, slope 0.314, residual std 2.395\n  driver range: 0.10 to 9.50\nLine 2: intercept 14.895, slope 1.888, residual std 0.675\n  driver range: 0.50 to 3.50\nLine 3: intercept 14.547, slope 2.093, residual std 0.436\n  driver range: 0.50 to 3.50\nLine 4: intercept 14.414, slope 2.106, residual std 0.794\n  driver range: 0.50 to 3.50\nLine 5: intercept 14.670, slope 1.969, residual std 0.629\n  driver range: 0.50 to 3.50\n\nLines 2-5 pooled: intercept 14.632, slope 2.014, residual std 0.656\n",
+          "error": null,
+          "truncated": false
+        },
+        "working_model": {
+          "status": "missing",
+          "code": null
+        },
+        "budget_remaining": 900.0,
+        "trajectory": [
+          {
+            "verb": "observe",
+            "args": {
+              "source": "qualification_report",
+              "n": 96
+            },
+            "cost": 0.0,
+            "note": ""
+          }
+        ]
+      },
+      {
+        "turn": 4,
+        "notices": [],
+        "reply_text": "**REASONING:** Interesting! Line 1 has a much flatter slope (~0.31) and higher intercept, while lines 2\u20135 have similar steep slopes (~1.9\u20132.1) and lower intercepts. The residual std is larger for line 1 (2.4) than for lines 2\u20135 (~0.4\u20130.8). This suggests two different regimes: line 1 behaves differently, possibly due to being a different piece of equipment or having a different calibration. The qualification data for line 1 spans the full range, so we have some information on its slope, but uncertainty might be high due to noise. For lines 2\u20135, we have only low-range data (0.5\u20133.5), but their slopes are consistent across lines. The pooled slope ~2.01 seems robust. However, we need to predict outcome for driver up to 10 for lines 2\u20135 after range extension. If the linear relationship holds, extrapolating with slope ~2 would give outcomes much higher than line 1's outcomes at high driver. Is that plausible? Possibly line 1 is an outlier, or maybe there's a non-linearity (e.g., saturation) that line 1 shows (flatter slope) but lines 2\u20135 haven't reached yet because they're only in low range. We need to test whether the slope for lines 2\u20135 stays steep at higher driver. Since we cannot experiment beyond driver 4 before the range extension, we can only run experiments in low range for now. But we can run an experiment on line 1 across full range to better characterize its shape and see if it deviates from linearity. That would cost 300. Alternatively, we could run an experiment on one of lines 2\u20135 in low range to reduce uncertainty on slope/intercept before extrapolating. However, the low-range data already have low residual std, so extra data may not be worth 300. Better to invest in understanding line 1's behavior across full range, because that might inform whether lines 2\u20135 will also flatten at high driver. Let's first check line 1 residuals for pattern (non-linearity) by binning drivers.\n\n```python\n# Examine line 1 residuals vs driver\ndf1 = df_qual[df_qual['line'] == 1].copy()\ndf1['pred'] = intercept1 + slope1 * df1['driver']\ndf1['resid'] = df1['outcome'] - df1['pred']\n# Bin driver into quartiles\nbins = pd.qcut(df1['driver'], 4, duplicates='drop')\nprint(\"Line 1 residual stats by driver quartile:\")\nprint(df1.groupby(bins)['resid'].agg(['mean', 'std', 'count']))\n# Also check if variance changes\nprint(\"\\nLine 1 outcome vs driver correlation:\", df1['outcome'].corr(df1['driver']))\n\n# For lines 2-5, check consistency of slope across lines\nprint(\"\\nLines 2-5 slope variability:\")\nslopes = []\nfor l in [2,3,4,5]:\n    dfl = df_qual[df_qual['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    inter, slope = linear_fit(x, y)\n    slopes.append(slope)\nprint(\"slopes:\", slopes)\nprint(\"mean:\", np.mean(slopes), \"std:\", np.std(slopes))\n```",
+        "cell": "# Examine line 1 residuals vs driver\ndf1 = df_qual[df_qual['line'] == 1].copy()\ndf1['pred'] = intercept1 + slope1 * df1['driver']\ndf1['resid'] = df1['outcome'] - df1['pred']\n# Bin driver into quartiles\nbins = pd.qcut(df1['driver'], 4, duplicates='drop')\nprint(\"Line 1 residual stats by driver quartile:\")\nprint(df1.groupby(bins)['resid'].agg(['mean', 'std', 'count']))\n# Also check if variance changes\nprint(\"\\nLine 1 outcome vs driver correlation:\", df1['outcome'].corr(df1['driver']))\n\n# For lines 2-5, check consistency of slope across lines\nprint(\"\\nLines 2-5 slope variability:\")\nslopes = []\nfor l in [2,3,4,5]:\n    dfl = df_qual[df_qual['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    inter, slope = linear_fit(x, y)\n    slopes.append(slope)\nprint(\"slopes:\", slopes)\nprint(\"mean:\", np.mean(slopes), \"std:\", np.std(slopes))",
+        "cell_result": {
+          "ok": true,
+          "stdout": "Line 1 residual stats by driver quartile:\n                    mean       std  count\ndriver                                   \n(0.1, 2.487]   -1.596164  1.874678     12\n(2.487, 5.043]  1.531902  0.736409     12\n(5.043, 6.732]  1.737456  1.011219     12\n(6.732, 9.502] -1.673195  2.874063     12\n\nLine 1 outcome vs driver correlation: 0.3335729328654973\n\nLines 2-5 slope variability:\nslopes: [np.float64(1.8884860683943794), np.float64(2.0929877062594455), np.float64(2.105724986227934), np.float64(1.9693909361175141)]\nmean: 2.0141474242498183 std: 0.08999466582883883\n",
+          "error": null,
+          "truncated": false
+        },
+        "working_model": {
+          "status": "missing",
+          "code": null
+        },
+        "budget_remaining": 900.0,
+        "trajectory": [
+          {
+            "verb": "observe",
+            "args": {
+              "source": "qualification_report",
+              "n": 96
+            },
+            "cost": 0.0,
+            "note": ""
+          }
+        ]
+      }
+    ],
+    "next_prompt": "Kernel output (ok=True, budget remaining=900):\nLine 1 residual stats by driver quartile:\n                    mean       std  count\ndriver                                   \n(0.1, 2.487]   -1.596164  1.874678     12\n(2.487, 5.043]  1.531902  0.736409     12\n(5.043, 6.732]  1.737456  1.011219     12\n(6.732, 9.502] -1.673195  2.874063     12\n\nLine 1 outcome vs driver correlation: 0.3335729328654973\n\nLines 2-5 slope variability:\nslopes: [np.float64(1.8884860683943794), np.float64(2.0929877062594455), np.float64(2.105724986227934), np.float64(1.9693909361175141)]\nmean: 2.0141474242498183 std: 0.08999466582883883\n\n\nReason about what this result tells you (does it confirm or refute your current hypothesis? what does it imply for the next step?), then write your next cell (or build and env.submit(code) when your reasoning has converged).",
+    "tokens": 11717
+  },
+  "branches": {
+    "limited": {
+      "case_id": "overgen_stream_v0",
+      "replay_checks": [
+        {
+          "turn": 1,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 2,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 3,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 4,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        }
+      ],
+      "replay_exact": true,
+      "report_count": 1,
+      "abort": "submitted",
+      "accepted": true,
+      "R": 0.8954237001364282,
+      "submission_code": "import numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config['line']\n    driver = regime.config['driver']\n    param_means = {\n        1: np.array([14.072, 3.235, -0.329]),\n        2: np.array([13.878, 3.068, -0.258]),\n        3: np.array([13.531, 3.648, -0.408]),\n        4: np.array([13.373, 3.523, -0.352]),\n        5: np.array([14.005, 3.238, -0.329])\n    }\n    param_covs = {\n        1: np.array([[0.090671, -0.037507, 0.003322],\n                     [-0.037507, 0.022911, -0.002385],\n                     [0.003322, -0.002385, 0.000269]]),\n        2: np.array([[0.162236, -0.074576, 0.006580],\n                     [-0.074576, 0.045379, -0.004406],\n                     [0.006580, -0.004406, 0.000452]]),\n        3: np.array([[0.088770, -0.040805, 0.003600],\n                     [-0.040805, 0.024830, -0.002411],\n                     [0.003600, -0.002411, 0.000247]]),\n        4: np.array([[0.089739, -0.041251, 0.003640],\n                     [-0.041251, 0.025101, -0.002437],\n                     [0.003640, -0.002437, 0.000250]]),\n        5: np.array([[0.123023, -0.056550, 0.004990],\n                     [-0.056550, 0.034410, -0.003341],\n                     [0.004990, -0.003341, 0.000342]])\n    }\n    residual_stds = {\n        1: 0.784,\n        2: 0.774,\n        3: 0.572,\n        4: 0.575,\n        5: 0.674\n    }\n    rng = np.random.RandomState(seed)\n    params = rng.multivariate_normal(param_means[line], param_covs[line], size=n)\n    pred = params[:, 0] + params[:, 1] * driver + params[:, 2] * driver**2\n    noise = rng.normal(0, residual_stds[line], size=n)\n    outcomes = pred + noise\n    return pd.DataFrame({'outcome': outcomes})\n",
+      "trace": [
+        {
+          "turn": 5,
+          "notices": [
+            "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5.\nThe report is already loaded as DataFrame `commissioning_report`."
+          ],
+          "reply_text": "**REASONING:** The residual pattern for line 1 shows systematic bias: residuals are negative at low driver, positive in middle, negative again at high driver. This suggests the true relationship is non-linear (perhaps quadratic). The correlation is low (0.33) confirming linear fit is poor. Line 1 likely has a concave shape (increase then decrease). Meanwhile, lines 2-5 slopes are consistent (std ~0.09). The new commissioning report for lines 2-5 has arrived! That's crucial because it contains data for driver >4 up to 10 for lines 2-5. This will reveal whether the steep linear slope continues or if they also flatten or curve. Let's examine the commissioning report immediately before making further experimental decisions.\n\n```python\n# Inspect the commissioning report\nprint(\"Commissioning report head:\")\nprint(commissioning_report.head())\nprint(\"\\nShape:\", commissioning_report.shape)\nprint(\"\\nDriver range per line:\")\nprint(commissioning_report.groupby('line')['driver'].agg(['min', 'max']))\nprint(\"\\nOutcome stats per line:\")\nprint(commissioning_report.groupby('line')['outcome'].describe())\n\n# Quick visualization: compute slope for each line using full range (combined qualification low range + commissioning high range)\n# First combine qualification low range for lines 2-5 with commissioning report\nqual_low = df_qual[df_qual['line'] >= 2]\ncombined = pd.concat([qual_low, commissioning_report], ignore_index=True)\nprint(\"\\nCombined data for lines 2-5:\")\nfor l in [2,3,4,5]:\n    dfl = combined[combined['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    inter, slope = linear_fit(x, y)\n    resid = y - (inter + slope * x)\n    sigma = np.std(resid)\n    print(f\"Line {l}: intercept {inter:.3f}, slope {slope:.3f}, resid std {sigma:.3f}, n={len(dfl)}\")\n```",
+          "cell": "# Inspect the commissioning report\nprint(\"Commissioning report head:\")\nprint(commissioning_report.head())\nprint(\"\\nShape:\", commissioning_report.shape)\nprint(\"\\nDriver range per line:\")\nprint(commissioning_report.groupby('line')['driver'].agg(['min', 'max']))\nprint(\"\\nOutcome stats per line:\")\nprint(commissioning_report.groupby('line')['outcome'].describe())\n\n# Quick visualization: compute slope for each line using full range (combined qualification low range + commissioning high range)\n# First combine qualification low range for lines 2-5 with commissioning report\nqual_low = df_qual[df_qual['line'] >= 2]\ncombined = pd.concat([qual_low, commissioning_report], ignore_index=True)\nprint(\"\\nCombined data for lines 2-5:\")\nfor l in [2,3,4,5]:\n    dfl = combined[combined['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    inter, slope = linear_fit(x, y)\n    resid = y - (inter + slope * x)\n    sigma = np.std(resid)\n    print(f\"Line {l}: intercept {inter:.3f}, slope {slope:.3f}, resid std {sigma:.3f}, n={len(dfl)}\")",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Commissioning report head:\n   line  driver    outcome\n0   2.0     1.0  16.681598\n1   3.0     1.0  17.033109\n2   4.0     1.0  16.290834\n3   5.0     1.0  17.786127\n4   2.0     3.0  19.858739\n\nShape: (64, 3)\n\nDriver range per line:\n      min  max\nline          \n2.0   1.0  9.6\n3.0   1.0  9.6\n4.0   1.0  9.6\n5.0   1.0  9.6\n\nOutcome stats per line:\n      count       mean       std  ...        50%        75%        max\nline                              ...                                 \n2.0    16.0  21.050040  2.333509  ...  21.985943  22.691013  23.513739\n3.0    16.0  17.505436  3.448499  ...  17.629704  20.454957  22.027671\n4.0    16.0  19.063603  2.571219  ...  19.523095  21.289522  23.453751\n5.0    16.0  19.170866  2.444826  ...  19.439713  20.719112  22.711561\n\n[4 rows x 8 columns]\n\nCombined data for lines 2-5:\nLine 2: intercept 17.635, slope 0.553, resid std 1.918, n=28\nLine 3: intercept 19.478, slope -0.334, resid std 2.859, n=28\nLine 4: intercept 18.507, slope 0.085, resid std 2.484, n=28\nLine 5: intercept 18.795, slope 0.031, resid std 2.349, n=28\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "missing",
+            "code": null
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 6,
+          "notices": [],
+          "reply_text": "**REASONING:** Big surprise! The commissioning report shows that lines 2-5 have driver range 1.0\u20139.6, but the slopes from combined data are much flatter (even negative for line 3). This suggests that the steep slopes (~2) observed in low range (0.5\u20133.5) do NOT extrapolate linearly; instead, the outcome seems to plateau or even decrease at higher driver. The relationship appears non-linear, possibly quadratic. We need to model this properly. We now have data for lines 2-5 across full range (combined qualification low + commissioning). Line 1 also has full range but different behavior. We should fit a flexible model per line, perhaps a quadratic, and estimate uncertainty. However, we have limited data per line (28 points each). We could pool across lines 2-5 to share shape parameters? But lines 2-5 show different intercepts and possibly different curvatures (line 3 slope negative). Let's examine scatter by fitting quadratics. Also, we have budget for experiments (900 left). Since we now have full-range data for all lines, we may not need further experiments if we can build a good predictive model. However, the data are noisy and we need to capture distribution tails (10th and 90th percentiles). We might want to run a few experiments to reduce uncertainty, especially for lines where curvature is uncertain. Let's first fit quadratic models per line and evaluate residuals.\n\n```python\n# Fit quadratic per line: outcome ~ b0 + b1*driver + b2*driver^2\ndef quadratic_fit(x, y):\n    # design matrix: [1, x, x^2]\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    return params\n\nlines = [1,2,3,4,5]\ncoeffs = {}\nresid_stds = {}\nfor l in lines:\n    if l == 1:\n        dfl = df_qual[df_qual['line'] == 1]\n    else:\n        # combine qualification low and commissioning\n        dfl = pd.concat([df_qual[df_qual['line'] == l], commissioning_report[commissioning_report['line'] == l]])\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    params = quadratic_fit(x, y)\n    coeffs[l] = params\n    pred = params[0] + params[1]*x + params[2]*x**2\n    resid = y - pred\n    sigma = np.std(resid)\n    resid_stds[l] = sigma\n    print(f\"Line {l}: intercept {params[0]:.3f}, linear {params[1]:.3f}, quadratic {params[2]:.3f}, resid std {sigma:.3f}, n={len(x)}\")\n\n# Also check if quadratic terms are significant (by comparing RSS with linear)\nprint(\"\\nComparing linear vs quadratic RSS:\")\nfor l in lines:\n    if l == 1:\n        dfl = df_qual[df_qual['line'] == 1]\n    else:\n        dfl = pd.concat([df_qual[df_qual['line'] == l], commissioning_report[commissioning_report['line'] == l]])\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    # linear fit\n    A_lin = np.vstack([np.ones(len(x)), x]).T\n    params_lin, _, _, _ = np.linalg.lstsq(A_lin, y, rcond=None)\n    pred_lin = params_lin[0] + params_lin[1]*x\n    rss_lin = np.sum((y - pred_lin)**2)\n    # quadratic fit\n    A_quad = np.vstack([np.ones(len(x)), x, x**2]).T\n    params_quad, _, _, _ = np.linalg.lstsq(A_quad, y, rcond=None)\n    pred_quad = params_quad[0] + params_quad[1]*x + params_quad[2]*x**2\n    rss_quad = np.sum((y - pred_quad)**2)\n    print(f\"Line {l}: RSS linear {rss_lin:.2f}, RSS quad {rss_quad:.2f}, reduction {rss_lin - rss_quad:.2f}\")\n```",
+          "cell": "# Fit quadratic per line: outcome ~ b0 + b1*driver + b2*driver^2\ndef quadratic_fit(x, y):\n    # design matrix: [1, x, x^2]\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    return params\n\nlines = [1,2,3,4,5]\ncoeffs = {}\nresid_stds = {}\nfor l in lines:\n    if l == 1:\n        dfl = df_qual[df_qual['line'] == 1]\n    else:\n        # combine qualification low and commissioning\n        dfl = pd.concat([df_qual[df_qual['line'] == l], commissioning_report[commissioning_report['line'] == l]])\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    params = quadratic_fit(x, y)\n    coeffs[l] = params\n    pred = params[0] + params[1]*x + params[2]*x**2\n    resid = y - pred\n    sigma = np.std(resid)\n    resid_stds[l] = sigma\n    print(f\"Line {l}: intercept {params[0]:.3f}, linear {params[1]:.3f}, quadratic {params[2]:.3f}, resid std {sigma:.3f}, n={len(x)}\")\n\n# Also check if quadratic terms are significant (by comparing RSS with linear)\nprint(\"\\nComparing linear vs quadratic RSS:\")\nfor l in lines:\n    if l == 1:\n        dfl = df_qual[df_qual['line'] == 1]\n    else:\n        dfl = pd.concat([df_qual[df_qual['line'] == l], commissioning_report[commissioning_report['line'] == l]])\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    # linear fit\n    A_lin = np.vstack([np.ones(len(x)), x]).T\n    params_lin, _, _, _ = np.linalg.lstsq(A_lin, y, rcond=None)\n    pred_lin = params_lin[0] + params_lin[1]*x\n    rss_lin = np.sum((y - pred_lin)**2)\n    # quadratic fit\n    A_quad = np.vstack([np.ones(len(x)), x, x**2]).T\n    params_quad, _, _, _ = np.linalg.lstsq(A_quad, y, rcond=None)\n    pred_quad = params_quad[0] + params_quad[1]*x + params_quad[2]*x**2\n    rss_quad = np.sum((y - pred_quad)**2)\n    print(f\"Line {l}: RSS linear {rss_lin:.2f}, RSS quad {rss_quad:.2f}, reduction {rss_lin - rss_quad:.2f}\")",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Line 1: intercept 14.072, linear 3.235, quadratic -0.329, resid std 0.759, n=48\nLine 2: intercept 13.878, linear 3.068, quadratic -0.258, resid std 0.731, n=28\nLine 3: intercept 13.531, linear 3.648, quadratic -0.408, resid std 0.541, n=28\nLine 4: intercept 13.373, linear 3.523, quadratic -0.352, resid std 0.544, n=28\nLine 5: intercept 14.005, linear 3.238, quadratic -0.329, resid std 0.636, n=28\n\nComparing linear vs quadratic RSS:\nLine 1: RSS linear 275.29, RSS quad 27.63, reduction 247.66\nLine 2: RSS linear 103.05, RSS quad 14.96, reduction 88.09\nLine 3: RSS linear 228.89, RSS quad 8.19, reduction 220.71\nLine 4: RSS linear 172.75, RSS quad 8.27, reduction 164.48\nLine 5: RSS linear 154.51, RSS quad 11.34, reduction 143.17\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "missing",
+            "code": null
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 7,
+          "notices": [],
+          "reply_text": "**REASONING:** Excellent! Quadratic fits capture the data much better (huge RSS reduction). All lines show a concave quadratic shape: positive linear term, negative quadratic term, indicating a peak (inverted parabola). The residual stds are much smaller (~0.5\u20130.75) compared to linear fits. This suggests a common functional form across all five lines, with line-specific parameters. The coefficients are somewhat similar across lines: intercepts ~13\u201314, linear ~3.1\u20133.6, quadratic ~ -0.25 to -0.41. This implies that all lines share a similar underlying process, maybe with small variations due to calibration. We can model each line's outcome as a quadratic function of driver plus Gaussian noise. We need to estimate uncertainty in coefficients (due to limited data) to propagate to predictive distribution. We can either fit hierarchical Bayesian model (shrinkage) or treat each line independently with estimated parameter covariance. Since we have only 28 points per line (48 for line 1), parameter uncertainty is nontrivial. We can use bootstrap to estimate predictive intervals. However, we have budget for experiments (900). Running an experiment on one line (300) could reduce parameter uncertainty for that line and possibly inform others if we assume shared structure. But since we already have full-range data for all lines, maybe we can build a model without further experiments. However, the stakes are on distribution tails (10th and 90th percentiles). We need to accurately capture predictive uncertainty, which includes parameter uncertainty and noise. We could fit a Bayesian hierarchical model using MCMC (not possible in this environment) or approximate with empirical Bayes. Simpler: fit quadratic per line, compute parameter covariance via OLS formulas, then simulate draws from parameter posterior (assuming normal errors, normal parameter distribution). Let's compute OLS parameter covariance for each line.\n\n```python\ndef quadratic_fit_with_cov(x, y):\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, residuals, rank, s = np.linalg.lstsq(A, y, rcond=None)\n    # estimate sigma^2\n    sigma2 = residuals[0] / (len(y) - 3) if len(residuals) > 0 else 0\n    # covariance matrix = sigma^2 * (A.T A)^{-1}\n    cov = sigma2 * np.linalg.inv(A.T @ A)\n    return params, cov\n\nlines = [1,2,3,4,5]\nparams_dict = {}\ncov_dict = {}\nfor l in lines:\n    if l == 1:\n        dfl = df_qual[df_qual['line'] == 1]\n    else:\n        dfl = pd.concat([df_qual[df_qual['line'] == l], commissioning_report[commissioning_report['line'] == l]])\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    params, cov = quadratic_fit_with_cov(x, y)\n    params_dict[l] = params\n    cov_dict[l] = cov\n    print(f\"Line {l}:\")\n    print(f\"  params: intercept {params[0]:.3f}, linear {params[1]:.3f}, quadratic {params[2]:.3f}\")\n    print(f\"  param stds: {np.sqrt(np.diag(cov))}\")\n    print()\n\n# Also compute pooled quadratic fit across lines 2-5 to see if parameters are similar\nx_all = []\ny_all = []\nfor l in [2,3,4,5]:\n    if l == 1:\n        continue\n    dfl = pd.concat([df_qual[df_qual['line'] == l], commissioning_report[commissioning_report['line'] == l]])\n    x_all.extend(dfl['driver'].values)\n    y_all.extend(dfl['outcome'].values)\nx_all = np.array(x_all)\ny_all = np.array(y_all)\nparams_pool, cov_pool = quadratic_fit_with_cov(x_all, y_all)\nprint(\"Pooled lines 2-5:\")\nprint(f\"  params: intercept {params_pool[0]:.3f}, linear {params_pool[1]:.3f}, quadratic {params_pool[2]:.3f}\")\nprint(f\"  param stds: {np.sqrt(np.diag(cov_pool))}\")\n```",
+          "cell": "def quadratic_fit_with_cov(x, y):\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, residuals, rank, s = np.linalg.lstsq(A, y, rcond=None)\n    # estimate sigma^2\n    sigma2 = residuals[0] / (len(y) - 3) if len(residuals) > 0 else 0\n    # covariance matrix = sigma^2 * (A.T A)^{-1}\n    cov = sigma2 * np.linalg.inv(A.T @ A)\n    return params, cov\n\nlines = [1,2,3,4,5]\nparams_dict = {}\ncov_dict = {}\nfor l in lines:\n    if l == 1:\n        dfl = df_qual[df_qual['line'] == 1]\n    else:\n        dfl = pd.concat([df_qual[df_qual['line'] == l], commissioning_report[commissioning_report['line'] == l]])\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    params, cov = quadratic_fit_with_cov(x, y)\n    params_dict[l] = params\n    cov_dict[l] = cov\n    print(f\"Line {l}:\")\n    print(f\"  params: intercept {params[0]:.3f}, linear {params[1]:.3f}, quadratic {params[2]:.3f}\")\n    print(f\"  param stds: {np.sqrt(np.diag(cov))}\")\n    print()\n\n# Also compute pooled quadratic fit across lines 2-5 to see if parameters are similar\nx_all = []\ny_all = []\nfor l in [2,3,4,5]:\n    if l == 1:\n        continue\n    dfl = pd.concat([df_qual[df_qual['line'] == l], commissioning_report[commissioning_report['line'] == l]])\n    x_all.extend(dfl['driver'].values)\n    y_all.extend(dfl['outcome'].values)\nx_all = np.array(x_all)\ny_all = np.array(y_all)\nparams_pool, cov_pool = quadratic_fit_with_cov(x_all, y_all)\nprint(\"Pooled lines 2-5:\")\nprint(f\"  params: intercept {params_pool[0]:.3f}, linear {params_pool[1]:.3f}, quadratic {params_pool[2]:.3f}\")\nprint(f\"  param stds: {np.sqrt(np.diag(cov_pool))}\")",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Line 1:\n  params: intercept 14.072, linear 3.235, quadratic -0.329\n  param stds: [0.30111645 0.15136411 0.01639544]\n\nLine 2:\n  params: intercept 13.878, linear 3.068, quadratic -0.258\n  param stds: [0.40278528 0.21302253 0.02124955]\n\nLine 3:\n  params: intercept 13.531, linear 3.648, quadratic -0.408\n  param stds: [0.29794328 0.15757436 0.01571845]\n\nLine 4:\n  params: intercept 13.373, linear 3.523, quadratic -0.352\n  param stds: [0.29956437 0.15843171 0.01580397]\n\nLine 5:\n  params: intercept 14.005, linear 3.238, quadratic -0.329\n  param stds: [0.35074608 0.18550036 0.01850414]\n\nPooled lines 2-5:\n  params: intercept 13.696, linear 3.369, quadratic -0.337\n  param stds: [0.36467171 0.19286527 0.01923881]\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "missing",
+            "code": null
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 8,
+          "notices": [],
+          "reply_text": "**REASONING:** The quadratic coefficients are reasonably similar across lines, with moderate parameter uncertainty (stds shown). The pooled fit gives a compromise. The model should capture line-specific variations while acknowledging uncertainty. Since the residual noise is around 0.5\u20130.75, the total predictive variance will be a combination of parameter uncertainty and noise. For the final model, we need to generate outcome samples for given line and driver. Approach: assume parameters are multivariate normal with estimated mean and covariance per line. For each prediction, draw a random parameter vector from that distribution, compute deterministic outcome, then add Gaussian noise with estimated residual std. However, we need to ensure the model works for any line (1\u20135) and driver (0\u201310). We have enough data to estimate per-line parameters. We should also consider that lines 2\u20135 may share hyperparameters, but given the stakes, we can treat them independently. Budget still 900; we could run an experiment to reduce parameter uncertainty for one line, but maybe not worth it because we already have decent precision. The 10th and 90th percentiles will be influenced by both noise and parameter uncertainty. Let's build a first version of `working_model` that implements this Bayesian predictive approach. We'll compute the needed arrays and embed them in the model string. The model will use numpy randomness with seed. We'll update `working_model` now.\n\n```python\n# Build the model string\nmodel_code = \"\"\"\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    # regime.config: dict with 'line' and 'driver'\n    line = regime.config['line']\n    driver = regime.config['driver']\n    # line should be integer 1-5\n    # per-line parameters (intercept, linear, quadratic) and covariance matrices\n    # from previous OLS fits\n    param_means = {\n        1: np.array([14.072, 3.235, -0.329]),\n        2: np.array([13.878, 3.068, -0.258]),\n        3: np.array([13.531, 3.648, -0.408]),\n        4: np.array([13.373, 3.523, -0.352]),\n        5: np.array([14.005, 3.238, -0.329])\n    }\n    param_covs = {\n        1: np.array([[0.090671, -0.043867, 0.004524],\n                     [-0.043867, 0.022911, -0.002413],\n                     [0.004524, -0.002413, 0.000269]]),\n        2: np.array([[0.162236, -0.083900, 0.008573],\n                     [-0.083900, 0.045379, -0.004645],\n                     [0.008573, -0.004645, 0.000452]]),\n        3: np.array([[0.088772, -0.045559, 0.004607],\n                     [-0.045559, 0.024830, -0.002518],\n                     [0.004607, -0.002518, 0.000247]]),\n        4: np.array([[0.089739, -0.046095, 0.004660],\n                     [-0.046095, 0.025101, -0.002545],\n                     [0.004660, -0.002545, 0.000250]]),\n        5: np.array([[0.123023, -0.063594, 0.006467],\n                     [-0.063594, 0.034410, -0.003516],\n                     [0.006467, -0.003516, 0.000342]])\n    }\n    residual_stds = {1: 0.759, 2: 0.731, 3: 0.541, 4: 0.544, 5: 0.636}\n    \n    rng = np.random.RandomState(seed)\n    # Draw parameter vectors for each of n samples\n    # We'll draw one set of parameters per sample to incorporate parameter uncertainty\n    params = rng.multivariate_normal(param_means[line], param_covs[line], size=n)\n    # Compute deterministic prediction\n    pred = params[:, 0] + params[:, 1] * driver + params[:, 2] * driver**2\n    # Add residual noise\n    noise = rng.normal(0, residual_stds[line], size=n)\n    outcomes = pred + noise\n    return pd.DataFrame({'outcome': outcomes})\n\"\"\"\n\n# Set as working_model\nworking_model = model_code\nprint(\"working_model updated. Preview:\")\nprint(working_model[:500])\n```",
+          "cell": "# Build the model string\nmodel_code = \"\"\"\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    # regime.config: dict with 'line' and 'driver'\n    line = regime.config['line']\n    driver = regime.config['driver']\n    # line should be integer 1-5\n    # per-line parameters (intercept, linear, quadratic) and covariance matrices\n    # from previous OLS fits\n    param_means = {\n        1: np.array([14.072, 3.235, -0.329]),\n        2: np.array([13.878, 3.068, -0.258]),\n        3: np.array([13.531, 3.648, -0.408]),\n        4: np.array([13.373, 3.523, -0.352]),\n        5: np.array([14.005, 3.238, -0.329])\n    }\n    param_covs = {\n        1: np.array([[0.090671, -0.043867, 0.004524],\n                     [-0.043867, 0.022911, -0.002413],\n                     [0.004524, -0.002413, 0.000269]]),\n        2: np.array([[0.162236, -0.083900, 0.008573],\n                     [-0.083900, 0.045379, -0.004645],\n                     [0.008573, -0.004645, 0.000452]]),\n        3: np.array([[0.088772, -0.045559, 0.004607],\n                     [-0.045559, 0.024830, -0.002518],\n                     [0.004607, -0.002518, 0.000247]]),\n        4: np.array([[0.089739, -0.046095, 0.004660],\n                     [-0.046095, 0.025101, -0.002545],\n                     [0.004660, -0.002545, 0.000250]]),\n        5: np.array([[0.123023, -0.063594, 0.006467],\n                     [-0.063594, 0.034410, -0.003516],\n                     [0.006467, -0.003516, 0.000342]])\n    }\n    residual_stds = {1: 0.759, 2: 0.731, 3: 0.541, 4: 0.544, 5: 0.636}\n    \n    rng = np.random.RandomState(seed)\n    # Draw parameter vectors for each of n samples\n    # We'll draw one set of parameters per sample to incorporate parameter uncertainty\n    params = rng.multivariate_normal(param_means[line], param_covs[line], size=n)\n    # Compute deterministic prediction\n    pred = params[:, 0] + params[:, 1] * driver + params[:, 2] * driver**2\n    # Add residual noise\n    noise = rng.normal(0, residual_stds[line], size=n)\n    outcomes = pred + noise\n    return pd.DataFrame({'outcome': outcomes})\n\"\"\"\n\n# Set as working_model\nworking_model = model_code\nprint(\"working_model updated. Preview:\")\nprint(working_model[:500])",
+          "cell_result": {
+            "ok": true,
+            "stdout": "working_model updated. Preview:\n\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    # regime.config: dict with 'line' and 'driver'\n    line = regime.config['line']\n    driver = regime.config['driver']\n    # line should be integer 1-5\n    # per-line parameters (intercept, linear, quadratic) and covariance matrices\n    # from previous OLS fits\n    param_means = {\n        1: np.array([14.072, 3.235, -0.329]),\n        2: np.array([13.878, 3.068, -0.258]),\n        3: np.array([13.531, 3.648, -0.408]),\n        4\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    # regime.config: dict with 'line' and 'driver'\n    line = regime.config['line']\n    driver = regime.config['driver']\n    # line should be integer 1-5\n    # per-line parameters (intercept, linear, quadratic) and covariance matrices\n    # from previous OLS fits\n    param_means = {\n        1: np.array([14.072, 3.235, -0.329]),\n        2: np.array([13.878, 3.068, -0.258]),\n        3: np.array([13.531, 3.648, -0.408]),\n        4: np.array([13.373, 3.523, -0.352]),\n        5: np.array([14.005, 3.238, -0.329])\n    }\n    param_covs = {\n        1: np.array([[0.090671, -0.043867, 0.004524],\n                     [-0.043867, 0.022911, -0.002413],\n                     [0.004524, -0.002413, 0.000269]]),\n        2: np.array([[0.162236, -0.083900, 0.008573],\n                     [-0.083900, 0.045379, -0.004645],\n                     [0.008573, -0.004645, 0.000452]]),\n        3: np.array([[0.088772, -0.045559, 0.004607],\n                     [-0.045559, 0.024830, -0.002518],\n                     [0.004607, -0.002518, 0.000247]]),\n        4: np.array([[0.089739, -0.046095, 0.004660],\n                     [-0.046095, 0.025101, -0.002545],\n                     [0.004660, -0.002545, 0.000250]]),\n        5: np.array([[0.123023, -0.063594, 0.006467],\n                     [-0.063594, 0.034410, -0.003516],\n                     [0.006467, -0.003516, 0.000342]])\n    }\n    residual_stds = {1: 0.759, 2: 0.731, 3: 0.541, 4: 0.544, 5: 0.636}\n    \n    rng = np.random.RandomState(seed)\n    # Draw parameter vectors for each of n samples\n    # We'll draw one set of parameters per sample to incorporate parameter uncertainty\n    params = rng.multivariate_normal(param_means[line], param_covs[line], size=n)\n    # Compute deterministic prediction\n    pred = params[:, 0] + params[:, 1] * driver + params[:, 2] * driver**2\n    # Add residual noise\n    noise = rng.normal(0, residual_stds[line], size=n)\n    outcomes = pred + noise\n    return pd.DataFrame({'outcome': outcomes})\n"
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 9,
+          "notices": [],
+          "reply_text": "**REASONING:** The model is now defined but we need to verify that the covariance matrices are correct (they were printed as stds earlier, not full cov). We computed covariance matrices using sigma^2 * (A^T A)^{-1}. Let's recompute and store them exactly. Also, we should check if the model produces reasonable predictions (e.g., no extreme values) and that the parameter uncertainty is properly accounted for. We can test by simulating a few draws for a given line and driver. Also, we might want to consider whether a hierarchical model would be better, but given time, per-line quadratic with parameter uncertainty may suffice. Let's compute covariances precisely and update the model.\n\n```python\ndef get_quadratic_cov(x, y):\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, residuals, rank, s = np.linalg.lstsq(A, y, rcond=None)\n    sigma2 = residuals[0] / (len(y) - 3) if len(residuals) > 0 else 0\n    cov = sigma2 * np.linalg.inv(A.T @ A)\n    return params, cov, np.sqrt(sigma2)\n\nlines = [1,2,3,4,5]\nparam_dict = {}\ncov_dict = {}\nsigma_dict = {}\nfor l in lines:\n    if l == 1:\n        dfl = df_qual[df_qual['line'] == 1]\n    else:\n        dfl = pd.concat([df_qual[df_qual['line'] == l], commissioning_report[commissioning_report['line'] == l]])\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    params, cov, sigma = get_quadratic_cov(x, y)\n    param_dict[l] = params\n    cov_dict[l] = cov\n    sigma_dict[l] = sigma\n    print(f\"Line {l}: params {params.round(3)}\")\n    print(f\"  cov:\\n{cov.round(6)}\")\n    print(f\"  residual sigma: {sigma:.3f}\")\n    print()\n\n# Now build model string with exact numbers\ndef make_cov_string(cov):\n    # format as list of lists\n    rows = []\n    for row in cov:\n        rows.append('[' + ', '.join(f'{v:.6f}' for v in row) + ']')\n    return 'np.array([' + ', '.join(rows) + '])'\n\ncov_strings = {}\nfor l in cov_dict:\n    cov_strings[l] = make_cov_string(cov_dict[l])\n\nmodel_code = '''\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config['line']\n    driver = regime.config['driver']\n    param_means = {\n        1: np.array([{p1_0:.3f}, {p1_1:.3f}, {p1_2:.3f}]),\n        2: np.array([{p2_0:.3f}, {p2_1:.3f}, {p2_2:.3f}]),\n        3: np.array([{p3_0:.3f}, {p3_1:.3f}, {p3_2:.3f}]),\n        4: np.array([{p4_0:.3f}, {p4_1:.3f}, {p4_2:.3f}]),\n        5: np.array([{p5_0:.3f}, {p5_1:.3f}, {p5_2:.3f}])\n    }\n    param_covs = {{\n        1: {cov1},\n        2: {cov2},\n        3: {cov3},\n        4: {cov4},\n        5: {cov5}\n    }}\n    residual_stds = {{\n        1: {sigma1:.3f},\n        2: {sigma2:.3f},\n        3: {sigma3:.3f},\n        4: {sigma4:.3f},\n        5: {sigma5:.3f}\n    }}\n    rng = np.random.RandomState(seed)\n    params = rng.multivariate_normal(param_means[line], param_covs[line], size=n)\n    pred = params[:, 0] + params[:, 1] * driver + params[:, 2] * driver**2\n    noise = rng.normal(0, residual_stds[line], size=n)\n    outcomes = pred + noise\n    return pd.DataFrame({{'outcome': outcomes}})\n'''.format(\n    p1_0=param_dict[1][0], p1_1=param_dict[1][1], p1_2=param_dict[1][2],\n    p2_0=param_dict[2][0], p2_1=param_dict[2][1], p2_2=param_dict[2][2],\n    p3_0=param_dict[3][0], p3_1=param_dict[3][1], p3_2=param_dict[3][2],\n    p4_0=param_dict[4][0], p4_1=param_dict[4][1], p4_2=param_dict[4][2],\n    p5_0=param_dict[5][0], p5_1=param_dict[5][1], p5_2=param_dict[5][2],\n    cov1=cov_strings[1],\n    cov2=cov_strings[2],\n    cov3=cov_strings[3],\n    cov4=cov_strings[4],\n    cov5=cov_strings[5],\n    sigma1=sigma_dict[1],\n    sigma2=sigma_dict[2],\n    sigma3=sigma_dict[3],\n    sigma4=sigma_dict[4],\n    sigma5=sigma_dict[5]\n)\n\nworking_model = model_code\nprint(\"working_model updated with exact covariance matrices.\")\n```",
+          "cell": "def get_quadratic_cov(x, y):\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, residuals, rank, s = np.linalg.lstsq(A, y, rcond=None)\n    sigma2 = residuals[0] / (len(y) - 3) if len(residuals) > 0 else 0\n    cov = sigma2 * np.linalg.inv(A.T @ A)\n    return params, cov, np.sqrt(sigma2)\n\nlines = [1,2,3,4,5]\nparam_dict = {}\ncov_dict = {}\nsigma_dict = {}\nfor l in lines:\n    if l == 1:\n        dfl = df_qual[df_qual['line'] == 1]\n    else:\n        dfl = pd.concat([df_qual[df_qual['line'] == l], commissioning_report[commissioning_report['line'] == l]])\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    params, cov, sigma = get_quadratic_cov(x, y)\n    param_dict[l] = params\n    cov_dict[l] = cov\n    sigma_dict[l] = sigma\n    print(f\"Line {l}: params {params.round(3)}\")\n    print(f\"  cov:\\n{cov.round(6)}\")\n    print(f\"  residual sigma: {sigma:.3f}\")\n    print()\n\n# Now build model string with exact numbers\ndef make_cov_string(cov):\n    # format as list of lists\n    rows = []\n    for row in cov:\n        rows.append('[' + ', '.join(f'{v:.6f}' for v in row) + ']')\n    return 'np.array([' + ', '.join(rows) + '])'\n\ncov_strings = {}\nfor l in cov_dict:\n    cov_strings[l] = make_cov_string(cov_dict[l])\n\nmodel_code = '''\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config['line']\n    driver = regime.config['driver']\n    param_means = {\n        1: np.array([{p1_0:.3f}, {p1_1:.3f}, {p1_2:.3f}]),\n        2: np.array([{p2_0:.3f}, {p2_1:.3f}, {p2_2:.3f}]),\n        3: np.array([{p3_0:.3f}, {p3_1:.3f}, {p3_2:.3f}]),\n        4: np.array([{p4_0:.3f}, {p4_1:.3f}, {p4_2:.3f}]),\n        5: np.array([{p5_0:.3f}, {p5_1:.3f}, {p5_2:.3f}])\n    }\n    param_covs = {{\n        1: {cov1},\n        2: {cov2},\n        3: {cov3},\n        4: {cov4},\n        5: {cov5}\n    }}\n    residual_stds = {{\n        1: {sigma1:.3f},\n        2: {sigma2:.3f},\n        3: {sigma3:.3f},\n        4: {sigma4:.3f},\n        5: {sigma5:.3f}\n    }}\n    rng = np.random.RandomState(seed)\n    params = rng.multivariate_normal(param_means[line], param_covs[line], size=n)\n    pred = params[:, 0] + params[:, 1] * driver + params[:, 2] * driver**2\n    noise = rng.normal(0, residual_stds[line], size=n)\n    outcomes = pred + noise\n    return pd.DataFrame({{'outcome': outcomes}})\n'''.format(\n    p1_0=param_dict[1][0], p1_1=param_dict[1][1], p1_2=param_dict[1][2],\n    p2_0=param_dict[2][0], p2_1=param_dict[2][1], p2_2=param_dict[2][2],\n    p3_0=param_dict[3][0], p3_1=param_dict[3][1], p3_2=param_dict[3][2],\n    p4_0=param_dict[4][0], p4_1=param_dict[4][1], p4_2=param_dict[4][2],\n    p5_0=param_dict[5][0], p5_1=param_dict[5][1], p5_2=param_dict[5][2],\n    cov1=cov_strings[1],\n    cov2=cov_strings[2],\n    cov3=cov_strings[3],\n    cov4=cov_strings[4],\n    cov5=cov_strings[5],\n    sigma1=sigma_dict[1],\n    sigma2=sigma_dict[2],\n    sigma3=sigma_dict[3],\n    sigma4=sigma_dict[4],\n    sigma5=sigma_dict[5]\n)\n\nworking_model = model_code\nprint(\"working_model updated with exact covariance matrices.\")",
+          "cell_result": {
+            "ok": false,
+            "stdout": "Line 1: params [14.072  3.235 -0.329]\n  cov:\n[[ 0.090671 -0.037507  0.003322]\n [-0.037507  0.022911 -0.002385]\n [ 0.003322 -0.002385  0.000269]]\n  residual sigma: 0.784\n\nLine 2: params [13.878  3.068 -0.258]\n  cov:\n[[ 0.162236 -0.074576  0.00658 ]\n [-0.074576  0.045379 -0.004406]\n [ 0.00658  -0.004406  0.000452]]\n  residual sigma: 0.774\n\nLine 3: params [13.531  3.648 -0.408]\n  cov:\n[[ 0.08877  -0.040805  0.0036  ]\n [-0.040805  0.02483  -0.002411]\n [ 0.0036   -0.002411  0.000247]]\n  residual sigma: 0.572\n\nLine 4: params [13.373  3.523 -0.352]\n  cov:\n[[ 0.089739 -0.041251  0.00364 ]\n [-0.041251  0.025101 -0.002437]\n [ 0.00364  -0.002437  0.00025 ]]\n  residual sigma: 0.575\n\nLine 5: params [14.005  3.238 -0.329]\n  cov:\n[[ 0.123023 -0.05655   0.00499 ]\n [-0.05655   0.03441  -0.003341]\n [ 0.00499  -0.003341  0.000342]]\n  residual sigma: 0.674\n\n",
+            "error": "Traceback (most recent call last):\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\wager\\harness\\kernel_proc.py\", line 131, in _worker\n    exec(compile(msg[\"code\"], \"<cell>\", \"exec\"), ns)  # noqa: S102\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<cell>\", line 74, in <module>\nKeyError: '\\n        1'\n",
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    # regime.config: dict with 'line' and 'driver'\n    line = regime.config['line']\n    driver = regime.config['driver']\n    # line should be integer 1-5\n    # per-line parameters (intercept, linear, quadratic) and covariance matrices\n    # from previous OLS fits\n    param_means = {\n        1: np.array([14.072, 3.235, -0.329]),\n        2: np.array([13.878, 3.068, -0.258]),\n        3: np.array([13.531, 3.648, -0.408]),\n        4: np.array([13.373, 3.523, -0.352]),\n        5: np.array([14.005, 3.238, -0.329])\n    }\n    param_covs = {\n        1: np.array([[0.090671, -0.043867, 0.004524],\n                     [-0.043867, 0.022911, -0.002413],\n                     [0.004524, -0.002413, 0.000269]]),\n        2: np.array([[0.162236, -0.083900, 0.008573],\n                     [-0.083900, 0.045379, -0.004645],\n                     [0.008573, -0.004645, 0.000452]]),\n        3: np.array([[0.088772, -0.045559, 0.004607],\n                     [-0.045559, 0.024830, -0.002518],\n                     [0.004607, -0.002518, 0.000247]]),\n        4: np.array([[0.089739, -0.046095, 0.004660],\n                     [-0.046095, 0.025101, -0.002545],\n                     [0.004660, -0.002545, 0.000250]]),\n        5: np.array([[0.123023, -0.063594, 0.006467],\n                     [-0.063594, 0.034410, -0.003516],\n                     [0.006467, -0.003516, 0.000342]])\n    }\n    residual_stds = {1: 0.759, 2: 0.731, 3: 0.541, 4: 0.544, 5: 0.636}\n    \n    rng = np.random.RandomState(seed)\n    # Draw parameter vectors for each of n samples\n    # We'll draw one set of parameters per sample to incorporate parameter uncertainty\n    params = rng.multivariate_normal(param_means[line], param_covs[line], size=n)\n    # Compute deterministic prediction\n    pred = params[:, 0] + params[:, 1] * driver + params[:, 2] * driver**2\n    # Add residual noise\n    noise = rng.normal(0, residual_stds[line], size=n)\n    outcomes = pred + noise\n    return pd.DataFrame({'outcome': outcomes})\n"
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 10,
+          "notices": [],
+          "reply_text": "**REASONING:** There was a formatting error in the model string due to line breaks in the dictionary key. Also note that residual sigma values differ slightly from earlier because we recomputed with correct degrees of freedom. That's fine. We'll fix the string formatting. Also we should verify that the covariance matrices are positive definite (they appear to be). The model is nearly ready. Before final submission, we should test the model by running it with a few regimes to see if outputs look plausible (e.g., no NaN, reasonable range). Let's first fix the model string and then test.\n\n```python\n# Build model string carefully\nmodel_code = '''import numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config['line']\n    driver = regime.config['driver']\n    param_means = {\n        1: np.array([14.072, 3.235, -0.329]),\n        2: np.array([13.878, 3.068, -0.258]),\n        3: np.array([13.531, 3.648, -0.408]),\n        4: np.array([13.373, 3.523, -0.352]),\n        5: np.array([14.005, 3.238, -0.329])\n    }\n    param_covs = {\n        1: np.array([[0.090671, -0.037507, 0.003322],\n                     [-0.037507, 0.022911, -0.002385],\n                     [0.003322, -0.002385, 0.000269]]),\n        2: np.array([[0.162236, -0.074576, 0.006580],\n                     [-0.074576, 0.045379, -0.004406],\n                     [0.006580, -0.004406, 0.000452]]),\n        3: np.array([[0.088770, -0.040805, 0.003600],\n                     [-0.040805, 0.024830, -0.002411],\n                     [0.003600, -0.002411, 0.000247]]),\n        4: np.array([[0.089739, -0.041251, 0.003640],\n                     [-0.041251, 0.025101, -0.002437],\n                     [0.003640, -0.002437, 0.000250]]),\n        5: np.array([[0.123023, -0.056550, 0.004990],\n                     [-0.056550, 0.034410, -0.003341],\n                     [0.004990, -0.003341, 0.000342]])\n    }\n    residual_stds = {\n        1: 0.784,\n        2: 0.774,\n        3: 0.572,\n        4: 0.575,\n        5: 0.674\n    }\n    rng = np.random.RandomState(seed)\n    params = rng.multivariate_normal(param_means[line], param_covs[line], size=n)\n    pred = params[:, 0] + params[:, 1] * driver + params[:, 2] * driver**2\n    noise = rng.normal(0, residual_stds[line], size=n)\n    outcomes = pred + noise\n    return pd.DataFrame({'outcome': outcomes})\n'''\n\nworking_model = model_code\nprint(\"working_model updated.\")\n\n# Quick test\nclass MockRegime:\n    def __init__(self, line, driver):\n        self.config = {'line': line, 'driver': driver}\n\n# Evaluate\nexec(working_model, globals())\ntest_regime = MockRegime(line=2, driver=5.0)\nresult = model(test_regime, n=1000, seed=42)\nprint(\"Test for line 2, driver 5:\")\nprint(\"Mean:\", result['outcome'].mean())\nprint(\"Std:\", result['outcome'].std())\nprint(\"10th percentile:\", np.percentile(result['outcome'], 10))\nprint(\"90th percentile:\", np.percentile(result['outcome'], 90))\nprint(\"Min/Max:\", result['outcome'].min(), result['outcome'].max())\n```",
+          "cell": "# Build model string carefully\nmodel_code = '''import numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config['line']\n    driver = regime.config['driver']\n    param_means = {\n        1: np.array([14.072, 3.235, -0.329]),\n        2: np.array([13.878, 3.068, -0.258]),\n        3: np.array([13.531, 3.648, -0.408]),\n        4: np.array([13.373, 3.523, -0.352]),\n        5: np.array([14.005, 3.238, -0.329])\n    }\n    param_covs = {\n        1: np.array([[0.090671, -0.037507, 0.003322],\n                     [-0.037507, 0.022911, -0.002385],\n                     [0.003322, -0.002385, 0.000269]]),\n        2: np.array([[0.162236, -0.074576, 0.006580],\n                     [-0.074576, 0.045379, -0.004406],\n                     [0.006580, -0.004406, 0.000452]]),\n        3: np.array([[0.088770, -0.040805, 0.003600],\n                     [-0.040805, 0.024830, -0.002411],\n                     [0.003600, -0.002411, 0.000247]]),\n        4: np.array([[0.089739, -0.041251, 0.003640],\n                     [-0.041251, 0.025101, -0.002437],\n                     [0.003640, -0.002437, 0.000250]]),\n        5: np.array([[0.123023, -0.056550, 0.004990],\n                     [-0.056550, 0.034410, -0.003341],\n                     [0.004990, -0.003341, 0.000342]])\n    }\n    residual_stds = {\n        1: 0.784,\n        2: 0.774,\n        3: 0.572,\n        4: 0.575,\n        5: 0.674\n    }\n    rng = np.random.RandomState(seed)\n    params = rng.multivariate_normal(param_means[line], param_covs[line], size=n)\n    pred = params[:, 0] + params[:, 1] * driver + params[:, 2] * driver**2\n    noise = rng.normal(0, residual_stds[line], size=n)\n    outcomes = pred + noise\n    return pd.DataFrame({'outcome': outcomes})\n'''\n\nworking_model = model_code\nprint(\"working_model updated.\")\n\n# Quick test\nclass MockRegime:\n    def __init__(self, line, driver):\n        self.config = {'line': line, 'driver': driver}\n\n# Evaluate\nexec(working_model, globals())\ntest_regime = MockRegime(line=2, driver=5.0)\nresult = model(test_regime, n=1000, seed=42)\nprint(\"Test for line 2, driver 5:\")\nprint(\"Mean:\", result['outcome'].mean())\nprint(\"Std:\", result['outcome'].std())\nprint(\"10th percentile:\", np.percentile(result['outcome'], 10))\nprint(\"90th percentile:\", np.percentile(result['outcome'], 90))\nprint(\"Min/Max:\", result['outcome'].min(), result['outcome'].max())",
+          "cell_result": {
+            "ok": true,
+            "stdout": "working_model updated.\nTest for line 2, driver 5:\nMean: 22.76633496545238\nStd: 0.8363905787117333\n10th percentile: 21.698762520776278\n90th percentile: 23.83474671782749\nMin/Max: 20.444623991200867 25.75677077711695\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "import numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config['line']\n    driver = regime.config['driver']\n    param_means = {\n        1: np.array([14.072, 3.235, -0.329]),\n        2: np.array([13.878, 3.068, -0.258]),\n        3: np.array([13.531, 3.648, -0.408]),\n        4: np.array([13.373, 3.523, -0.352]),\n        5: np.array([14.005, 3.238, -0.329])\n    }\n    param_covs = {\n        1: np.array([[0.090671, -0.037507, 0.003322],\n                     [-0.037507, 0.022911, -0.002385],\n                     [0.003322, -0.002385, 0.000269]]),\n        2: np.array([[0.162236, -0.074576, 0.006580],\n                     [-0.074576, 0.045379, -0.004406],\n                     [0.006580, -0.004406, 0.000452]]),\n        3: np.array([[0.088770, -0.040805, 0.003600],\n                     [-0.040805, 0.024830, -0.002411],\n                     [0.003600, -0.002411, 0.000247]]),\n        4: np.array([[0.089739, -0.041251, 0.003640],\n                     [-0.041251, 0.025101, -0.002437],\n                     [0.003640, -0.002437, 0.000250]]),\n        5: np.array([[0.123023, -0.056550, 0.004990],\n                     [-0.056550, 0.034410, -0.003341],\n                     [0.004990, -0.003341, 0.000342]])\n    }\n    residual_stds = {\n        1: 0.784,\n        2: 0.774,\n        3: 0.572,\n        4: 0.575,\n        5: 0.674\n    }\n    rng = np.random.RandomState(seed)\n    params = rng.multivariate_normal(param_means[line], param_covs[line], size=n)\n    pred = params[:, 0] + params[:, 1] * driver + params[:, 2] * driver**2\n    noise = rng.normal(0, residual_stds[line], size=n)\n    outcomes = pred + noise\n    return pd.DataFrame({'outcome': outcomes})\n"
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 11,
+          "notices": [],
+          "reply_text": "**REASONING:** The test output looks plausible: mean outcome ~22.8 at driver 5, with spread about 0.84. The range seems reasonable given the quadratic shape (peak around driver ~5?). Need to check if predictions across driver range 0-10 are sensible (no extreme values). Let's quickly test a few extremes: driver 0 and driver 10 for each line. Also, we should ensure that the model respects the context (regime.context is empty per spec). We'll also verify that the model can be called with integer line values (1-5). After that, we can consider whether to run an experiment to improve any line's parameter uncertainty. But we have budget 900; one experiment costs 300. Could run three experiments, but maybe not necessary. Since the stakes are on distribution tails, we might want to reduce parameter uncertainty for lines with highest covariance (line 2 has largest cov). Running an experiment on line 2 across full range could tighten its parameter distribution. However, we already have 28 points for line 2; adding 20 more (experiment) would reduce parameter uncertainty by about sqrt(28/48) ~0.76 factor, not huge. Might not be worth 300. Let's first evaluate model performance by comparing predictions to actual data (check calibration). We'll compute coverage of observed outcomes within predicted intervals.\n\n```python\n# Define a helper to compute prediction intervals for each data point\ndef predict_interval(line, driver, n=10000, seed=0):\n    # Use our model\n    exec(working_model, globals())\n    class Reg:\n        def __init__(self, line, driver):\n            self.config = {'line': line, 'driver': driver}\n    regime = Reg(line, driver)\n    df = model(regime, n, seed)\n    return np.percentile(df['outcome'], [10, 50, 90])\n\n# Evaluate coverage on combined dataset (qualification + commissioning)\ncombined_all = pd.concat([df_qual, commissioning_report], ignore_index=True)\ncovered = []\nfor idx, row in combined_all.iterrows():\n    line = int(row['line'])\n    driver = row['driver']\n    outcome = row['outcome']\n    low, med, high = predict_interval(line, driver, n=2000, seed=idx)\n    covered.append(low <= outcome <= high)\ncoverage = np.mean(covered)\nprint(f\"Coverage of 80% prediction intervals (10th-90th) on combined data: {coverage:.3f}\")\nprint(f\"Total points: {len(combined_all)}\")\n\n# Also check bias: median prediction error\nerrors = []\nfor idx, row in combined_all.iterrows():\n    line = int(row['line'])\n    driver = row['driver']\n    outcome = row['outcome']\n    low, med, high = predict_interval(line, driver, n=2000, seed=idx)\n    errors.append(med - outcome)\nbias = np.mean(errors)\nprint(f\"Median prediction bias (median - actual): {bias:.3f}\")\nprint(f\"Bias std across points: {np.std(errors):.3f}\")\n```",
+          "cell": "# Define a helper to compute prediction intervals for each data point\ndef predict_interval(line, driver, n=10000, seed=0):\n    # Use our model\n    exec(working_model, globals())\n    class Reg:\n        def __init__(self, line, driver):\n            self.config = {'line': line, 'driver': driver}\n    regime = Reg(line, driver)\n    df = model(regime, n, seed)\n    return np.percentile(df['outcome'], [10, 50, 90])\n\n# Evaluate coverage on combined dataset (qualification + commissioning)\ncombined_all = pd.concat([df_qual, commissioning_report], ignore_index=True)\ncovered = []\nfor idx, row in combined_all.iterrows():\n    line = int(row['line'])\n    driver = row['driver']\n    outcome = row['outcome']\n    low, med, high = predict_interval(line, driver, n=2000, seed=idx)\n    covered.append(low <= outcome <= high)\ncoverage = np.mean(covered)\nprint(f\"Coverage of 80% prediction intervals (10th-90th) on combined data: {coverage:.3f}\")\nprint(f\"Total points: {len(combined_all)}\")\n\n# Also check bias: median prediction error\nerrors = []\nfor idx, row in combined_all.iterrows():\n    line = int(row['line'])\n    driver = row['driver']\n    outcome = row['outcome']\n    low, med, high = predict_interval(line, driver, n=2000, seed=idx)\n    errors.append(med - outcome)\nbias = np.mean(errors)\nprint(f\"Median prediction bias (median - actual): {bias:.3f}\")\nprint(f\"Bias std across points: {np.std(errors):.3f}\")",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Coverage of 80% prediction intervals (10th-90th) on combined data: 0.831\nTotal points: 160\nMedian prediction bias (median - actual): 0.002\nBias std across points: 0.662\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "import numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config['line']\n    driver = regime.config['driver']\n    param_means = {\n        1: np.array([14.072, 3.235, -0.329]),\n        2: np.array([13.878, 3.068, -0.258]),\n        3: np.array([13.531, 3.648, -0.408]),\n        4: np.array([13.373, 3.523, -0.352]),\n        5: np.array([14.005, 3.238, -0.329])\n    }\n    param_covs = {\n        1: np.array([[0.090671, -0.037507, 0.003322],\n                     [-0.037507, 0.022911, -0.002385],\n                     [0.003322, -0.002385, 0.000269]]),\n        2: np.array([[0.162236, -0.074576, 0.006580],\n                     [-0.074576, 0.045379, -0.004406],\n                     [0.006580, -0.004406, 0.000452]]),\n        3: np.array([[0.088770, -0.040805, 0.003600],\n                     [-0.040805, 0.024830, -0.002411],\n                     [0.003600, -0.002411, 0.000247]]),\n        4: np.array([[0.089739, -0.041251, 0.003640],\n                     [-0.041251, 0.025101, -0.002437],\n                     [0.003640, -0.002437, 0.000250]]),\n        5: np.array([[0.123023, -0.056550, 0.004990],\n                     [-0.056550, 0.034410, -0.003341],\n                     [0.004990, -0.003341, 0.000342]])\n    }\n    residual_stds = {\n        1: 0.784,\n        2: 0.774,\n        3: 0.572,\n        4: 0.575,\n        5: 0.674\n    }\n    rng = np.random.RandomState(seed)\n    params = rng.multivariate_normal(param_means[line], param_covs[line], size=n)\n    pred = params[:, 0] + params[:, 1] * driver + params[:, 2] * driver**2\n    noise = rng.normal(0, residual_stds[line], size=n)\n    outcomes = pred + noise\n    return pd.DataFrame({'outcome': outcomes})\n"
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 12,
+          "notices": [],
+          "reply_text": "**REASONING:** Coverage is 83.1% (close to 80%) and bias is near zero. The model appears well-calibrated to the existing data. The bias std is about 0.66, indicating some residual error but acceptable. The model seems ready for submission. However, we should consider whether the parameter uncertainty is appropriately captured: our multivariate normal approximation for parameters may be adequate. One potential improvement is to share information across lines via a hierarchical model, but given the stakes and time, the current model is reasonable. We have budget remaining 900, but we could also run an experiment on line 2 (largest parameter covariance) to reduce uncertainty, potentially improving predictive accuracy for that line. Since all lines count equally, and we have equal data for lines 3-5 with tighter covariances, maybe we should run an experiment on line 2. But the cost is 300 for 20 batches. Could also run on line 1 to improve its covariance (line 1 already has 48 points). Let's check parameter uncertainty magnitude: line 2's intercept std ~0.40, linear ~0.21, quadratic ~0.021. Adding 20 points might reduce those by ~sqrt(28/48)=0.76 factor. That's a moderate reduction. Is it worth 300? Possibly not, given coverage already good. We might instead submit now and keep the budget unused. The brief says \"spend the budget wisely\", but not mandatory to spend all. I'll finalize by submitting the model.\n\n```python\n# Final submission\nresult = env.submit(working_model)\nprint(\"Submission result:\", result)\nif not result.accepted:\n    print(\"Error:\", result.error)\n```",
+          "cell": "# Final submission\nresult = env.submit(working_model)\nprint(\"Submission result:\", result)\nif not result.accepted:\n    print(\"Error:\", result.error)",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Submission result: SubmitResult(accepted=True, error=None)\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "import numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config['line']\n    driver = regime.config['driver']\n    param_means = {\n        1: np.array([14.072, 3.235, -0.329]),\n        2: np.array([13.878, 3.068, -0.258]),\n        3: np.array([13.531, 3.648, -0.408]),\n        4: np.array([13.373, 3.523, -0.352]),\n        5: np.array([14.005, 3.238, -0.329])\n    }\n    param_covs = {\n        1: np.array([[0.090671, -0.037507, 0.003322],\n                     [-0.037507, 0.022911, -0.002385],\n                     [0.003322, -0.002385, 0.000269]]),\n        2: np.array([[0.162236, -0.074576, 0.006580],\n                     [-0.074576, 0.045379, -0.004406],\n                     [0.006580, -0.004406, 0.000452]]),\n        3: np.array([[0.088770, -0.040805, 0.003600],\n                     [-0.040805, 0.024830, -0.002411],\n                     [0.003600, -0.002411, 0.000247]]),\n        4: np.array([[0.089739, -0.041251, 0.003640],\n                     [-0.041251, 0.025101, -0.002437],\n                     [0.003640, -0.002437, 0.000250]]),\n        5: np.array([[0.123023, -0.056550, 0.004990],\n                     [-0.056550, 0.034410, -0.003341],\n                     [0.004990, -0.003341, 0.000342]])\n    }\n    residual_stds = {\n        1: 0.784,\n        2: 0.774,\n        3: 0.572,\n        4: 0.575,\n        5: 0.674\n    }\n    rng = np.random.RandomState(seed)\n    params = rng.multivariate_normal(param_means[line], param_covs[line], size=n)\n    pred = params[:, 0] + params[:, 1] * driver + params[:, 2] * driver**2\n    noise = rng.normal(0, residual_stds[line], size=n)\n    outcomes = pred + noise\n    return pd.DataFrame({'outcome': outcomes})\n"
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            },
+            {
+              "verb": "submit",
+              "args": {
+                "accepted": true
+              },
+              "cost": 0.0,
+              "note": "R=0.895 (server-side)"
+            }
+          ]
+        }
+      ],
+      "tokens_continuation": 78700,
+      "checkpoint_scores": {
+        "M_pre": {
+          "full": {
+            "accepted": false,
+            "R": null,
+            "hash": null
+          },
+          "diagnostic": {
+            "accepted": false,
+            "R": null,
+            "hash": null
+          }
+        },
+        "M_post_first": {
+          "full": {
+            "accepted": true,
+            "R": 0.8921675268438123,
+            "hash": "5a463f2732ea",
+            "error": null
+          },
+          "diagnostic": {
+            "accepted": true,
+            "R": 0.8957385634885789,
+            "hash": "5a463f2732ea",
+            "error": null
+          }
+        },
+        "M_final": {
+          "full": {
+            "accepted": true,
+            "R": 0.8954237001364282,
+            "hash": "957f5c271c61",
+            "error": null
+          },
+          "diagnostic": {
+            "accepted": true,
+            "R": 0.8983887131223812,
+            "hash": "957f5c271c61",
+            "error": null
+          }
+        }
+      }
+    },
+    "transfer": {
+      "case_id": "overgen_stream_twin_v0",
+      "replay_checks": [
+        {
+          "turn": 1,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 2,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 3,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 4,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        }
+      ],
+      "replay_exact": true,
+      "report_count": 1,
+      "abort": "max_turns",
+      "accepted": false,
+      "R": null,
+      "submission_code": null,
+      "trace": [
+        {
+          "turn": 5,
+          "notices": [
+            "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5.\nThe report is already loaded as DataFrame `commissioning_report`."
+          ],
+          "reply_text": "**REASONING:** The residuals for line 1 show a pattern: negative at low and high driver, positive in the middle, suggesting a non-linear relationship (maybe quadratic). The correlation is weak (0.33). This indicates that a linear model for line 1 is inadequate. Meanwhile, lines 2\u20135 slopes are consistent (std ~0.09). The commissioning report just arrived for lines 2\u20135 with range extension data. This is crucial: we now have data on lines 2\u20135 across the full driver range (0\u201310) presumably. We should examine that report immediately before spending any budget on experiments. It may reveal whether lines 2\u20135 also show non-linearity or if the steep linear slope continues. This will guide our model.\n\n```python\n# Examine the new commissioning report\nprint(\"Commissioning report head:\")\nprint(commissioning_report.head())\nprint(\"\\nShape:\", commissioning_report.shape)\nprint(\"\\nDriver range per line:\")\nprint(commissioning_report.groupby('line')['driver'].agg(['min', 'max']))\nprint(\"\\nNumber of observations per line:\")\nprint(commissioning_report['line'].value_counts().sort_index())\n# Quick stats\nprint(\"\\nOutcome stats per line:\")\nprint(commissioning_report.groupby('line')['outcome'].describe())\n```",
+          "cell": "# Examine the new commissioning report\nprint(\"Commissioning report head:\")\nprint(commissioning_report.head())\nprint(\"\\nShape:\", commissioning_report.shape)\nprint(\"\\nDriver range per line:\")\nprint(commissioning_report.groupby('line')['driver'].agg(['min', 'max']))\nprint(\"\\nNumber of observations per line:\")\nprint(commissioning_report['line'].value_counts().sort_index())\n# Quick stats\nprint(\"\\nOutcome stats per line:\")\nprint(commissioning_report.groupby('line')['outcome'].describe())",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Commissioning report head:\n   line  driver    outcome\n0   2.0     1.0  16.681598\n1   3.0     1.0  17.033109\n2   4.0     1.0  16.290834\n3   5.0     1.0  17.786127\n4   2.0     3.0  19.858739\n\nShape: (64, 3)\n\nDriver range per line:\n      min  max\nline          \n2.0   1.0  9.6\n3.0   1.0  9.6\n4.0   1.0  9.6\n5.0   1.0  9.6\n\nNumber of observations per line:\nline\n2.0    16\n3.0    16\n4.0    16\n5.0    16\nName: count, dtype: int64\n\nOutcome stats per line:\n      count       mean       std  ...        50%        75%        max\nline                              ...                                 \n2.0    16.0  19.055524  2.668573  ...  19.315052  21.003126  22.659219\n3.0    16.0  19.278339  2.442742  ...  19.953015  21.004820  22.323968\n4.0    16.0  19.063603  2.571219  ...  19.523095  21.289522  23.453751\n5.0    16.0  19.170866  2.444826  ...  19.439713  20.719112  22.711561\n\n[4 rows x 8 columns]\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "missing",
+            "code": null
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 6,
+          "notices": [],
+          "reply_text": "**REASONING:** The commissioning report covers lines 2\u20135 with driver from 1.0 to 9.6, filling the full range (except maybe 0\u20131). Combined with qualification data (driver 0.5\u20133.5), we now have data across the whole range for lines 2\u20135. We should merge qualification and commissioning data for lines 2\u20135 to get a complete dataset. For line 1, we still only have qualification data (full range). We need to model each line appropriately. Let's combine and fit each line individually to see the shape. Given line 1's non-linearity, we might need a quadratic or other non-linear term. For lines 2\u20135, we can check if linearity holds across full range. Let's merge and visualize via summary statistics and maybe fit polynomials.\n\n```python\n# Combine qualification (lines 2-5) and commissioning for lines 2-5\ndf_all = pd.concat([df_qual[df_qual['line'] >= 2], commissioning_report], ignore_index=True)\nprint(\"Combined dataset shape for lines 2-5:\", df_all.shape)\nprint(\"Driver range combined:\", df_all['driver'].min(), df_all['driver'].max())\n\n# Fit linear model per line\nlines = [2,3,4,5]\nfor l in lines:\n    dfl = df_all[df_all['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    inter, slope = linear_fit(x, y)\n    resid = y - (inter + slope * x)\n    sigma = np.std(resid)\n    print(f\"Line {l}: intercept {inter:.3f}, slope {slope:.3f}, residual std {sigma:.3f}, n={len(x)}\")\n    # Check quadratic fit\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params_q, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    resid_q = y - (params_q[0] + params_q[1]*x + params_q[2]*x**2)\n    sigma_q = np.std(resid_q)\n    print(f\"  quadratic: intercept {params_q[0]:.3f}, linear {params_q[1]:.3f}, quad {params_q[2]:.3f}, resid std {sigma_q:.3f}\")\n    # Compare residual reduction\n    print(f\"  residual reduction: {sigma - sigma_q:.3f}\")\n\n# Now for line 1 (only qualification)\ndf1 = df_qual[df_qual['line'] == 1]\nx1 = df1['driver'].values\ny1 = df1['outcome'].values\nA1 = np.vstack([np.ones(len(x1)), x1, x1**2]).T\nparams1, _, _, _ = np.linalg.lstsq(A1, y1, rcond=None)\nresid1_q = y1 - (params1[0] + params1[1]*x1 + params1[2]*x1**2)\nsigma1_q = np.std(resid1_q)\nprint(f\"\\nLine 1 quadratic: intercept {params1[0]:.3f}, linear {params1[1]:.3f}, quad {params1[2]:.3f}, resid std {sigma1_q:.3f}\")\n# Linear for comparison\ninter1, slope1 = linear_fit(x1, y1)\nresid1 = y1 - (inter1 + slope1 * x1)\nsigma1 = np.std(resid1)\nprint(f\"Line 1 linear: intercept {inter1:.3f}, slope {slope1:.3f}, resid std {sigma1:.3f}\")\nprint(f\"  residual reduction: {sigma1 - sigma1_q:.3f}\")\n```",
+          "cell": "# Combine qualification (lines 2-5) and commissioning for lines 2-5\ndf_all = pd.concat([df_qual[df_qual['line'] >= 2], commissioning_report], ignore_index=True)\nprint(\"Combined dataset shape for lines 2-5:\", df_all.shape)\nprint(\"Driver range combined:\", df_all['driver'].min(), df_all['driver'].max())\n\n# Fit linear model per line\nlines = [2,3,4,5]\nfor l in lines:\n    dfl = df_all[df_all['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    inter, slope = linear_fit(x, y)\n    resid = y - (inter + slope * x)\n    sigma = np.std(resid)\n    print(f\"Line {l}: intercept {inter:.3f}, slope {slope:.3f}, residual std {sigma:.3f}, n={len(x)}\")\n    # Check quadratic fit\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params_q, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    resid_q = y - (params_q[0] + params_q[1]*x + params_q[2]*x**2)\n    sigma_q = np.std(resid_q)\n    print(f\"  quadratic: intercept {params_q[0]:.3f}, linear {params_q[1]:.3f}, quad {params_q[2]:.3f}, resid std {sigma_q:.3f}\")\n    # Compare residual reduction\n    print(f\"  residual reduction: {sigma - sigma_q:.3f}\")\n\n# Now for line 1 (only qualification)\ndf1 = df_qual[df_qual['line'] == 1]\nx1 = df1['driver'].values\ny1 = df1['outcome'].values\nA1 = np.vstack([np.ones(len(x1)), x1, x1**2]).T\nparams1, _, _, _ = np.linalg.lstsq(A1, y1, rcond=None)\nresid1_q = y1 - (params1[0] + params1[1]*x1 + params1[2]*x1**2)\nsigma1_q = np.std(resid1_q)\nprint(f\"\\nLine 1 quadratic: intercept {params1[0]:.3f}, linear {params1[1]:.3f}, quad {params1[2]:.3f}, resid std {sigma1_q:.3f}\")\n# Linear for comparison\ninter1, slope1 = linear_fit(x1, y1)\nresid1 = y1 - (inter1 + slope1 * x1)\nsigma1 = np.std(resid1)\nprint(f\"Line 1 linear: intercept {inter1:.3f}, slope {slope1:.3f}, resid std {sigma1:.3f}\")\nprint(f\"  residual reduction: {sigma1 - sigma1_q:.3f}\")",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Combined dataset shape for lines 2-5: (112, 3)\nDriver range combined: 0.5 9.6\nLine 2: intercept 18.662, slope 0.053, residual std 2.436, n=28\n  quadratic: intercept 13.704, linear 3.372, quad -0.340, resid std 0.674\n  residual reduction: 1.762\nLine 3: intercept 18.565, slope 0.111, residual std 2.364, n=28\n  quadratic: intercept 13.685, linear 3.378, quad -0.335, resid std 0.531\n  residual reduction: 1.833\nLine 4: intercept 18.507, slope 0.085, residual std 2.484, n=28\n  quadratic: intercept 13.373, linear 3.523, quad -0.352, resid std 0.544\n  residual reduction: 1.940\nLine 5: intercept 18.795, slope 0.031, residual std 2.349, n=28\n  quadratic: intercept 14.005, linear 3.238, quad -0.329, resid std 0.636\n  residual reduction: 1.713\n\nLine 1 quadratic: intercept 14.072, linear 3.235, quad -0.329, resid std 0.759\nLine 1 linear: intercept 18.142, slope 0.314, resid std 2.395\n  residual reduction: 1.636\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "missing",
+            "code": null
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 7,
+          "notices": [],
+          "reply_text": "**REASONING:** Great! The quadratic model fits much better for all lines: residual std drops from ~2.4 to ~0.5-0.7. The quadratic coefficients are remarkably similar across lines: intercept ~13.7-14.0, linear term ~3.2-3.5, quadratic term ~ -0.33 to -0.35. Line 1 also has similar quadratic coefficients (intercept 14.07, linear 3.235, quad -0.329). This suggests a common underlying quadratic relationship between driver and outcome, with possibly small line-specific variations. The data now support a model where outcome = a + b*driver + c*driver^2 + line-specific random effects (intercept maybe). We can treat lines as having similar shape but maybe different intercepts (or slightly different coefficients). Since the quadratic fits well, we can adopt a hierarchical model: estimate population mean for a,b,c and line-specific deviations. However, we have limited data per line (line 1: 48 points, lines 2-5: 28 each). We need to quantify uncertainty in coefficients and decide if we need to run any experiments to reduce uncertainty further. The budget is 900, each experiment costs 300. We could run an experiment on line 1 across full range to reduce uncertainty on its coefficients, but maybe not necessary because we already have 48 points. We could run an experiment on a line 2-5 to reduce uncertainty on their coefficients, but they have 28 points each already. The residual std ~0.5-0.7 seems acceptable. However, the 10th and 90th percentiles matter, so we need to capture the distribution accurately, including uncertainty in coefficients. A Bayesian hierarchical model would be ideal but we need to implement a simple parametric model in the final `model()` function. We can fit a pooled quadratic to all data (lines 1-5) to get global a,b,c, then estimate line-specific intercept shifts (random intercepts). Let's compute that.\n\n```python\n# Combine all data: line 1 qualification + lines 2-5 combined data\ndf_line1 = df_qual[df_qual['line'] == 1]\ndf_all_lines = pd.concat([df_line1, df_all], ignore_index=True)\nprint(\"Total data points:\", df_all_lines.shape[0])\n\n# Fit global quadratic (all lines together)\nx_all = df_all_lines['driver'].values\ny_all = df_all_lines['outcome'].values\nA_all = np.vstack([np.ones(len(x_all)), x_all, x_all**2]).T\nparams_all, _, _, _ = np.linalg.lstsq(A_all, y_all, rcond=None)\nprint(\"Global quadratic: intercept {:.3f}, linear {:.3f}, quad {:.3f}\".format(*params_all))\nresid_all = y_all - (params_all[0] + params_all[1]*x_all + params_all[2]*x_all**2)\nprint(\"Global residual std:\", np.std(resid_all))\n\n# Compute line-specific intercept shifts (average residual per line)\ndf_all_lines['pred_global'] = params_all[0] + params_all[1]*df_all_lines['driver'] + params_all[2]*df_all_lines['driver']**2\ndf_all_lines['resid'] = df_all_lines['outcome'] - df_all_lines['pred_global']\nline_shifts = df_all_lines.groupby('line')['resid'].mean()\nprint(\"\\nLine intercept shifts (mean residual):\")\nprint(line_shifts)\nprint(\"Std of shifts:\", line_shifts.std())\n\n# Compute line-specific quadratic fits deviations\nlines = [1,2,3,4,5]\ncoeffs = []\nfor l in lines:\n    dfl = df_all_lines[df_all_lines['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    coeffs.append(params)\n    print(f\"Line {l}: intercept {params[0]:.3f}, linear {params[1]:.3f}, quad {params[2]:.3f}\")\ncoeffs = np.array(coeffs)\nprint(\"\\nCoefficient means across lines:\", coeffs.mean(axis=0))\nprint(\"Coefficient stds across lines:\", coeffs.std(axis=0))\n```",
+          "cell": "# Combine all data: line 1 qualification + lines 2-5 combined data\ndf_line1 = df_qual[df_qual['line'] == 1]\ndf_all_lines = pd.concat([df_line1, df_all], ignore_index=True)\nprint(\"Total data points:\", df_all_lines.shape[0])\n\n# Fit global quadratic (all lines together)\nx_all = df_all_lines['driver'].values\ny_all = df_all_lines['outcome'].values\nA_all = np.vstack([np.ones(len(x_all)), x_all, x_all**2]).T\nparams_all, _, _, _ = np.linalg.lstsq(A_all, y_all, rcond=None)\nprint(\"Global quadratic: intercept {:.3f}, linear {:.3f}, quad {:.3f}\".format(*params_all))\nresid_all = y_all - (params_all[0] + params_all[1]*x_all + params_all[2]*x_all**2)\nprint(\"Global residual std:\", np.std(resid_all))\n\n# Compute line-specific intercept shifts (average residual per line)\ndf_all_lines['pred_global'] = params_all[0] + params_all[1]*df_all_lines['driver'] + params_all[2]*df_all_lines['driver']**2\ndf_all_lines['resid'] = df_all_lines['outcome'] - df_all_lines['pred_global']\nline_shifts = df_all_lines.groupby('line')['resid'].mean()\nprint(\"\\nLine intercept shifts (mean residual):\")\nprint(line_shifts)\nprint(\"Std of shifts:\", line_shifts.std())\n\n# Compute line-specific quadratic fits deviations\nlines = [1,2,3,4,5]\ncoeffs = []\nfor l in lines:\n    dfl = df_all_lines[df_all_lines['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    coeffs.append(params)\n    print(f\"Line {l}: intercept {params[0]:.3f}, linear {params[1]:.3f}, quad {params[2]:.3f}\")\ncoeffs = np.array(coeffs)\nprint(\"\\nCoefficient means across lines:\", coeffs.mean(axis=0))\nprint(\"Coefficient stds across lines:\", coeffs.std(axis=0))",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Total data points: 160\nGlobal quadratic: intercept 13.818, linear 3.321, quad -0.335\nGlobal residual std: 0.6639044381946491\n\nLine intercept shifts (mean residual):\nline\n1.0    0.009641\n2.0   -0.048277\n3.0    0.105267\n4.0   -0.063812\n5.0   -0.009705\nName: resid, dtype: float64\nStd of shifts: 0.06644810336341699\nLine 1: intercept 14.072, linear 3.235, quad -0.329\nLine 2: intercept 13.704, linear 3.372, quad -0.340\nLine 3: intercept 13.685, linear 3.378, quad -0.335\nLine 4: intercept 13.373, linear 3.523, quad -0.352\nLine 5: intercept 14.005, linear 3.238, quad -0.329\n\nCoefficient means across lines: [13.7677432   3.34928247 -0.33707943]\nCoefficient stds across lines: [0.25126056 0.10647971 0.00868763]\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "missing",
+            "code": null
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 8,
+          "notices": [],
+          "reply_text": "**REASONING:** The quadratic coefficients are very similar across lines: small variation in intercept (~0.25 std), moderate in linear term (~0.11 std), tiny in quadratic term (~0.009 std). The global quadratic fits well with residual std ~0.66. The line-specific intercept shifts are small (max ~0.1). This suggests we can model all lines with a common quadratic shape plus a small line-specific intercept random effect. For the final model, we need to generate outcomes for given line and driver, accounting for uncertainty in coefficients and residual noise. We can adopt a Bayesian approach: treat coefficients as drawn from a multivariate normal with mean and covariance estimated from the five line-specific coefficient estimates. Then for each prediction, sample coefficients from that distribution, add line-specific intercept shift (maybe also random), and add residual noise. However, we have only 5 lines, so estimating a 3x3 covariance matrix is tricky. Simpler: use the global quadratic as deterministic mean, add line-specific intercept shift (fixed based on data), and add residual noise with estimated std (0.66). But that ignores uncertainty in slope and quadratic coefficients. Since the spread across lines gives us some idea of coefficient uncertainty, we can incorporate that by sampling coefficients from a normal with mean = global coefficients and covariance = sample covariance of line-specific coefficients (maybe scaled). We'll compute that.\n\nWe have budget remaining 900. Do we need experiments? The model seems well-identified with 160 data points across all lines and full driver range. Residual noise is low. The main uncertainty is in line-specific intercepts for lines 2\u20135, but we have data for each line across full range. Possibly we could run one experiment to reduce uncertainty further, but given the cost, maybe not necessary. However, the evaluation weights newly commissioned range extra. We already have data across full range, so we are fine. Let's compute covariance and construct a preliminary working model, then consider if we should run an experiment on line 1 (since it had more noise) to refine quadratic shape? But line 1 already has 48 points. I think we can proceed to build model.\n\nLet's compute coefficient covariance and create a draft working_model string.\n\n```python\nimport numpy as np\nimport pandas as pd\n\n# Compute covariance matrix of coefficients across lines\ncoeffs = []\nfor l in [1,2,3,4,5]:\n    dfl = df_all_lines[df_all_lines['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    coeffs.append(params)\ncoeffs = np.array(coeffs)  # shape (5,3)\nmean_coeff = coeffs.mean(axis=0)\ncov_coeff = np.cov(coeffs.T)  # 3x3\nprint(\"Mean coeff:\", mean_coeff)\nprint(\"Covariance coeff:\")\nprint(cov_coeff)\nprint(\"Coeff stds:\", np.sqrt(np.diag(cov_coeff)))\n\n# Estimate residual noise per line\nresid_stds = []\nfor l in [1,2,3,4,5]:\n    dfl = df_all_lines[df_all_lines['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    resid = y - (params[0] + params[1]*x + params[2]*x**2)\n    resid_stds.append(np.std(resid))\nprint(\"Residual std per line:\", resid_stds)\nprint(\"Mean residual std:\", np.mean(resid_stds))\n\n# Build a working model string that samples coefficients from multivariate normal\nworking_model = \"\"\"\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    # regime.config has 'line' and 'driver'\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    # For batch generation, line and driver could be arrays? Assume scalar per call.\n    # According to spec, regime.config always includes line and driver.\n    # We'll generate n i.i.d. samples.\n    rng = np.random.default_rng(seed)\n    # Pre\u2011estimated global coefficients and covariance from all data\n    mean_coeff = np.array([13.7677, 3.3493, -0.3371])\n    cov_coeff = np.array([[0.0631, -0.0267, 0.0017],\n                          [-0.0267, 0.0113, -0.0007],\n                          [0.0017, -0.0007, 0.000075]])\n    # Sample coefficient set for this batch (one set per batch, sharing across samples)\n    # This captures uncertainty in the quadratic shape.\n    coeff = rng.multivariate_normal(mean_coeff, cov_coeff)\n    # Line\u2011specific intercept shift (fixed offsets estimated from data)\n    shift_dict = {1: 0.0096, 2: -0.0483, 3: 0.1053, 4: -0.0638, 5: -0.0097}\n    shift = shift_dict.get(line, 0.0)\n    # Residual noise standard deviation (pooled estimate)\n    sigma = 0.6639\n    # Generate outcomes\n    outcome = coeff[0] + coeff[1]*driver + coeff[2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n\"\"\"\nprint(\"\\nWorking model drafted.\")\n# We'll not submit yet; we may want to test or improve.\n```",
+          "cell": "import numpy as np\nimport pandas as pd\n\n# Compute covariance matrix of coefficients across lines\ncoeffs = []\nfor l in [1,2,3,4,5]:\n    dfl = df_all_lines[df_all_lines['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    coeffs.append(params)\ncoeffs = np.array(coeffs)  # shape (5,3)\nmean_coeff = coeffs.mean(axis=0)\ncov_coeff = np.cov(coeffs.T)  # 3x3\nprint(\"Mean coeff:\", mean_coeff)\nprint(\"Covariance coeff:\")\nprint(cov_coeff)\nprint(\"Coeff stds:\", np.sqrt(np.diag(cov_coeff)))\n\n# Estimate residual noise per line\nresid_stds = []\nfor l in [1,2,3,4,5]:\n    dfl = df_all_lines[df_all_lines['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    resid = y - (params[0] + params[1]*x + params[2]*x**2)\n    resid_stds.append(np.std(resid))\nprint(\"Residual std per line:\", resid_stds)\nprint(\"Mean residual std:\", np.mean(resid_stds))\n\n# Build a working model string that samples coefficients from multivariate normal\nworking_model = \"\"\"\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    # regime.config has 'line' and 'driver'\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    # For batch generation, line and driver could be arrays? Assume scalar per call.\n    # According to spec, regime.config always includes line and driver.\n    # We'll generate n i.i.d. samples.\n    rng = np.random.default_rng(seed)\n    # Pre\u2011estimated global coefficients and covariance from all data\n    mean_coeff = np.array([13.7677, 3.3493, -0.3371])\n    cov_coeff = np.array([[0.0631, -0.0267, 0.0017],\n                          [-0.0267, 0.0113, -0.0007],\n                          [0.0017, -0.0007, 0.000075]])\n    # Sample coefficient set for this batch (one set per batch, sharing across samples)\n    # This captures uncertainty in the quadratic shape.\n    coeff = rng.multivariate_normal(mean_coeff, cov_coeff)\n    # Line\u2011specific intercept shift (fixed offsets estimated from data)\n    shift_dict = {1: 0.0096, 2: -0.0483, 3: 0.1053, 4: -0.0638, 5: -0.0097}\n    shift = shift_dict.get(line, 0.0)\n    # Residual noise standard deviation (pooled estimate)\n    sigma = 0.6639\n    # Generate outcomes\n    outcome = coeff[0] + coeff[1]*driver + coeff[2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n\"\"\"\nprint(\"\\nWorking model drafted.\")\n# We'll not submit yet; we may want to test or improve.",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Mean coeff: [13.7677432   3.34928247 -0.33707943]\nCovariance coeff:\n[[ 7.89148342e-02 -3.33164037e-02  2.59577065e-03]\n [-3.33164037e-02  1.41724099e-02 -1.11602499e-03]\n [ 2.59577065e-03 -1.11602499e-03  9.43436243e-05]]\nCoeff stds: [0.28091784 0.11904793 0.00971306]\nResidual std per line: [np.float64(0.7586334609866865), np.float64(0.6735131226101684), np.float64(0.5305405003490218), np.float64(0.5436153597997126), np.float64(0.6364940921289608)]\nMean residual std: 0.62855930717491\n\nWorking model drafted.\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    # regime.config has 'line' and 'driver'\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    # For batch generation, line and driver could be arrays? Assume scalar per call.\n    # According to spec, regime.config always includes line and driver.\n    # We'll generate n i.i.d. samples.\n    rng = np.random.default_rng(seed)\n    # Pre\u2011estimated global coefficients and covariance from all data\n    mean_coeff = np.array([13.7677, 3.3493, -0.3371])\n    cov_coeff = np.array([[0.0631, -0.0267, 0.0017],\n                          [-0.0267, 0.0113, -0.0007],\n                          [0.0017, -0.0007, 0.000075]])\n    # Sample coefficient set for this batch (one set per batch, sharing across samples)\n    # This captures uncertainty in the quadratic shape.\n    coeff = rng.multivariate_normal(mean_coeff, cov_coeff)\n    # Line\u2011specific intercept shift (fixed offsets estimated from data)\n    shift_dict = {1: 0.0096, 2: -0.0483, 3: 0.1053, 4: -0.0638, 5: -0.0097}\n    shift = shift_dict.get(line, 0.0)\n    # Residual noise standard deviation (pooled estimate)\n    sigma = 0.6639\n    # Generate outcomes\n    outcome = coeff[0] + coeff[1]*driver + coeff[2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n"
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 9,
+          "notices": [],
+          "reply_text": "**REASONING:** The covariance matrix shows moderate uncertainty in intercept and linear term, small in quadratic term. The residual std per line varies from 0.53 to 0.76, mean ~0.63. The pooled global residual std earlier was 0.66, close. Our model should capture two sources of uncertainty: (1) uncertainty in the quadratic coefficients (between-line variation), (2) residual noise within a line. The current working_model samples one coefficient set per batch, which is appropriate because the quadratic shape is shared across lines but we are uncertain about its true values. However, we also need to account for line-specific intercept shifts (fixed offsets). That's fine.\n\nBut we might want to also incorporate uncertainty in the line-specific shifts (they are estimated from finite data). We could treat shifts as random with their own variance. However, given the small magnitude (max 0.1) and limited lines, we might keep them fixed.\n\nWe should test the model by generating some predictions and comparing to observed data, perhaps via simulation. Let's write a quick test to see if the model's 10th/90th percentiles roughly match the data's. We'll also consider whether we need to run any experiment to reduce uncertainty. Since budget is 900 and we haven't spent any, we could run one experiment on line 1 to reduce coefficient uncertainty (especially linear term). But line 1 already has 48 points, and coefficient uncertainty is already small. Might not be worth 300. However, we could run an experiment on line 2-5 at high driver (say driver=9) to confirm quadratic shape at extreme. But we already have data up to 9.6. I think the model is satisfactory.\n\nLet's produce a final model, but first we should update the covariance values in the string to use the computed ones (with more precision). Also ensure the shift values are accurate (use line_shifts from earlier). Let's compute shifts again and embed.\n\n```python\n# Recompute shifts exactly as we will use\ndf_all_lines['pred_global'] = params_all[0] + params_all[1]*df_all_lines['driver'] + params_all[2]*df_all_lines['driver']**2\ndf_all_lines['resid'] = df_all_lines['outcome'] - df_all_lines['pred_global']\nline_shifts = df_all_lines.groupby('line')['resid'].mean()\nprint(\"Line shifts:\", line_shifts.to_dict())\n\n# Update working_model with precise numbers\nworking_model = \"\"\"\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic)\n    mean_coeff = np.array([13.7677432, 3.34928247, -0.33707943])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[7.89148342e-02, -3.33164037e-02, 2.59577065e-03],\n                          [-3.33164037e-02, 1.41724099e-02, -1.11602499e-03],\n                          [2.59577065e-03, -1.11602499e-03, 9.43436243e-05]])\n    # Sample one coefficient set for this batch (shared across n samples)\n    coeff = rng.multivariate_normal(mean_coeff, cov_coeff)\n    # Line-specific intercept shifts (fixed offsets)\n    shift_dict = {1.0: 0.009641, 2.0: -0.048277, 3.0: 0.105267, 4.0: -0.063812, 5.0: -0.009705}\n    shift = shift_dict.get(line, 0.0)\n    # Residual noise standard deviation (pooled estimate)\n    sigma = 0.6639\n    # Generate outcomes\n    outcome = coeff[0] + coeff[1]*driver + coeff[2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n\"\"\"\nprint(\"Working model updated with precise shifts.\")\n# Let's do a quick sanity check: generate predictions for line 1 driver=5, n=1000\nimport pandas as pd\nimport numpy as np\n# Simulate regime object\nclass DummyRegime:\n    def __init__(self, line, driver):\n        self.config = {'line': line, 'driver': driver}\n# We'll exec the working_model to get the function\nexec(working_model)\n# Get model function from local\nmodel_func = locals()['model']\nreg = DummyRegime(1, 5.0)\nsamples = model_func(reg, 10000, seed=42)\nprint(\"For line 1 driver 5: mean = {:.3f}, std = {:.3f}, 10th percentile = {:.3f}, 90th = {:.3f}\".format(\n    samples['outcome'].mean(), samples['outcome'].std(),\n    samples['outcome'].quantile(0.1), samples['outcome'].quantile(0.9)))\n# Compare with actual data near driver 5\nactual = df_all_lines[(df_all_lines['line']==1) & (df_all_lines['driver'].between(4.5,5.5))]['outcome']\nprint(\"Actual data near driver 5: mean = {:.3f}, std = {:.3f}, 10th = {:.3f}, 90th = {:.3f}\".format(\n    actual.mean(), actual.std(), actual.quantile(0.1), actual.quantile(0.9)))\n```",
+          "cell": "# Recompute shifts exactly as we will use\ndf_all_lines['pred_global'] = params_all[0] + params_all[1]*df_all_lines['driver'] + params_all[2]*df_all_lines['driver']**2\ndf_all_lines['resid'] = df_all_lines['outcome'] - df_all_lines['pred_global']\nline_shifts = df_all_lines.groupby('line')['resid'].mean()\nprint(\"Line shifts:\", line_shifts.to_dict())\n\n# Update working_model with precise numbers\nworking_model = \"\"\"\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic)\n    mean_coeff = np.array([13.7677432, 3.34928247, -0.33707943])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[7.89148342e-02, -3.33164037e-02, 2.59577065e-03],\n                          [-3.33164037e-02, 1.41724099e-02, -1.11602499e-03],\n                          [2.59577065e-03, -1.11602499e-03, 9.43436243e-05]])\n    # Sample one coefficient set for this batch (shared across n samples)\n    coeff = rng.multivariate_normal(mean_coeff, cov_coeff)\n    # Line-specific intercept shifts (fixed offsets)\n    shift_dict = {1.0: 0.009641, 2.0: -0.048277, 3.0: 0.105267, 4.0: -0.063812, 5.0: -0.009705}\n    shift = shift_dict.get(line, 0.0)\n    # Residual noise standard deviation (pooled estimate)\n    sigma = 0.6639\n    # Generate outcomes\n    outcome = coeff[0] + coeff[1]*driver + coeff[2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n\"\"\"\nprint(\"Working model updated with precise shifts.\")\n# Let's do a quick sanity check: generate predictions for line 1 driver=5, n=1000\nimport pandas as pd\nimport numpy as np\n# Simulate regime object\nclass DummyRegime:\n    def __init__(self, line, driver):\n        self.config = {'line': line, 'driver': driver}\n# We'll exec the working_model to get the function\nexec(working_model)\n# Get model function from local\nmodel_func = locals()['model']\nreg = DummyRegime(1, 5.0)\nsamples = model_func(reg, 10000, seed=42)\nprint(\"For line 1 driver 5: mean = {:.3f}, std = {:.3f}, 10th percentile = {:.3f}, 90th = {:.3f}\".format(\n    samples['outcome'].mean(), samples['outcome'].std(),\n    samples['outcome'].quantile(0.1), samples['outcome'].quantile(0.9)))\n# Compare with actual data near driver 5\nactual = df_all_lines[(df_all_lines['line']==1) & (df_all_lines['driver'].between(4.5,5.5))]['outcome']\nprint(\"Actual data near driver 5: mean = {:.3f}, std = {:.3f}, 10th = {:.3f}, 90th = {:.3f}\".format(\n    actual.mean(), actual.std(), actual.quantile(0.1), actual.quantile(0.9)))",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Line shifts: {1.0: 0.009640592750625787, 2.0: -0.04827678693134452, 3.0: 0.10526690275130088, 4.0: -0.06381218626150346, 5.0: -0.009704659988169035}\nWorking model updated with precise shifts.\nFor line 1 driver 5: mean = 22.157, std = 0.668, 10th percentile = 21.290, 90th = 23.013\nActual data near driver 5: mean = 22.140, std = 0.817, 10th = 21.317, 90th = 22.891\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic)\n    mean_coeff = np.array([13.7677432, 3.34928247, -0.33707943])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[7.89148342e-02, -3.33164037e-02, 2.59577065e-03],\n                          [-3.33164037e-02, 1.41724099e-02, -1.11602499e-03],\n                          [2.59577065e-03, -1.11602499e-03, 9.43436243e-05]])\n    # Sample one coefficient set for this batch (shared across n samples)\n    coeff = rng.multivariate_normal(mean_coeff, cov_coeff)\n    # Line-specific intercept shifts (fixed offsets)\n    shift_dict = {1.0: 0.009641, 2.0: -0.048277, 3.0: 0.105267, 4.0: -0.063812, 5.0: -0.009705}\n    shift = shift_dict.get(line, 0.0)\n    # Residual noise standard deviation (pooled estimate)\n    sigma = 0.6639\n    # Generate outcomes\n    outcome = coeff[0] + coeff[1]*driver + coeff[2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n"
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 10,
+          "notices": [],
+          "reply_text": "**REASONING:** The model's predictions align well with actual data: mean matches closely, standard deviation slightly lower (0.668 vs 0.817) but reasonable, percentiles are close. The model captures the central tendency and spread adequately. However, we might be underestimating variance because we're using a pooled residual sigma (0.6639) and not including uncertainty in line-specific shifts. The actual data variance includes both coefficient uncertainty and residual noise; our model includes coefficient uncertainty via sampling coeff per batch, but that contributes to across-batch variance, not within-batch? Actually, we sample coeff once per batch, so all samples in a batch share the same coeff. That might reduce within-batch variance compared to data where each observation could have different coeff (if lines truly vary). But the data we have is from fixed lines; the variation across lines is captured by shifts and coefficient covariance. Our simulation's variance seems slightly low, but percentiles are okay.\n\nWe could improve by also sampling line-specific shifts from a distribution (with variance estimated from shifts' std). The shift std across lines is 0.066, small. Might not matter.\n\nGiven the stakes (10th and 90th percentiles matter), we want to be conservative. We could inflate sigma to match the observed residual std per line (max ~0.76). Let's use sigma = 0.75 to be safe. Also, we could sample coeff per observation rather than per batch to increase within-batch spread. That would be more realistic: each sample could come from a slightly different line \"type\". However, the spec says \"model the full batch distribution\" \u2013 likely they expect that within a batch (same line, same driver) the underlying true coefficient is fixed, but our uncertainty about it should propagate to the predictive distribution. The standard approach is to marginalize over the posterior of coefficients, which our per-batch sampling does. But to get correct within-batch percentiles, we might need to sample coeff per observation. Let's test both.\n\nWe'll run a quick simulation to see the distribution of 10th/90th percentiles across many batches. But time is limited. Given the budget, we could run one experiment to get more data on line 1 (or line 3) to reduce uncertainty and validate the quadratic shape. However, with 900 remaining, one experiment costs 300. Might be worth to run on line 1 at driver extremes (maybe 0, 5, 10) to confirm quadratic. But we already have data across full range. I think the model is good enough. Let's finalize by submitting.\n\nBut first, let's update sigma to be the maximum residual std across lines (0.76) and also include shift uncertainty by adding normal(0, 0.066) per observation.\n\n```python\n# Final model adjustments\nmax_sigma = max(resid_stds)  # 0.7586\nshift_std = line_shifts.std()  # 0.0664\nprint(\"Max residual std:\", max_sigma)\nprint(\"Shift std:\", shift_std)\n\nfinal_model = \"\"\"\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic)\n    mean_coeff = np.array([13.7677432, 3.34928247, -0.33707943])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[7.89148342e-02, -3.33164037e-02, 2.59577065e-03],\n                          [-3.33164037e-02, 1.41724099e-02, -1.11602499e-03],\n                          [2.59577065e-03, -1.11602499e-03, 9.43436243e-05]])\n    # Sample coefficient set for each observation (i.i.d. across observations)\n    # This captures uncertainty in the quadratic shape for each potential batch.\n    # Use rng.multivariate_normal with size=n\n    coeffs = rng.multivariate_normal(mean_coeff, cov_coeff, size=n)  # shape (n,3)\n    # Line-specific intercept shift (fixed offset plus small random variation)\n    shift_dict = {1.0: 0.009641, 2.0: -0.048277, 3.0: 0.105267, 4.0: -0.063812, 5.0: -0.009705}\n    shift_fixed = shift_dict.get(line, 0.0)\n    shift_random = rng.normal(0, 0.0664, n)  # uncertainty in line shift\n    shift = shift_fixed + shift_random\n    # Residual noise standard deviation (conservative max)\n    sigma = 0.7586\n    # Generate outcomes\n    outcome = coeffs[:,0] + coeffs[:,1]*driver + coeffs[:,2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n\"\"\"\nprint(\"Final model ready for submission.\")\n# Quick test\nexec(final_model)\nmodel_func = locals()['model']\nreg = DummyRegime(1, 5.0)\nsamples = model_func(reg, 10000, seed=123)\nprint(\"Final model test: mean = {:.3f}, std = {:.3f}, 10th = {:.3f}, 90th = {:.3f}\".format(\n    samples['outcome'].mean(), samples['outcome'].std(),\n    samples['outcome'].quantile(0.1), samples['outcome'].quantile(0.9)))\n```",
+          "cell": "# Final model adjustments\nmax_sigma = max(resid_stds)  # 0.7586\nshift_std = line_shifts.std()  # 0.0664\nprint(\"Max residual std:\", max_sigma)\nprint(\"Shift std:\", shift_std)\n\nfinal_model = \"\"\"\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic)\n    mean_coeff = np.array([13.7677432, 3.34928247, -0.33707943])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[7.89148342e-02, -3.33164037e-02, 2.59577065e-03],\n                          [-3.33164037e-02, 1.41724099e-02, -1.11602499e-03],\n                          [2.59577065e-03, -1.11602499e-03, 9.43436243e-05]])\n    # Sample coefficient set for each observation (i.i.d. across observations)\n    # This captures uncertainty in the quadratic shape for each potential batch.\n    # Use rng.multivariate_normal with size=n\n    coeffs = rng.multivariate_normal(mean_coeff, cov_coeff, size=n)  # shape (n,3)\n    # Line-specific intercept shift (fixed offset plus small random variation)\n    shift_dict = {1.0: 0.009641, 2.0: -0.048277, 3.0: 0.105267, 4.0: -0.063812, 5.0: -0.009705}\n    shift_fixed = shift_dict.get(line, 0.0)\n    shift_random = rng.normal(0, 0.0664, n)  # uncertainty in line shift\n    shift = shift_fixed + shift_random\n    # Residual noise standard deviation (conservative max)\n    sigma = 0.7586\n    # Generate outcomes\n    outcome = coeffs[:,0] + coeffs[:,1]*driver + coeffs[:,2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n\"\"\"\nprint(\"Final model ready for submission.\")\n# Quick test\nexec(final_model)\nmodel_func = locals()['model']\nreg = DummyRegime(1, 5.0)\nsamples = model_func(reg, 10000, seed=123)\nprint(\"Final model test: mean = {:.3f}, std = {:.3f}, 10th = {:.3f}, 90th = {:.3f}\".format(\n    samples['outcome'].mean(), samples['outcome'].std(),\n    samples['outcome'].quantile(0.1), samples['outcome'].quantile(0.9)))",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Max residual std: 0.7586334609866865\nShift std: 0.06644810336341699\nFinal model ready for submission.\nFinal model test: mean = 22.093, std = 0.761, 10th = 21.111, 90th = 23.066\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic)\n    mean_coeff = np.array([13.7677432, 3.34928247, -0.33707943])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[7.89148342e-02, -3.33164037e-02, 2.59577065e-03],\n                          [-3.33164037e-02, 1.41724099e-02, -1.11602499e-03],\n                          [2.59577065e-03, -1.11602499e-03, 9.43436243e-05]])\n    # Sample one coefficient set for this batch (shared across n samples)\n    coeff = rng.multivariate_normal(mean_coeff, cov_coeff)\n    # Line-specific intercept shifts (fixed offsets)\n    shift_dict = {1.0: 0.009641, 2.0: -0.048277, 3.0: 0.105267, 4.0: -0.063812, 5.0: -0.009705}\n    shift = shift_dict.get(line, 0.0)\n    # Residual noise standard deviation (pooled estimate)\n    sigma = 0.6639\n    # Generate outcomes\n    outcome = coeff[0] + coeff[1]*driver + coeff[2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n"
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 11,
+          "notices": [],
+          "reply_text": "**REASONING:** The final model's spread (std 0.761) now matches the max residual std, and the percentiles are slightly wider than before. The mean is close to actual (22.14). This seems reasonable. However, we should also test at extremes (driver 0 and 10) for line 2-5 to ensure the quadratic extrapolation behaves plausibly. Let's quickly test for line 3 driver 10.\n\nBut before submitting, we need to ensure the model function signature is exactly as required: `model(regime, n, seed) -> DataFrame` with column `outcome`. Our model uses `regime.config.get('line')` and `regime.config.get('driver')`. That's fine.\n\nWe haven't spent any budget; we could run an experiment to reduce uncertainty, but given the model's performance and the fact that we have data across full range for all lines, I think we can submit now. However, we might want to do one experiment to validate the quadratic shape at high driver for a line 2-5, just to be safe. But budget is 900, so we can afford one experiment (cost 300) and still have 600 left. That experiment could be on line 2 at driver=9 (since we have data up to 9.6, but we could get more precise estimate). Actually, we already have 16 points per line across full range; adding 20 more might reduce uncertainty modestly. Not sure it's worth.\n\nAlternatively, we could run an experiment on line 1 at driver=0 and 10 to confirm the quadratic shape at extremes where data is sparse. Looking at line 1 data: driver min 0.1, max 9.5; we have points near extremes but maybe noisy. An experiment could be designed with config={\"line\":1, \"driver\":0} and {\"line\":1, \"driver\":10}? But experiment cost is 300 for a 20-batch campaign, and we can set config with fixed line and driver? The note says we can use `{\"line\": ..., \"driver\": ...}` to hold one setting. So we could run a campaign on line 1 at driver=0 (or 10) to get 20 replicates. That would help pin down intercept or high-end curvature.\n\nGiven the stakes, I'll run one experiment on line 1 at driver=10 (max) to reduce uncertainty at the upper bound, which matters for 90th percentile. Let's do that.\n\n```python\n# Run an experiment on line 1 at driver=10, n=20\nexp = env.experiment(config={\"line\": 1, \"driver\": 10.0}, n=20)\nprint(\"Experiment results head:\")\nprint(exp.head())\nprint(\"Shape:\", exp.shape)\nprint(\"Mean outcome:\", exp['outcome'].mean())\nprint(\"Std outcome:\", exp['outcome'].std())\n# Combine with existing data for line 1 and refit quadratic quickly\ndf_line1_new = pd.concat([df_line1, exp[['line','driver','outcome']]], ignore_index=True)\nx = df_line1_new['driver'].values\ny = df_line1_new['outcome'].values\nA = np.vstack([np.ones(len(x)), x, x**2]).T\nparams_new, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\nprint(\"Line 1 updated quadratic: intercept {:.3f}, linear {:.3f}, quad {:.3f}\".format(*params_new))\nresid_new = y - (params_new[0] + params_new[1]*x + params_new[2]*x**2)\nprint(\"Residual std new:\", np.std(resid_new))\n```",
+          "cell": "# Run an experiment on line 1 at driver=10, n=20\nexp = env.experiment(config={\"line\": 1, \"driver\": 10.0}, n=20)\nprint(\"Experiment results head:\")\nprint(exp.head())\nprint(\"Shape:\", exp.shape)\nprint(\"Mean outcome:\", exp['outcome'].mean())\nprint(\"Std outcome:\", exp['outcome'].std())\n# Combine with existing data for line 1 and refit quadratic quickly\ndf_line1_new = pd.concat([df_line1, exp[['line','driver','outcome']]], ignore_index=True)\nx = df_line1_new['driver'].values\ny = df_line1_new['outcome'].values\nA = np.vstack([np.ones(len(x)), x, x**2]).T\nparams_new, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\nprint(\"Line 1 updated quadratic: intercept {:.3f}, linear {:.3f}, quad {:.3f}\".format(*params_new))\nresid_new = y - (params_new[0] + params_new[1]*x + params_new[2]*x**2)\nprint(\"Residual std new:\", np.std(resid_new))",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Experiment results head:\n   line  driver    outcome\n0   1.0    10.0  13.739362\n1   1.0    10.0  14.137267\n2   1.0    10.0  14.651714\n3   1.0    10.0  13.124879\n4   1.0    10.0  14.224008\nShape: (20, 3)\nMean outcome: 13.839480621941608\nStd outcome: 0.618687910003044\nLine 1 updated quadratic: intercept 14.139, linear 3.169, quad -0.320\nResidual std new: 0.719442319445386\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic)\n    mean_coeff = np.array([13.7677432, 3.34928247, -0.33707943])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[7.89148342e-02, -3.33164037e-02, 2.59577065e-03],\n                          [-3.33164037e-02, 1.41724099e-02, -1.11602499e-03],\n                          [2.59577065e-03, -1.11602499e-03, 9.43436243e-05]])\n    # Sample one coefficient set for this batch (shared across n samples)\n    coeff = rng.multivariate_normal(mean_coeff, cov_coeff)\n    # Line-specific intercept shifts (fixed offsets)\n    shift_dict = {1.0: 0.009641, 2.0: -0.048277, 3.0: 0.105267, 4.0: -0.063812, 5.0: -0.009705}\n    shift = shift_dict.get(line, 0.0)\n    # Residual noise standard deviation (pooled estimate)\n    sigma = 0.6639\n    # Generate outcomes\n    outcome = coeff[0] + coeff[1]*driver + coeff[2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n"
+          },
+          "budget_remaining": 600.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            },
+            {
+              "verb": "experiment",
+              "args": {
+                "config": {
+                  "line": 1.0,
+                  "driver": 10.0
+                },
+                "context": {},
+                "n": 20
+              },
+              "cost": 300.0,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "turn": 12,
+          "notices": [],
+          "reply_text": "**REASONING:** Interesting! The experiment at driver=10 gave outcomes around 13.84, much lower than the quadratic prediction from earlier data (which would be around 13.77 + 3.35*10 -0.337*100 = 13.77 + 33.5 -33.7 = 13.57). Actually our earlier global quadratic predicted ~13.57, close to observed 13.84 (slightly higher). The new quadratic fit for line 1 shifted slightly: intercept up, linear down, quad slightly less negative. Residual std decreased to 0.72. This suggests our quadratic model is still reasonable, but the new data reduces uncertainty at high driver. The coefficients changed a bit, but within expected variation.\n\nWe should update our global coefficients using all data including this new experiment. Let's recompute global quadratic using all data (line 1 updated, lines 2-5 unchanged). Then update covariance and shifts. We'll also update residual sigma.\n\n```python\n# Combine all data: line 1 new data (including experiment) + lines 2-5 combined data\ndf_line1_new = pd.concat([df_line1, exp[['line','driver','outcome']]], ignore_index=True)\ndf_all_lines_new = pd.concat([df_line1_new, df_all], ignore_index=True)\nprint(\"Total data points after experiment:\", df_all_lines_new.shape[0])\n\n# Fit global quadratic\nx_all = df_all_lines_new['driver'].values\ny_all = df_all_lines_new['outcome'].values\nA_all = np.vstack([np.ones(len(x_all)), x_all, x_all**2]).T\nparams_all_new, _, _, _ = np.linalg.lstsq(A_all, y_all, rcond=None)\nprint(\"New global quadratic: intercept {:.3f}, linear {:.3f}, quad {:.3f}\".format(*params_all_new))\nresid_all_new = y_all - (params_all_new[0] + params_all_new[1]*x_all + params_all_new[2]*x_all**2)\nprint(\"Global residual std new:\", np.std(resid_all_new))\n\n# Compute line-specific shifts\ndf_all_lines_new['pred_global'] = params_all_new[0] + params_all_new[1]*df_all_lines_new['driver'] + params_all_new[2]*df_all_lines_new['driver']**2\ndf_all_lines_new['resid'] = df_all_lines_new['outcome'] - df_all_lines_new['pred_global']\nline_shifts_new = df_all_lines_new.groupby('line')['resid'].mean()\nprint(\"\\nNew line shifts:\", line_shifts_new.to_dict())\nprint(\"Shift std:\", line_shifts_new.std())\n\n# Recompute coefficient covariance across lines\nlines = [1,2,3,4,5]\ncoeffs_new = []\nfor l in lines:\n    dfl = df_all_lines_new[df_all_lines_new['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    coeffs_new.append(params)\ncoeffs_new = np.array(coeffs_new)\nmean_coeff_new = coeffs_new.mean(axis=0)\ncov_coeff_new = np.cov(coeffs_new.T)\nprint(\"\\nNew mean coeff:\", mean_coeff_new)\nprint(\"New cov coeff diag:\", np.diag(cov_coeff_new))\nprint(\"Coeff stds:\", np.sqrt(np.diag(cov_coeff_new)))\n\n# Residual std per line\nresid_stds_new = []\nfor l in lines:\n    dfl = df_all_lines_new[df_all_lines_new['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    resid = y - (params[0] + params[1]*x + params[2]*x**2)\n    resid_stds_new.append(np.std(resid))\nprint(\"Residual std per line new:\", resid_stds_new)\nmax_sigma_new = max(resid_stds_new)\nprint(\"Max residual std new:\", max_sigma_new)\n```",
+          "cell": "# Combine all data: line 1 new data (including experiment) + lines 2-5 combined data\ndf_line1_new = pd.concat([df_line1, exp[['line','driver','outcome']]], ignore_index=True)\ndf_all_lines_new = pd.concat([df_line1_new, df_all], ignore_index=True)\nprint(\"Total data points after experiment:\", df_all_lines_new.shape[0])\n\n# Fit global quadratic\nx_all = df_all_lines_new['driver'].values\ny_all = df_all_lines_new['outcome'].values\nA_all = np.vstack([np.ones(len(x_all)), x_all, x_all**2]).T\nparams_all_new, _, _, _ = np.linalg.lstsq(A_all, y_all, rcond=None)\nprint(\"New global quadratic: intercept {:.3f}, linear {:.3f}, quad {:.3f}\".format(*params_all_new))\nresid_all_new = y_all - (params_all_new[0] + params_all_new[1]*x_all + params_all_new[2]*x_all**2)\nprint(\"Global residual std new:\", np.std(resid_all_new))\n\n# Compute line-specific shifts\ndf_all_lines_new['pred_global'] = params_all_new[0] + params_all_new[1]*df_all_lines_new['driver'] + params_all_new[2]*df_all_lines_new['driver']**2\ndf_all_lines_new['resid'] = df_all_lines_new['outcome'] - df_all_lines_new['pred_global']\nline_shifts_new = df_all_lines_new.groupby('line')['resid'].mean()\nprint(\"\\nNew line shifts:\", line_shifts_new.to_dict())\nprint(\"Shift std:\", line_shifts_new.std())\n\n# Recompute coefficient covariance across lines\nlines = [1,2,3,4,5]\ncoeffs_new = []\nfor l in lines:\n    dfl = df_all_lines_new[df_all_lines_new['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    coeffs_new.append(params)\ncoeffs_new = np.array(coeffs_new)\nmean_coeff_new = coeffs_new.mean(axis=0)\ncov_coeff_new = np.cov(coeffs_new.T)\nprint(\"\\nNew mean coeff:\", mean_coeff_new)\nprint(\"New cov coeff diag:\", np.diag(cov_coeff_new))\nprint(\"Coeff stds:\", np.sqrt(np.diag(cov_coeff_new)))\n\n# Residual std per line\nresid_stds_new = []\nfor l in lines:\n    dfl = df_all_lines_new[df_all_lines_new['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    resid = y - (params[0] + params[1]*x + params[2]*x**2)\n    resid_stds_new.append(np.std(resid))\nprint(\"Residual std per line new:\", resid_stds_new)\nmax_sigma_new = max(resid_stds_new)\nprint(\"Max residual std new:\", max_sigma_new)",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Total data points after experiment: 180\nNew global quadratic: intercept 13.865, linear 3.281, quad -0.329\nGlobal residual std new: 0.6598815635363762\n\nNew line shifts: {1.0: 0.03256273296969407, 2.0: -0.06391533505557659, 3.0: 0.0896283546270688, 4.0: -0.07945073438573555, 5.0: -0.025343208112401112}\nShift std: 0.07017950658733077\n\nNew mean coeff: [13.78121554  3.336071   -0.33528881]\nNew cov coeff diag: [0.09007201 0.01880898 0.00014515]\nCoeff stds: [0.30011998 0.13714584 0.01204772]\nResidual std per line new: [np.float64(0.719442319445386), np.float64(0.6735131226101684), np.float64(0.5305405003490218), np.float64(0.5436153597997126), np.float64(0.6364940921289608)]\nMax residual std new: 0.719442319445386\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic)\n    mean_coeff = np.array([13.7677432, 3.34928247, -0.33707943])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[7.89148342e-02, -3.33164037e-02, 2.59577065e-03],\n                          [-3.33164037e-02, 1.41724099e-02, -1.11602499e-03],\n                          [2.59577065e-03, -1.11602499e-03, 9.43436243e-05]])\n    # Sample one coefficient set for this batch (shared across n samples)\n    coeff = rng.multivariate_normal(mean_coeff, cov_coeff)\n    # Line-specific intercept shifts (fixed offsets)\n    shift_dict = {1.0: 0.009641, 2.0: -0.048277, 3.0: 0.105267, 4.0: -0.063812, 5.0: -0.009705}\n    shift = shift_dict.get(line, 0.0)\n    # Residual noise standard deviation (pooled estimate)\n    sigma = 0.6639\n    # Generate outcomes\n    outcome = coeff[0] + coeff[1]*driver + coeff[2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n"
+          },
+          "budget_remaining": 600.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            },
+            {
+              "verb": "experiment",
+              "args": {
+                "config": {
+                  "line": 1.0,
+                  "driver": 10.0
+                },
+                "context": {},
+                "n": 20
+              },
+              "cost": 300.0,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "turn": 13,
+          "notices": [],
+          "reply_text": "**REASONING:** The updated coefficients are similar to before, with slightly increased covariance (uncertainty) due to the new data shifting line 1's fit. The shifts changed a bit. Residual std max is now 0.719 (line 1). The model is still robust. We now have 180 data points, good coverage. Given the budget remaining 600, we could run another experiment on a line 2-5 at high driver to further reduce uncertainty, but likely not necessary. The model captures the quadratic shape with reasonable uncertainty. We should finalize the working_model with the updated numbers.\n\nLet's construct the final model string using the new estimates. We'll use mean_coeff_new, cov_coeff_new, shift_dict from line_shifts_new, and sigma = max_sigma_new (0.7194). Also include shift uncertainty with shift_std = 0.0702.\n\nWe'll also ensure we sample coefficients per observation (size=n) as before.\n\n```python\n# Build final model string with updated values\nfinal_model = \"\"\"\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic) from updated fit\n    mean_coeff = np.array([13.78121554, 3.336071, -0.33528881])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[9.007201e-02, -3.775108e-02, 2.936870e-03],\n                          [-3.775108e-02, 1.880898e-02, -1.477401e-03],\n                          [2.936870e-03, -1.477401e-03, 1.451476e-04]])\n    # Sample coefficient set for each observation (i.i.d. across observations)\n    coeffs = rng.multivariate_normal(mean_coeff, cov_coeff, size=n)  # shape (n,3)\n    # Line-specific intercept shift (fixed offset plus small random variation)\n    shift_dict = {1.0: 0.032563, 2.0: -0.063915, 3.0: 0.089628, 4.0: -0.079451, 5.0: -0.025343}\n    shift_fixed = shift_dict.get(line, 0.0)\n    shift_random = rng.normal(0, 0.07018, n)  # uncertainty in line shift\n    shift = shift_fixed + shift_random\n    # Residual noise standard deviation (conservative max)\n    sigma = 0.7194\n    # Generate outcomes\n    outcome = coeffs[:,0] + coeffs[:,1]*driver + coeffs[:,2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n\"\"\"\nprint(\"Final model built.\")\n# Quick sanity test\nexec(final_model)\nmodel_func = locals()['model']\nclass DummyRegime:\n    def __init__(self, line, driver):\n        self.config = {'line': line, 'driver': driver}\n# Test line 1 driver 5\nreg = DummyRegime(1, 5.0)\nsamples = model_func(reg, 10000, seed=999)\nprint(\"Test line 1 driver 5: mean = {:.3f}, std = {:.3f}, 10th = {:.3f}, 90th = {:.3f}\".format(\n    samples['outcome'].mean(), samples['outcome'].std(),\n    samples['outcome'].quantile(0.1), samples['outcome'].quantile(0.9)))\n# Test line 3 driver 10 (high driver)\nreg3 = DummyRegime(3, 10.0)\nsamples3 = model_func(reg3, 10000, seed=999)\nprint(\"Test line 3 driver 10: mean = {:.3f}, std = {:.3f}, 10th = {:.3f}, 90th = {:.3f}\".format(\n    samples3['outcome'].mean(), samples3['outcome'].std(),\n    samples3['outcome'].quantile(0.1), samples3['outcome'].quantile(0.9)))\n# Compare with actual data for line 3 driver near 10\nactual3 = df_all_lines_new[(df_all_lines_new['line']==3) & (df_all_lines_new['driver']>9.5)]['outcome']\nif len(actual3) > 0:\n    print(\"Actual line 3 driver >9.5: mean = {:.3f}, std = {:.3f}\".format(actual3.mean(), actual3.std()))\n```",
+          "cell": "# Build final model string with updated values\nfinal_model = \"\"\"\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic) from updated fit\n    mean_coeff = np.array([13.78121554, 3.336071, -0.33528881])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[9.007201e-02, -3.775108e-02, 2.936870e-03],\n                          [-3.775108e-02, 1.880898e-02, -1.477401e-03],\n                          [2.936870e-03, -1.477401e-03, 1.451476e-04]])\n    # Sample coefficient set for each observation (i.i.d. across observations)\n    coeffs = rng.multivariate_normal(mean_coeff, cov_coeff, size=n)  # shape (n,3)\n    # Line-specific intercept shift (fixed offset plus small random variation)\n    shift_dict = {1.0: 0.032563, 2.0: -0.063915, 3.0: 0.089628, 4.0: -0.079451, 5.0: -0.025343}\n    shift_fixed = shift_dict.get(line, 0.0)\n    shift_random = rng.normal(0, 0.07018, n)  # uncertainty in line shift\n    shift = shift_fixed + shift_random\n    # Residual noise standard deviation (conservative max)\n    sigma = 0.7194\n    # Generate outcomes\n    outcome = coeffs[:,0] + coeffs[:,1]*driver + coeffs[:,2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n\"\"\"\nprint(\"Final model built.\")\n# Quick sanity test\nexec(final_model)\nmodel_func = locals()['model']\nclass DummyRegime:\n    def __init__(self, line, driver):\n        self.config = {'line': line, 'driver': driver}\n# Test line 1 driver 5\nreg = DummyRegime(1, 5.0)\nsamples = model_func(reg, 10000, seed=999)\nprint(\"Test line 1 driver 5: mean = {:.3f}, std = {:.3f}, 10th = {:.3f}, 90th = {:.3f}\".format(\n    samples['outcome'].mean(), samples['outcome'].std(),\n    samples['outcome'].quantile(0.1), samples['outcome'].quantile(0.9)))\n# Test line 3 driver 10 (high driver)\nreg3 = DummyRegime(3, 10.0)\nsamples3 = model_func(reg3, 10000, seed=999)\nprint(\"Test line 3 driver 10: mean = {:.3f}, std = {:.3f}, 10th = {:.3f}, 90th = {:.3f}\".format(\n    samples3['outcome'].mean(), samples3['outcome'].std(),\n    samples3['outcome'].quantile(0.1), samples3['outcome'].quantile(0.9)))\n# Compare with actual data for line 3 driver near 10\nactual3 = df_all_lines_new[(df_all_lines_new['line']==3) & (df_all_lines_new['driver']>9.5)]['outcome']\nif len(actual3) > 0:\n    print(\"Actual line 3 driver >9.5: mean = {:.3f}, std = {:.3f}\".format(actual3.mean(), actual3.std()))",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Final model built.\nTest line 1 driver 5: mean = 22.109, std = 0.747, 10th = 21.160, 90th = 23.054\nTest line 3 driver 10: mean = 13.688, std = 0.896, 10th = 12.547, 90th = 14.829\nActual line 3 driver >9.5: mean = 14.948, std = 0.820\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic)\n    mean_coeff = np.array([13.7677432, 3.34928247, -0.33707943])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[7.89148342e-02, -3.33164037e-02, 2.59577065e-03],\n                          [-3.33164037e-02, 1.41724099e-02, -1.11602499e-03],\n                          [2.59577065e-03, -1.11602499e-03, 9.43436243e-05]])\n    # Sample one coefficient set for this batch (shared across n samples)\n    coeff = rng.multivariate_normal(mean_coeff, cov_coeff)\n    # Line-specific intercept shifts (fixed offsets)\n    shift_dict = {1.0: 0.009641, 2.0: -0.048277, 3.0: 0.105267, 4.0: -0.063812, 5.0: -0.009705}\n    shift = shift_dict.get(line, 0.0)\n    # Residual noise standard deviation (pooled estimate)\n    sigma = 0.6639\n    # Generate outcomes\n    outcome = coeff[0] + coeff[1]*driver + coeff[2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n"
+          },
+          "budget_remaining": 600.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            },
+            {
+              "verb": "experiment",
+              "args": {
+                "config": {
+                  "line": 1.0,
+                  "driver": 10.0
+                },
+                "context": {},
+                "n": 20
+              },
+              "cost": 300.0,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "turn": 14,
+          "notices": [],
+          "reply_text": "**REASONING:** The model's prediction for line 3 driver 10 (mean 13.69) is lower than the actual mean (14.95) from data (driver>9.5). That's a significant discrepancy: our quadratic may be underestimating outcomes at high driver for lines 2-5. Let's check the actual data for lines 2-5 at high driver: from commissioning report, driver up to 9.6. Let's compute mean outcome for driver >9 for each line.\n\nThis suggests the quadratic shape might be too pessimistic at high driver; maybe the relationship is not exactly quadratic, or there is line-specific curvature difference. We should examine the high-driver data more closely.\n\n```python\n# Examine high driver data for lines 2-5\nhigh = df_all_lines_new[(df_all_lines_new['driver'] > 9) & (df_all_lines_new['line'] >= 2)]\nprint(\"High driver (>9) data:\")\nprint(high[['line','driver','outcome']].head(10))\nprint(\"\\nStats per line:\")\nprint(high.groupby('line')['outcome'].agg(['mean','std','count']))\n# Also look at driver vs outcome scatter for lines 2-5\nimport matplotlib.pyplot as plt\n# Since we can't plot, compute quadratic fit per line using only high driver data? Not enough points.\n# Let's compute predicted vs actual for driver 9.6 for each line using line-specific quadratic\nfor l in [2,3,4,5]:\n    dfl = df_all_lines_new[df_all_lines_new['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    pred = params[0] + params[1]*9.6 + params[2]*9.6**2\n    actual_mean = dfl[dfl['driver'] > 9]['outcome'].mean()\n    print(f\"Line {l}: predicted at driver 9.6 = {pred:.3f}, actual mean >9 = {actual_mean:.3f}\")\n```",
+          "cell": "# Examine high driver data for lines 2-5\nhigh = df_all_lines_new[(df_all_lines_new['driver'] > 9) & (df_all_lines_new['line'] >= 2)]\nprint(\"High driver (>9) data:\")\nprint(high[['line','driver','outcome']].head(10))\nprint(\"\\nStats per line:\")\nprint(high.groupby('line')['outcome'].agg(['mean','std','count']))\n# Also look at driver vs outcome scatter for lines 2-5\nimport matplotlib.pyplot as plt\n# Since we can't plot, compute quadratic fit per line using only high driver data? Not enough points.\n# Let's compute predicted vs actual for driver 9.6 for each line using line-specific quadratic\nfor l in [2,3,4,5]:\n    dfl = df_all_lines_new[df_all_lines_new['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    pred = params[0] + params[1]*9.6 + params[2]*9.6**2\n    actual_mean = dfl[dfl['driver'] > 9]['outcome'].mean()\n    print(f\"Line {l}: predicted at driver 9.6 = {pred:.3f}, actual mean >9 = {actual_mean:.3f}\")",
+          "cell_result": {
+            "ok": false,
+            "stdout": "High driver (>9) data:\n     line  driver    outcome\n140   2.0     9.6  13.957432\n141   3.0     9.6  14.368406\n142   4.0     9.6  15.048137\n143   5.0     9.6  15.111677\n172   2.0     9.6  14.004497\n173   3.0     9.6  15.528239\n174   4.0     9.6  14.914854\n175   5.0     9.6  14.962382\n\nStats per line:\n           mean       std  count\nline                            \n2.0   13.980965  0.033280      2\n3.0   14.948322  0.820126      2\n4.0   14.981496  0.094245      2\n5.0   15.037029  0.105567      2\n",
+            "error": "Traceback (most recent call last):\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\wager\\harness\\kernel_proc.py\", line 131, in _worker\n    exec(compile(msg[\"code\"], \"<cell>\", \"exec\"), ns)  # noqa: S102\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<cell>\", line 8, in <module>\nModuleNotFoundError: No module named 'matplotlib'\n",
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic)\n    mean_coeff = np.array([13.7677432, 3.34928247, -0.33707943])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[7.89148342e-02, -3.33164037e-02, 2.59577065e-03],\n                          [-3.33164037e-02, 1.41724099e-02, -1.11602499e-03],\n                          [2.59577065e-03, -1.11602499e-03, 9.43436243e-05]])\n    # Sample one coefficient set for this batch (shared across n samples)\n    coeff = rng.multivariate_normal(mean_coeff, cov_coeff)\n    # Line-specific intercept shifts (fixed offsets)\n    shift_dict = {1.0: 0.009641, 2.0: -0.048277, 3.0: 0.105267, 4.0: -0.063812, 5.0: -0.009705}\n    shift = shift_dict.get(line, 0.0)\n    # Residual noise standard deviation (pooled estimate)\n    sigma = 0.6639\n    # Generate outcomes\n    outcome = coeff[0] + coeff[1]*driver + coeff[2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n"
+          },
+          "budget_remaining": 600.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            },
+            {
+              "verb": "experiment",
+              "args": {
+                "config": {
+                  "line": 1.0,
+                  "driver": 10.0
+                },
+                "context": {},
+                "n": 20
+              },
+              "cost": 300.0,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "turn": 15,
+          "notices": [],
+          "reply_text": "**REASONING:** No matplotlib, fine. The high-driver data shows outcomes around 14-15, while our quadratic predictions were lower (~13.7). The line-specific quadratic fits (using all data) should predict closer. Let's compute line-specific quadratic predictions at driver 10.\n\nWe see that line 3 actual mean >9 is 14.95 (from two points 14.37 and 15.53), while line-specific quadratic prediction at 9.6 we can compute. Let's compute line-specific quadratic coefficients and evaluate at driver 10.\n\nWe need to adjust our model to better capture line-specific curvature. Perhaps we should use line-specific quadratic fits, but with some pooling of the quadratic term? However, we have only 5 lines, each with enough points (28-68). We could simply use line-specific fits for prediction, but the spec says \"deploy every line according to what the accumulated data supports\". That suggests we can use line-specific models. However, the final model must work for any line 1-5, so we need a general function that uses line-specific parameters.\n\nWe can store the line-specific coefficients and their uncertainties (from the fit covariance). We'll sample from the posterior of each line's coefficients (maybe using multivariate normal with mean = line-specific estimate and covariance = estimation covariance). But estimating covariance for each line individually is tricky with limited data. Instead, we can adopt a hierarchical model: assume each line's coefficients are drawn from a population distribution (which we already have), but also allow line-specific deviations. Our current model uses population distribution and line-specific shift, but that may not capture line-specific slope differences.\n\nLet's compute line-specific coefficients and see how much they vary.\n\n```python\n# Compute line-specific quadratic coefficients and their standard errors via bootstrap? Simpler: use OLS covariance formula.\n# For each line, compute (X'X)^-1 * sigma^2\nlines = [1,2,3,4,5]\nline_coeffs = []\nline_covs = []\nfor l in lines:\n    dfl = df_all_lines_new[df_all_lines_new['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    n = len(x)\n    X = np.vstack([np.ones(n), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(X, y, rcond=None)\n    resid = y - X @ params\n    sigma2 = np.var(resid)\n    cov = sigma2 * np.linalg.inv(X.T @ X)  # covariance of parameters\n    line_coeffs.append(params)\n    line_covs.append(cov)\n    print(f\"Line {l}: coeffs {params.round(4)}, resid std {np.std(resid):.3f}\")\n    # print cov diagonals\n    print(f\"  coeff stds: {np.sqrt(np.diag(cov)).round(4)}\")\n\n# Compare predictions at driver 10\nprint(\"\\nPredictions at driver 10:\")\nfor l, coeff in zip(lines, line_coeffs):\n    pred = coeff[0] + coeff[1]*10 + coeff[2]*100\n    print(f\"Line {l}: {pred:.3f}\")\n```",
+          "cell": "# Compute line-specific quadratic coefficients and their standard errors via bootstrap? Simpler: use OLS covariance formula.\n# For each line, compute (X'X)^-1 * sigma^2\nlines = [1,2,3,4,5]\nline_coeffs = []\nline_covs = []\nfor l in lines:\n    dfl = df_all_lines_new[df_all_lines_new['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    n = len(x)\n    X = np.vstack([np.ones(n), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(X, y, rcond=None)\n    resid = y - X @ params\n    sigma2 = np.var(resid)\n    cov = sigma2 * np.linalg.inv(X.T @ X)  # covariance of parameters\n    line_coeffs.append(params)\n    line_covs.append(cov)\n    print(f\"Line {l}: coeffs {params.round(4)}, resid std {np.std(resid):.3f}\")\n    # print cov diagonals\n    print(f\"  coeff stds: {np.sqrt(np.diag(cov)).round(4)}\")\n\n# Compare predictions at driver 10\nprint(\"\\nPredictions at driver 10:\")\nfor l, coeff in zip(lines, line_coeffs):\n    pred = coeff[0] + coeff[1]*10 + coeff[2]*100\n    print(f\"Line {l}: {pred:.3f}\")",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Line 1: coeffs [14.1394  3.1693 -0.3204], resid std 0.719\n  coeff stds: [0.2619 0.1084 0.0094]\nLine 2: coeffs [13.7042  3.3724 -0.3402], resid std 0.674\n  coeff stds: [0.3507 0.1855 0.0185]\nLine 3: coeffs [13.6852  3.3779 -0.3349], resid std 0.531\n  coeff stds: [0.2763 0.1461 0.0146]\nLine 4: coeffs [13.3727  3.5226 -0.3523], resid std 0.544\n  coeff stds: [0.2831 0.1497 0.0149]\nLine 5: coeffs [14.0046  3.2383 -0.3287], resid std 0.636\n  coeff stds: [0.3314 0.1753 0.0175]\n\nPredictions at driver 10:\nLine 1: 13.796\nLine 2: 13.406\nLine 3: 13.978\nLine 4: 13.368\nLine 5: 13.518\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic)\n    mean_coeff = np.array([13.7677432, 3.34928247, -0.33707943])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[7.89148342e-02, -3.33164037e-02, 2.59577065e-03],\n                          [-3.33164037e-02, 1.41724099e-02, -1.11602499e-03],\n                          [2.59577065e-03, -1.11602499e-03, 9.43436243e-05]])\n    # Sample one coefficient set for this batch (shared across n samples)\n    coeff = rng.multivariate_normal(mean_coeff, cov_coeff)\n    # Line-specific intercept shifts (fixed offsets)\n    shift_dict = {1.0: 0.009641, 2.0: -0.048277, 3.0: 0.105267, 4.0: -0.063812, 5.0: -0.009705}\n    shift = shift_dict.get(line, 0.0)\n    # Residual noise standard deviation (pooled estimate)\n    sigma = 0.6639\n    # Generate outcomes\n    outcome = coeff[0] + coeff[1]*driver + coeff[2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n"
+          },
+          "budget_remaining": 600.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            },
+            {
+              "verb": "experiment",
+              "args": {
+                "config": {
+                  "line": 1.0,
+                  "driver": 10.0
+                },
+                "context": {},
+                "n": 20
+              },
+              "cost": 300.0,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "turn": 16,
+          "notices": [],
+          "reply_text": "**REASONING:** The line-specific predictions at driver 10 are around 13.4\u201314.0, but the actual data at driver 9.6 shows outcomes 14\u201315 (higher). This suggests that the quadratic model may be systematically biased downward at high driver for lines 2\u20135. Perhaps the true relationship is not quadratic, or there is a higher-order term. However, we have limited data at high driver (only two points per line at 9.6). The quadratic fit is influenced by many points across the range; maybe those two points are outliers? Let's check the residuals for high driver points.\n\nWe can compute residuals from line-specific fits for those high driver points.\n\nGiven the stakes (90th percentile matters), we need to ensure the model doesn't underpredict high outcomes. If the quadratic is biased low, our 90th percentile will be too low. We could adjust by using a more flexible model (e.g., cubic), but that risks overfitting. Alternatively, we could inflate the uncertainty at high driver by adding extra variance. However, we have budget to run an experiment on a line 2\u20135 at driver 10 to get more data. Let's run an experiment on line 3 at driver 10 (since line 3 has high actual outcomes) to see if the quadratic is accurate. That will cost 300, leaving 300 remaining. Worth it.\n\n```python\n# Run experiment on line 3 at driver 10\nexp3 = env.experiment(config={\"line\": 3, \"driver\": 10.0}, n=20)\nprint(\"Experiment line 3 driver 10 head:\")\nprint(exp3.head())\nprint(\"Shape:\", exp3.shape)\nprint(\"Mean outcome:\", exp3['outcome'].mean())\nprint(\"Std outcome:\", exp3['outcome'].std())\n# Add to dataset and refit line 3 quadratic\ndf_line3_new = pd.concat([df_all_lines_new[df_all_lines_new['line'] == 3], exp3[['line','driver','outcome']]], ignore_index=True)\nx3 = df_line3_new['driver'].values\ny3 = df_line3_new['outcome'].values\nA3 = np.vstack([np.ones(len(x3)), x3, x3**2]).T\nparams3, _, _, _ = np.linalg.lstsq(A3, y3, rcond=None)\nprint(\"Line 3 updated quadratic: intercept {:.3f}, linear {:.3f}, quad {:.3f}\".format(*params3))\nresid3 = y3 - (params3[0] + params3[1]*x3 + params3[2]*x3**2)\nprint(\"Residual std:\", np.std(resid3))\n# Prediction at driver 10\npred3 = params3[0] + params3[1]*10 + params3[2]*100\nprint(\"Prediction at driver 10:\", pred3)\n```",
+          "cell": "# Run experiment on line 3 at driver 10\nexp3 = env.experiment(config={\"line\": 3, \"driver\": 10.0}, n=20)\nprint(\"Experiment line 3 driver 10 head:\")\nprint(exp3.head())\nprint(\"Shape:\", exp3.shape)\nprint(\"Mean outcome:\", exp3['outcome'].mean())\nprint(\"Std outcome:\", exp3['outcome'].std())\n# Add to dataset and refit line 3 quadratic\ndf_line3_new = pd.concat([df_all_lines_new[df_all_lines_new['line'] == 3], exp3[['line','driver','outcome']]], ignore_index=True)\nx3 = df_line3_new['driver'].values\ny3 = df_line3_new['outcome'].values\nA3 = np.vstack([np.ones(len(x3)), x3, x3**2]).T\nparams3, _, _, _ = np.linalg.lstsq(A3, y3, rcond=None)\nprint(\"Line 3 updated quadratic: intercept {:.3f}, linear {:.3f}, quad {:.3f}\".format(*params3))\nresid3 = y3 - (params3[0] + params3[1]*x3 + params3[2]*x3**2)\nprint(\"Residual std:\", np.std(resid3))\n# Prediction at driver 10\npred3 = params3[0] + params3[1]*10 + params3[2]*100\nprint(\"Prediction at driver 10:\", pred3)",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Experiment line 3 driver 10 head:\n   line  driver    outcome\n0   3.0    10.0  13.392879\n1   3.0    10.0  13.417698\n2   3.0    10.0  14.860430\n3   3.0    10.0  13.530275\n4   3.0    10.0  14.329205\nShape: (20, 3)\nMean outcome: 13.978180046885111\nStd outcome: 0.73558091666972\nLine 3 updated quadratic: intercept 13.685, linear 3.378, quad -0.335\nResidual std: 0.6151178188574152\nPrediction at driver 10: 13.978163567996724\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic)\n    mean_coeff = np.array([13.7677432, 3.34928247, -0.33707943])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[7.89148342e-02, -3.33164037e-02, 2.59577065e-03],\n                          [-3.33164037e-02, 1.41724099e-02, -1.11602499e-03],\n                          [2.59577065e-03, -1.11602499e-03, 9.43436243e-05]])\n    # Sample one coefficient set for this batch (shared across n samples)\n    coeff = rng.multivariate_normal(mean_coeff, cov_coeff)\n    # Line-specific intercept shifts (fixed offsets)\n    shift_dict = {1.0: 0.009641, 2.0: -0.048277, 3.0: 0.105267, 4.0: -0.063812, 5.0: -0.009705}\n    shift = shift_dict.get(line, 0.0)\n    # Residual noise standard deviation (pooled estimate)\n    sigma = 0.6639\n    # Generate outcomes\n    outcome = coeff[0] + coeff[1]*driver + coeff[2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n"
+          },
+          "budget_remaining": 300.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            },
+            {
+              "verb": "experiment",
+              "args": {
+                "config": {
+                  "line": 1.0,
+                  "driver": 10.0
+                },
+                "context": {},
+                "n": 20
+              },
+              "cost": 300.0,
+              "note": ""
+            },
+            {
+              "verb": "experiment",
+              "args": {
+                "config": {
+                  "line": 3.0,
+                  "driver": 10.0
+                },
+                "context": {},
+                "n": 20
+              },
+              "cost": 300.0,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "turn": 17,
+          "notices": [],
+          "reply_text": "**REASONING:** The experiment on line 3 at driver 10 gave mean outcome 13.98, which matches exactly the line-specific quadratic prediction (13.978). So the quadratic model is accurate after all! The earlier discrepancy was due to small sample size (two points) and possibly noise. The new data confirms the quadratic shape. Good.\n\nNow we have updated data for line 3. We should recompute global coefficients and line-specific shifts including this new experiment. Then finalize the model.\n\nWe have budget 300 left; we could run another experiment on line 2 or 4 at driver 10 to further confirm, but likely not necessary. Let's update the model with all data.\n\n```python\n# Update df_all_lines_new with the new experiment for line 3\ndf_all_lines_new = pd.concat([df_all_lines_new[df_all_lines_new['line'] != 3], exp3[['line','driver','outcome']]], ignore_index=True)\nprint(\"Total data points now:\", df_all_lines_new.shape[0])\n\n# Recompute global quadratic\nx_all = df_all_lines_new['driver'].values\ny_all = df_all_lines_new['outcome'].values\nA_all = np.vstack([np.ones(len(x_all)), x_all, x_all**2]).T\nparams_all_new, _, _, _ = np.linalg.lstsq(A_all, y_all, rcond=None)\nprint(\"Global quadratic: intercept {:.3f}, linear {:.3f}, quad {:.3f}\".format(*params_all_new))\nresid_all_new = y_all - (params_all_new[0] + params_all_new[1]*x_all + params_all_new[2]*x_all**2)\nprint(\"Global residual std:\", np.std(resid_all_new))\n\n# Compute line-specific shifts\ndf_all_lines_new['pred_global'] = params_all_new[0] + params_all_new[1]*df_all_lines_new['driver'] + params_all_new[2]*df_all_lines_new['driver']**2\ndf_all_lines_new['resid'] = df_all_lines_new['outcome'] - df_all_lines_new['pred_global']\nline_shifts_new = df_all_lines_new.groupby('line')['resid'].mean()\nprint(\"\\nLine shifts:\", line_shifts_new.to_dict())\nprint(\"Shift std:\", line_shifts_new.std())\n\n# Recompute coefficient covariance across lines\nlines = [1,2,3,4,5]\ncoeffs_new = []\nfor l in lines:\n    dfl = df_all_lines_new[df_all_lines_new['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    coeffs_new.append(params)\ncoeffs_new = np.array(coeffs_new)\nmean_coeff_new = coeffs_new.mean(axis=0)\ncov_coeff_new = np.cov(coeffs_new.T)\nprint(\"\\nMean coeff:\", mean_coeff_new)\nprint(\"Cov coeff diag:\", np.diag(cov_coeff_new))\nprint(\"Coeff stds:\", np.sqrt(np.diag(cov_coeff_new)))\n\n# Residual std per line\nresid_stds_new = []\nfor l in lines:\n    dfl = df_all_lines_new[df_all_lines_new['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    resid = y - (params[0] + params[1]*x + params[2]*x**2)\n    resid_stds_new.append(np.std(resid))\nprint(\"Residual std per line:\", resid_stds_new)\nmax_sigma_new = max(resid_stds_new)\nprint(\"Max residual std:\", max_sigma_new)\n```",
+          "cell": "# Update df_all_lines_new with the new experiment for line 3\ndf_all_lines_new = pd.concat([df_all_lines_new[df_all_lines_new['line'] != 3], exp3[['line','driver','outcome']]], ignore_index=True)\nprint(\"Total data points now:\", df_all_lines_new.shape[0])\n\n# Recompute global quadratic\nx_all = df_all_lines_new['driver'].values\ny_all = df_all_lines_new['outcome'].values\nA_all = np.vstack([np.ones(len(x_all)), x_all, x_all**2]).T\nparams_all_new, _, _, _ = np.linalg.lstsq(A_all, y_all, rcond=None)\nprint(\"Global quadratic: intercept {:.3f}, linear {:.3f}, quad {:.3f}\".format(*params_all_new))\nresid_all_new = y_all - (params_all_new[0] + params_all_new[1]*x_all + params_all_new[2]*x_all**2)\nprint(\"Global residual std:\", np.std(resid_all_new))\n\n# Compute line-specific shifts\ndf_all_lines_new['pred_global'] = params_all_new[0] + params_all_new[1]*df_all_lines_new['driver'] + params_all_new[2]*df_all_lines_new['driver']**2\ndf_all_lines_new['resid'] = df_all_lines_new['outcome'] - df_all_lines_new['pred_global']\nline_shifts_new = df_all_lines_new.groupby('line')['resid'].mean()\nprint(\"\\nLine shifts:\", line_shifts_new.to_dict())\nprint(\"Shift std:\", line_shifts_new.std())\n\n# Recompute coefficient covariance across lines\nlines = [1,2,3,4,5]\ncoeffs_new = []\nfor l in lines:\n    dfl = df_all_lines_new[df_all_lines_new['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    coeffs_new.append(params)\ncoeffs_new = np.array(coeffs_new)\nmean_coeff_new = coeffs_new.mean(axis=0)\ncov_coeff_new = np.cov(coeffs_new.T)\nprint(\"\\nMean coeff:\", mean_coeff_new)\nprint(\"Cov coeff diag:\", np.diag(cov_coeff_new))\nprint(\"Coeff stds:\", np.sqrt(np.diag(cov_coeff_new)))\n\n# Residual std per line\nresid_stds_new = []\nfor l in lines:\n    dfl = df_all_lines_new[df_all_lines_new['line'] == l]\n    x = dfl['driver'].values\n    y = dfl['outcome'].values\n    A = np.vstack([np.ones(len(x)), x, x**2]).T\n    params, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\n    resid = y - (params[0] + params[1]*x + params[2]*x**2)\n    resid_stds_new.append(np.std(resid))\nprint(\"Residual std per line:\", resid_stds_new)\nmax_sigma_new = max(resid_stds_new)\nprint(\"Max residual std:\", max_sigma_new)",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Total data points now: 172\nGlobal quadratic: intercept 13.937, linear 3.231, quad -0.324\nGlobal residual std: 0.6853673666113299\n\nLine shifts: {1.0: 0.017156180599259968, 2.0: -0.06057693460666412, 3.0: 0.16384069265276544, 4.0: -0.07611233393682307, 5.0: -0.022004807663488637}\nShift std: 0.09615805750747503\n\nMean coeff: [11.04444871  2.66326616 -0.24064037]\nCov coeff diag: [38.1963427   2.21184674  0.0450387 ]\nCoeff stds: [6.18031898 1.48722787 0.21222324]\nResidual std per line: [np.float64(0.719442319445386), np.float64(0.6735131226101684), np.float64(0.716955591874582), np.float64(0.5436153597997126), np.float64(0.6364940921289608)]\nMax residual std: 0.719442319445386\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic)\n    mean_coeff = np.array([13.7677432, 3.34928247, -0.33707943])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[7.89148342e-02, -3.33164037e-02, 2.59577065e-03],\n                          [-3.33164037e-02, 1.41724099e-02, -1.11602499e-03],\n                          [2.59577065e-03, -1.11602499e-03, 9.43436243e-05]])\n    # Sample one coefficient set for this batch (shared across n samples)\n    coeff = rng.multivariate_normal(mean_coeff, cov_coeff)\n    # Line-specific intercept shifts (fixed offsets)\n    shift_dict = {1.0: 0.009641, 2.0: -0.048277, 3.0: 0.105267, 4.0: -0.063812, 5.0: -0.009705}\n    shift = shift_dict.get(line, 0.0)\n    # Residual noise standard deviation (pooled estimate)\n    sigma = 0.6639\n    # Generate outcomes\n    outcome = coeff[0] + coeff[1]*driver + coeff[2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n"
+          },
+          "budget_remaining": 300.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            },
+            {
+              "verb": "experiment",
+              "args": {
+                "config": {
+                  "line": 1.0,
+                  "driver": 10.0
+                },
+                "context": {},
+                "n": 20
+              },
+              "cost": 300.0,
+              "note": ""
+            },
+            {
+              "verb": "experiment",
+              "args": {
+                "config": {
+                  "line": 3.0,
+                  "driver": 10.0
+                },
+                "context": {},
+                "n": 20
+              },
+              "cost": 300.0,
+              "note": ""
+            }
+          ]
+        },
+        {
+          "turn": 18,
+          "notices": [],
+          "reply_text": "**REASONING:** Something went wrong: the mean coeff changed drastically (intercept 11.04, linear 2.66) because I mistakenly included line 3 data twice? Actually, I replaced line 3 data with the new experiment only, but I should have kept all line 3 data (including previous) and added the new experiment. My concatenation excluded previous line 3 data. Let's fix: we need to combine original line 3 data (from df_all_lines_new before dropping) with new experiment. Let's recompute properly.\n\nBut also note that the global quadratic changed a lot, which seems off. Let's redo carefully.\n\n```python\n# Reconstruct full dataset correctly\n# line 1 data: df_line1_new (includes experiment at driver 10)\n# lines 2-5 data: df_all (which already includes qualification and commissioning) plus new experiment for line 3\n# Let's build from scratch\ndf_line1_full = pd.concat([df_qual[df_qual['line'] == 1], exp[['line','driver','outcome']]], ignore_index=True)\ndf_lines_2_5_full = pd.concat([df_all, exp3[['line','driver','outcome']]], ignore_index=True)\ndf_full = pd.concat([df_line1_full, df_lines_2_5_full], ignore_index=True)\nprint(\"Total data points:\", df_full.shape[0])\nprint(\"Lines counts:\", df_full['line'].value_counts().sort_index())\n\n# Global quadratic fit\nx = df_full['driver'].values\ny = df_full['outcome'].values\nA = np.vstack([np.ones(len(x)), x, x**2]).T\nparams_all, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\nprint(\"Global quadratic: intercept {:.3f}, linear {:.3f}, quad {:.3f}\".format(*params_all))\nresid = y - (params_all[0] + params_all[1]*x + params_all[2]*x**2)\nprint(\"Global residual std:\", np.std(resid))\n\n# Line shifts\ndf_full['pred_global'] = params_all[0] + params_all[1]*df_full['driver'] + params_all[2]*df_full['driver']**2\ndf_full['resid'] = df_full['outcome'] - df_full['pred_global']\nline_shifts = df_full.groupby('line')['resid'].mean()\nprint(\"\\nLine shifts:\", line_shifts.to_dict())\nprint(\"Shift std:\", line_shifts.std())\n\n# Line-specific coefficients and covariance\nlines = [1,2,3,4,5]\ncoeffs = []\nfor l in lines:\n    dfl = df_full[df_full['line'] == l]\n    xl = dfl['driver'].values\n    yl = dfl['outcome'].values\n    Al = np.vstack([np.ones(len(xl)), xl, xl**2]).T\n    params, _, _, _ = np.linalg.lstsq(Al, yl, rcond=None)\n    coeffs.append(params)\ncoeffs = np.array(coeffs)\nmean_coeff = coeffs.mean(axis=0)\ncov_coeff = np.cov(coeffs.T)\nprint(\"\\nMean coeff:\", mean_coeff)\nprint(\"Cov coeff:\\n\", cov_coeff)\nprint(\"Coeff stds:\", np.sqrt(np.diag(cov_coeff)))\n\n# Residual std per line\nresid_stds = []\nfor l in lines:\n    dfl = df_full[df_full['line'] == l]\n    xl = dfl['driver'].values\n    yl = dfl['outcome'].values\n    Al = np.vstack([np.ones(len(xl)), xl, xl**2]).T\n    params, _, _, _ = np.linalg.lstsq(Al, yl, rcond=None)\n    resid_l = yl - (params[0] + params[1]*xl + params[2]*xl**2)\n    resid_stds.append(np.std(resid_l))\nprint(\"Residual std per line:\", resid_stds)\nmax_sigma = max(resid_stds)\nprint(\"Max residual std:\", max_sigma)\n```",
+          "cell": "# Reconstruct full dataset correctly\n# line 1 data: df_line1_new (includes experiment at driver 10)\n# lines 2-5 data: df_all (which already includes qualification and commissioning) plus new experiment for line 3\n# Let's build from scratch\ndf_line1_full = pd.concat([df_qual[df_qual['line'] == 1], exp[['line','driver','outcome']]], ignore_index=True)\ndf_lines_2_5_full = pd.concat([df_all, exp3[['line','driver','outcome']]], ignore_index=True)\ndf_full = pd.concat([df_line1_full, df_lines_2_5_full], ignore_index=True)\nprint(\"Total data points:\", df_full.shape[0])\nprint(\"Lines counts:\", df_full['line'].value_counts().sort_index())\n\n# Global quadratic fit\nx = df_full['driver'].values\ny = df_full['outcome'].values\nA = np.vstack([np.ones(len(x)), x, x**2]).T\nparams_all, _, _, _ = np.linalg.lstsq(A, y, rcond=None)\nprint(\"Global quadratic: intercept {:.3f}, linear {:.3f}, quad {:.3f}\".format(*params_all))\nresid = y - (params_all[0] + params_all[1]*x + params_all[2]*x**2)\nprint(\"Global residual std:\", np.std(resid))\n\n# Line shifts\ndf_full['pred_global'] = params_all[0] + params_all[1]*df_full['driver'] + params_all[2]*df_full['driver']**2\ndf_full['resid'] = df_full['outcome'] - df_full['pred_global']\nline_shifts = df_full.groupby('line')['resid'].mean()\nprint(\"\\nLine shifts:\", line_shifts.to_dict())\nprint(\"Shift std:\", line_shifts.std())\n\n# Line-specific coefficients and covariance\nlines = [1,2,3,4,5]\ncoeffs = []\nfor l in lines:\n    dfl = df_full[df_full['line'] == l]\n    xl = dfl['driver'].values\n    yl = dfl['outcome'].values\n    Al = np.vstack([np.ones(len(xl)), xl, xl**2]).T\n    params, _, _, _ = np.linalg.lstsq(Al, yl, rcond=None)\n    coeffs.append(params)\ncoeffs = np.array(coeffs)\nmean_coeff = coeffs.mean(axis=0)\ncov_coeff = np.cov(coeffs.T)\nprint(\"\\nMean coeff:\", mean_coeff)\nprint(\"Cov coeff:\\n\", cov_coeff)\nprint(\"Coeff stds:\", np.sqrt(np.diag(cov_coeff)))\n\n# Residual std per line\nresid_stds = []\nfor l in lines:\n    dfl = df_full[df_full['line'] == l]\n    xl = dfl['driver'].values\n    yl = dfl['outcome'].values\n    Al = np.vstack([np.ones(len(xl)), xl, xl**2]).T\n    params, _, _, _ = np.linalg.lstsq(Al, yl, rcond=None)\n    resid_l = yl - (params[0] + params[1]*xl + params[2]*xl**2)\n    resid_stds.append(np.std(resid_l))\nprint(\"Residual std per line:\", resid_stds)\nmax_sigma = max(resid_stds)\nprint(\"Max residual std:\", max_sigma)",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Total data points: 200\nLines counts: line\n1.0    68\n2.0    28\n3.0    48\n4.0    28\n5.0    28\nName: count, dtype: int64\nGlobal quadratic: intercept 13.892, linear 3.258, quad -0.326\nGlobal residual std: 0.6686678019967986\n\nLine shifts: {1.0: 0.0018787356165207109, 2.0: -0.07287011409121005, 3.0: 0.11142306642853368, 4.0: -0.08840551342136901, 5.0: -0.03429798714803457}\nShift std: 0.07963485324123609\n\nMean coeff: [13.78122375  3.33606424 -0.33528797]\nCov coeff:\n [[ 0.09007004 -0.04114979  0.00352825]\n [-0.04114979  0.01880828 -0.00161761]\n [ 0.00352825 -0.00161761  0.00014515]]\nCoeff stds: [0.3001167  0.13714327 0.01204776]\nResidual std per line: [np.float64(0.719442319445386), np.float64(0.6735131226101684), np.float64(0.6151178188574152), np.float64(0.5436153597997126), np.float64(0.6364940921289608)]\nMax residual std: 0.719442319445386\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    line = regime.config.get('line')\n    driver = regime.config.get('driver')\n    rng = np.random.default_rng(seed)\n    # Mean coefficients (intercept, linear, quadratic)\n    mean_coeff = np.array([13.7677432, 3.34928247, -0.33707943])\n    # Covariance matrix across lines\n    cov_coeff = np.array([[7.89148342e-02, -3.33164037e-02, 2.59577065e-03],\n                          [-3.33164037e-02, 1.41724099e-02, -1.11602499e-03],\n                          [2.59577065e-03, -1.11602499e-03, 9.43436243e-05]])\n    # Sample one coefficient set for this batch (shared across n samples)\n    coeff = rng.multivariate_normal(mean_coeff, cov_coeff)\n    # Line-specific intercept shifts (fixed offsets)\n    shift_dict = {1.0: 0.009641, 2.0: -0.048277, 3.0: 0.105267, 4.0: -0.063812, 5.0: -0.009705}\n    shift = shift_dict.get(line, 0.0)\n    # Residual noise standard deviation (pooled estimate)\n    sigma = 0.6639\n    # Generate outcomes\n    outcome = coeff[0] + coeff[1]*driver + coeff[2]*(driver**2) + shift + rng.normal(0, sigma, n)\n    return pd.DataFrame({'outcome': outcome})\n"
+          },
+          "budget_remaining": 300.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            },
+            {
+              "verb": "experiment",
+              "args": {
+                "config": {
+                  "line": 1.0,
+                  "driver": 10.0
+                },
+                "context": {},
+                "n": 20
+              },
+              "cost": 300.0,
+              "note": ""
+            },
+            {
+              "verb": "experiment",
+              "args": {
+                "config": {
+                  "line": 3.0,
+                  "driver": 10.0
+                },
+                "context": {},
+                "n": 20
+              },
+              "cost": 300.0,
+              "note": ""
+            }
+          ]
+        }
+      ],
+      "tokens_continuation": 187723,
+      "checkpoint_scores": {
+        "M_pre": {
+          "full": {
+            "accepted": false,
+            "R": null,
+            "hash": null
+          },
+          "diagnostic": {
+            "accepted": false,
+            "R": null,
+            "hash": null
+          }
+        },
+        "M_post_first": {
+          "full": {
+            "accepted": true,
+            "R": 0.4806910663241722,
+            "hash": "36e2cd663350",
+            "error": null
+          },
+          "diagnostic": {
+            "accepted": true,
+            "R": 0.349403076079182,
+            "hash": "36e2cd663350",
+            "error": null
+          }
+        },
+        "M_final": {
+          "full": {
+            "accepted": false,
+            "R": null,
+            "hash": null
+          },
+          "diagnostic": {
+            "accepted": false,
+            "R": null,
+            "hash": null
+          }
+        }
+      }
+    }
+  },
+  "gates": {
+    "M_pre_string": false,
+    "replay_exact_both": true,
+    "one_report_each": true,
+    "accepted_both": false
+  },
+  "all": false
+}

@@ -98,48 +98,65 @@ class WorldServer:
         self._pending_deliveries: list[tuple[str, pd.DataFrame]] = []
 
     # --- sealed mid-episode events (D4, ADR 0081) -----------------------
-    def begin_turn(self, turn_idx: int) -> list[str]:
+    def begin_turn(self, turn_idx: int, *, fire_events: bool = True) -> list[str]:
         """Called by the episode loop (and scripted robots) at the START of
         each turn. Fires every pending event whose trigger is met -- turn
         reached OR spend fraction reached, whichever FIRST -- unlocking its
         source and returning the sealed notices to prepend to the prompt."""
         notices = []
         self._turn = turn_idx
-        frac = self._spent / self.config.budget if self.config.budget else 0.0
-        for i, ev in enumerate(self.config.events):
-            if i in self._fired_events or self.terminal:
-                continue
-            if turn_idx >= ev.trigger_turn or frac >= ev.trigger_spend_frac:
-                self._fired_events.add(i)
-                if ev.source_name is not None:  # note-only events unlock nothing
-                    self._unlocked[ev.source_name] = ev.source
-                    if ev.auto_deliver_n is not None:
-                        df = source_view(
-                            self.world_sample,
-                            ev.source,
-                            ev.auto_deliver_n,
-                            self._next_seed(740_000),
-                        )
-                        self._rows_bought[ev.source_name] = (
-                            self._rows_bought.get(ev.source_name, 0) + ev.auto_deliver_n
-                        )
-                        self._pending_deliveries.append((ev.delivery_variable, df))
-                        notices.append(
-                            ev.notice
-                            + f"\nThe report is already loaded as DataFrame `{ev.delivery_variable}`."
-                        )
-                    else:
-                        notices.append(ev.notice + "\n(env.describe() now lists the "
-                                       "newly available source.)")
-                else:
-                    notices.append(ev.notice)
-                self._log("event", {"source": ev.source_name or "(note)", "turn": turn_idx},
-                          0.0, note=ev.notice[:120])
+        if fire_events:
+            frac = self._spent / self.config.budget if self.config.budget else 0.0
+            for i, ev in enumerate(self.config.events):
+                if i in self._fired_events or self.terminal:
+                    continue
+                if turn_idx >= ev.trigger_turn or frac >= ev.trigger_spend_frac:
+                    notices.extend(self._fire_event(i, turn_idx))
         # own-model diagnostics due this turn (lab largo): evaluated at delivery
         due = [j for j in self._register_jobs if j["due"] <= turn_idx and not j["done"]]
         for job in due:
             job["done"] = True
             notices.append(self._eval_register(job))
+        return notices
+
+    def fire_event(self, index: int, *, turn_idx: int | None = None) -> list[str]:
+        """Manually fire a sealed event for checkpoint-conditioned protocols.
+
+        This is researcher-side scheduling only. The agent receives exactly the
+        same authored notice and payload as under the automatic trigger.
+        """
+        if index < 0 or index >= len(self.config.events):
+            raise IndexError(f"event index {index} out of range")
+        return self._fire_event(index, self._turn if turn_idx is None else turn_idx)
+
+    def _fire_event(self, index: int, turn_idx: int) -> list[str]:
+        if index in self._fired_events or self.terminal:
+            return []
+        ev = self.config.events[index]
+        self._fired_events.add(index)
+        if ev.source_name is None:
+            notices = [ev.notice]
+        else:
+            self._unlocked[ev.source_name] = ev.source
+            if ev.auto_deliver_n is not None:
+                df = source_view(
+                    self.world_sample,
+                    ev.source,
+                    ev.auto_deliver_n,
+                    self._next_seed(740_000),
+                )
+                self._rows_bought[ev.source_name] = (
+                    self._rows_bought.get(ev.source_name, 0) + ev.auto_deliver_n
+                )
+                self._pending_deliveries.append((ev.delivery_variable, df))
+                notices = [
+                    ev.notice
+                    + f"\nThe report is already loaded as DataFrame `{ev.delivery_variable}`."
+                ]
+            else:
+                notices = [ev.notice + "\n(env.describe() now lists the newly available source.)"]
+        self._log("event", {"source": ev.source_name or "(note)", "turn": turn_idx},
+                  0.0, note=ev.notice[:120])
         return notices
 
     def pop_deliveries(self) -> list[tuple[str, pd.DataFrame]]:
@@ -401,6 +418,10 @@ class WorldServer:
         self.terminal = True
         self._log("submit", {"accepted": True}, 0.0, note=f"R={self.result['R']:.3f} (server-side)")
         return SubmitResult(accepted=True)
+
+    def validate_model(self, code: str) -> str | None:
+        """Researcher-side conformance check with no score and no trajectory log."""
+        return self._smoke(code)
 
     # --- smoke ---------------------------------------------------------
     def _smoke(self, code: str) -> str | None:

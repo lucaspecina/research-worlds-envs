@@ -1,0 +1,532 @@
+{
+  "kind": "technical_live_history_fork_not_behavioral_evidence",
+  "model": "gpt-5.4",
+  "seed_offset": 91001,
+  "prefix": {
+    "trace": [
+      {
+        "turn": 1,
+        "notices": [],
+        "reply_text": "REASONING: We should start free: inspect the environment description and pull the full qualification report, then characterize how outcome depends on line and driver in the currently observed ranges. The key uncertainty is whether the five lines share a common functional form with line-specific offsets/slopes/curvature, which will determine how well we can extrapolate lines 2\u20135 into 5\u201310 before the later report arrives. I also need to maintain a `working_model` string from the start, even if provisional, so I'll fit a simple pooled-with-line-effects polynomial/noise model after seeing the data and store that as the current executable forecast.\n```python\nimport numpy as np, pandas as pd\n\nprint(\"ENV:\", env.describe())\n\nqual = env.observe(\"qualification_report\", 96)\nprint(\"\\nqualification_report head:\")\nprint(qual.head())\nprint(\"shape:\", qual.shape)\n\nprint(\"\\nrows per line and driver range:\")\nsummary = qual.groupby(\"line\").agg(\n    n=(\"outcome\",\"size\"),\n    driver_min=(\"driver\",\"min\"),\n    driver_max=(\"driver\",\"max\"),\n    outcome_mean=(\"outcome\",\"mean\"),\n    outcome_std=(\"outcome\",\"std\"),\n)\nprint(summary)\n\nprint(\"\\nmean outcome by line,driver (first few):\")\nmd = qual.groupby([\"line\",\"driver\"])[\"outcome\"].agg([\"mean\",\"std\",\"count\"]).reset_index()\nprint(md.head(15))\n\n# Provisional shared quadratic with line offsets/interactions, plus homoskedastic residual noise.\nX = pd.DataFrame({\n    \"intercept\": 1.0,\n    \"driver\": qual[\"driver\"].astype(float),\n    \"driver2\": qual[\"driver\"].astype(float)**2,\n})\nfor l in range(2, 6):\n    is_l = (qual[\"line\"] == l).astype(float)\n    X[f\"line{l}\"] = is_l\n    X[f\"line{l}_driver\"] = is_l * qual[\"driver\"].astype(float)\n    X[f\"line{l}_driver2\"] = is_l * (qual[\"driver\"].astype(float)**2)\n\ny = qual[\"outcome\"].to_numpy(dtype=float)\nbeta, *_ = np.linalg.lstsq(X.to_numpy(dtype=float), y, rcond=None)\nresid = y - X.to_numpy(dtype=float) @ beta\nsigma = float(np.std(resid, ddof=X.shape[1]))\n\ncols = list(X.columns)\nbeta_list = beta.tolist()\n\nworking_model = f'''\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = {cols!r}\n    beta = np.array({beta_list!r}, dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{{l}}\"] = 1.0\n            x[f\"line{{l}}_driver\"] = driver\n            x[f\"line{{l}}_driver2\"] = driver**2\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    sigma = float({sigma!r})\n    return pd.DataFrame({{\"outcome\": rng.normal(mu, sigma, size=n)}})\n'''\nprint(\"\\nworking_model preview:\\n\", working_model[:700])\n```",
+        "cell": "import numpy as np, pandas as pd\n\nprint(\"ENV:\", env.describe())\n\nqual = env.observe(\"qualification_report\", 96)\nprint(\"\\nqualification_report head:\")\nprint(qual.head())\nprint(\"shape:\", qual.shape)\n\nprint(\"\\nrows per line and driver range:\")\nsummary = qual.groupby(\"line\").agg(\n    n=(\"outcome\",\"size\"),\n    driver_min=(\"driver\",\"min\"),\n    driver_max=(\"driver\",\"max\"),\n    outcome_mean=(\"outcome\",\"mean\"),\n    outcome_std=(\"outcome\",\"std\"),\n)\nprint(summary)\n\nprint(\"\\nmean outcome by line,driver (first few):\")\nmd = qual.groupby([\"line\",\"driver\"])[\"outcome\"].agg([\"mean\",\"std\",\"count\"]).reset_index()\nprint(md.head(15))\n\n# Provisional shared quadratic with line offsets/interactions, plus homoskedastic residual noise.\nX = pd.DataFrame({\n    \"intercept\": 1.0,\n    \"driver\": qual[\"driver\"].astype(float),\n    \"driver2\": qual[\"driver\"].astype(float)**2,\n})\nfor l in range(2, 6):\n    is_l = (qual[\"line\"] == l).astype(float)\n    X[f\"line{l}\"] = is_l\n    X[f\"line{l}_driver\"] = is_l * qual[\"driver\"].astype(float)\n    X[f\"line{l}_driver2\"] = is_l * (qual[\"driver\"].astype(float)**2)\n\ny = qual[\"outcome\"].to_numpy(dtype=float)\nbeta, *_ = np.linalg.lstsq(X.to_numpy(dtype=float), y, rcond=None)\nresid = y - X.to_numpy(dtype=float) @ beta\nsigma = float(np.std(resid, ddof=X.shape[1]))\n\ncols = list(X.columns)\nbeta_list = beta.tolist()\n\nworking_model = f'''\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = {cols!r}\n    beta = np.array({beta_list!r}, dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{{l}}\"] = 1.0\n            x[f\"line{{l}}_driver\"] = driver\n            x[f\"line{{l}}_driver2\"] = driver**2\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    sigma = float({sigma!r})\n    return pd.DataFrame({{\"outcome\": rng.normal(mu, sigma, size=n)}})\n'''\nprint(\"\\nworking_model preview:\\n\", working_model[:700])",
+        "cell_result": {
+          "ok": true,
+          "stdout": "ENV: {'brief': '# Five-line commissioning: rolling forecast\\n\\nYou advise a process lab while five related production lines are commissioned in stages. The\\nplant needs a current probabilistic model throughout the work and a final deployment model for\\nall five lines over driver settings 0-10.\\n\\n## Normal workflow\\n\\n- The **qualification report** is available now. Line 1 is already qualified over its full\\n  range; lines 2-5 are currently qualified only in the low range (0-4).\\n- The planned range extension for lines 2-5 occurs later in the same episode. The lab system\\n  will place its ordinary commissioning report directly in your Python workspace when ready.\\n- Before that operational milestone, experiments on lines 2-5 are limited to driver <= 4.\\n  Afterwards their full range is available. Line 1 is available throughout.\\n- Reports are ordinary noisy batch measurements. Related equipment may share useful structure,\\n  but deploy every line according to what the accumulated data supports.\\n\\n## What you can do (budget 900)\\n\\n- `observe(\"qualification_report\", 96)` \u2014 the complete initial report, free and finite.\\n- `experiment(..., n=20)` \u2014 a 20-batch campaign costing 300. Use\\n  `{\"campaign_line\": 1|2|3|4|5}` for the standard five-setting design, or\\n  `{\"line\": ..., \"driver\": ...}` to hold one setting.\\n- `submit(model)` \u2014 final handoff after commissioning.\\n\\n## Rolling model\\n\\nKeep your latest executable forecast as a Python **string** named `working_model`. The lab\\narchives that variable routinely after each work cell without returning a score or diagnostic.\\nUpdate it whenever your current predictive model changes; this is normal versioning, not a\\nrequest to react to any particular report.\\n\\nThe string must define `model(regime, n, seed) -> DataFrame` with exactly column `outcome`.\\nEvery evaluation regime carries integer `line` (1-5) and numeric `driver` (0-10). Generate the\\nfull batch distribution, including noise and uncertainty, using NumPy randomness seeded from\\n`seed`.\\n\\n## Stakes\\n\\nAll five lines count equally. Within each line, both the already qualified range and the newly\\ncommissioned range are tested, with extra weight on the latter. Distribution center and spread\\nmatter: **the 10th percentile prices downside** and **the 90th percentile sets permit margin**.\\n', 'schema': ['outcome'], 'sources': {'qualification_report': {'cost_per_row': 0.0, 'columns': ['line', 'driver', 'outcome']}}, 'experiment_cost': {'cost_fixed': 300.0, 'cost_per_row': 0.0}, 'control_surface': {'settable': {'driver': {'low': 0, 'high': 10, 'unit': 'process setting'}}, 'context': {}, 'instruments': {}, 'experiment_note': '20-batch campaigns cost 300; full-range campaign_line designs become legal for lines 2-5 after their scheduled range extension', 'deliverable_note': \"model(regime,n,seed) returns exactly DataFrame(['outcome']); regime.config always includes line 1-5 and driver 0-10; model the full batch distribution\"}, 'budget_total': 900.0, \n... [output truncated: 5137 chars total]",
+          "error": null,
+          "truncated": true
+        },
+        "working_model": {
+          "status": "captured",
+          "code": "\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = ['intercept', 'driver', 'driver2', 'line2', 'line2_driver', 'line2_driver2', 'line3', 'line3_driver', 'line3_driver2', 'line4', 'line4_driver', 'line4_driver2', 'line5', 'line5_driver', 'line5_driver2']\n    beta = np.array([14.000184006744796, 3.2014145075504885, -0.31920480697629827, -0.20657157476667057, 0.6109360752660015, -0.1871317473537049, 0.8833190995388673, -0.9906048787613677, 0.23690042238852332, 0.022320749507367666, -0.17452536824382545, 0.05243063434365153, 0.327457747933903, -0.3509174782455583, 0.08884396859619274], dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{l}\"] = 1.0\n            x[f\"line{l}_driver\"] = driver\n            x[f\"line{l}_driver2\"] = driver**2\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    sigma = float(0.7084978933153522)\n    return pd.DataFrame({\"outcome\": rng.normal(mu, sigma, size=n)})\n"
+        },
+        "budget_remaining": 900.0,
+        "trajectory": [
+          {
+            "verb": "observe",
+            "args": {
+              "source": "qualification_report",
+              "n": 96
+            },
+            "cost": 0.0,
+            "note": ""
+          }
+        ]
+      },
+      {
+        "turn": 2,
+        "notices": [],
+        "reply_text": "REASONING: We have the free data in memory; the important next question is structural: do lines share a common curve shape with mainly line-specific deviations, and how much noise/heteroskedasticity is present? Since the printed output was truncated, I should compute compact diagnostics directly from `qual`: per-line support, replicate counts, low-range comparability across lines, and fit a few nested models to judge whether a shared quadratic is adequate or whether higher-order terms or line-specific curvature are needed. This will tell us whether to spend budget now on line 1 as a proxy for high-range behavior or wait for the commissioning report while keeping a better `working_model`.\n```python\nimport numpy as np, pandas as pd\n\n# Basic structure\nprint(\"Qualification shape:\", qual.shape)\nprint(\"\\nCounts by line:\")\nprint(qual.groupby(\"line\").size())\nprint(\"\\nDriver support by line:\")\nprint(qual.groupby(\"line\")[\"driver\"].agg([\"min\",\"max\",\"nunique\"]))\nprint(\"\\nReplicates per line-driver (unique counts):\")\nrep = qual.groupby([\"line\",\"driver\"]).size().reset_index(name=\"n\")\nprint(rep.head(20))\nprint(\"replicate count values:\", sorted(rep[\"n\"].unique()))\n\n# Compare line means on shared low range 0-4\nlow = qual[qual[\"driver\"] <= 4].copy()\nmeans = low.groupby([\"line\",\"driver\"])[\"outcome\"].mean().unstack(0)\nprint(\"\\nMean outcome on shared low range (rows=driver, cols=line):\")\nprint(means)\n\n# Fit nested polynomial models and compare residual SD\ndef design(df, degree=2, line_intercept=True, line_slope=False, line_curve=False):\n    d = df[\"driver\"].astype(float).to_numpy()\n    cols = [np.ones(len(df)), d]\n    names = [\"intercept\", \"driver\"]\n    if degree >= 2:\n        cols.append(d**2); names.append(\"driver2\")\n    if degree >= 3:\n        cols.append(d**3); names.append(\"driver3\")\n    if line_intercept:\n        for l in range(2,6):\n            z = (df[\"line\"].to_numpy()==l).astype(float)\n            cols.append(z); names.append(f\"line{l}\")\n            if line_slope:\n                cols.append(z*d); names.append(f\"line{l}_driver\")\n            if line_curve and degree >= 2:\n                cols.append(z*d**2); names.append(f\"line{l}_driver2\")\n            if line_curve and degree >= 3:\n                cols.append(z*d**3); names.append(f\"line{l}_driver3\")\n    X = np.column_stack(cols)\n    y = df[\"outcome\"].to_numpy(float)\n    beta, *_ = np.linalg.lstsq(X, y, rcond=None)\n    resid = y - X @ beta\n    p = X.shape[1]\n    sigma = np.sqrt(np.sum(resid**2) / max(len(y)-p, 1))\n    return {\"p\": p, \"sigma\": sigma, \"sse\": float(np.sum(resid**2)), \"beta\": beta, \"names\": names}\n\nmodels = {\n    \"shared_quad+line_intercepts\": design(qual, degree=2, line_intercept=True, line_slope=False, line_curve=False),\n    \"shared_quad+line_slopes\": design(qual, degree=2, line_intercept=True, line_slope=True, line_curve=False),\n    \"shared_quad+line_slopes_curves\": design(qual, degree=2, line_intercept=True, line_slope=True, line_curve=True),\n    \"shared_cubic+line_slopes\": design(qual, degree=3, line_intercept=True, line_slope=True, line_curve=False),\n}\nprint(\"\\nNested model comparison:\")\nfor k,v in models.items():\n    print(k, {kk: round(v[kk],4) if isinstance(v[kk], float) else v[kk] for kk in [\"p\",\"sigma\",\"sse\"]})\n\n# Residual SD by line and by fitted value bin for best current flexible model\nbest = models[\"shared_quad+line_slopes_curves\"]\n# reconstruct fitted values\nd = qual[\"driver\"].astype(float).to_numpy()\nXcols = [np.ones(len(qual)), d, d**2]\nfor l in range(2,6):\n    z = (qual[\"line\"].to_numpy()==l).astype(float)\n    Xcols += [z, z*d, z*d**2]\nX = np.column_stack(Xcols)\nfitted = X @ best[\"beta\"]\nresid = qual[\"outcome\"].to_numpy(float) - fitted\ntmp = qual.copy()\ntmp[\"fitted\"] = fitted\ntmp[\"resid\"] = resid\ntmp[\"abs_resid\"] = np.abs(resid)\nprint(\"\\nResidual SD by line (flexible quadratic):\")\nprint(tmp.groupby(\"line\")[\"resid\"].std())\ntmp[\"fit_bin\"] = pd.qcut(tmp[\"fitted\"], q=min(5, tmp[\"fitted\"].nunique()), duplicates=\"drop\")\nprint(\"\\nResidual SD by fitted-value bin:\")\nprint(tmp.groupby(\"fit_bin\")[\"resid\"].std())\n\n# Update working model to the currently best flexible quadratic\nbeta = best[\"beta\"].tolist()\nnames = best[\"names\"]\nsigma = float(tmp[\"resid\"].std(ddof=len(names)))\nworking_model = f'''\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = {names!r}\n    beta = np.array({beta!r}, dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{{l}}\"] = 1.0\n            x[f\"line{{l}}_driver\"] = driver\n            x[f\"line{{l}}_driver2\"] = driver**2\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    sigma = float({sigma!r})\n    return pd.DataFrame({{\"outcome\": rng.normal(mu, sigma, size=n)}})\n'''\nprint(\"\\nworking_model updated; preview:\")\nprint(working_model[:700])\n```",
+        "cell": "import numpy as np, pandas as pd\n\n# Basic structure\nprint(\"Qualification shape:\", qual.shape)\nprint(\"\\nCounts by line:\")\nprint(qual.groupby(\"line\").size())\nprint(\"\\nDriver support by line:\")\nprint(qual.groupby(\"line\")[\"driver\"].agg([\"min\",\"max\",\"nunique\"]))\nprint(\"\\nReplicates per line-driver (unique counts):\")\nrep = qual.groupby([\"line\",\"driver\"]).size().reset_index(name=\"n\")\nprint(rep.head(20))\nprint(\"replicate count values:\", sorted(rep[\"n\"].unique()))\n\n# Compare line means on shared low range 0-4\nlow = qual[qual[\"driver\"] <= 4].copy()\nmeans = low.groupby([\"line\",\"driver\"])[\"outcome\"].mean().unstack(0)\nprint(\"\\nMean outcome on shared low range (rows=driver, cols=line):\")\nprint(means)\n\n# Fit nested polynomial models and compare residual SD\ndef design(df, degree=2, line_intercept=True, line_slope=False, line_curve=False):\n    d = df[\"driver\"].astype(float).to_numpy()\n    cols = [np.ones(len(df)), d]\n    names = [\"intercept\", \"driver\"]\n    if degree >= 2:\n        cols.append(d**2); names.append(\"driver2\")\n    if degree >= 3:\n        cols.append(d**3); names.append(\"driver3\")\n    if line_intercept:\n        for l in range(2,6):\n            z = (df[\"line\"].to_numpy()==l).astype(float)\n            cols.append(z); names.append(f\"line{l}\")\n            if line_slope:\n                cols.append(z*d); names.append(f\"line{l}_driver\")\n            if line_curve and degree >= 2:\n                cols.append(z*d**2); names.append(f\"line{l}_driver2\")\n            if line_curve and degree >= 3:\n                cols.append(z*d**3); names.append(f\"line{l}_driver3\")\n    X = np.column_stack(cols)\n    y = df[\"outcome\"].to_numpy(float)\n    beta, *_ = np.linalg.lstsq(X, y, rcond=None)\n    resid = y - X @ beta\n    p = X.shape[1]\n    sigma = np.sqrt(np.sum(resid**2) / max(len(y)-p, 1))\n    return {\"p\": p, \"sigma\": sigma, \"sse\": float(np.sum(resid**2)), \"beta\": beta, \"names\": names}\n\nmodels = {\n    \"shared_quad+line_intercepts\": design(qual, degree=2, line_intercept=True, line_slope=False, line_curve=False),\n    \"shared_quad+line_slopes\": design(qual, degree=2, line_intercept=True, line_slope=True, line_curve=False),\n    \"shared_quad+line_slopes_curves\": design(qual, degree=2, line_intercept=True, line_slope=True, line_curve=True),\n    \"shared_cubic+line_slopes\": design(qual, degree=3, line_intercept=True, line_slope=True, line_curve=False),\n}\nprint(\"\\nNested model comparison:\")\nfor k,v in models.items():\n    print(k, {kk: round(v[kk],4) if isinstance(v[kk], float) else v[kk] for kk in [\"p\",\"sigma\",\"sse\"]})\n\n# Residual SD by line and by fitted value bin for best current flexible model\nbest = models[\"shared_quad+line_slopes_curves\"]\n# reconstruct fitted values\nd = qual[\"driver\"].astype(float).to_numpy()\nXcols = [np.ones(len(qual)), d, d**2]\nfor l in range(2,6):\n    z = (qual[\"line\"].to_numpy()==l).astype(float)\n    Xcols += [z, z*d, z*d**2]\nX = np.column_stack(Xcols)\nfitted = X @ best[\"beta\"]\nresid = qual[\"outcome\"].to_numpy(float) - fitted\ntmp = qual.copy()\ntmp[\"fitted\"] = fitted\ntmp[\"resid\"] = resid\ntmp[\"abs_resid\"] = np.abs(resid)\nprint(\"\\nResidual SD by line (flexible quadratic):\")\nprint(tmp.groupby(\"line\")[\"resid\"].std())\ntmp[\"fit_bin\"] = pd.qcut(tmp[\"fitted\"], q=min(5, tmp[\"fitted\"].nunique()), duplicates=\"drop\")\nprint(\"\\nResidual SD by fitted-value bin:\")\nprint(tmp.groupby(\"fit_bin\")[\"resid\"].std())\n\n# Update working model to the currently best flexible quadratic\nbeta = best[\"beta\"].tolist()\nnames = best[\"names\"]\nsigma = float(tmp[\"resid\"].std(ddof=len(names)))\nworking_model = f'''\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = {names!r}\n    beta = np.array({beta!r}, dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{{l}}\"] = 1.0\n            x[f\"line{{l}}_driver\"] = driver\n            x[f\"line{{l}}_driver2\"] = driver**2\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    sigma = float({sigma!r})\n    return pd.DataFrame({{\"outcome\": rng.normal(mu, sigma, size=n)}})\n'''\nprint(\"\\nworking_model updated; preview:\")\nprint(working_model[:700])",
+        "cell_result": {
+          "ok": true,
+          "stdout": "Qualification shape: (96, 3)\n\nCounts by line:\nline\n1.0    48\n2.0    12\n3.0    12\n4.0    12\n5.0    12\ndtype: int64\n\nDriver support by line:\n          min       max  nunique\nline                            \n1.0   0.18601  9.572144       48\n2.0   0.50000  3.500000        4\n3.0   0.50000  3.500000        4\n4.0   0.50000  3.500000        4\n5.0   0.50000  3.500000        4\n\nReplicates per line-driver (unique counts):\n    line    driver  n\n0    1.0  0.186010  1\n1    1.0  0.187335  1\n2    1.0  0.252824  1\n3    1.0  0.946955  1\n4    1.0  0.964797  1\n5    1.0  1.205211  1\n6    1.0  1.276694  1\n7    1.0  1.510297  1\n8    1.0  1.629438  1\n9    1.0  1.784581  1\n10   1.0  2.291618  1\n11   1.0  2.659961  1\n12   1.0  2.786460  1\n13   1.0  2.947295  1\n14   1.0  3.148871  1\n15   1.0  3.437068  1\n16   1.0  3.539859  1\n17   1.0  3.835117  1\n18   1.0  3.976587  1\n19   1.0  4.382112  1\nreplicate count values: [np.int64(1), np.int64(3)]\n\nMean outcome on shared low range (rows=driver, cols=line):\nline            1.0        2.0        3.0        4.0        5.0\ndriver                                                         \n0.186010  14.671291        NaN        NaN        NaN        NaN\n0.187335  15.190376        NaN        NaN        NaN        NaN\n0.252824  15.020205        NaN        NaN        NaN        NaN\n0.500000        NaN  15.484069  15.855696  15.331140  15.808665\n0.946955  17.689321        NaN        NaN        NaN        NaN\n0.964797  17.697172        NaN        NaN        NaN        NaN\n1.205211  16.423579        NaN        NaN        NaN        NaN\n1.276694  17.127820        NaN        NaN        NaN        NaN\n1.500000        NaN  18.640285  18.352441  18.376944  17.744981\n1.510297  18.327794        NaN        NaN        NaN        NaN\n1.629438  18.615493        NaN        NaN        NaN        NaN\n1.784581  18.413106        NaN        NaN        NaN        NaN\n2.291618  19.822256        NaN        NaN        NaN        NaN\n2.500000        NaN  19.892482  19.558217  19.508042  20.354224\n2.659961  18.779221        NaN        NaN        NaN        NaN\n2.786460  19.537642        NaN        NaN        NaN        NaN\n2.947295  20.980435        NaN        NaN        NaN        NaN\n3.148871  21.164704        NaN        NaN        NaN        NaN\n3.437068  20.559994        NaN        NaN        NaN        NaN\n3.500000        NaN  21.023351  21.725744  21.486749  21.369096\n3.539859  20.499328        NaN        NaN        NaN        NaN\n3.835117  19.948845        NaN        NaN        NaN        NaN\n3.976587  20.748637        NaN        NaN        NaN        NaN\n\nNested model comparison:\nshared_quad+line_intercepts {'p': 7, 'sigma': np.float64(0.6883), 'sse': 42.1628}\nshared_quad+line_slopes {'p': 11, 'sigma': np.float64(0.7019), 'sse': 41.8789}\nshared_quad+line_slopes_curves {'p': 15, 'sigma': np.float64(0.7085), 'sse': 40.6595}\nshared_cubic+line_slopes {'p': 12, 'sigma': np.float64(0.6799), 'sse': 38.8285}\n\nResidual SD by line (flexible quadratic):\nline\n1.0    0.68\n... [output truncated: 4101 chars total]",
+          "error": null,
+          "truncated": true
+        },
+        "working_model": {
+          "status": "captured",
+          "code": "\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = ['intercept', 'driver', 'driver2', 'line2', 'line2_driver', 'line2_driver2', 'line3', 'line3_driver', 'line3_driver2', 'line4', 'line4_driver', 'line4_driver2', 'line5', 'line5_driver', 'line5_driver2']\n    beta = np.array([14.000184006744796, 3.2014145075504885, -0.31920480697629827, -0.20657157476667057, 0.6109360752660015, -0.1871317473537049, 0.8833190995388673, -0.9906048787613677, 0.23690042238852332, 0.022320749507367666, -0.17452536824382545, 0.05243063434365153, 0.327457747933903, -0.3509174782455583, 0.08884396859619274], dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{l}\"] = 1.0\n            x[f\"line{l}_driver\"] = driver\n            x[f\"line{l}_driver2\"] = driver**2\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    sigma = float(0.7084978933153522)\n    return pd.DataFrame({\"outcome\": rng.normal(mu, sigma, size=n)})\n"
+        },
+        "budget_remaining": 900.0,
+        "trajectory": [
+          {
+            "verb": "observe",
+            "args": {
+              "source": "qualification_report",
+              "n": 96
+            },
+            "cost": 0.0,
+            "note": ""
+          }
+        ]
+      },
+      {
+        "turn": 3,
+        "notices": [],
+        "reply_text": "REASONING: This largely confirms that the five lines are very similar in the shared low range: line differences look modest, and allowing line-specific slopes/curvature in the observed data does not buy much. The biggest signal is that a shared cubic beats quadratic on line 1, so the best current extrapolation for lines 2\u20135 is probably \u201cline 1\u2019s cubic shape plus small line offsets/slopes estimated from 0.5\u20133.5.\u201d Since experiments cost 300 and we still have no sign the later commissioning report has arrived, the most valuable cheap step is to check whether such a report was silently placed into the workspace and, if not, update `working_model` to a cubic hierarchical-style approximation now.\n```python\nimport numpy as np, pandas as pd\n\n# Check workspace for any newly provided commissioning report objects\ncandidates = []\nfor k, v in list(globals().items()):\n    if k in {\"qual\", \"working_model\", \"np\", \"pd\", \"env\"}:\n        continue\n    try:\n        if isinstance(v, pd.DataFrame):\n            candidates.append((k, v.shape, list(v.columns)))\n    except Exception:\n        pass\n\nprint(\"DataFrame candidates in workspace:\")\nfor item in candidates:\n    print(item)\n\n# Build a better current model: shared cubic + line intercept/slope adjustments.\ndef design(df):\n    d = df[\"driver\"].astype(float).to_numpy()\n    cols = [np.ones(len(df)), d, d**2, d**3]\n    names = [\"intercept\", \"driver\", \"driver2\", \"driver3\"]\n    for l in range(2,6):\n        z = (df[\"line\"].to_numpy()==l).astype(float)\n        cols += [z, z*d]\n        names += [f\"line{l}\", f\"line{l}_driver\"]\n    X = np.column_stack(cols)\n    y = df[\"outcome\"].to_numpy(float)\n    beta, *_ = np.linalg.lstsq(X, y, rcond=None)\n    resid = y - X @ beta\n    sigma = float(np.sqrt(np.sum(resid**2) / max(len(y)-X.shape[1], 1)))\n    return names, beta, sigma\n\nnames, beta, sigma = design(qual)\nprint(\"\\nUpdated model terms:\", names)\nprint(\"Residual sigma:\", sigma)\n\nworking_model = f'''\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = {names!r}\n    beta = np.array({beta.tolist()!r}, dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    x[\"driver3\"] = driver**3\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{{l}}\"] = 1.0\n            x[f\"line{{l}}_driver\"] = driver\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    return pd.DataFrame({{\"outcome\": rng.normal(mu, {sigma!r}, size=n)}})\n'''\nprint(\"\\nworking_model preview:\")\nprint(working_model[:800])\n```",
+        "cell": "import numpy as np, pandas as pd\n\n# Check workspace for any newly provided commissioning report objects\ncandidates = []\nfor k, v in list(globals().items()):\n    if k in {\"qual\", \"working_model\", \"np\", \"pd\", \"env\"}:\n        continue\n    try:\n        if isinstance(v, pd.DataFrame):\n            candidates.append((k, v.shape, list(v.columns)))\n    except Exception:\n        pass\n\nprint(\"DataFrame candidates in workspace:\")\nfor item in candidates:\n    print(item)\n\n# Build a better current model: shared cubic + line intercept/slope adjustments.\ndef design(df):\n    d = df[\"driver\"].astype(float).to_numpy()\n    cols = [np.ones(len(df)), d, d**2, d**3]\n    names = [\"intercept\", \"driver\", \"driver2\", \"driver3\"]\n    for l in range(2,6):\n        z = (df[\"line\"].to_numpy()==l).astype(float)\n        cols += [z, z*d]\n        names += [f\"line{l}\", f\"line{l}_driver\"]\n    X = np.column_stack(cols)\n    y = df[\"outcome\"].to_numpy(float)\n    beta, *_ = np.linalg.lstsq(X, y, rcond=None)\n    resid = y - X @ beta\n    sigma = float(np.sqrt(np.sum(resid**2) / max(len(y)-X.shape[1], 1)))\n    return names, beta, sigma\n\nnames, beta, sigma = design(qual)\nprint(\"\\nUpdated model terms:\", names)\nprint(\"Residual sigma:\", sigma)\n\nworking_model = f'''\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = {names!r}\n    beta = np.array({beta.tolist()!r}, dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    x[\"driver3\"] = driver**3\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{{l}}\"] = 1.0\n            x[f\"line{{l}}_driver\"] = driver\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    return pd.DataFrame({{\"outcome\": rng.normal(mu, {sigma!r}, size=n)}})\n'''\nprint(\"\\nworking_model preview:\")\nprint(working_model[:800])",
+        "cell_result": {
+          "ok": true,
+          "stdout": "DataFrame candidates in workspace:\n('summary', (5, 5), ['n', 'driver_min', 'driver_max', 'outcome_mean', 'outcome_std'])\n('md', (64, 5), ['line', 'driver', 'mean', 'std', 'count'])\n('rep', (64, 3), ['line', 'driver', 'n'])\n('low', (67, 3), ['line', 'driver', 'outcome'])\n('means', (23, 5), [1.0, 2.0, 3.0, 4.0, 5.0])\n('tmp', (96, 7), ['line', 'driver', 'outcome', 'fitted', 'resid', 'abs_resid', 'fit_bin'])\n\nUpdated model terms: ['intercept', 'driver', 'driver2', 'driver3', 'line2', 'line2_driver', 'line3', 'line3_driver', 'line4', 'line4_driver', 'line5', 'line5_driver']\nResidual sigma: 0.6798855768180172\n\nworking_model preview:\n\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = ['intercept', 'driver', 'driver2', 'driver3', 'line2', 'line2_driver', 'line3', 'line3_driver', 'line4', 'line4_driver', 'line5', 'line5_driver']\n    beta = np.array([14.564219268843448, 2.4739608045886463, -0.1326772967542001, -0.012637099505978355, 0.09772866769289282, 0.021303995983698466, 0.021530875207312367, 0.11589172092523757, -0.33217555770079665, 0.1940920792632972, -0.1271752284687426, 0.1633533062717234], dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    x[\"driver3\"] = driver**3\n    for l in [2,3,4,\n",
+          "error": null,
+          "truncated": false
+        },
+        "working_model": {
+          "status": "captured",
+          "code": "\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = ['intercept', 'driver', 'driver2', 'driver3', 'line2', 'line2_driver', 'line3', 'line3_driver', 'line4', 'line4_driver', 'line5', 'line5_driver']\n    beta = np.array([14.564219268843448, 2.4739608045886463, -0.1326772967542001, -0.012637099505978355, 0.09772866769289282, 0.021303995983698466, 0.021530875207312367, 0.11589172092523757, -0.33217555770079665, 0.1940920792632972, -0.1271752284687426, 0.1633533062717234], dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    x[\"driver3\"] = driver**3\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{l}\"] = 1.0\n            x[f\"line{l}_driver\"] = driver\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    return pd.DataFrame({\"outcome\": rng.normal(mu, 0.6798855768180172, size=n)})\n"
+        },
+        "budget_remaining": 900.0,
+        "trajectory": [
+          {
+            "verb": "observe",
+            "args": {
+              "source": "qualification_report",
+              "n": 96
+            },
+            "cost": 0.0,
+            "note": ""
+          }
+        ]
+      },
+      {
+        "turn": 4,
+        "notices": [],
+        "reply_text": "REASONING: No commissioning report has appeared yet, so we still only have the initial data. Given the budget, the most informative active step is a line-1 full-range campaign: line 1 is legal now across 0\u201310, and because all lines look similar in 0\u20134, better learning the shared high-range shape should improve predictions for the heavily weighted unqualified region of lines 2\u20135. A standard campaign_line design is likely more efficient than a single held setting, so I'll buy one campaign on line 1 and then refit/update `working_model`.\n```python\n# Run a full-range standard campaign on line 1 to sharpen the shared high-range shape.\nexp1 = env.experiment(config={\"campaign_line\": 1}, n=20)\nprint(\"exp1 head:\")\nprint(exp1.head())\nprint(\"shape:\", exp1.shape)\nprint(\"\\nDriver support in exp1:\")\nprint(exp1[\"driver\"].describe())\nprint(\"\\nMean outcome by driver in exp1:\")\nprint(exp1.groupby(\"driver\")[\"outcome\"].agg([\"mean\",\"std\",\"count\"]).reset_index())\n```",
+        "cell": "# Run a full-range standard campaign on line 1 to sharpen the shared high-range shape.\nexp1 = env.experiment(config={\"campaign_line\": 1}, n=20)\nprint(\"exp1 head:\")\nprint(exp1.head())\nprint(\"shape:\", exp1.shape)\nprint(\"\\nDriver support in exp1:\")\nprint(exp1[\"driver\"].describe())\nprint(\"\\nMean outcome by driver in exp1:\")\nprint(exp1.groupby(\"driver\")[\"outcome\"].agg([\"mean\",\"std\",\"count\"]).reset_index())",
+        "cell_result": {
+          "ok": true,
+          "stdout": "exp1 head:\n   line  driver    outcome\n0   1.0     0.5  16.927948\n1   1.0     2.5  19.607611\n2   1.0     5.0  22.090650\n3   1.0     7.5  20.204799\n4   1.0     9.5  15.838529\nshape: (20, 3)\n\nDriver support in exp1:\ncount    20.000000\nmean      5.000000\nstd       3.340344\nmin       0.500000\n25%       2.500000\n50%       5.000000\n75%       7.500000\nmax       9.500000\nName: driver, dtype: float64\n\nMean outcome by driver in exp1:\n   driver       mean       std  count\n0     0.5  15.885110  0.757907      4\n1     2.5  19.651623  0.898315      4\n2     5.0  22.011119  0.428467      4\n3     7.5  19.976984  0.512079      4\n4     9.5  15.824944  0.268853      4\n",
+          "error": null,
+          "truncated": false
+        },
+        "working_model": {
+          "status": "captured",
+          "code": "\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = ['intercept', 'driver', 'driver2', 'driver3', 'line2', 'line2_driver', 'line3', 'line3_driver', 'line4', 'line4_driver', 'line5', 'line5_driver']\n    beta = np.array([14.564219268843448, 2.4739608045886463, -0.1326772967542001, -0.012637099505978355, 0.09772866769289282, 0.021303995983698466, 0.021530875207312367, 0.11589172092523757, -0.33217555770079665, 0.1940920792632972, -0.1271752284687426, 0.1633533062717234], dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    x[\"driver3\"] = driver**3\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{l}\"] = 1.0\n            x[f\"line{l}_driver\"] = driver\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    return pd.DataFrame({\"outcome\": rng.normal(mu, 0.6798855768180172, size=n)})\n"
+        },
+        "budget_remaining": 600.0,
+        "trajectory": [
+          {
+            "verb": "observe",
+            "args": {
+              "source": "qualification_report",
+              "n": 96
+            },
+            "cost": 0.0,
+            "note": ""
+          },
+          {
+            "verb": "experiment",
+            "args": {
+              "config": {
+                "campaign_line": 1.0
+              },
+              "context": {},
+              "n": 20
+            },
+            "cost": 300.0,
+            "note": ""
+          }
+        ]
+      }
+    ],
+    "next_prompt": "Kernel output (ok=True, budget remaining=600):\nexp1 head:\n   line  driver    outcome\n0   1.0     0.5  16.927948\n1   1.0     2.5  19.607611\n2   1.0     5.0  22.090650\n3   1.0     7.5  20.204799\n4   1.0     9.5  15.838529\nshape: (20, 3)\n\nDriver support in exp1:\ncount    20.000000\nmean      5.000000\nstd       3.340344\nmin       0.500000\n25%       2.500000\n50%       5.000000\n75%       7.500000\nmax       9.500000\nName: driver, dtype: float64\n\nMean outcome by driver in exp1:\n   driver       mean       std  count\n0     0.5  15.885110  0.757907      4\n1     2.5  19.651623  0.898315      4\n2     5.0  22.011119  0.428467      4\n3     7.5  19.976984  0.512079      4\n4     9.5  15.824944  0.268853      4\n\n\nReason about what this result tells you (does it confirm or refute your current hypothesis? what does it imply for the next step?), then write your next cell (or build and env.submit(code) when your reasoning has converged).",
+    "tokens": 19485
+  },
+  "branches": {
+    "limited": {
+      "case_id": "overgen_stream_v0",
+      "replay_checks": [
+        {
+          "turn": 1,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 2,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 3,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 4,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        }
+      ],
+      "replay_exact": true,
+      "report_count": 1,
+      "abort": "submitted",
+      "accepted": true,
+      "R": 0.8367411666264459,
+      "submission_code": "\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = ['intercept', 'driver1', 'driver2', 'driver3', 'line2', 'line2_driver1', 'line2_driver2', 'line2_driver3', 'line3', 'line3_driver1', 'line3_driver2', 'line3_driver3', 'line4', 'line4_driver1', 'line4_driver2', 'line4_driver3', 'line5', 'line5_driver1', 'line5_driver2', 'line5_driver3']\n    beta = np.array([14.62117564443338, 2.4740927076956347, -0.14575853409733563, -0.011105456020896687, 0.3813554167158989, -0.4827862210174772, 0.1604038930187565, -0.006050733544571227, -0.41570771359849984, 0.7397719118681485, -0.18846498990237595, 0.007691517354132951, -0.7816089556191447, 0.8693870959896272, -0.1962095638308038, 0.012382645477645697, -0.25530995622372954, 0.39551759014582955, -0.08016363068512133, 0.0036954157846412206], dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver1\"] = driver\n    x[\"driver2\"] = driver**2\n    x[\"driver3\"] = driver**3\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{l}\"] = 1.0\n            x[f\"line{l}_driver1\"] = driver\n            x[f\"line{l}_driver2\"] = driver**2\n            x[f\"line{l}_driver3\"] = driver**3\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    sigma = float(0.643760683799167)\n    return pd.DataFrame({\"outcome\": rng.normal(mu, sigma, size=n)})\n",
+      "trace": [
+        {
+          "turn": 5,
+          "notices": [
+            "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5.\nThe report is already loaded as DataFrame `commissioning_report`."
+          ],
+          "reply_text": "REASONING: Great \u2014 the experiment confirms the nonlinearity: outcomes rise to around driver 5 then fall, so extrapolating a shared curved shape was the right idea. More importantly, the scheduled commissioning report for lines 2\u20135 has arrived, which should dominate any further active experimentation because it directly covers the previously missing high range. The next step is to inspect and merge `commissioning_report`, fit a final model using all accumulated data, and if the structure is clean enough, submit.\n```python\nimport numpy as np, pandas as pd\n\nprint(\"commissioning_report head:\")\nprint(commissioning_report.head())\nprint(\"shape:\", commissioning_report.shape)\n\nprint(\"\\nCounts by line in commissioning_report:\")\nprint(commissioning_report.groupby(\"line\").size())\n\nprint(\"\\nDriver support by line in commissioning_report:\")\nprint(commissioning_report.groupby(\"line\")[\"driver\"].agg([\"min\",\"max\",\"nunique\"]))\n\nprint(\"\\nMean outcome by line,driver (first 25 rows):\")\ncr_sum = commissioning_report.groupby([\"line\",\"driver\"])[\"outcome\"].agg([\"mean\",\"std\",\"count\"]).reset_index()\nprint(cr_sum.head(25))\n\n# Combine all available data\nall_data = pd.concat([qual, exp1, commissioning_report], ignore_index=True)\nprint(\"\\nCombined data shape:\", all_data.shape)\nprint(all_data.groupby(\"line\")[\"driver\"].agg([\"min\",\"max\",\"nunique\",\"count\"]))\n\n# Compare a few plausible final models\ndef fit_model(df, degree=3, line_intercept=True, line_slope=True, line_curve=False):\n    d = df[\"driver\"].astype(float).to_numpy()\n    cols = [np.ones(len(df)), d, d**2]\n    names = [\"intercept\", \"driver\", \"driver2\"]\n    if degree >= 3:\n        cols.append(d**3); names.append(\"driver3\")\n    for l in range(2,6):\n        z = (df[\"line\"].to_numpy()==l).astype(float)\n        if line_intercept:\n            cols.append(z); names.append(f\"line{l}\")\n        if line_slope:\n            cols.append(z*d); names.append(f\"line{l}_driver\")\n        if line_curve:\n            cols.append(z*d**2); names.append(f\"line{l}_driver2\")\n            if degree >= 3:\n                cols.append(z*d**3); names.append(f\"line{l}_driver3\")\n    X = np.column_stack(cols)\n    y = df[\"outcome\"].to_numpy(float)\n    beta, *_ = np.linalg.lstsq(X, y, rcond=None)\n    resid = y - X @ beta\n    p = X.shape[1]\n    sigma = float(np.sqrt(np.sum(resid**2) / max(len(y)-p, 1)))\n    return names, beta, sigma, float(np.sum(resid**2))\n\ncands = {\n    \"shared_cubic_line_slope\": fit_model(all_data, degree=3, line_intercept=True, line_slope=True, line_curve=False),\n    \"shared_cubic_line_curve\": fit_model(all_data, degree=3, line_intercept=True, line_slope=True, line_curve=True),\n    \"shared_quad_line_curve\": fit_model(all_data, degree=2, line_intercept=True, line_slope=True, line_curve=True),\n}\nprint(\"\\nCandidate model SSE/sigma:\")\nfor k, v in cands.items():\n    names, beta, sigma, sse = v\n    print(k, {\"p\": len(names), \"sigma\": sigma, \"sse\": sse})\n```",
+          "cell": "import numpy as np, pandas as pd\n\nprint(\"commissioning_report head:\")\nprint(commissioning_report.head())\nprint(\"shape:\", commissioning_report.shape)\n\nprint(\"\\nCounts by line in commissioning_report:\")\nprint(commissioning_report.groupby(\"line\").size())\n\nprint(\"\\nDriver support by line in commissioning_report:\")\nprint(commissioning_report.groupby(\"line\")[\"driver\"].agg([\"min\",\"max\",\"nunique\"]))\n\nprint(\"\\nMean outcome by line,driver (first 25 rows):\")\ncr_sum = commissioning_report.groupby([\"line\",\"driver\"])[\"outcome\"].agg([\"mean\",\"std\",\"count\"]).reset_index()\nprint(cr_sum.head(25))\n\n# Combine all available data\nall_data = pd.concat([qual, exp1, commissioning_report], ignore_index=True)\nprint(\"\\nCombined data shape:\", all_data.shape)\nprint(all_data.groupby(\"line\")[\"driver\"].agg([\"min\",\"max\",\"nunique\",\"count\"]))\n\n# Compare a few plausible final models\ndef fit_model(df, degree=3, line_intercept=True, line_slope=True, line_curve=False):\n    d = df[\"driver\"].astype(float).to_numpy()\n    cols = [np.ones(len(df)), d, d**2]\n    names = [\"intercept\", \"driver\", \"driver2\"]\n    if degree >= 3:\n        cols.append(d**3); names.append(\"driver3\")\n    for l in range(2,6):\n        z = (df[\"line\"].to_numpy()==l).astype(float)\n        if line_intercept:\n            cols.append(z); names.append(f\"line{l}\")\n        if line_slope:\n            cols.append(z*d); names.append(f\"line{l}_driver\")\n        if line_curve:\n            cols.append(z*d**2); names.append(f\"line{l}_driver2\")\n            if degree >= 3:\n                cols.append(z*d**3); names.append(f\"line{l}_driver3\")\n    X = np.column_stack(cols)\n    y = df[\"outcome\"].to_numpy(float)\n    beta, *_ = np.linalg.lstsq(X, y, rcond=None)\n    resid = y - X @ beta\n    p = X.shape[1]\n    sigma = float(np.sqrt(np.sum(resid**2) / max(len(y)-p, 1)))\n    return names, beta, sigma, float(np.sum(resid**2))\n\ncands = {\n    \"shared_cubic_line_slope\": fit_model(all_data, degree=3, line_intercept=True, line_slope=True, line_curve=False),\n    \"shared_cubic_line_curve\": fit_model(all_data, degree=3, line_intercept=True, line_slope=True, line_curve=True),\n    \"shared_quad_line_curve\": fit_model(all_data, degree=2, line_intercept=True, line_slope=True, line_curve=True),\n}\nprint(\"\\nCandidate model SSE/sigma:\")\nfor k, v in cands.items():\n    names, beta, sigma, sse = v\n    print(k, {\"p\": len(names), \"sigma\": sigma, \"sse\": sse})",
+          "cell_result": {
+            "ok": true,
+            "stdout": "commissioning_report head:\n   line  driver    outcome\n0   2.0     1.0  17.718399\n1   3.0     1.0  16.983610\n2   4.0     1.0  16.762110\n3   5.0     1.0  16.583653\n4   2.0     3.0  20.262012\nshape: (64, 3)\n\nCounts by line in commissioning_report:\nline\n2.0    16\n3.0    16\n4.0    16\n5.0    16\ndtype: int64\n\nDriver support by line in commissioning_report:\n      min  max  nunique\nline                   \n2.0   1.0  9.6        8\n3.0   1.0  9.6        8\n4.0   1.0  9.6        8\n5.0   1.0  9.6        8\n\nMean outcome by line,driver (first 25 rows):\n    line  driver       mean       std  count\n0    2.0     1.0  17.229048  0.692047      2\n1    2.0     3.0  20.651617  0.550985      2\n2    2.0     5.0  23.109898  0.883825      2\n3    2.0     6.2  23.378337  0.929239      2\n4    2.0     7.4  23.308642  0.438722      2\n5    2.0     7.9  24.082465  1.221920      2\n6    2.0     8.6  22.624542  0.090945      2\n7    2.0     9.6  19.837689  0.398854      2\n8    3.0     1.0  16.967770  0.022402      2\n9    3.0     3.0  20.631097  0.946473      2\n10   3.0     5.0  21.541518  0.041906      2\n11   3.0     6.2  20.506813  0.150742      2\n12   3.0     7.4  18.260882  0.356345      2\n13   3.0     7.9  17.107090  0.177272      2\n14   3.0     8.6  14.579757  0.418428      2\n15   3.0     9.6  11.457491  0.797081      2\n16   4.0     1.0  16.999719  0.336030      2\n17   4.0     3.0  20.908622  0.633820      2\n18   4.0     5.0  22.500860  1.038749      2\n19   4.0     6.2  21.849089  0.307274      2\n20   4.0     7.4  20.514565  0.273081      2\n21   4.0     7.9  18.721360  0.166319      2\n22   4.0     8.6  18.535436  0.486279      2\n23   4.0     9.6  15.565089  0.111631      2\n24   5.0     1.0  17.051959  0.662284      2\n\nCombined data shape: (180, 3)\n          min       max  nunique  count\nline                                   \n1.0   0.18601  9.572144       53     68\n2.0   0.50000  9.600000       12     28\n3.0   0.50000  9.600000       12     28\n4.0   0.50000  9.600000       12     28\n5.0   0.50000  9.600000       12     28\n\nCandidate model SSE/sigma:\nshared_cubic_line_slope {'p': 12, 'sigma': 0.7056770919427164, 'sse': 83.66066655957849}\nshared_cubic_line_curve {'p': 20, 'sigma': 0.643760683799167, 'sse': 66.30845088089136}\nshared_quad_line_curve {'p': 15, 'sigma': 0.6628669286843589, 'sse': 72.49977324866677}\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = ['intercept', 'driver', 'driver2', 'driver3', 'line2', 'line2_driver', 'line3', 'line3_driver', 'line4', 'line4_driver', 'line5', 'line5_driver']\n    beta = np.array([14.564219268843448, 2.4739608045886463, -0.1326772967542001, -0.012637099505978355, 0.09772866769289282, 0.021303995983698466, 0.021530875207312367, 0.11589172092523757, -0.33217555770079665, 0.1940920792632972, -0.1271752284687426, 0.1633533062717234], dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    x[\"driver3\"] = driver**3\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{l}\"] = 1.0\n            x[f\"line{l}_driver\"] = driver\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    return pd.DataFrame({\"outcome\": rng.normal(mu, 0.6798855768180172, size=n)})\n"
+          },
+          "budget_remaining": 600.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "experiment",
+              "args": {
+                "config": {
+                  "campaign_line": 1.0
+                },
+                "context": {},
+                "n": 20
+              },
+              "cost": 300.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 6,
+          "notices": [],
+          "reply_text": "REASONING: The commissioning report changes the picture in an important way: lines are not just offset copies of line 1 at high driver; they diverge materially in curvature, especially line 2 versus line 3. That refutes the stronger shared-shape assumption and says the final model should allow line-specific cubic behavior. We now have direct coverage for all lines over the relevant range, enough data to fit a line-specific cubic with pooled residual noise, validate basic residual behavior, update `working_model`, and submit without spending the remaining budget.\n```python\nimport numpy as np, pandas as pd\n\n# Fit final line-specific cubic model on all accumulated data.\ndf = all_data.copy()\nd = df[\"driver\"].astype(float).to_numpy()\ny = df[\"outcome\"].to_numpy(float)\n\ncols = [np.ones(len(df))]\nnames = [\"intercept\"]\nfor p in [1, 2, 3]:\n    cols.append(d**p)\n    names.append(f\"driver{p}\")\nfor l in [2, 3, 4, 5]:\n    z = (df[\"line\"].to_numpy() == l).astype(float)\n    cols.append(z); names.append(f\"line{l}\")\n    cols.append(z*d); names.append(f\"line{l}_driver1\")\n    cols.append(z*d**2); names.append(f\"line{l}_driver2\")\n    cols.append(z*d**3); names.append(f\"line{l}_driver3\")\n\nX = np.column_stack(cols)\nbeta, *_ = np.linalg.lstsq(X, y, rcond=None)\nfitted = X @ beta\nresid = y - fitted\nsigma = float(np.sqrt(np.sum(resid**2) / (len(y) - X.shape[1])))\n\nprint(\"Final model params:\", len(names))\nprint(\"Residual sigma:\", sigma)\ntmp_final = df.copy()\ntmp_final[\"fitted\"] = fitted\ntmp_final[\"resid\"] = resid\nprint(\"\\nResidual SD by line:\")\nprint(tmp_final.groupby(\"line\")[\"resid\"].std())\ntmp_final[\"fit_bin\"] = pd.qcut(tmp_final[\"fitted\"], q=min(6, tmp_final[\"fitted\"].nunique()), duplicates=\"drop\")\nprint(\"\\nResidual SD by fitted bin:\")\nprint(tmp_final.groupby(\"fit_bin\")[\"resid\"].std())\n\nworking_model = f'''\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = {names!r}\n    beta = np.array({beta.tolist()!r}, dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver1\"] = driver\n    x[\"driver2\"] = driver**2\n    x[\"driver3\"] = driver**3\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{{l}}\"] = 1.0\n            x[f\"line{{l}}_driver1\"] = driver\n            x[f\"line{{l}}_driver2\"] = driver**2\n            x[f\"line{{l}}_driver3\"] = driver**3\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    sigma = float({sigma!r})\n    return pd.DataFrame({{\"outcome\": rng.normal(mu, sigma, size=n)}})\n'''\nprint(\"\\nSubmitting final model...\")\nres = env.submit(working_model)\nprint(\"accepted:\", res.accepted)\nprint(\"error:\", getattr(res, \"error\", None))\n```",
+          "cell": "import numpy as np, pandas as pd\n\n# Fit final line-specific cubic model on all accumulated data.\ndf = all_data.copy()\nd = df[\"driver\"].astype(float).to_numpy()\ny = df[\"outcome\"].to_numpy(float)\n\ncols = [np.ones(len(df))]\nnames = [\"intercept\"]\nfor p in [1, 2, 3]:\n    cols.append(d**p)\n    names.append(f\"driver{p}\")\nfor l in [2, 3, 4, 5]:\n    z = (df[\"line\"].to_numpy() == l).astype(float)\n    cols.append(z); names.append(f\"line{l}\")\n    cols.append(z*d); names.append(f\"line{l}_driver1\")\n    cols.append(z*d**2); names.append(f\"line{l}_driver2\")\n    cols.append(z*d**3); names.append(f\"line{l}_driver3\")\n\nX = np.column_stack(cols)\nbeta, *_ = np.linalg.lstsq(X, y, rcond=None)\nfitted = X @ beta\nresid = y - fitted\nsigma = float(np.sqrt(np.sum(resid**2) / (len(y) - X.shape[1])))\n\nprint(\"Final model params:\", len(names))\nprint(\"Residual sigma:\", sigma)\ntmp_final = df.copy()\ntmp_final[\"fitted\"] = fitted\ntmp_final[\"resid\"] = resid\nprint(\"\\nResidual SD by line:\")\nprint(tmp_final.groupby(\"line\")[\"resid\"].std())\ntmp_final[\"fit_bin\"] = pd.qcut(tmp_final[\"fitted\"], q=min(6, tmp_final[\"fitted\"].nunique()), duplicates=\"drop\")\nprint(\"\\nResidual SD by fitted bin:\")\nprint(tmp_final.groupby(\"fit_bin\")[\"resid\"].std())\n\nworking_model = f'''\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = {names!r}\n    beta = np.array({beta.tolist()!r}, dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver1\"] = driver\n    x[\"driver2\"] = driver**2\n    x[\"driver3\"] = driver**3\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{{l}}\"] = 1.0\n            x[f\"line{{l}}_driver1\"] = driver\n            x[f\"line{{l}}_driver2\"] = driver**2\n            x[f\"line{{l}}_driver3\"] = driver**3\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    sigma = float({sigma!r})\n    return pd.DataFrame({{\"outcome\": rng.normal(mu, sigma, size=n)}})\n'''\nprint(\"\\nSubmitting final model...\")\nres = env.submit(working_model)\nprint(\"accepted:\", res.accepted)\nprint(\"error:\", getattr(res, \"error\", None))",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Final model params: 20\nResidual sigma: 0.643760683799167\n\nResidual SD by line:\nline\n1.0    0.623593\n2.0    0.672690\n3.0    0.504038\n4.0    0.645878\n5.0    0.605949\nName: resid, dtype: float64\n\nResidual SD by fitted bin:\nfit_bin\n(11.235000000000001, 15.96]    0.501252\n(15.96, 18.055]                0.513307\n(18.055, 19.804]               0.583412\n(19.804, 20.741]               0.647203\n(20.741, 21.707]               0.643780\n(21.707, 23.823]               0.713762\nName: resid, dtype: float64\n\nSubmitting final model...\naccepted: True\nerror: None\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = ['intercept', 'driver1', 'driver2', 'driver3', 'line2', 'line2_driver1', 'line2_driver2', 'line2_driver3', 'line3', 'line3_driver1', 'line3_driver2', 'line3_driver3', 'line4', 'line4_driver1', 'line4_driver2', 'line4_driver3', 'line5', 'line5_driver1', 'line5_driver2', 'line5_driver3']\n    beta = np.array([14.62117564443338, 2.4740927076956347, -0.14575853409733563, -0.011105456020896687, 0.3813554167158989, -0.4827862210174772, 0.1604038930187565, -0.006050733544571227, -0.41570771359849984, 0.7397719118681485, -0.18846498990237595, 0.007691517354132951, -0.7816089556191447, 0.8693870959896272, -0.1962095638308038, 0.012382645477645697, -0.25530995622372954, 0.39551759014582955, -0.08016363068512133, 0.0036954157846412206], dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver1\"] = driver\n    x[\"driver2\"] = driver**2\n    x[\"driver3\"] = driver**3\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{l}\"] = 1.0\n            x[f\"line{l}_driver1\"] = driver\n            x[f\"line{l}_driver2\"] = driver**2\n            x[f\"line{l}_driver3\"] = driver**3\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    sigma = float(0.643760683799167)\n    return pd.DataFrame({\"outcome\": rng.normal(mu, sigma, size=n)})\n"
+          },
+          "budget_remaining": 600.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "experiment",
+              "args": {
+                "config": {
+                  "campaign_line": 1.0
+                },
+                "context": {},
+                "n": 20
+              },
+              "cost": 300.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            },
+            {
+              "verb": "submit",
+              "args": {
+                "accepted": true
+              },
+              "cost": 0.0,
+              "note": "R=0.837 (server-side)"
+            }
+          ]
+        }
+      ],
+      "tokens_continuation": 18579,
+      "checkpoint_scores": {
+        "M_pre": {
+          "full": {
+            "accepted": true,
+            "R": 0.0,
+            "hash": "3f2acccf2e47",
+            "error": null
+          },
+          "diagnostic": {
+            "accepted": true,
+            "R": 0.0,
+            "hash": "3f2acccf2e47",
+            "error": null
+          }
+        },
+        "M_post_first": {
+          "full": {
+            "accepted": true,
+            "R": 0.0,
+            "hash": "3f2acccf2e47",
+            "error": null
+          },
+          "diagnostic": {
+            "accepted": true,
+            "R": 0.0,
+            "hash": "3f2acccf2e47",
+            "error": null
+          }
+        },
+        "M_final": {
+          "full": {
+            "accepted": true,
+            "R": 0.8367411666264459,
+            "hash": "4890eb6439ef",
+            "error": null
+          },
+          "diagnostic": {
+            "accepted": true,
+            "R": 0.8368253847607763,
+            "hash": "4890eb6439ef",
+            "error": null
+          }
+        }
+      }
+    },
+    "transfer": {
+      "case_id": "overgen_stream_twin_v0",
+      "replay_checks": [
+        {
+          "turn": 1,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 2,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 3,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 4,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        }
+      ],
+      "replay_exact": true,
+      "report_count": 1,
+      "abort": "submitted",
+      "accepted": true,
+      "R": 0.5499630666464472,
+      "submission_code": "\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n\n    names = ['intercept', 'driver', 'driver2', 'driver3', 'line2', 'line2_driver', 'line3', 'line3_driver', 'line4', 'line4_driver', 'line5', 'line5_driver']\n    beta_hat = np.array([14.377151348057843, 2.718635602115459, -0.19683001318700705, -0.008170314120175881, 0.05471293812137627, 0.0641841556542353, 0.13205844655246543, 0.0075870579689817355, 0.01713921346333062, 0.020505295815824724, 0.2870998199751624, -0.06755045191012127], dtype=float)\n    XtX_inv = np.array([[0.11128169826494791, -0.0638724530549142, 0.011818090398031228, -0.0006885023992074142, -0.05277185984195454, 0.0077227197463221675, -0.05277185984195456, 0.007722719746322173, -0.052771859841954545, 0.007722719746322173, -0.05277185984195459, 0.0077227197463221806], [-0.0638724530549148, 0.06562196266068525, -0.014945311174728531, 0.0009419192226474103, 0.001644335035243244, -0.0007346553916152145, 0.0016443350352432489, -0.0007346553916152145, 0.001644335035243244, -0.0007346553916152145, 0.0016443350352432489, -0.0007346553916152152], [0.011818090398031349, -0.014945311174728545, 0.0037166174535299013, -0.00024507079491008075, 0.0018676831131303464, -0.0002601063442461224, 0.0018676831131303453, -0.00026010634424612246, 0.001867683113130347, -0.0002601063442461227, 0.0018676831131303469, -0.00026010634424612273], [-0.0006885023992074233, 0.0009419192226474114, -0.0002450707949100807, 1.6640698880545405e-05, -0.0001344981041114921, 1.9390818810758033e-05, -0.00013449810411149204, 1.9390818810758036e-05, -0.00013449810411149214, 1.9390818810758053e-05, -0.00013449810411149214, 1.9390818810758057e-05], [-0.052771859841954, 0.0016443350352425903, 0.0018676831131305067, -0.00013449810411150255, 0.16865223168011514, -0.025646251208806765, 0.05777562592137442, -0.00831062549838882, 0.05777562592137445, -0.008310625498388827, 0.05777562592137445, -0.008310625498388827], [0.007722719746322095, -0.0007346553916151278, -0.00026010634424614317, 1.9390818810759358e-05, -0.025646251208806776, 0.005604697447796785, -0.008310625498388817, 0.0016063653234829256, -0.008310625498388822, 0.0016063653234829269, -0.008310625498388822, 0.0016063653234829269], [-0.05277185984195397, 0.001644335035242591, 0.0018676831131305067, -0.00013449810411150255, 0.05777562592137442, -0.00831062549838882, 0.16865223168011506, -0.02564625120880677, 0.05777562592137446, -0.008310625498388825, 0.05777562592137447, -0.008310625498388827], [0.007722719746322092, -0.000734655391615128, -0.0002601063442461431, 1.9390818810759354e-05, -0.008310625498388818, 0.001606365323482926, -0.025646251208806762, 0.005604697447796785, -0.008310625498388824, 0.001606365323482927, -0.008310625498388824, 0.001606365323482927], [-0.052771859841954, 0.0016443350352425914, 0.001867683113130507, -0.00013449810411150258, 0.057775625921374446, -0.00831062549838882, 0.05777562592137443, -0.00831062549838882, 0.1686522316801152, -0.025646251208806783, 0.057775625921374495, -0.00831062549838883], [0.007722719746322095, -0.0007346553916151281, -0.0002601063442461432, 1.9390818810759364e-05, -0.008310625498388822, 0.0016063653234829262, -0.008310625498388817, 0.0016063653234829258, -0.025646251208806783, 0.005604697447796788, -0.008310625498388829, 0.0016063653234829277], [-0.05277185984195403, 0.0016443350352426508, 0.0018676831131304913, -0.0001344981041115015, 0.057775625921374446, -0.00831062549838882, 0.0577756259213744, -0.008310625498388818, 0.05777562592137446, -0.008310625498388829, 0.1686522316801152, -0.025646251208806786], [0.007722719746322104, -0.0007346553916151416, -0.00026010634424613954, 1.9390818810759114e-05, -0.00831062549838882, 0.001606365323482926, -0.008310625498388811, 0.0016063653234829251, -0.008310625498388822, 0.0016063653234829269, -0.02564625120880678, 0.005604697447796788]], dtype=float)\n    sigma2 = float(0.3912314579708431)\n\n    # Draw coefficients to reflect parameter uncertainty, then draw batch outcomes.\n    beta = rng.multivariate_normal(beta_hat, sigma2 * XtX_inv)\n\n    x = dict.fromkeys(names, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    x[\"driver3\"] = driver**3\n    for l in [2, 3, 4, 5]:\n        if line == l:\n            x[f\"line{l}\"] = 1.0\n            x[f\"line{l}_driver\"] = driver\n\n    xv = np.array([x[c] for c in names], dtype=float)\n    mu = float(xv @ beta)\n    ydraw = rng.normal(mu, np.sqrt(sigma2), size=n)\n    return pd.DataFrame({\"outcome\": ydraw})\n",
+      "trace": [
+        {
+          "turn": 5,
+          "notices": [
+            "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5.\nThe report is already loaded as DataFrame `commissioning_report`."
+          ],
+          "reply_text": "REASONING: Great: the line-1 campaign confirms a hump-shaped high-range response peaking near driver 5, consistent with the shared cubic idea, and now the commissioning report has arrived for lines 2\u20135, which is exactly the missing evidence we needed. Before spending more budget, the right move is to inspect and merge `commissioning_report`, check whether lines 2\u20135 still track the same shape or show line-specific high-range deviations, then fit the final model on all accumulated data. If the report is rich enough, we may be ready to submit without further experiments and save the remaining 600.\n```python\nimport numpy as np, pandas as pd\n\nprint(\"commissioning_report head:\")\nprint(commissioning_report.head())\nprint(\"shape:\", commissioning_report.shape)\n\nprint(\"\\nCounts by line in commissioning_report:\")\nprint(commissioning_report.groupby(\"line\").size())\n\nprint(\"\\nDriver support by line in commissioning_report:\")\nprint(commissioning_report.groupby(\"line\")[\"driver\"].agg([\"min\",\"max\",\"nunique\"]))\n\nprint(\"\\nMean outcome by line,driver (first 30 rows):\")\ncr_md = commissioning_report.groupby([\"line\",\"driver\"])[\"outcome\"].agg([\"mean\",\"std\",\"count\"]).reset_index()\nprint(cr_md.head(30))\n\n# Combine all available data\nall_data = pd.concat([qual, exp1, commissioning_report], ignore_index=True)\nprint(\"\\nCombined data shape:\", all_data.shape)\nprint(all_data.groupby(\"line\")[\"driver\"].agg([\"min\",\"max\",\"nunique\",\"count\"]))\n\n# Compare nested models on full data\ndef fit_model(df, degree=3, line_intercept=True, line_slope=True, line_curve=False):\n    d = df[\"driver\"].astype(float).to_numpy()\n    cols = [np.ones(len(df)), d, d**2]\n    names = [\"intercept\", \"driver\", \"driver2\"]\n    if degree >= 3:\n        cols.append(d**3); names.append(\"driver3\")\n    if degree >= 4:\n        cols.append(d**4); names.append(\"driver4\")\n    for l in range(2,6):\n        z = (df[\"line\"].to_numpy()==l).astype(float)\n        if line_intercept:\n            cols.append(z); names.append(f\"line{l}\")\n        if line_slope:\n            cols.append(z*d); names.append(f\"line{l}_driver\")\n        if line_curve:\n            cols.append(z*d**2); names.append(f\"line{l}_driver2\")\n            if degree >= 3:\n                cols.append(z*d**3); names.append(f\"line{l}_driver3\")\n    X = np.column_stack(cols)\n    y = df[\"outcome\"].to_numpy(float)\n    beta, *_ = np.linalg.lstsq(X, y, rcond=None)\n    resid = y - X @ beta\n    p = X.shape[1]\n    sigma = float(np.sqrt(np.sum(resid**2) / max(len(y)-p, 1)))\n    return {\"names\": names, \"beta\": beta, \"sigma\": sigma, \"sse\": float(np.sum(resid**2)), \"p\": p}\n\nfits = {\n    \"cubic_lineInterceptSlope\": fit_model(all_data, degree=3, line_intercept=True, line_slope=True, line_curve=False),\n    \"cubic_lineInterceptSlopeCurve\": fit_model(all_data, degree=3, line_intercept=True, line_slope=True, line_curve=True),\n    \"quartic_lineInterceptSlope\": fit_model(all_data, degree=4, line_intercept=True, line_slope=True, line_curve=False),\n}\nprint(\"\\nFull-data model comparison:\")\nfor k,v in fits.items():\n    print(k, {\"p\": v[\"p\"], \"sigma\": round(v[\"sigma\"],4), \"sse\": round(v[\"sse\"],4)})\n\n# Residual diagnostics for most flexible candidate\nbest_name = min(fits, key=lambda k: fits[k][\"sigma\"])\nbest = fits[best_name]\nprint(\"\\nBest by residual sigma:\", best_name)\n\n# Construct fitted/residuals\nd = all_data[\"driver\"].astype(float).to_numpy()\ncols = [np.ones(len(all_data)), d, d**2]\nnames = [\"intercept\", \"driver\", \"driver2\"]\ndeg = 3 if \"quartic\" not in best_name else 4\nif deg >= 3:\n    cols.append(d**3); names.append(\"driver3\")\nif deg >= 4:\n    cols.append(d**4); names.append(\"driver4\")\nfor l in range(2,6):\n    z = (all_data[\"line\"].to_numpy()==l).astype(float)\n    cols.append(z); names.append(f\"line{l}\")\n    cols.append(z*d); names.append(f\"line{l}_driver\")\n    if \"Curve\" in best_name:\n        cols.append(z*d**2); names.append(f\"line{l}_driver2\")\n        if deg >= 3:\n            cols.append(z*d**3); names.append(f\"line{l}_driver3\")\nX = np.column_stack(cols)\nresid = all_data[\"outcome\"].to_numpy(float) - X @ best[\"beta\"]\ndiag = all_data.copy()\ndiag[\"resid\"] = resid\nprint(\"\\nResidual SD by line:\")\nprint(diag.groupby(\"line\")[\"resid\"].std())\n```",
+          "cell": "import numpy as np, pandas as pd\n\nprint(\"commissioning_report head:\")\nprint(commissioning_report.head())\nprint(\"shape:\", commissioning_report.shape)\n\nprint(\"\\nCounts by line in commissioning_report:\")\nprint(commissioning_report.groupby(\"line\").size())\n\nprint(\"\\nDriver support by line in commissioning_report:\")\nprint(commissioning_report.groupby(\"line\")[\"driver\"].agg([\"min\",\"max\",\"nunique\"]))\n\nprint(\"\\nMean outcome by line,driver (first 30 rows):\")\ncr_md = commissioning_report.groupby([\"line\",\"driver\"])[\"outcome\"].agg([\"mean\",\"std\",\"count\"]).reset_index()\nprint(cr_md.head(30))\n\n# Combine all available data\nall_data = pd.concat([qual, exp1, commissioning_report], ignore_index=True)\nprint(\"\\nCombined data shape:\", all_data.shape)\nprint(all_data.groupby(\"line\")[\"driver\"].agg([\"min\",\"max\",\"nunique\",\"count\"]))\n\n# Compare nested models on full data\ndef fit_model(df, degree=3, line_intercept=True, line_slope=True, line_curve=False):\n    d = df[\"driver\"].astype(float).to_numpy()\n    cols = [np.ones(len(df)), d, d**2]\n    names = [\"intercept\", \"driver\", \"driver2\"]\n    if degree >= 3:\n        cols.append(d**3); names.append(\"driver3\")\n    if degree >= 4:\n        cols.append(d**4); names.append(\"driver4\")\n    for l in range(2,6):\n        z = (df[\"line\"].to_numpy()==l).astype(float)\n        if line_intercept:\n            cols.append(z); names.append(f\"line{l}\")\n        if line_slope:\n            cols.append(z*d); names.append(f\"line{l}_driver\")\n        if line_curve:\n            cols.append(z*d**2); names.append(f\"line{l}_driver2\")\n            if degree >= 3:\n                cols.append(z*d**3); names.append(f\"line{l}_driver3\")\n    X = np.column_stack(cols)\n    y = df[\"outcome\"].to_numpy(float)\n    beta, *_ = np.linalg.lstsq(X, y, rcond=None)\n    resid = y - X @ beta\n    p = X.shape[1]\n    sigma = float(np.sqrt(np.sum(resid**2) / max(len(y)-p, 1)))\n    return {\"names\": names, \"beta\": beta, \"sigma\": sigma, \"sse\": float(np.sum(resid**2)), \"p\": p}\n\nfits = {\n    \"cubic_lineInterceptSlope\": fit_model(all_data, degree=3, line_intercept=True, line_slope=True, line_curve=False),\n    \"cubic_lineInterceptSlopeCurve\": fit_model(all_data, degree=3, line_intercept=True, line_slope=True, line_curve=True),\n    \"quartic_lineInterceptSlope\": fit_model(all_data, degree=4, line_intercept=True, line_slope=True, line_curve=False),\n}\nprint(\"\\nFull-data model comparison:\")\nfor k,v in fits.items():\n    print(k, {\"p\": v[\"p\"], \"sigma\": round(v[\"sigma\"],4), \"sse\": round(v[\"sse\"],4)})\n\n# Residual diagnostics for most flexible candidate\nbest_name = min(fits, key=lambda k: fits[k][\"sigma\"])\nbest = fits[best_name]\nprint(\"\\nBest by residual sigma:\", best_name)\n\n# Construct fitted/residuals\nd = all_data[\"driver\"].astype(float).to_numpy()\ncols = [np.ones(len(all_data)), d, d**2]\nnames = [\"intercept\", \"driver\", \"driver2\"]\ndeg = 3 if \"quartic\" not in best_name else 4\nif deg >= 3:\n    cols.append(d**3); names.append(\"driver3\")\nif deg >= 4:\n    cols.append(d**4); names.append(\"driver4\")\nfor l in range(2,6):\n    z = (all_data[\"line\"].to_numpy()==l).astype(float)\n    cols.append(z); names.append(f\"line{l}\")\n    cols.append(z*d); names.append(f\"line{l}_driver\")\n    if \"Curve\" in best_name:\n        cols.append(z*d**2); names.append(f\"line{l}_driver2\")\n        if deg >= 3:\n            cols.append(z*d**3); names.append(f\"line{l}_driver3\")\nX = np.column_stack(cols)\nresid = all_data[\"outcome\"].to_numpy(float) - X @ best[\"beta\"]\ndiag = all_data.copy()\ndiag[\"resid\"] = resid\nprint(\"\\nResidual SD by line:\")\nprint(diag.groupby(\"line\")[\"resid\"].std())",
+          "cell_result": {
+            "ok": true,
+            "stdout": "commissioning_report head:\n   line  driver    outcome\n0   2.0     1.0  17.718399\n1   3.0     1.0  16.983610\n2   4.0     1.0  16.762110\n3   5.0     1.0  16.583653\n4   2.0     3.0  20.262012\nshape: (64, 3)\n\nCounts by line in commissioning_report:\nline\n2.0    16\n3.0    16\n4.0    16\n5.0    16\ndtype: int64\n\nDriver support by line in commissioning_report:\n      min  max  nunique\nline                   \n2.0   1.0  9.6        8\n3.0   1.0  9.6        8\n4.0   1.0  9.6        8\n5.0   1.0  9.6        8\n\nMean outcome by line,driver (first 30 rows):\n    line  driver       mean       std  count\n0    2.0     1.0  17.229048  0.692047      2\n1    2.0     3.0  20.651617  0.550985      2\n2    2.0     5.0  22.776565  0.883825      2\n3    2.0     6.2  22.007003  0.929239      2\n4    2.0     7.4  20.611308  0.438722      2\n5    2.0     7.9  20.850340  1.221920      2\n6    2.0     8.6  18.745208  0.090945      2\n7    2.0     9.6  15.395022  0.398854      2\n8    3.0     1.0  16.967770  0.022402      2\n9    3.0     3.0  20.631097  0.946473      2\n10   3.0     5.0  21.837814  0.041906      2\n11   3.0     6.2  21.725776  0.150742      2\n12   3.0     7.4  20.658511  0.356345      2\n13   3.0     7.9  19.980090  0.177272      2\n14   3.0     8.6  18.028053  0.418428      2\n15   3.0     9.6  15.406528  0.797081      2\n16   4.0     1.0  16.999719  0.336030      2\n17   4.0     3.0  20.908622  0.633820      2\n18   4.0     5.0  22.500860  1.038749      2\n19   4.0     6.2  21.849089  0.307274      2\n20   4.0     7.4  20.514565  0.273081      2\n21   4.0     7.9  18.721360  0.166319      2\n22   4.0     8.6  18.535436  0.486279      2\n23   4.0     9.6  15.565089  0.111631      2\n24   5.0     1.0  17.051959  0.662284      2\n25   5.0     3.0  20.906001  0.527111      2\n26   5.0     5.0  21.861412  1.416594      2\n27   5.0     6.2  21.321252  0.333529      2\n28   5.0     7.4  20.291015  0.166091      2\n29   5.0     7.9  19.707234  0.039718      2\n\nCombined data shape: (180, 3)\n          min       max  nunique  count\nline                                   \n1.0   0.18601  9.572144       53     68\n2.0   0.50000  9.600000       12     28\n3.0   0.50000  9.600000       12     28\n4.0   0.50000  9.600000       12     28\n5.0   0.50000  9.600000       12     28\n\nFull-data model comparison:\ncubic_lineInterceptSlope {'p': 12, 'sigma': 0.6255, 'sse': 65.7269}\ncubic_lineInterceptSlopeCurve {'p': 20, 'sigma': 0.6314, 'sse': 63.7939}\nquartic_lineInterceptSlope {'p': 13, 'sigma': 0.6273, 'sse': 65.7197}\n\nBest by residual sigma: cubic_lineInterceptSlope\n\nResidual SD by line:\nline\n1.0    0.628550\n2.0    0.618107\n3.0    0.488621\n4.0    0.670730\n5.0    0.619091\nName: resid, dtype: float64\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    cols = ['intercept', 'driver', 'driver2', 'driver3', 'line2', 'line2_driver', 'line3', 'line3_driver', 'line4', 'line4_driver', 'line5', 'line5_driver']\n    beta = np.array([14.564219268843448, 2.4739608045886463, -0.1326772967542001, -0.012637099505978355, 0.09772866769289282, 0.021303995983698466, 0.021530875207312367, 0.11589172092523757, -0.33217555770079665, 0.1940920792632972, -0.1271752284687426, 0.1633533062717234], dtype=float)\n    x = dict.fromkeys(cols, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    x[\"driver3\"] = driver**3\n    for l in [2,3,4,5]:\n        if line == l:\n            x[f\"line{l}\"] = 1.0\n            x[f\"line{l}_driver\"] = driver\n    xv = np.array([x[c] for c in cols], dtype=float)\n    mu = float(xv @ beta)\n    return pd.DataFrame({\"outcome\": rng.normal(mu, 0.6798855768180172, size=n)})\n"
+          },
+          "budget_remaining": 600.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "experiment",
+              "args": {
+                "config": {
+                  "campaign_line": 1.0
+                },
+                "context": {},
+                "n": 20
+              },
+              "cost": 300.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 6,
+          "notices": [],
+          "reply_text": "REASONING: This strongly confirms the shared-shape hypothesis: once the full commissioning report is included, a common cubic with line-specific intercepts/slopes is the best-performing parsimonious model, and residual spread is fairly stable across lines. We have enough data now and no need to spend the remaining budget. The last step is to package a submission model that generates the outcome distribution; to reflect both process noise and parameter uncertainty, I\u2019ll sample coefficients from their estimated covariance each call and then add residual noise, while keeping exactly the required `outcome` column.\n```python\nimport numpy as np, pandas as pd\n\n# Final fit on all accumulated data: shared cubic + line intercept/slope adjustments\nfinal_data = all_data.copy()\n\nd = final_data[\"driver\"].astype(float).to_numpy()\ncols = [np.ones(len(final_data)), d, d**2, d**3]\nnames = [\"intercept\", \"driver\", \"driver2\", \"driver3\"]\nfor l in range(2, 6):\n    z = (final_data[\"line\"].to_numpy() == l).astype(float)\n    cols += [z, z*d]\n    names += [f\"line{l}\", f\"line{l}_driver\"]\n\nX = np.column_stack(cols).astype(float)\ny = final_data[\"outcome\"].to_numpy(float)\nbeta, *_ = np.linalg.lstsq(X, y, rcond=None)\nresid = y - X @ beta\nn_obs, p = X.shape\nsigma2 = float(np.sum(resid**2) / (n_obs - p))\nXtX_inv = np.linalg.inv(X.T @ X)\n\nprint(\"Final model terms:\", names)\nprint(\"Residual sigma:\", np.sqrt(sigma2))\n\ncode = f'''\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n\n    names = {names!r}\n    beta_hat = np.array({beta.tolist()!r}, dtype=float)\n    XtX_inv = np.array({XtX_inv.tolist()!r}, dtype=float)\n    sigma2 = float({sigma2!r})\n\n    # Draw coefficients to reflect parameter uncertainty, then draw batch outcomes.\n    beta = rng.multivariate_normal(beta_hat, sigma2 * XtX_inv)\n\n    x = dict.fromkeys(names, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    x[\"driver3\"] = driver**3\n    for l in [2, 3, 4, 5]:\n        if line == l:\n            x[f\"line{{l}}\"] = 1.0\n            x[f\"line{{l}}_driver\"] = driver\n\n    xv = np.array([x[c] for c in names], dtype=float)\n    mu = float(xv @ beta)\n    ydraw = rng.normal(mu, np.sqrt(sigma2), size=n)\n    return pd.DataFrame({{\"outcome\": ydraw}})\n'''\n\nworking_model = code\nres = env.submit(code)\nprint(\"accepted:\", res.accepted)\nprint(\"error:\", getattr(res, \"error\", None))\n```",
+          "cell": "import numpy as np, pandas as pd\n\n# Final fit on all accumulated data: shared cubic + line intercept/slope adjustments\nfinal_data = all_data.copy()\n\nd = final_data[\"driver\"].astype(float).to_numpy()\ncols = [np.ones(len(final_data)), d, d**2, d**3]\nnames = [\"intercept\", \"driver\", \"driver2\", \"driver3\"]\nfor l in range(2, 6):\n    z = (final_data[\"line\"].to_numpy() == l).astype(float)\n    cols += [z, z*d]\n    names += [f\"line{l}\", f\"line{l}_driver\"]\n\nX = np.column_stack(cols).astype(float)\ny = final_data[\"outcome\"].to_numpy(float)\nbeta, *_ = np.linalg.lstsq(X, y, rcond=None)\nresid = y - X @ beta\nn_obs, p = X.shape\nsigma2 = float(np.sum(resid**2) / (n_obs - p))\nXtX_inv = np.linalg.inv(X.T @ X)\n\nprint(\"Final model terms:\", names)\nprint(\"Residual sigma:\", np.sqrt(sigma2))\n\ncode = f'''\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n\n    names = {names!r}\n    beta_hat = np.array({beta.tolist()!r}, dtype=float)\n    XtX_inv = np.array({XtX_inv.tolist()!r}, dtype=float)\n    sigma2 = float({sigma2!r})\n\n    # Draw coefficients to reflect parameter uncertainty, then draw batch outcomes.\n    beta = rng.multivariate_normal(beta_hat, sigma2 * XtX_inv)\n\n    x = dict.fromkeys(names, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    x[\"driver3\"] = driver**3\n    for l in [2, 3, 4, 5]:\n        if line == l:\n            x[f\"line{{l}}\"] = 1.0\n            x[f\"line{{l}}_driver\"] = driver\n\n    xv = np.array([x[c] for c in names], dtype=float)\n    mu = float(xv @ beta)\n    ydraw = rng.normal(mu, np.sqrt(sigma2), size=n)\n    return pd.DataFrame({{\"outcome\": ydraw}})\n'''\n\nworking_model = code\nres = env.submit(code)\nprint(\"accepted:\", res.accepted)\nprint(\"error:\", getattr(res, \"error\", None))",
+          "cell_result": {
+            "ok": true,
+            "stdout": "Final model terms: ['intercept', 'driver', 'driver2', 'driver3', 'line2', 'line2_driver', 'line3', 'line3_driver', 'line4', 'line4_driver', 'line5', 'line5_driver']\nResidual sigma: 0.6254849782135803\naccepted: True\nerror: None\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "\ndef model(regime, n, seed):\n    import numpy as np, pandas as pd\n    rng = np.random.default_rng(seed)\n\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n\n    names = ['intercept', 'driver', 'driver2', 'driver3', 'line2', 'line2_driver', 'line3', 'line3_driver', 'line4', 'line4_driver', 'line5', 'line5_driver']\n    beta_hat = np.array([14.377151348057843, 2.718635602115459, -0.19683001318700705, -0.008170314120175881, 0.05471293812137627, 0.0641841556542353, 0.13205844655246543, 0.0075870579689817355, 0.01713921346333062, 0.020505295815824724, 0.2870998199751624, -0.06755045191012127], dtype=float)\n    XtX_inv = np.array([[0.11128169826494791, -0.0638724530549142, 0.011818090398031228, -0.0006885023992074142, -0.05277185984195454, 0.0077227197463221675, -0.05277185984195456, 0.007722719746322173, -0.052771859841954545, 0.007722719746322173, -0.05277185984195459, 0.0077227197463221806], [-0.0638724530549148, 0.06562196266068525, -0.014945311174728531, 0.0009419192226474103, 0.001644335035243244, -0.0007346553916152145, 0.0016443350352432489, -0.0007346553916152145, 0.001644335035243244, -0.0007346553916152145, 0.0016443350352432489, -0.0007346553916152152], [0.011818090398031349, -0.014945311174728545, 0.0037166174535299013, -0.00024507079491008075, 0.0018676831131303464, -0.0002601063442461224, 0.0018676831131303453, -0.00026010634424612246, 0.001867683113130347, -0.0002601063442461227, 0.0018676831131303469, -0.00026010634424612273], [-0.0006885023992074233, 0.0009419192226474114, -0.0002450707949100807, 1.6640698880545405e-05, -0.0001344981041114921, 1.9390818810758033e-05, -0.00013449810411149204, 1.9390818810758036e-05, -0.00013449810411149214, 1.9390818810758053e-05, -0.00013449810411149214, 1.9390818810758057e-05], [-0.052771859841954, 0.0016443350352425903, 0.0018676831131305067, -0.00013449810411150255, 0.16865223168011514, -0.025646251208806765, 0.05777562592137442, -0.00831062549838882, 0.05777562592137445, -0.008310625498388827, 0.05777562592137445, -0.008310625498388827], [0.007722719746322095, -0.0007346553916151278, -0.00026010634424614317, 1.9390818810759358e-05, -0.025646251208806776, 0.005604697447796785, -0.008310625498388817, 0.0016063653234829256, -0.008310625498388822, 0.0016063653234829269, -0.008310625498388822, 0.0016063653234829269], [-0.05277185984195397, 0.001644335035242591, 0.0018676831131305067, -0.00013449810411150255, 0.05777562592137442, -0.00831062549838882, 0.16865223168011506, -0.02564625120880677, 0.05777562592137446, -0.008310625498388825, 0.05777562592137447, -0.008310625498388827], [0.007722719746322092, -0.000734655391615128, -0.0002601063442461431, 1.9390818810759354e-05, -0.008310625498388818, 0.001606365323482926, -0.025646251208806762, 0.005604697447796785, -0.008310625498388824, 0.001606365323482927, -0.008310625498388824, 0.001606365323482927], [-0.052771859841954, 0.0016443350352425914, 0.001867683113130507, -0.00013449810411150258, 0.057775625921374446, -0.00831062549838882, 0.05777562592137443, -0.00831062549838882, 0.1686522316801152, -0.025646251208806783, 0.057775625921374495, -0.00831062549838883], [0.007722719746322095, -0.0007346553916151281, -0.0002601063442461432, 1.9390818810759364e-05, -0.008310625498388822, 0.0016063653234829262, -0.008310625498388817, 0.0016063653234829258, -0.025646251208806783, 0.005604697447796788, -0.008310625498388829, 0.0016063653234829277], [-0.05277185984195403, 0.0016443350352426508, 0.0018676831131304913, -0.0001344981041115015, 0.057775625921374446, -0.00831062549838882, 0.0577756259213744, -0.008310625498388818, 0.05777562592137446, -0.008310625498388829, 0.1686522316801152, -0.025646251208806786], [0.007722719746322104, -0.0007346553916151416, -0.00026010634424613954, 1.9390818810759114e-05, -0.00831062549838882, 0.001606365323482926, -0.008310625498388811, 0.0016063653234829251, -0.008310625498388822, 0.0016063653234829269, -0.02564625120880678, 0.005604697447796788]], dtype=float)\n    sigma2 = float(0.3912314579708431)\n\n    # Draw coefficients to reflect parameter uncertainty, then draw batch outcomes.\n    beta = rng.multivariate_normal(beta_hat, sigma2 * XtX_inv)\n\n    x = dict.fromkeys(names, 0.0)\n    x[\"intercept\"] = 1.0\n    x[\"driver\"] = driver\n    x[\"driver2\"] = driver**2\n    x[\"driver3\"] = driver**3\n    for l in [2, 3, 4, 5]:\n        if line == l:\n            x[f\"line{l}\"] = 1.0\n            x[f\"line{l}_driver\"] = driver\n\n    xv = np.array([x[c] for c in names], dtype=float)\n    mu = float(xv @ beta)\n    ydraw = rng.normal(mu, np.sqrt(sigma2), size=n)\n    return pd.DataFrame({\"outcome\": ydraw})\n"
+          },
+          "budget_remaining": 600.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "experiment",
+              "args": {
+                "config": {
+                  "campaign_line": 1.0
+                },
+                "context": {},
+                "n": 20
+              },
+              "cost": 300.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 5
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            },
+            {
+              "verb": "submit",
+              "args": {
+                "accepted": true
+              },
+              "cost": 0.0,
+              "note": "R=0.550 (server-side)"
+            }
+          ]
+        }
+      ],
+      "tokens_continuation": 19421,
+      "checkpoint_scores": {
+        "M_pre": {
+          "full": {
+            "accepted": true,
+            "R": 0.0,
+            "hash": "3f2acccf2e47",
+            "error": null
+          },
+          "diagnostic": {
+            "accepted": true,
+            "R": 0.0,
+            "hash": "3f2acccf2e47",
+            "error": null
+          }
+        },
+        "M_post_first": {
+          "full": {
+            "accepted": true,
+            "R": 0.0,
+            "hash": "3f2acccf2e47",
+            "error": null
+          },
+          "diagnostic": {
+            "accepted": true,
+            "R": 0.0,
+            "hash": "3f2acccf2e47",
+            "error": null
+          }
+        },
+        "M_final": {
+          "full": {
+            "accepted": true,
+            "R": 0.5499630666464472,
+            "hash": "bb4985dc7fad",
+            "error": null
+          },
+          "diagnostic": {
+            "accepted": true,
+            "R": 0.47844973011211084,
+            "hash": "bb4985dc7fad",
+            "error": null
+          }
+        }
+      }
+    }
+  },
+  "gates": {
+    "M_pre_string": true,
+    "replay_exact_both": true,
+    "one_report_each": true,
+    "accepted_both": true
+  },
+  "all": true
+}

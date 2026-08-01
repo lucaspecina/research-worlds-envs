@@ -104,3 +104,12 @@ def test_routine_event_can_auto_deliver_a_finite_free_report():
     assert server.pop_deliveries() == []
     with pytest.raises(ValueError):
         server.observe("commissioning", 1)  # all finite rows were delivered
+
+
+def test_event_can_be_held_and_fired_at_a_formed_belief_checkpoint():
+    server = _server()
+    assert server.begin_turn(20, fire_events=False) == []
+    assert "log" not in server.describe()["sources"]
+    notices = server.fire_event(0, turn_idx=21)
+    assert len(notices) == 1 and "log" in server.describe()["sources"]
+    assert server.fire_event(0, turn_idx=22) == []  # exactly once
