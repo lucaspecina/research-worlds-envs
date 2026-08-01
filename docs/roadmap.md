@@ -123,6 +123,10 @@
 > y ahora incluye el contrato matemático completo; nunca recibe cohorte/hashes/seeds/gates.
 > El soporte de dos tripletas alcanza para cableado técnico, pero BLOQUEA aún las corridas
 > conductuales por riesgo de “menú superficial”.
+> **FACTORY.3 CERRADA PASS 8/8 (ADR 0159):** cohorte fresca y fija; F_prop estable 8/8 en
+> `revise` y 3/8 en `doubt`; receta del agente sin información de muestreo. **Siguiente acción:
+> implementar y correr UN episodio técnico scripted.** No llamar agentes todavía: primero
+> cableado causal/opaco; luego reevaluación y ampliación del soporte antimenú.
 >
 > **PASADA 1 CORRIDA Y CERRADA (2026-07-30, autónoma; ADRs 0154 pre-registro / 0155
 > resultados)**: diseño de Codex adoptado íntegro (factorial autoría×compromiso×evidencia,
