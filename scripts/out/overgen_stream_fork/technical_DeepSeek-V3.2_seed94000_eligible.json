@@ -1,0 +1,577 @@
+{
+  "kind": "technical_live_history_fork_not_behavioral_evidence",
+  "model": "DeepSeek-V3.2",
+  "seed_offset": 94000,
+  "checkpoint": "eligible",
+  "prefix": {
+    "trace": [
+      {
+        "turn": 1,
+        "notices": [],
+        "reply_text": "**Reasoning**  \nI\u2019ll start by loading the free qualification report to understand the data structure and current evidence. This gives me outcomes for line 1 across 0\u201310, and lines 2\u20135 only in driver range 0\u20134. I can see basic patterns, noise levels, and whether lines differ systematically. Then I\u2019ll decide whether early experiments are needed (e.g., checking if lines 2\u20135 behave similarly to line 1 in the low range before the range extension). Budget is 900, so I\u2019ll be careful with experiments (300 each).  \n\nFirst step: observe the qualification report and explore summary statistics.\n\n```python\nimport pandas as pd\nimport numpy as np\n\ndf = env.observe(\"qualification_report\", 96)\nprint(\"Shape:\", df.shape)\nprint(\"\\nFirst rows:\")\nprint(df.head())\nprint(\"\\nLines and driver ranges:\")\nfor line in sorted(df['line'].unique()):\n    sub = df[df['line'] == line]\n    print(f\"Line {line}: driver {sub['driver'].min():.1f}\u2013{sub['driver'].max():.1f}, n={len(sub)}\")\nprint(\"\\nOutcome stats by line:\")\nprint(df.groupby('line')['outcome'].describe())\n```",
+        "cell": "import pandas as pd\nimport numpy as np\n\ndf = env.observe(\"qualification_report\", 96)\nprint(\"Shape:\", df.shape)\nprint(\"\\nFirst rows:\")\nprint(df.head())\nprint(\"\\nLines and driver ranges:\")\nfor line in sorted(df['line'].unique()):\n    sub = df[df['line'] == line]\n    print(f\"Line {line}: driver {sub['driver'].min():.1f}\u2013{sub['driver'].max():.1f}, n={len(sub)}\")\nprint(\"\\nOutcome stats by line:\")\nprint(df.groupby('line')['outcome'].describe())",
+        "cell_result": {
+          "ok": true,
+          "stdout": "Shape: (96, 3)\n\nFirst rows:\n   line    driver    outcome\n0   1.0  6.183101  21.708302\n1   2.0  0.500000  15.562900\n2   1.0  5.804281  21.848745\n3   3.0  0.500000  14.966134\n4   1.0  8.965429  17.698642\n\nLines and driver ranges:\nLine 1.0: driver 0.3\u20139.8, n=48\nLine 2.0: driver 0.5\u20133.5, n=12\nLine 3.0: driver 0.5\u20133.5, n=12\nLine 4.0: driver 0.5\u20133.5, n=12\nLine 5.0: driver 0.5\u20133.5, n=12\n\nOutcome stats by line:\n      count       mean       std  ...        50%        75%        max\nline                              ...                                 \n1.0    48.0  19.249823  2.332895  ...  19.584313  21.341053  22.584278\n2.0    12.0  18.803163  2.407850  ...  18.498561  21.035126  22.404670\n3.0    12.0  18.735808  2.473471  ...  19.018153  20.998438  21.961316\n4.0    12.0  18.809344  2.096546  ...  19.220370  20.207780  21.521229\n5.0    12.0  18.834978  2.204513  ...  19.127532  20.582810  21.991787\n\n[5 rows x 8 columns]\n",
+          "error": null,
+          "truncated": false
+        },
+        "working_model": {
+          "status": "missing",
+          "code": null
+        },
+        "budget_remaining": 900.0,
+        "trajectory": [
+          {
+            "verb": "observe",
+            "args": {
+              "source": "qualification_report",
+              "n": 96
+            },
+            "cost": 0.0,
+            "note": ""
+          }
+        ]
+      },
+      {
+        "turn": 2,
+        "notices": [],
+        "reply_text": "**Reasoning**  \nThe qualification report shows:  \n- Line 1 has 48 observations across 0.3\u20139.8 driver range, outcome mean ~19.25, std ~2.33.  \n- Lines 2\u20135 each have 12 observations only in driver 0.5\u20133.5 (low range). Their outcome stats are very similar to each other (means ~18.8, std ~2.1\u20132.5) and to line 1\u2019s low range? Need to check.  \nPossible hypothesis: lines share same underlying response to driver, but maybe line 1 differs in slope/intercept. Need to examine driver\u2013outcome relationship. Since experiments are expensive, I\u2019ll first explore existing data more deeply to decide if an experiment is justified now (before range extension) or if I can wait for the upcoming commissioning report.  \n\nI\u2019ll visualize by binning driver ranges and compare lines in the overlapping low range (0\u20134). Also compute a simple linear regression within line 1 to see the trend, then see if lines 2\u20135 data are consistent with that trend.\n\n```python\nimport matplotlib.pyplot as plt\n\n# Filter to low range for comparison\nlow = df[df['driver'] <= 4].copy()\nprint(\"Low-range (driver \u22644) stats by line:\")\nprint(low.groupby('line')['outcome'].describe())\n\n# Scatter plot\nfig, axes = plt.subplots(1, 2, figsize=(10, 4))\nfor line in sorted(df['line'].unique()):\n    sub = df[df['line'] == line]\n    axes[0].scatter(sub['driver'], sub['outcome'], label=f'Line {int(line)}', alpha=0.7)\naxes[0].set_xlabel('Driver')\naxes[0].set_ylabel('Outcome')\naxes[0].set_title('All data')\naxes[0].legend()\naxes[0].axvline(x=4, color='gray', linestyle='--', label='Low/high boundary')\n\n# Focus on low range\nfor line in sorted(low['line'].unique()):\n    sub = low[low['line'] == line]\n    axes[1].scatter(sub['driver'], sub['outcome'], label=f'Line {int(line)}', alpha=0.7)\naxes[1].set_xlabel('Driver')\naxes[1].set_ylabel('Outcome')\naxes[1].set_title('Low range only')\naxes[1].legend()\n\nplt.tight_layout()\nplt.show()\n\n# Simple linear fit for line 1 (full range)\nfrom sklearn.linear_model import LinearRegression\nline1 = df[df['line'] == 1].sort_values('driver')\nX1 = line1[['driver']].values\ny1 = line1['outcome'].values\nlr1 = LinearRegression().fit(X1, y1)\nprint(f\"\\nLine 1 slope: {lr1.coef_[0]:.3f}, intercept: {lr1.intercept_:.3f}\")\nprint(f\"Line 1 R^2: {lr1.score(X1, y1):.3f}\")\n\n# Predict at driver=2 for comparison\npred_at_2 = lr1.predict([[2]])\nprint(f\"Line 1 predicted outcome at driver=2: {pred_at_2[0]:.3f}\")\n\n# Compare with lines 2-5 at driver near 2\nfor line in [2,3,4,5]:\n    sub = low[(low['line'] == line) & (low['driver'].between(1.5, 2.5))]\n    if len(sub) > 0:\n        print(f\"Line {line} mean outcome near driver=2: {sub['outcome'].mean():.3f} (n={len(sub)})\")\n```",
+        "cell": "import matplotlib.pyplot as plt\n\n# Filter to low range for comparison\nlow = df[df['driver'] <= 4].copy()\nprint(\"Low-range (driver \u22644) stats by line:\")\nprint(low.groupby('line')['outcome'].describe())\n\n# Scatter plot\nfig, axes = plt.subplots(1, 2, figsize=(10, 4))\nfor line in sorted(df['line'].unique()):\n    sub = df[df['line'] == line]\n    axes[0].scatter(sub['driver'], sub['outcome'], label=f'Line {int(line)}', alpha=0.7)\naxes[0].set_xlabel('Driver')\naxes[0].set_ylabel('Outcome')\naxes[0].set_title('All data')\naxes[0].legend()\naxes[0].axvline(x=4, color='gray', linestyle='--', label='Low/high boundary')\n\n# Focus on low range\nfor line in sorted(low['line'].unique()):\n    sub = low[low['line'] == line]\n    axes[1].scatter(sub['driver'], sub['outcome'], label=f'Line {int(line)}', alpha=0.7)\naxes[1].set_xlabel('Driver')\naxes[1].set_ylabel('Outcome')\naxes[1].set_title('Low range only')\naxes[1].legend()\n\nplt.tight_layout()\nplt.show()\n\n# Simple linear fit for line 1 (full range)\nfrom sklearn.linear_model import LinearRegression\nline1 = df[df['line'] == 1].sort_values('driver')\nX1 = line1[['driver']].values\ny1 = line1['outcome'].values\nlr1 = LinearRegression().fit(X1, y1)\nprint(f\"\\nLine 1 slope: {lr1.coef_[0]:.3f}, intercept: {lr1.intercept_:.3f}\")\nprint(f\"Line 1 R^2: {lr1.score(X1, y1):.3f}\")\n\n# Predict at driver=2 for comparison\npred_at_2 = lr1.predict([[2]])\nprint(f\"Line 1 predicted outcome at driver=2: {pred_at_2[0]:.3f}\")\n\n# Compare with lines 2-5 at driver near 2\nfor line in [2,3,4,5]:\n    sub = low[(low['line'] == line) & (low['driver'].between(1.5, 2.5))]\n    if len(sub) > 0:\n        print(f\"Line {line} mean outcome near driver=2: {sub['outcome'].mean():.3f} (n={len(sub)})\")",
+        "cell_result": {
+          "ok": false,
+          "stdout": "",
+          "error": "cell exceeded 30.0s and was killed",
+          "truncated": false
+        },
+        "working_model": {
+          "status": "missing",
+          "code": null
+        },
+        "budget_remaining": 900.0,
+        "trajectory": []
+      }
+    ],
+    "evidence_ledger": [
+      {
+        "sequence": 1,
+        "turn": 1,
+        "kind": "observe",
+        "source": "qualification_report",
+        "request": {
+          "n": 96
+        },
+        "delivery_variable": null,
+        "data": {
+          "columns": [
+            "line",
+            "driver",
+            "outcome"
+          ],
+          "dtypes": [
+            "float64",
+            "float64",
+            "float64"
+          ],
+          "data": [
+            [
+              1.0,
+              6.183101338255045,
+              21.708302037678703
+            ],
+            [
+              2.0,
+              0.5,
+              15.562900363355729
+            ],
+            [
+              1.0,
+              5.8042807361667395,
+              21.84874533951911
+            ],
+            [
+              3.0,
+              0.5,
+              14.966133594119873
+            ],
+            [
+              1.0,
+              8.96542906038039,
+              17.698642245312936
+            ],
+            [
+              4.0,
+              0.5,
+              15.937962481432834
+            ],
+            [
+              1.0,
+              2.6986020049763546,
+              20.671468820618255
+            ],
+            [
+              5.0,
+              0.5,
+              15.939346598135137
+            ],
+            [
+              1.0,
+              9.070387049496919,
+              15.604084036515985
+            ],
+            [
+              2.0,
+              1.5,
+              18.40571738092028
+            ],
+            [
+              1.0,
+              4.157707526751221,
+              22.203556827249052
+            ],
+            [
+              3.0,
+              1.5,
+              18.730694213700644
+            ],
+            [
+              1.0,
+              3.2719557141708155,
+              20.244653731483858
+            ],
+            [
+              4.0,
+              1.5,
+              18.087277311177
+            ],
+            [
+              1.0,
+              4.195373701450644,
+              21.136242259948407
+            ],
+            [
+              5.0,
+              1.5,
+              17.937910555724507
+            ],
+            [
+              1.0,
+              1.5551590272771554,
+              19.828659758632018
+            ],
+            [
+              2.0,
+              2.5,
+              18.591405603890976
+            ],
+            [
+              1.0,
+              7.316401329337541,
+              19.409680407203744
+            ],
+            [
+              3.0,
+              2.5,
+              20.977746793977893
+            ],
+            [
+              1.0,
+              6.287903078325731,
+              21.13505611029377
+            ],
+            [
+              4.0,
+              2.5,
+              19.541481318149806
+            ],
+            [
+              1.0,
+              6.054524912374313,
+              20.907776746244057
+            ],
+            [
+              5.0,
+              2.5,
+              20.613538097169425
+            ],
+            [
+              1.0,
+              6.559405200395714,
+              21.3343084920587
+            ],
+            [
+              2.0,
+              3.5,
+              21.15716381102985
+            ],
+            [
+              1.0,
+              0.3239842566821438,
+              14.829817912027387
+            ],
+            [
+              3.0,
+              3.5,
+              21.215579340482815
+            ],
+            [
+              1.0,
+              0.34091219381486737,
+              14.773840071243452
+            ],
+            [
+              4.0,
+              3.5,
+              21.310724696339147
+            ],
+            [
+              1.0,
+              9.387447631731376,
+              15.7422258246783
+            ],
+            [
+              5.0,
+              3.5,
+              20.572567320284655
+            ],
+            [
+              1.0,
+              1.5823305480807814,
+              18.024557830392606
+            ],
+            [
+              2.0,
+              0.5,
+              15.075841720006368
+            ],
+            [
+              1.0,
+              3.8561093724085174,
+              21.953311489299544
+            ],
+            [
+              3.0,
+              0.5,
+              15.119369321882475
+            ],
+            [
+              1.0,
+              8.314762424022543,
+              18.40413271360111
+            ],
+            [
+              4.0,
+              0.5,
+              15.376193473970933
+            ],
+            [
+              1.0,
+              6.530106777970389,
+              20.429726045197423
+            ],
+            [
+              5.0,
+              0.5,
+              16.080899077692138
+            ],
+            [
+              1.0,
+              9.042473620890501,
+              18.29396570834837
+            ],
+            [
+              2.0,
+              1.5,
+              17.916998293930533
+            ],
+            [
+              1.0,
+              2.9187858703648883,
+              21.36128487615369
+            ],
+            [
+              3.0,
+              1.5,
+              17.702131466915617
+            ],
+            [
+              1.0,
+              4.290222076865065,
+              21.89144078439195
+            ],
+            [
+              4.0,
+              1.5,
+              18.73605352126752
+            ],
+            [
+              1.0,
+              9.501836123943152,
+              15.811558662946911
+            ],
+            [
+              5.0,
+              1.5,
+              17.374649440004234
+            ],
+            [
+              1.0,
+              7.899772557178012,
+              19.48555589154987
+            ],
+            [
+              2.0,
+              2.5,
+              20.994446501865013
+            ],
+            [
+              1.0,
+              2.3208298935395364,
+              19.987579777184653
+            ],
+            [
+              3.0,
+              2.5,
+              19.30561249879697
+            ],
+            [
+              1.0,
+              3.4952852233024934,
+              22.584277552814537
+            ],
+            [
+              4.0,
+              2.5,
+              20.030489730118127
+            ],
+            [
+              1.0,
+              9.760716520398258,
+              15.18865239770323
+            ],
+            [
+              5.0,
+              2.5,
+              20.415179566654704
+            ],
+            [
+              1.0,
+              3.1364541176337744,
+              21.64933374013911
+            ],
+            [
+              2.0,
+              3.5,
+              21.338808429774723
+            ],
+            [
+              1.0,
+              1.7533623377873997,
+              18.94146182936374
+            ],
+            [
+              3.0,
+              3.5,
+              21.961315689239594
+            ],
+            [
+              1.0,
+              3.0811447990230842,
+              21.062283944158377
+            ],
+            [
+              4.0,
+              3.5,
+              21.521229005773364
+            ],
+            [
+              1.0,
+              7.778842418239268,
+              18.247647814403617
+            ],
+            [
+              5.0,
+              3.5,
+              21.991787083508424
+            ],
+            [
+              1.0,
+              5.560042057191027,
+              21.72510081599602
+            ],
+            [
+              2.0,
+              0.5,
+              16.307500628819746
+            ],
+            [
+              1.0,
+              6.180275887214721,
+              22.115838765709704
+            ],
+            [
+              3.0,
+              0.5,
+              15.536984977197163
+            ],
+            [
+              1.0,
+              4.07804135078096,
+              21.803860562275794
+            ],
+            [
+              4.0,
+              0.5,
+              15.990321122102577
+            ],
+            [
+              1.0,
+              9.129827130488843,
+              17.883032720020566
+            ],
+            [
+              5.0,
+              0.5,
+              15.82563718099388
+            ],
+            [
+              1.0,
+              0.6495919129389682,
+              16.16697871692123
+            ],
+            [
+              2.0,
+              1.5,
+              17.849238099266596
+            ],
+            [
+              1.0,
+              7.549294213085487,
+              19.063535761838583
+            ],
+            [
+              3.0,
+              1.5,
+              18.38706715898542
+            ],
+            [
+              1.0,
+              4.76737335355554,
+              21.418246944692914
+            ],
+            [
+              4.0,
+              1.5,
+              18.952832607620408
+            ],
+            [
+              1.0,
+              2.175161172280843,
+              19.707597713185756
+            ],
+            [
+              5.0,
+              1.5,
+              18.143928099434785
+            ],
+            [
+              1.0,
+              6.7968873676364705,
+              19.068665379348072
+            ],
+            [
+              2.0,
+              2.5,
+              20.0332616647588
+            ],
+            [
+              1.0,
+              8.374710259194051,
+              18.975240919530872
+            ],
+            [
+              3.0,
+              2.5,
+              19.86655469604794
+            ],
+            [
+              1.0,
+              9.183348788053754,
+              15.982750788456038
+            ],
+            [
+              4.0,
+              2.5,
+              20.739651463716598
+            ],
+            [
+              1.0,
+              0.8915045412637379,
+              16.387922689233616
+            ],
+            [
+              5.0,
+              2.5,
+              20.11113521340541
+            ],
+            [
+              1.0,
+              9.052522479214208,
+              15.51502726109722
+            ],
+            [
+              2.0,
+              3.5,
+              22.404670010327834
+            ],
+            [
+              1.0,
+              1.0226073440207906,
+              16.930451682236068
+            ],
+            [
+              3.0,
+              3.5,
+              21.060509820266063
+            ],
+            [
+              1.0,
+              2.3078070069771894,
+              19.68306998439457
+            ],
+            [
+              4.0,
+              3.5,
+              19.487907246850746
+            ],
+            [
+              1.0,
+              2.260326773974465,
+              19.170371468949142
+            ],
+            [
+              5.0,
+              3.5,
+              21.01316149287747
+            ]
+          ]
+        }
+      }
+    ],
+    "next_prompt": "Kernel output (ok=True, budget remaining=900):\nShape: (96, 3)\n\nFirst rows:\n   line    driver    outcome\n0   1.0  6.183101  21.708302\n1   2.0  0.500000  15.562900\n2   1.0  5.804281  21.848745\n3   3.0  0.500000  14.966134\n4   1.0  8.965429  17.698642\n\nLines and driver ranges:\nLine 1.0: driver 0.3\u20139.8, n=48\nLine 2.0: driver 0.5\u20133.5, n=12\nLine 3.0: driver 0.5\u20133.5, n=12\nLine 4.0: driver 0.5\u20133.5, n=12\nLine 5.0: driver 0.5\u20133.5, n=12\n\nOutcome stats by line:\n      count       mean       std  ...        50%        75%        max\nline                              ...                                 \n1.0    48.0  19.249823  2.332895  ...  19.584313  21.341053  22.584278\n2.0    12.0  18.803163  2.407850  ...  18.498561  21.035126  22.404670\n3.0    12.0  18.735808  2.473471  ...  19.018153  20.998438  21.961316\n4.0    12.0  18.809344  2.096546  ...  19.220370  20.207780  21.521229\n5.0    12.0  18.834978  2.204513  ...  19.127532  20.582810  21.991787\n\n[5 rows x 8 columns]\n\n\nReason about what this result tells you (does it confirm or refute your current hypothesis? what does it imply for the next step?), then write your next cell (or build and env.submit(code) when your reasoning has converged).",
+    "tokens": 4293,
+    "checkpoint": "eligible",
+    "eligibility": {
+      "eligible": false,
+      "turn": null,
+      "gates": {},
+      "reason": "cell_timeout",
+      "failed_turn": 2
+    }
+  },
+  "branches": {},
+  "gates": {
+    "eligible_prefix": false
+  },
+  "all": false
+}

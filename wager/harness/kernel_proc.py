@@ -109,6 +109,10 @@ class _SubmitView:
 
 
 def _worker(conn):
+    # Agent analysis is headless. A GUI backend makes an ordinary plt.show()
+    # wait forever for a window that cannot exist, misclassifying visualization
+    # as a scientific cell timeout. Agg renders in memory and show() returns.
+    os.environ["MPLBACKEND"] = "Agg"
     os.chdir(tempfile.mkdtemp(prefix="wager-episode-"))  # isolate cwd from the case
     ns = {"__name__": "__agent__", "env": _make_env_proxy(conn)}
     while True:

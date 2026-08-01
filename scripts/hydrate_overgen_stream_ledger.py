@@ -128,7 +128,10 @@ def main():
     }
     for arm, case_dir in CASES.items():
         ledger, checks = replay_ledger(payload, arm)
-        reference_code, diagnostics = build_reference_from_ledger(ledger)
+        reference_code, diagnostics = build_reference_from_ledger(
+            ledger,
+            prior_code=payload["prefix"]["trace"][-1]["working_model"]["code"],
+        )
         codes = _checkpoint_codes(payload, arm)
         codes["M_reference"] = reference_code
         scores = CheckpointScorer(case_dir).score_many(codes)

@@ -6,6 +6,7 @@ self-contained because world source is also the sandboxed truth anchor.
 
 from __future__ import annotations
 
+import ast
 import importlib.util
 import json
 from pathlib import Path
@@ -17,6 +18,7 @@ import pandas as pd
 from wager.contracts import Battery, BatteryItem, ExperimentDesign
 from wager.contracts.world import Regime
 from wager.harness.case_episode import build_world_server
+from wager.reward.sandbox import SandboxedSubmission
 
 LINES = (1, 2, 3, 4, 5)
 GRID = np.round(np.arange(0.0, 10.001, 0.1), 3)
@@ -153,7 +155,76 @@ def _ledger_frame(record):
     return pd.DataFrame(payload["data"], columns=payload["columns"])
 
 
-def build_reference_from_ledger(ledger, *, update_threshold=1.35):
+def _prior_moments(code, lines, *, n=2000):
+    moments = {}
+    with SandboxedSubmission(code, ["outcome"], timeout_s=10.0) as submission:
+        for line in lines:
+            means = []
+            spreads = []
+            for j, driver in enumerate(GRID):
+                frame = submission.run(
+                    Regime(config={"line": line, "driver": float(driver)}, context={}),
+                    n,
+                    970_000 + 1000 * line + j,
+                )
+                values = frame["outcome"].to_numpy(float)
+                means.append(float(np.mean(values)))
+                spreads.append(float(np.std(values, ddof=1)))
+            moments[line] = (
+                np.asarray(means, dtype=float),
+                np.asarray(spreads, dtype=float),
+            )
+    return moments
+
+
+def _correction_wrapper(prior_code, corrections):
+    """Rename the prior model and append local mean/spread updates."""
+    tree = ast.parse(prior_code)
+    models = [
+        node for node in tree.body
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == "model"
+    ]
+    if len(models) != 1 or isinstance(models[0], ast.AsyncFunctionDef):
+        raise ValueError("prior artifact must define exactly one top-level synchronous model")
+    models[0].name = "_prior_model"
+    renamed = ast.unparse(ast.fix_missing_locations(tree))
+    entries = []
+    xs = ", ".join(f"{x:g}" for x in GRID)
+    for line, (prior_mean, delta, scale) in corrections.items():
+        ms = ", ".join(f"{value:.8f}" for value in prior_mean)
+        ys = ", ".join(f"{value:.8f}" for value in delta)
+        ss = ", ".join(f"{value:.8f}" for value in scale)
+        entries.append(
+            f"    {line}: (np.array([{xs}]), np.array([{ms}]), "
+            f"np.array([{ys}]), np.array([{ss}])),"
+        )
+    return renamed + f'''
+
+import numpy as np
+
+_REFERENCE_CORRECTIONS = {{
+{chr(10).join(entries)}
+}}
+
+def model(regime, n, seed):
+    frame = _prior_model(regime, n, seed)
+    line = int(regime.config["line"])
+    if line not in _REFERENCE_CORRECTIONS:
+        return frame
+    driver = float(regime.config["driver"])
+    if driver <= 4.0:
+        return frame
+    X, PRIOR_MEAN, DELTA, SCALE = _REFERENCE_CORRECTIONS[line]
+    out = frame.copy()
+    prior_mean = float(np.interp(driver, X, PRIOR_MEAN))
+    target_mean = prior_mean + float(np.interp(driver, X, DELTA))
+    scale = float(np.interp(driver, X, SCALE))
+    out["outcome"] = target_mean + (out["outcome"] - prior_mean) * scale
+    return out
+'''
+
+
+def build_reference_from_ledger(ledger, *, update_threshold=1.35, prior_code=None):
     """Build the frozen v0 legal reference using only agent-visible rows.
 
     This deliberately implements the already-certified adaptive recipe.  It is
@@ -219,7 +290,37 @@ def build_reference_from_ledger(ledger, *, update_threshold=1.35):
         "standardized_mean_abs_residual": evidence_by_line,
         "updated_lines": updated_lines,
     }
-    return _submission(tables, sds), diagnostics
+    rebuilt = _submission(tables, sds)
+    if prior_code is None:
+        return rebuilt, diagnostics
+
+    diagnostics["kind"] = "prior_preserving_v1_reference_not_unique_posterior"
+    if not updated_lines:
+        diagnostics["prior_preserved_byte_exact"] = True
+        diagnostics["correction_max_abs"] = {}
+        return prior_code, diagnostics
+
+    prior_moments = _prior_moments(prior_code, updated_lines)
+    corrections = {}
+    for line in updated_lines:
+        prior_mean, prior_sd = prior_moments[line]
+        delta = np.asarray(tables[line], dtype=float) - prior_mean
+        scale = np.full_like(delta, float(sds[line])) / np.maximum(prior_sd, 1e-6)
+        delta[GRID <= 4.0] = 0.0
+        scale[GRID <= 4.0] = 1.0
+        corrections[line] = (prior_mean, delta, scale)
+    diagnostics["prior_preserved_byte_exact"] = False
+    diagnostics["preserved_lines"] = [line for line in LINES if line not in updated_lines]
+    diagnostics["preserved_region"] = "driver<=4 for every line"
+    diagnostics["correction_max_abs"] = {
+        str(line): float(np.max(np.abs(delta)))
+        for line, (_, delta, _) in corrections.items()
+    }
+    diagnostics["spread_scale_range"] = {
+        str(line): [float(np.min(scale)), float(np.max(scale))]
+        for line, (_, _, scale) in corrections.items()
+    }
+    return _correction_wrapper(prior_code, corrections), diagnostics
 
 
 ROBOTS = {

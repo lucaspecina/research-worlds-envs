@@ -39,3 +39,15 @@ trayectoria interpretable frente a evidencia ordinaria que la refuta parcialment
 
 Después de los tres donantes se ejecuta el gate superior. Una corrida gpt-5.4 fresca se autoriza
 solo si la mecánica sobrevive, no porque DeepSeek muestre un efecto atractivo.
+
+## Enmienda de infraestructura tras 94000–94002
+
+La primera tanda quedó **inválida para el gate científico**. Dos prefijos y una rama se cortaron
+en celdas ordinarias cuyo único rasgo problemático era `matplotlib.pyplot.show()`: el kernel
+headless esperaba una ventana inexistente hasta agotar 30 segundos. El único donante que avanzó
+quedó incompleto 1/2 por la misma causa. No se interpreta como inelegibilidad ni como conducta.
+
+Corrección permitida: fijar `MPLBACKEND=Agg` dentro del kernel aislado y exigir un test offline
+de que `plt.show()` retorna. No cambia brief, mundo, datos, modelo, umbral, scoring ni tiempo de
+cómputo científico. Las semillas 94000–94002 permanecen quemadas; la tanda válida usa 94100,
+94101 y 94102 con el contrato original idéntico. No habrá otro reemplazo automático.

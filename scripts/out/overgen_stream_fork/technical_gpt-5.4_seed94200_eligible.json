@@ -1,0 +1,3874 @@
+{
+  "kind": "technical_live_history_fork_not_behavioral_evidence",
+  "model": "gpt-5.4",
+  "seed_offset": 94200,
+  "checkpoint": "eligible",
+  "prefix": {
+    "trace": [
+      {
+        "turn": 1,
+        "notices": [],
+        "reply_text": "REASONING: We get the full initial qualification report for free, so the first priority is to inspect that data and infer the shared structure across lines and the noise level before spending any budget. Since lines 2\u20135 are only qualified on driver 0\u20134 initially, I want to see whether line effects look like simple offsets/slopes around a common response curve, because that will determine both the first working model and whether later experiments should target high-range extrapolation. I\u2019ll load the free report, summarize coverage and basic moments by line, and also initialize a conservative `working_model` string after I\u2019ve seen the patterns.\n```python\nimport pandas as pd\nimport numpy as np\n\ndesc = env.describe()\nprint(\"describe:\", desc)\n\nqual = env.observe(\"qualification_report\", 96)\nprint(\"\\nqualification_report head:\")\nprint(qual.head())\nprint(\"\\nshape:\", qual.shape)\n\nprint(\"\\nrows by line:\")\nprint(qual.groupby(\"line\").size())\n\nprint(\"\\ndriver range by line:\")\nprint(qual.groupby(\"line\")[\"driver\"].agg([\"min\", \"max\", \"nunique\"]))\n\nprint(\"\\noutcome summary by line:\")\nprint(qual.groupby(\"line\")[\"outcome\"].agg([\"mean\", \"std\", \"min\", \"max\"]))\n\nprint(\"\\nmean outcome by line,driver:\")\nprint(qual.groupby([\"line\", \"driver\"])[\"outcome\"].mean().unstack(0).round(3))\n```",
+        "cell": "import pandas as pd\nimport numpy as np\n\ndesc = env.describe()\nprint(\"describe:\", desc)\n\nqual = env.observe(\"qualification_report\", 96)\nprint(\"\\nqualification_report head:\")\nprint(qual.head())\nprint(\"\\nshape:\", qual.shape)\n\nprint(\"\\nrows by line:\")\nprint(qual.groupby(\"line\").size())\n\nprint(\"\\ndriver range by line:\")\nprint(qual.groupby(\"line\")[\"driver\"].agg([\"min\", \"max\", \"nunique\"]))\n\nprint(\"\\noutcome summary by line:\")\nprint(qual.groupby(\"line\")[\"outcome\"].agg([\"mean\", \"std\", \"min\", \"max\"]))\n\nprint(\"\\nmean outcome by line,driver:\")\nprint(qual.groupby([\"line\", \"driver\"])[\"outcome\"].mean().unstack(0).round(3))",
+        "cell_result": {
+          "ok": true,
+          "stdout": "describe: {'brief': '# Five-line commissioning: rolling forecast\\n\\nYou advise a process lab while five related production lines are commissioned in stages. The\\nplant needs a current probabilistic model throughout the work and a final deployment model for\\nall five lines over driver settings 0-10.\\n\\n## Normal workflow\\n\\n- The **qualification report** is available now. Line 1 is already qualified over its full\\n  range; lines 2-5 are currently qualified only in the low range (0-4).\\n- The planned range extension for lines 2-5 occurs later in the same episode. The lab system\\n  will place its ordinary commissioning report directly in your Python workspace when ready.\\n- Before that operational milestone, experiments on lines 2-5 are limited to driver <= 4.\\n  Afterwards their full range is available. Line 1 is available throughout.\\n- Reports are ordinary noisy batch measurements. Related equipment may share useful structure,\\n  but deploy every line according to what the accumulated data supports.\\n\\n## What you can do (budget 900)\\n\\n- `observe(\"qualification_report\", 96)` \u2014 the complete initial report, free and finite.\\n- `experiment(..., n=20)` \u2014 a 20-batch campaign costing 300. Use\\n  `{\"campaign_line\": 1|2|3|4|5}` for the standard five-setting design, or\\n  `{\"line\": ..., \"driver\": ...}` to hold one setting.\\n- `submit(model)` \u2014 final handoff after commissioning.\\n\\n## Rolling model\\n\\nKeep your latest executable forecast as a Python **string** named `working_model`. The lab\\narchives that variable routinely after each work cell without returning a score or diagnostic.\\nUpdate it whenever your current predictive model changes; this is normal versioning, not a\\nrequest to react to any particular report.\\n\\nThe string must define `model(regime, n, seed) -> DataFrame` with exactly column `outcome`.\\nEvery evaluation regime carries integer `line` (1-5) and numeric `driver` (0-10). Generate the\\nfull batch distribution, including noise and uncertainty, using NumPy randomness seeded from\\n`seed`.\\n\\n## Stakes\\n\\nAll five lines count equally. Within each line, both the already qualified range and the newly\\ncommissioned range are tested, with extra weight on the latter. Distribution center and spread\\nmatter: **the 10th percentile prices downside** and **the 90th percentile sets permit margin**.\\n', 'schema': ['outcome'], 'sources': {'qualification_report': {'cost_per_row': 0.0, 'columns': ['line', 'driver', 'outcome']}}, 'experiment_cost': {'cost_fixed': 300.0, 'cost_per_row': 0.0}, 'control_surface': {'settable': {'driver': {'low': 0, 'high': 10, 'unit': 'process setting'}}, 'context': {}, 'instruments': {}, 'experiment_note': '20-batch campaigns cost 300; full-range campaign_line designs become legal for lines 2-5 after their scheduled range extension', 'deliverable_note': \"model(regime,n,seed) returns exactly DataFrame(['outcome']); regime.config always includes line 1-5 and driver 0-10; model the full batch distribution\"}, 'budget_total': 90\n... [output truncated: 6632 chars total]",
+          "error": null,
+          "truncated": true
+        },
+        "working_model": {
+          "status": "missing",
+          "code": null
+        },
+        "budget_remaining": 900.0,
+        "trajectory": [
+          {
+            "verb": "observe",
+            "args": {
+              "source": "qualification_report",
+              "n": 96
+            },
+            "cost": 0.0,
+            "note": ""
+          }
+        ]
+      },
+      {
+        "turn": 2,
+        "notices": [],
+        "reply_text": "REASONING: The printed output was truncated before the key summaries, so I still don\u2019t know the actual line-by-line pattern. The main uncertainty is whether all lines share essentially the same driver-response shape with modest line-specific shifts, which would let us build a strong pooled rolling model and reserve budget until new commissioning data appears. Next I should extract compact summaries of the observed design and fit a simple pooled-vs-line model comparison, while also creating an initial `working_model` string from the current data so the archived forecast is at least sensible.\n```python\nimport numpy as np\nimport pandas as pd\n\n# compact summaries\nprint(\"shape\", qual.shape)\nprint(\"\\ncounts by line/driver:\")\nct = qual.groupby([\"line\", \"driver\"]).size().unstack(fill_value=0)\nprint(ct)\n\nmean_tab = qual.groupby([\"line\", \"driver\"])[\"outcome\"].mean().unstack()\nstd_tab = qual.groupby([\"line\", \"driver\"])[\"outcome\"].std().unstack()\nprint(\"\\nmean outcome by line/driver:\")\nprint(mean_tab.round(3))\nprint(\"\\nstd outcome by line/driver:\")\nprint(std_tab.round(3))\n\n# simple polynomial regressions to assess shared structure\ndf = qual.copy()\ndf[\"driver2\"] = df[\"driver\"]**2\n\n# pooled shape + line intercepts\nX1 = pd.get_dummies(df[\"line\"].astype(int), prefix=\"line\", drop_first=True)\nX1 = pd.concat([pd.DataFrame({\"const\": 1.0, \"driver\": df[\"driver\"], \"driver2\": df[\"driver2\"]}), X1], axis=1)\nbeta1 = np.linalg.lstsq(X1.values, df[\"outcome\"].values, rcond=None)[0]\npred1 = X1.values @ beta1\nrmse1 = np.sqrt(np.mean((df[\"outcome\"].values - pred1)**2))\n\n# line-specific quadratic\nX2_parts = [pd.DataFrame({\"const\": np.ones(len(df))})]\nfor line in sorted(df[\"line\"].unique()):\n    m = (df[\"line\"] == line).astype(float).values\n    X2_parts.append(pd.DataFrame({f\"d1_l{line}\": m * df[\"driver\"].values, f\"d2_l{line}\": m * df[\"driver2\"].values}))\nX2 = pd.concat(X2_parts, axis=1)\nbeta2 = np.linalg.lstsq(X2.values, df[\"outcome\"].values, rcond=None)[0]\npred2 = X2.values @ beta2\nrmse2 = np.sqrt(np.mean((df[\"outcome\"].values - pred2)**2))\n\nprint(f\"\\nRMSE pooled quadratic + line intercepts: {rmse1:.4f}\")\nprint(f\"RMSE line-specific quadratic: {rmse2:.4f}\")\n\n# estimate residual scale for a pragmatic rolling model\nresid_sd = float(np.std(df[\"outcome\"].values - pred2, ddof=X2.shape[1]))\nprint(f\"Residual SD from line-specific quadratic: {resid_sd:.4f}\")\n\n# fit per-line quadratic coefficients for a first working model\ncoefs = {}\nfor line in sorted(df[\"line\"].unique()):\n    d = df[df[\"line\"] == line]\n    A = np.column_stack([np.ones(len(d)), d[\"driver\"].values, d[\"driver\"].values**2])\n    b = np.linalg.lstsq(A, d[\"outcome\"].values, rcond=None)[0]\n    coefs[int(line)] = [float(x) for x in b]\n\nprint(\"\\nper-line quadratic coefficients:\")\nprint(coefs)\n\nworking_model = f\"\"\"\ndef model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    coefs = {coefs}\n    resid_sd = {resid_sd!r}\n    b0, b1, b2 = coefs[line]\n    mu = b0 + b1*driver + b2*(driver**2)\n    y = rng.normal(mu, resid_sd, size=n)\n    return pd.DataFrame({{\"outcome\": y}})\n\"\"\".strip()\n\nprint(\"\\nworking_model preview:\")\nprint(working_model[:700])\n```",
+        "cell": "import numpy as np\nimport pandas as pd\n\n# compact summaries\nprint(\"shape\", qual.shape)\nprint(\"\\ncounts by line/driver:\")\nct = qual.groupby([\"line\", \"driver\"]).size().unstack(fill_value=0)\nprint(ct)\n\nmean_tab = qual.groupby([\"line\", \"driver\"])[\"outcome\"].mean().unstack()\nstd_tab = qual.groupby([\"line\", \"driver\"])[\"outcome\"].std().unstack()\nprint(\"\\nmean outcome by line/driver:\")\nprint(mean_tab.round(3))\nprint(\"\\nstd outcome by line/driver:\")\nprint(std_tab.round(3))\n\n# simple polynomial regressions to assess shared structure\ndf = qual.copy()\ndf[\"driver2\"] = df[\"driver\"]**2\n\n# pooled shape + line intercepts\nX1 = pd.get_dummies(df[\"line\"].astype(int), prefix=\"line\", drop_first=True)\nX1 = pd.concat([pd.DataFrame({\"const\": 1.0, \"driver\": df[\"driver\"], \"driver2\": df[\"driver2\"]}), X1], axis=1)\nbeta1 = np.linalg.lstsq(X1.values, df[\"outcome\"].values, rcond=None)[0]\npred1 = X1.values @ beta1\nrmse1 = np.sqrt(np.mean((df[\"outcome\"].values - pred1)**2))\n\n# line-specific quadratic\nX2_parts = [pd.DataFrame({\"const\": np.ones(len(df))})]\nfor line in sorted(df[\"line\"].unique()):\n    m = (df[\"line\"] == line).astype(float).values\n    X2_parts.append(pd.DataFrame({f\"d1_l{line}\": m * df[\"driver\"].values, f\"d2_l{line}\": m * df[\"driver2\"].values}))\nX2 = pd.concat(X2_parts, axis=1)\nbeta2 = np.linalg.lstsq(X2.values, df[\"outcome\"].values, rcond=None)[0]\npred2 = X2.values @ beta2\nrmse2 = np.sqrt(np.mean((df[\"outcome\"].values - pred2)**2))\n\nprint(f\"\\nRMSE pooled quadratic + line intercepts: {rmse1:.4f}\")\nprint(f\"RMSE line-specific quadratic: {rmse2:.4f}\")\n\n# estimate residual scale for a pragmatic rolling model\nresid_sd = float(np.std(df[\"outcome\"].values - pred2, ddof=X2.shape[1]))\nprint(f\"Residual SD from line-specific quadratic: {resid_sd:.4f}\")\n\n# fit per-line quadratic coefficients for a first working model\ncoefs = {}\nfor line in sorted(df[\"line\"].unique()):\n    d = df[df[\"line\"] == line]\n    A = np.column_stack([np.ones(len(d)), d[\"driver\"].values, d[\"driver\"].values**2])\n    b = np.linalg.lstsq(A, d[\"outcome\"].values, rcond=None)[0]\n    coefs[int(line)] = [float(x) for x in b]\n\nprint(\"\\nper-line quadratic coefficients:\")\nprint(coefs)\n\nworking_model = f\"\"\"\ndef model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    coefs = {coefs}\n    resid_sd = {resid_sd!r}\n    b0, b1, b2 = coefs[line]\n    mu = b0 + b1*driver + b2*(driver**2)\n    y = rng.normal(mu, resid_sd, size=n)\n    return pd.DataFrame({{\"outcome\": y}})\n\"\"\".strip()\n\nprint(\"\\nworking_model preview:\")\nprint(working_model[:700])",
+        "cell_result": {
+          "ok": false,
+          "stdout": "shape (96, 3)\n\ncounts by line/driver:\ndriver  0.102374  0.367722  0.500000  ...  9.520114  9.627894  9.893444\nline                                  ...                              \n1.0            1         1         0  ...         1         1         1\n2.0            0         0         3  ...         0         0         0\n3.0            0         0         3  ...         0         0         0\n4.0            0         0         3  ...         0         0         0\n5.0            0         0         3  ...         0         0         0\n\n[5 rows x 52 columns]\n\nmean outcome by line/driver:\ndriver  0.102374  0.367722  0.500000  ...  9.520114  9.627894  9.893444\nline                                  ...                              \n1.0       14.435    15.606       NaN  ...    14.588    16.348    13.938\n2.0          NaN       NaN    15.932  ...       NaN       NaN       NaN\n3.0          NaN       NaN    15.564  ...       NaN       NaN       NaN\n4.0          NaN       NaN    15.513  ...       NaN       NaN       NaN\n5.0          NaN       NaN    15.377  ...       NaN       NaN       NaN\n\n[5 rows x 52 columns]\n\nstd outcome by line/driver:\ndriver  0.102374  0.367722  0.500000  ...  9.520114  9.627894  9.893444\nline                                  ...                              \n1.0          NaN       NaN       NaN  ...       NaN       NaN       NaN\n2.0          NaN       NaN     1.138  ...       NaN       NaN       NaN\n3.0          NaN       NaN     1.388  ...       NaN       NaN       NaN\n4.0          NaN       NaN     0.567  ...       NaN       NaN       NaN\n5.0          NaN       NaN     0.102  ...       NaN       NaN       NaN\n\n[5 rows x 52 columns]\n",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\YT40432\\Desktop\\lp\\research\\lucaspecina\\research-worlds-envs\\wager\\harness\\kernel_proc.py\", line 135, in _worker\n    exec(compile(msg[\"code\"], \"<cell>\", \"exec\"), ns)  # noqa: S102\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<cell>\", line 24, in <module>\n  File \"C:\\Users\\YT40432\\miniconda3\\Lib\\site-packages\\numpy\\linalg\\_linalg.py\", line 2564, in lstsq\n    x, resids, rank, s = _umath_linalg.lstsq(a, b, rcond,\n                         ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^\n                                             signature=signature)\n                                             ^^^^^^^^^^^^^^^^^^^^\nnumpy._core._exceptions._UFuncInputCastingError: Cannot cast ufunc 'lstsq' input 0 from dtype('O') to dtype('float64') with casting rule 'same_kind'\n",
+          "truncated": false
+        },
+        "working_model": {
+          "status": "missing",
+          "code": null
+        },
+        "budget_remaining": 900.0,
+        "trajectory": []
+      },
+      {
+        "turn": 3,
+        "notices": [],
+        "reply_text": "REASONING: This tells us the design is more irregular than I first assumed: line 1 has many unique driver values with one observation each across 0\u201310, while lines 2\u20135 have repeated low-range settings (likely 0.5\u20134). That strongly suggests a shared response shape should be learned mostly from line 1 and the low-range alignment across lines, with line-specific offsets (and maybe small slope tweaks) for lines 2\u20135. The error was just due to object dtype in the regression matrices, so I should refit carefully in numeric arrays, inspect the actual unique settings per line, and build a first archived `working_model` that pools shape from line 1 plus low-range offsets for other lines.\n```python\nimport numpy as np\nimport pandas as pd\n\ndf = qual.copy()\ndf[\"line\"] = df[\"line\"].astype(int)\ndf[\"driver\"] = df[\"driver\"].astype(float)\ndf[\"outcome\"] = df[\"outcome\"].astype(float)\n\nprint(\"unique driver counts by line:\")\nfor line in sorted(df[\"line\"].unique()):\n    vals = np.sort(df.loc[df.line == line, \"driver\"].unique())\n    print(f\"line {line}: n_unique={len(vals)}, first={vals[:10]}, last={vals[-10:]}\")\n\n# Fit global quadratic shape on line 1 (the only full-range line)\nd1 = df[df.line == 1].copy()\nA1 = np.column_stack([\n    np.ones(len(d1), dtype=float),\n    d1[\"driver\"].to_numpy(dtype=float),\n    d1[\"driver\"].to_numpy(dtype=float) ** 2\n])\ny1 = d1[\"outcome\"].to_numpy(dtype=float)\nb1 = np.linalg.lstsq(A1, y1, rcond=None)[0]\npred1 = A1 @ b1\nsd1 = float(np.std(y1 - pred1, ddof=3))\nprint(\"\\nline 1 quadratic coeffs:\", b1.round(4), \"resid_sd:\", round(sd1, 4))\n\n# Estimate line offsets for 2-5 against shared line-1 shape, using observed low-range data\noffsets = {1: 0.0}\noffset_sds = {1: 0.0}\nfor line in [2, 3, 4, 5]:\n    d = df[df.line == line].copy()\n    mu_shared = b1[0] + b1[1] * d[\"driver\"].to_numpy(dtype=float) + b1[2] * d[\"driver\"].to_numpy(dtype=float) ** 2\n    offs = d[\"outcome\"].to_numpy(dtype=float) - mu_shared\n    offsets[line] = float(np.mean(offs))\n    offset_sds[line] = float(np.std(offs, ddof=1))\nprint(\"offsets vs shared line1 shape:\", {k: round(v,4) for k,v in offsets.items()})\nprint(\"offset SDs:\", {k: round(v,4) for k,v in offset_sds.items()})\n\n# overall residual sd after shared-shape+offset model\nmu = []\ny = []\nfor line in [1,2,3,4,5]:\n    d = df[df.line == line]\n    m = b1[0] + b1[1]*d[\"driver\"].to_numpy(dtype=float) + b1[2]*d[\"driver\"].to_numpy(dtype=float)**2 + offsets[line]\n    mu.append(m)\n    y.append(d[\"outcome\"].to_numpy(dtype=float))\nmu = np.concatenate(mu)\ny = np.concatenate(y)\nresid_sd = float(np.std(y - mu, ddof=5))\nprint(\"pooled residual sd:\", round(resid_sd, 4))\n\nworking_model = f\"\"\"\ndef model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    b = np.array({b1.tolist()}, dtype=float)\n    offsets = {offsets}\n    resid_sd = {resid_sd!r}\n    mu = b[0] + b[1]*driver + b[2]*(driver**2) + offsets.get(line, 0.0)\n    outcome = rng.normal(mu, resid_sd, size=n)\n    return pd.DataFrame({{\"outcome\": outcome}})\n\"\"\".strip()\n\nprint(\"\\nworking_model preview:\")\nprint(working_model[:900])\n```",
+        "cell": "import numpy as np\nimport pandas as pd\n\ndf = qual.copy()\ndf[\"line\"] = df[\"line\"].astype(int)\ndf[\"driver\"] = df[\"driver\"].astype(float)\ndf[\"outcome\"] = df[\"outcome\"].astype(float)\n\nprint(\"unique driver counts by line:\")\nfor line in sorted(df[\"line\"].unique()):\n    vals = np.sort(df.loc[df.line == line, \"driver\"].unique())\n    print(f\"line {line}: n_unique={len(vals)}, first={vals[:10]}, last={vals[-10:]}\")\n\n# Fit global quadratic shape on line 1 (the only full-range line)\nd1 = df[df.line == 1].copy()\nA1 = np.column_stack([\n    np.ones(len(d1), dtype=float),\n    d1[\"driver\"].to_numpy(dtype=float),\n    d1[\"driver\"].to_numpy(dtype=float) ** 2\n])\ny1 = d1[\"outcome\"].to_numpy(dtype=float)\nb1 = np.linalg.lstsq(A1, y1, rcond=None)[0]\npred1 = A1 @ b1\nsd1 = float(np.std(y1 - pred1, ddof=3))\nprint(\"\\nline 1 quadratic coeffs:\", b1.round(4), \"resid_sd:\", round(sd1, 4))\n\n# Estimate line offsets for 2-5 against shared line-1 shape, using observed low-range data\noffsets = {1: 0.0}\noffset_sds = {1: 0.0}\nfor line in [2, 3, 4, 5]:\n    d = df[df.line == line].copy()\n    mu_shared = b1[0] + b1[1] * d[\"driver\"].to_numpy(dtype=float) + b1[2] * d[\"driver\"].to_numpy(dtype=float) ** 2\n    offs = d[\"outcome\"].to_numpy(dtype=float) - mu_shared\n    offsets[line] = float(np.mean(offs))\n    offset_sds[line] = float(np.std(offs, ddof=1))\nprint(\"offsets vs shared line1 shape:\", {k: round(v,4) for k,v in offsets.items()})\nprint(\"offset SDs:\", {k: round(v,4) for k,v in offset_sds.items()})\n\n# overall residual sd after shared-shape+offset model\nmu = []\ny = []\nfor line in [1,2,3,4,5]:\n    d = df[df.line == line]\n    m = b1[0] + b1[1]*d[\"driver\"].to_numpy(dtype=float) + b1[2]*d[\"driver\"].to_numpy(dtype=float)**2 + offsets[line]\n    mu.append(m)\n    y.append(d[\"outcome\"].to_numpy(dtype=float))\nmu = np.concatenate(mu)\ny = np.concatenate(y)\nresid_sd = float(np.std(y - mu, ddof=5))\nprint(\"pooled residual sd:\", round(resid_sd, 4))\n\nworking_model = f\"\"\"\ndef model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    b = np.array({b1.tolist()}, dtype=float)\n    offsets = {offsets}\n    resid_sd = {resid_sd!r}\n    mu = b[0] + b[1]*driver + b[2]*(driver**2) + offsets.get(line, 0.0)\n    outcome = rng.normal(mu, resid_sd, size=n)\n    return pd.DataFrame({{\"outcome\": outcome}})\n\"\"\".strip()\n\nprint(\"\\nworking_model preview:\")\nprint(working_model[:900])",
+        "cell_result": {
+          "ok": true,
+          "stdout": "unique driver counts by line:\nline 1: n_unique=48, first=[0.10237382 0.36772166 0.95312573 1.01901979 1.02664271 1.04410632\n 1.52611257 1.59007866 1.63124719 1.7239582 ], last=[8.56506418 8.63896829 8.68327106 8.69664981 8.93043215 9.04105752\n 9.31481696 9.5201141  9.62789394 9.89344425]\nline 2: n_unique=4, first=[0.5 1.5 2.5 3.5], last=[0.5 1.5 2.5 3.5]\nline 3: n_unique=4, first=[0.5 1.5 2.5 3.5], last=[0.5 1.5 2.5 3.5]\nline 4: n_unique=4, first=[0.5 1.5 2.5 3.5], last=[0.5 1.5 2.5 3.5]\nline 5: n_unique=4, first=[0.5 1.5 2.5 3.5], last=[0.5 1.5 2.5 3.5]\n\nline 1 quadratic coeffs: [14.418   2.9534 -0.2969] resid_sd: 0.9132\noffsets vs shared line1 shape: {1: 0.0, 2: 0.5199, 3: -0.4142, 4: -0.204, 5: -0.1659}\noffset SDs: {1: 0.0, 2: 0.8312, 3: 0.7542, 4: 0.9036, 5: 0.5971}\npooled residual sd: 0.8405\n\nworking_model preview:\ndef model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    b = np.array([14.418031802181106, 2.95344754513154, -0.29694915515547127], dtype=float)\n    offsets = {1: 0.0, 2: 0.5198694545970578, 3: -0.4142491136573055, 4: -0.20400650219100744, 5: -0.16594282468149757}\n    resid_sd = 0.8405152823834008\n    mu = b[0] + b[1]*driver + b[2]*(driver**2) + offsets.get(line, 0.0)\n    outcome = rng.normal(mu, resid_sd, size=n)\n    return pd.DataFrame({\"outcome\": outcome})\n",
+          "error": null,
+          "truncated": false
+        },
+        "working_model": {
+          "status": "captured",
+          "code": "def model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    b = np.array([14.418031802181106, 2.95344754513154, -0.29694915515547127], dtype=float)\n    offsets = {1: 0.0, 2: 0.5198694545970578, 3: -0.4142491136573055, 4: -0.20400650219100744, 5: -0.16594282468149757}\n    resid_sd = 0.8405152823834008\n    mu = b[0] + b[1]*driver + b[2]*(driver**2) + offsets.get(line, 0.0)\n    outcome = rng.normal(mu, resid_sd, size=n)\n    return pd.DataFrame({\"outcome\": outcome})"
+        },
+        "budget_remaining": 900.0,
+        "trajectory": []
+      }
+    ],
+    "evidence_ledger": [
+      {
+        "sequence": 1,
+        "turn": 1,
+        "kind": "observe",
+        "source": "qualification_report",
+        "request": {
+          "n": 96
+        },
+        "delivery_variable": null,
+        "data": {
+          "columns": [
+            "line",
+            "driver",
+            "outcome"
+          ],
+          "dtypes": [
+            "float64",
+            "float64",
+            "float64"
+          ],
+          "data": [
+            [
+              1.0,
+              6.865454614219021,
+              20.479049362627777
+            ],
+            [
+              2.0,
+              0.5,
+              16.8531692943737
+            ],
+            [
+              1.0,
+              8.68327106025433,
+              18.252921888771972
+            ],
+            [
+              3.0,
+              0.5,
+              15.324941561991947
+            ],
+            [
+              1.0,
+              7.330772351466489,
+              19.744260901436107
+            ],
+            [
+              4.0,
+              0.5,
+              16.028343683919772
+            ],
+            [
+              1.0,
+              7.899992655806086,
+              20.228774936975118
+            ],
+            [
+              5.0,
+              0.5,
+              15.439001393971665
+            ],
+            [
+              1.0,
+              4.349377312573245,
+              22.235976261449114
+            ],
+            [
+              2.0,
+              1.5,
+              19.416994413974844
+            ],
+            [
+              1.0,
+              7.65969908818807,
+              19.954905366669884
+            ],
+            [
+              3.0,
+              1.5,
+              17.74030692366497
+            ],
+            [
+              1.0,
+              3.5904821358325756,
+              21.286387768513087
+            ],
+            [
+              4.0,
+              1.5,
+              19.110913852533415
+            ],
+            [
+              1.0,
+              0.1023738194316437,
+              14.43519548951933
+            ],
+            [
+              5.0,
+              1.5,
+              19.10672583037026
+            ],
+            [
+              1.0,
+              9.041057523702932,
+              16.23231424347104
+            ],
+            [
+              2.0,
+              2.5,
+              21.73581672383132
+            ],
+            [
+              1.0,
+              0.9531257338248633,
+              17.177567275469716
+            ],
+            [
+              3.0,
+              2.5,
+              19.47635957592009
+            ],
+            [
+              1.0,
+              3.112094940645603,
+              22.312608566331203
+            ],
+            [
+              4.0,
+              2.5,
+              19.156841773013902
+            ],
+            [
+              1.0,
+              8.638968293847539,
+              17.452846973979028
+            ],
+            [
+              5.0,
+              2.5,
+              19.042845934594126
+            ],
+            [
+              1.0,
+              3.0987020661698095,
+              20.411471651987913
+            ],
+            [
+              2.0,
+              3.5,
+              21.94978454571243
+            ],
+            [
+              1.0,
+              7.863886158401971,
+              18.200752506520903
+            ],
+            [
+              3.0,
+              3.5,
+              21.78782987323599
+            ],
+            [
+              1.0,
+              2.3306372040666554,
+              21.36141847263077
+            ],
+            [
+              4.0,
+              3.5,
+              22.043749937964943
+            ],
+            [
+              1.0,
+              5.55035222689413,
+              20.421720704711756
+            ],
+            [
+              5.0,
+              3.5,
+              21.05513381002195
+            ],
+            [
+              1.0,
+              1.8014046215413815,
+              18.044398225510193
+            ],
+            [
+              2.0,
+              0.5,
+              14.65971685638629
+            ],
+            [
+              1.0,
+              8.026165461877275,
+              17.6313653175995
+            ],
+            [
+              3.0,
+              0.5,
+              14.310451465325775
+            ],
+            [
+              1.0,
+              7.128903465355188,
+              20.162789895693543
+            ],
+            [
+              4.0,
+              0.5,
+              14.906317691666372
+            ],
+            [
+              1.0,
+              6.780278657980272,
+              20.345884121774933
+            ],
+            [
+              5.0,
+              0.5,
+              15.432171145019172
+            ],
+            [
+              1.0,
+              5.248248260428712,
+              22.424426681999403
+            ],
+            [
+              2.0,
+              1.5,
+              17.741732892001263
+            ],
+            [
+              1.0,
+              8.038303024579141,
+              19.887176262231204
+            ],
+            [
+              3.0,
+              1.5,
+              17.503273083455234
+            ],
+            [
+              1.0,
+              8.9304321525826,
+              18.320276814461536
+            ],
+            [
+              4.0,
+              1.5,
+              17.788592341958662
+            ],
+            [
+              1.0,
+              0.3677216592803889,
+              15.605951613451868
+            ],
+            [
+              5.0,
+              1.5,
+              17.836536248297758
+            ],
+            [
+              1.0,
+              1.0441063241610071,
+              16.915166820516916
+            ],
+            [
+              2.0,
+              2.5,
+              20.16157632196485
+            ],
+            [
+              1.0,
+              1.7239581960578598,
+              19.544654680864447
+            ],
+            [
+              3.0,
+              2.5,
+              18.606772282126137
+            ],
+            [
+              1.0,
+              5.232298803328792,
+              22.826451789332726
+            ],
+            [
+              4.0,
+              2.5,
+              19.267530438633326
+            ],
+            [
+              1.0,
+              1.0190197888616137,
+              16.478082914650944
+            ],
+            [
+              5.0,
+              2.5,
+              20.96684717762986
+            ],
+            [
+              1.0,
+              9.627893944581189,
+              16.348302968183333
+            ],
+            [
+              2.0,
+              3.5,
+              21.733214235411673
+            ],
+            [
+              1.0,
+              1.5900786578500747,
+              20.320051683605733
+            ],
+            [
+              3.0,
+              3.5,
+              20.999976134061082
+            ],
+            [
+              1.0,
+              2.5707916438650957,
+              19.375435968421456
+            ],
+            [
+              4.0,
+              3.5,
+              19.557153306981657
+            ],
+            [
+              1.0,
+              2.3990964832664052,
+              18.719192095407603
+            ],
+            [
+              5.0,
+              3.5,
+              21.096323248057846
+            ],
+            [
+              1.0,
+              2.941784508798151,
+              21.269662851333333
+            ],
+            [
+              2.0,
+              0.5,
+              16.283307301802722
+            ],
+            [
+              1.0,
+              6.259629258052579,
+              20.83036854574119
+            ],
+            [
+              3.0,
+              0.5,
+              17.056354767789713
+            ],
+            [
+              1.0,
+              9.314816957235507,
+              17.977328126327144
+            ],
+            [
+              4.0,
+              0.5,
+              15.604562066335175
+            ],
+            [
+              1.0,
+              3.8737492900356054,
+              21.212809066022835
+            ],
+            [
+              5.0,
+              0.5,
+              15.258414000348965
+            ],
+            [
+              1.0,
+              1.6312471913337334,
+              17.74789712813731
+            ],
+            [
+              2.0,
+              1.5,
+              19.294895452853993
+            ],
+            [
+              1.0,
+              2.9737725380216973,
+              20.148000634615205
+            ],
+            [
+              3.0,
+              1.5,
+              17.453439485275503
+            ],
+            [
+              1.0,
+              1.7998755528229837,
+              18.469783007760128
+            ],
+            [
+              4.0,
+              1.5,
+              17.05850848497969
+            ],
+            [
+              1.0,
+              9.520114103556335,
+              14.587550839907012
+            ],
+            [
+              5.0,
+              1.5,
+              17.607857473544243
+            ],
+            [
+              1.0,
+              4.34571223666453,
+              20.041953405891142
+            ],
+            [
+              2.0,
+              2.5,
+              20.83940802536104
+            ],
+            [
+              1.0,
+              8.56506418415387,
+              17.021322955327143
+            ],
+            [
+              3.0,
+              2.5,
+              19.40742978168934
+            ],
+            [
+              1.0,
+              8.69664981238744,
+              16.816319168180225
+            ],
+            [
+              4.0,
+              2.5,
+              21.309757187030296
+            ],
+            [
+              1.0,
+              8.137623891566246,
+              19.53564246165924
+            ],
+            [
+              5.0,
+              2.5,
+              19.928622825058735
+            ],
+            [
+              1.0,
+              1.0266427091966013,
+              16.119966136608188
+            ],
+            [
+              2.0,
+              3.5,
+              20.760143326026128
+            ],
+            [
+              1.0,
+              9.893444253910692,
+              13.93767434899782
+            ],
+            [
+              3.0,
+              3.5,
+              20.55320163611211
+            ],
+            [
+              1.0,
+              2.8679932947066966,
+              21.117130989846814
+            ],
+            [
+              4.0,
+              3.5,
+              20.91097714322626
+            ],
+            [
+              1.0,
+              1.5261125723151558,
+              18.182519781907008
+            ],
+            [
+              5.0,
+              3.5,
+              20.429532951443008
+            ]
+          ]
+        }
+      }
+    ],
+    "next_prompt": "Kernel output (ok=True, budget remaining=900):\nunique driver counts by line:\nline 1: n_unique=48, first=[0.10237382 0.36772166 0.95312573 1.01901979 1.02664271 1.04410632\n 1.52611257 1.59007866 1.63124719 1.7239582 ], last=[8.56506418 8.63896829 8.68327106 8.69664981 8.93043215 9.04105752\n 9.31481696 9.5201141  9.62789394 9.89344425]\nline 2: n_unique=4, first=[0.5 1.5 2.5 3.5], last=[0.5 1.5 2.5 3.5]\nline 3: n_unique=4, first=[0.5 1.5 2.5 3.5], last=[0.5 1.5 2.5 3.5]\nline 4: n_unique=4, first=[0.5 1.5 2.5 3.5], last=[0.5 1.5 2.5 3.5]\nline 5: n_unique=4, first=[0.5 1.5 2.5 3.5], last=[0.5 1.5 2.5 3.5]\n\nline 1 quadratic coeffs: [14.418   2.9534 -0.2969] resid_sd: 0.9132\noffsets vs shared line1 shape: {1: 0.0, 2: 0.5199, 3: -0.4142, 4: -0.204, 5: -0.1659}\noffset SDs: {1: 0.0, 2: 0.8312, 3: 0.7542, 4: 0.9036, 5: 0.5971}\npooled residual sd: 0.8405\n\nworking_model preview:\ndef model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    b = np.array([14.418031802181106, 2.95344754513154, -0.29694915515547127], dtype=float)\n    offsets = {1: 0.0, 2: 0.5198694545970578, 3: -0.4142491136573055, 4: -0.20400650219100744, 5: -0.16594282468149757}\n    resid_sd = 0.8405152823834008\n    mu = b[0] + b[1]*driver + b[2]*(driver**2) + offsets.get(line, 0.0)\n    outcome = rng.normal(mu, resid_sd, size=n)\n    return pd.DataFrame({\"outcome\": outcome})\n\n\nReason about what this result tells you (does it confirm or refute your current hypothesis? what does it imply for the next step?), then write your next cell (or build and env.submit(code) when your reasoning has converged).",
+    "tokens": 9745,
+    "checkpoint": "eligible",
+    "eligibility": {
+      "eligible": true,
+      "turn": 3,
+      "gates": {
+        "qualification_complete": true,
+        "quiet_turn": true,
+        "cell_ok": true,
+        "artifact_present": true,
+        "artifact_changed_this_turn": true,
+        "artifact_scoreable": true,
+        "target_shared_transfer_belief": true
+      },
+      "phenotype": {
+        "eligible": true,
+        "reason": null,
+        "shape_spread_noise_ratio": 0.03479877965272334,
+        "threshold": 1.0,
+        "between_line_rms": 0.029326582209410004,
+        "predictive_sd": 0.8427474325846054,
+        "mean_increments_by_line": {
+          "1": [
+            0.6640870887229973,
+            0.23024843000728623,
+            -1.1733146131831766,
+            -3.2404545973113024,
+            -5.67972310008691
+          ],
+          "2": [
+            0.630436664382156,
+            0.17661930473012788,
+            -1.124116220758875,
+            -3.313262396048259,
+            -5.746798308892421
+          ],
+          "3": [
+            0.5981407936039673,
+            0.18659124714660535,
+            -1.1340056987040477,
+            -3.2905875251901264,
+            -5.737685868020062
+          ],
+          "4": [
+            0.6798905826016153,
+            0.19756364785516567,
+            -1.1436807827093922,
+            -3.297492233560554,
+            -5.73211703847546
+          ],
+          "5": [
+            0.6666072092574389,
+            0.20791745179079513,
+            -1.0876847656926785,
+            -3.253460368214995,
+            -5.694893273247857
+          ]
+        }
+      }
+    }
+  },
+  "branches": {
+    "limited": {
+      "case_id": "overgen_stream_v0",
+      "replay_checks": [
+        {
+          "turn": 1,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 2,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 3,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        }
+      ],
+      "replay_exact": true,
+      "report_count": 1,
+      "abort": "submitted",
+      "accepted": true,
+      "R": 0.8132298160531525,
+      "submission_code": "def model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    coefs = {1: [14.064561850027443, 3.338597315287984, -0.3917731523511505, 0.0063106321194794646], 2: [14.681992441226233, 2.948825535466246, -0.23497707377358723, -0.0016385116611035144], 3: [13.206205283844396, 3.653042983246018, -0.4298010336242411, 0.0031694809321254347], 4: [14.052084775791212, 3.4897786623231957, -0.4606234452425593, 0.012194928774890812], 5: [13.952301207947526, 3.206877914124506, -0.33903919722127573, 0.0025273504969041127]}\n    noise = {1: 0.9155247859969773, 2: 0.730976953787157, 3: 0.9158257462508907, 4: 0.805901766253961, 5: 0.5762110408558201}\n    b = np.array(coefs[line], dtype=float)\n    mu = b[0] + b[1]*driver + b[2]*(driver**2) + b[3]*(driver**3)\n    outcome = rng.normal(mu, noise[line], size=n)\n    return pd.DataFrame({\"outcome\": outcome})",
+      "trace": [
+        {
+          "turn": 4,
+          "notices": [
+            "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5.\nThe report is already loaded as DataFrame `commissioning_report`."
+          ],
+          "reply_text": "REASONING: Great \u2014 the commissioning report arrived for free before we spent any budget, so the optimal move is to use it rather than run paid experiments. The initial data supported a shared quadratic shape with line-specific offsets, but the new full-range report for lines 2\u20135 may reveal line-specific high-range deviations or different noise levels, which matter because scoring emphasizes the newly commissioned range and the 10th/90th percentiles. I should inspect `commissioning_report`, merge it with qualification data, fit a richer line-specific model, and then submit a final model if the structure looks stable.\n```python\nimport numpy as np\nimport pandas as pd\n\nprint(\"commissioning_report head:\")\nprint(commissioning_report.head())\nprint(\"\\nshape:\", commissioning_report.shape)\n\ncr = commissioning_report.copy()\nfor c in [\"line\", \"driver\", \"outcome\"]:\n    cr[c] = cr[c].astype(float)\n\nprint(\"\\ncounts by line:\")\nprint(cr.groupby(\"line\").size())\n\nprint(\"\\ndriver summary by line:\")\nprint(cr.groupby(\"line\")[\"driver\"].agg([\"min\", \"max\", \"nunique\"]))\n\nprint(\"\\nmean outcome by rounded driver and line (sample):\")\ntmp = cr.copy()\ntmp[\"driver_r\"] = tmp[\"driver\"].round(3)\nprint(tmp.groupby([\"line\", \"driver_r\"])[\"outcome\"].mean().reset_index().head(20))\n\n# combine all free data\nall_df = pd.concat([qual.copy(), cr.copy()], ignore_index=True)\nall_df[\"line\"] = all_df[\"line\"].astype(int)\nall_df[\"driver\"] = all_df[\"driver\"].astype(float)\nall_df[\"outcome\"] = all_df[\"outcome\"].astype(float)\n\nprint(\"\\ncombined shape:\", all_df.shape)\nprint(all_df.groupby(\"line\")[\"driver\"].agg([\"min\", \"max\", \"nunique\", \"count\"]))\n\n# fit per-line cubic, compare to shared quadratic+offset\ndef fit_poly(d, deg):\n    x = d[\"driver\"].to_numpy(dtype=float)\n    y = d[\"outcome\"].to_numpy(dtype=float)\n    A = np.column_stack([x**k for k in range(deg+1)]).astype(float)\n    b = np.linalg.lstsq(A, y, rcond=None)[0]\n    pred = A @ b\n    rmse = float(np.sqrt(np.mean((y - pred)**2)))\n    sd = float(np.std(y - pred, ddof=deg+1))\n    return b, rmse, sd\n\ncoefs = {}\nnoise = {}\nfor line in sorted(all_df[\"line\"].unique()):\n    d = all_df[all_df.line == line]\n    b, rmse, sd = fit_poly(d, 3)\n    coefs[int(line)] = [float(v) for v in b]\n    noise[int(line)] = sd\n    print(f\"line {line}: cubic rmse={rmse:.4f}, resid_sd={sd:.4f}, coefs={np.round(b,4)}\")\n\nworking_model = f\"\"\"\ndef model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    coefs = {coefs}\n    noise = {noise}\n    b = np.array(coefs[line], dtype=float)\n    mu = b[0] + b[1]*driver + b[2]*(driver**2) + b[3]*(driver**3)\n    outcome = rng.normal(mu, noise[line], size=n)\n    return pd.DataFrame({{\"outcome\": outcome}})\n\"\"\".strip()\n\nprint(\"\\nworking_model preview:\")\nprint(working_model[:1000])\n\ncode = working_model\nres = env.submit(code)\nprint(\"\\nsubmit accepted:\", res.accepted)\nprint(\"submit error:\", getattr(res, \"error\", None))\n```",
+          "cell": "import numpy as np\nimport pandas as pd\n\nprint(\"commissioning_report head:\")\nprint(commissioning_report.head())\nprint(\"\\nshape:\", commissioning_report.shape)\n\ncr = commissioning_report.copy()\nfor c in [\"line\", \"driver\", \"outcome\"]:\n    cr[c] = cr[c].astype(float)\n\nprint(\"\\ncounts by line:\")\nprint(cr.groupby(\"line\").size())\n\nprint(\"\\ndriver summary by line:\")\nprint(cr.groupby(\"line\")[\"driver\"].agg([\"min\", \"max\", \"nunique\"]))\n\nprint(\"\\nmean outcome by rounded driver and line (sample):\")\ntmp = cr.copy()\ntmp[\"driver_r\"] = tmp[\"driver\"].round(3)\nprint(tmp.groupby([\"line\", \"driver_r\"])[\"outcome\"].mean().reset_index().head(20))\n\n# combine all free data\nall_df = pd.concat([qual.copy(), cr.copy()], ignore_index=True)\nall_df[\"line\"] = all_df[\"line\"].astype(int)\nall_df[\"driver\"] = all_df[\"driver\"].astype(float)\nall_df[\"outcome\"] = all_df[\"outcome\"].astype(float)\n\nprint(\"\\ncombined shape:\", all_df.shape)\nprint(all_df.groupby(\"line\")[\"driver\"].agg([\"min\", \"max\", \"nunique\", \"count\"]))\n\n# fit per-line cubic, compare to shared quadratic+offset\ndef fit_poly(d, deg):\n    x = d[\"driver\"].to_numpy(dtype=float)\n    y = d[\"outcome\"].to_numpy(dtype=float)\n    A = np.column_stack([x**k for k in range(deg+1)]).astype(float)\n    b = np.linalg.lstsq(A, y, rcond=None)[0]\n    pred = A @ b\n    rmse = float(np.sqrt(np.mean((y - pred)**2)))\n    sd = float(np.std(y - pred, ddof=deg+1))\n    return b, rmse, sd\n\ncoefs = {}\nnoise = {}\nfor line in sorted(all_df[\"line\"].unique()):\n    d = all_df[all_df.line == line]\n    b, rmse, sd = fit_poly(d, 3)\n    coefs[int(line)] = [float(v) for v in b]\n    noise[int(line)] = sd\n    print(f\"line {line}: cubic rmse={rmse:.4f}, resid_sd={sd:.4f}, coefs={np.round(b,4)}\")\n\nworking_model = f\"\"\"\ndef model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    coefs = {coefs}\n    noise = {noise}\n    b = np.array(coefs[line], dtype=float)\n    mu = b[0] + b[1]*driver + b[2]*(driver**2) + b[3]*(driver**3)\n    outcome = rng.normal(mu, noise[line], size=n)\n    return pd.DataFrame({{\"outcome\": outcome}})\n\"\"\".strip()\n\nprint(\"\\nworking_model preview:\")\nprint(working_model[:1000])\n\ncode = working_model\nres = env.submit(code)\nprint(\"\\nsubmit accepted:\", res.accepted)\nprint(\"submit error:\", getattr(res, \"error\", None))",
+          "cell_result": {
+            "ok": true,
+            "stdout": "commissioning_report head:\n   line  driver    outcome\n0   2.0     1.0  16.763434\n1   3.0     1.0  15.730603\n2   4.0     1.0  17.687783\n3   5.0     1.0  16.334221\n4   2.0     3.0  22.034867\n\nshape: (64, 3)\n\ncounts by line:\nline\n2.0    16\n3.0    16\n4.0    16\n5.0    16\ndtype: int64\n\ndriver summary by line:\n      min  max  nunique\nline                   \n2.0   1.0  9.6        8\n3.0   1.0  9.6        8\n4.0   1.0  9.6        8\n5.0   1.0  9.6        8\n\nmean outcome by rounded driver and line (sample):\n    line  driver_r    outcome\n0    2.0       1.0  17.332375\n1    2.0       3.0  21.451723\n2    2.0       5.0  23.548327\n3    2.0       6.2  23.298735\n4    2.0       7.4  22.776853\n5    2.0       7.9  23.346085\n6    2.0       8.6  21.257004\n7    2.0       9.6  19.833247\n8    3.0       1.0  15.697169\n9    3.0       3.0  20.354066\n10   3.0       5.0  21.700303\n11   3.0       6.2  21.177760\n12   3.0       7.4  17.693839\n13   3.0       7.9  15.360688\n14   3.0       8.6  14.820032\n15   3.0       9.6  12.053119\n16   4.0       1.0  17.781654\n17   4.0       3.0  21.331646\n18   4.0       5.0  21.735475\n19   4.0       6.2  20.848613\n\ncombined shape: (160, 3)\n           min       max  nunique  count\nline                                    \n1     0.102374  9.893444       48     48\n2     0.500000  9.600000       12     28\n3     0.500000  9.600000       12     28\n4     0.500000  9.600000       12     28\n5     0.500000  9.600000       12     28\nline 1: cubic rmse=0.8765, resid_sd=0.9155, coefs=[ 1.40646e+01  3.33860e+00 -3.91800e-01  6.30000e-03]\nline 2: cubic rmse=0.6768, resid_sd=0.7310, coefs=[ 1.4682e+01  2.9488e+00 -2.3500e-01 -1.6000e-03]\nline 3: cubic rmse=0.8479, resid_sd=0.9158, coefs=[ 1.32062e+01  3.65300e+00 -4.29800e-01  3.20000e-03]\nline 4: cubic rmse=0.7461, resid_sd=0.8059, coefs=[ 1.40521e+01  3.48980e+00 -4.60600e-01  1.22000e-02]\nline 5: cubic rmse=0.5335, resid_sd=0.5762, coefs=[ 1.39523e+01  3.20690e+00 -3.39000e-01  2.50000e-03]\n\nworking_model preview:\ndef model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    coefs = {1: [14.064561850027443, 3.338597315287984, -0.3917731523511505, 0.0063106321194794646], 2: [14.681992441226233, 2.948825535466246, -0.23497707377358723, -0.0016385116611035144], 3: [13.206205283844396, 3.653042983246018, -0.4298010336242411, 0.0031694809321254347], 4: [14.052084775791212, 3.4897786623231957, -0.4606234452425593, 0.012194928774890812], 5: [13.952301207947526, 3.206877914124506, -0.33903919722127573, 0.0025273504969041127]}\n    noise = {1: 0.9155247859969773, 2: 0.730976953787157, 3: 0.9158257462508907, 4: 0.805901766253961, 5: 0.5762110408558201}\n    b = np.array(coefs[line], dtype=float)\n    mu = b[0] + b[1]*driver + b[2]*(driver**2) + b[3]*(driver**3)\n    outcome = rng.normal(mu, noise[line], size=n)\n    return pd.DataFrame({\"outcome\": outcome})\n\nsubmit accepted: True\nsubm\n... [output truncated: 3015 chars total]",
+            "error": null,
+            "truncated": true
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "def model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    coefs = {1: [14.064561850027443, 3.338597315287984, -0.3917731523511505, 0.0063106321194794646], 2: [14.681992441226233, 2.948825535466246, -0.23497707377358723, -0.0016385116611035144], 3: [13.206205283844396, 3.653042983246018, -0.4298010336242411, 0.0031694809321254347], 4: [14.052084775791212, 3.4897786623231957, -0.4606234452425593, 0.012194928774890812], 5: [13.952301207947526, 3.206877914124506, -0.33903919722127573, 0.0025273504969041127]}\n    noise = {1: 0.9155247859969773, 2: 0.730976953787157, 3: 0.9158257462508907, 4: 0.805901766253961, 5: 0.5762110408558201}\n    b = np.array(coefs[line], dtype=float)\n    mu = b[0] + b[1]*driver + b[2]*(driver**2) + b[3]*(driver**3)\n    outcome = rng.normal(mu, noise[line], size=n)\n    return pd.DataFrame({\"outcome\": outcome})"
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 4
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            },
+            {
+              "verb": "submit",
+              "args": {
+                "accepted": true
+              },
+              "cost": 0.0,
+              "note": "R=0.813 (server-side)"
+            }
+          ]
+        }
+      ],
+      "evidence_ledger": [
+        {
+          "sequence": 1,
+          "turn": 1,
+          "kind": "observe",
+          "source": "qualification_report",
+          "request": {
+            "n": 96
+          },
+          "delivery_variable": null,
+          "data": {
+            "columns": [
+              "line",
+              "driver",
+              "outcome"
+            ],
+            "dtypes": [
+              "float64",
+              "float64",
+              "float64"
+            ],
+            "data": [
+              [
+                1.0,
+                6.865454614219021,
+                20.479049362627777
+              ],
+              [
+                2.0,
+                0.5,
+                16.8531692943737
+              ],
+              [
+                1.0,
+                8.68327106025433,
+                18.252921888771972
+              ],
+              [
+                3.0,
+                0.5,
+                15.324941561991947
+              ],
+              [
+                1.0,
+                7.330772351466489,
+                19.744260901436107
+              ],
+              [
+                4.0,
+                0.5,
+                16.028343683919772
+              ],
+              [
+                1.0,
+                7.899992655806086,
+                20.228774936975118
+              ],
+              [
+                5.0,
+                0.5,
+                15.439001393971665
+              ],
+              [
+                1.0,
+                4.349377312573245,
+                22.235976261449114
+              ],
+              [
+                2.0,
+                1.5,
+                19.416994413974844
+              ],
+              [
+                1.0,
+                7.65969908818807,
+                19.954905366669884
+              ],
+              [
+                3.0,
+                1.5,
+                17.74030692366497
+              ],
+              [
+                1.0,
+                3.5904821358325756,
+                21.286387768513087
+              ],
+              [
+                4.0,
+                1.5,
+                19.110913852533415
+              ],
+              [
+                1.0,
+                0.1023738194316437,
+                14.43519548951933
+              ],
+              [
+                5.0,
+                1.5,
+                19.10672583037026
+              ],
+              [
+                1.0,
+                9.041057523702932,
+                16.23231424347104
+              ],
+              [
+                2.0,
+                2.5,
+                21.73581672383132
+              ],
+              [
+                1.0,
+                0.9531257338248633,
+                17.177567275469716
+              ],
+              [
+                3.0,
+                2.5,
+                19.47635957592009
+              ],
+              [
+                1.0,
+                3.112094940645603,
+                22.312608566331203
+              ],
+              [
+                4.0,
+                2.5,
+                19.156841773013902
+              ],
+              [
+                1.0,
+                8.638968293847539,
+                17.452846973979028
+              ],
+              [
+                5.0,
+                2.5,
+                19.042845934594126
+              ],
+              [
+                1.0,
+                3.0987020661698095,
+                20.411471651987913
+              ],
+              [
+                2.0,
+                3.5,
+                21.94978454571243
+              ],
+              [
+                1.0,
+                7.863886158401971,
+                18.200752506520903
+              ],
+              [
+                3.0,
+                3.5,
+                21.78782987323599
+              ],
+              [
+                1.0,
+                2.3306372040666554,
+                21.36141847263077
+              ],
+              [
+                4.0,
+                3.5,
+                22.043749937964943
+              ],
+              [
+                1.0,
+                5.55035222689413,
+                20.421720704711756
+              ],
+              [
+                5.0,
+                3.5,
+                21.05513381002195
+              ],
+              [
+                1.0,
+                1.8014046215413815,
+                18.044398225510193
+              ],
+              [
+                2.0,
+                0.5,
+                14.65971685638629
+              ],
+              [
+                1.0,
+                8.026165461877275,
+                17.6313653175995
+              ],
+              [
+                3.0,
+                0.5,
+                14.310451465325775
+              ],
+              [
+                1.0,
+                7.128903465355188,
+                20.162789895693543
+              ],
+              [
+                4.0,
+                0.5,
+                14.906317691666372
+              ],
+              [
+                1.0,
+                6.780278657980272,
+                20.345884121774933
+              ],
+              [
+                5.0,
+                0.5,
+                15.432171145019172
+              ],
+              [
+                1.0,
+                5.248248260428712,
+                22.424426681999403
+              ],
+              [
+                2.0,
+                1.5,
+                17.741732892001263
+              ],
+              [
+                1.0,
+                8.038303024579141,
+                19.887176262231204
+              ],
+              [
+                3.0,
+                1.5,
+                17.503273083455234
+              ],
+              [
+                1.0,
+                8.9304321525826,
+                18.320276814461536
+              ],
+              [
+                4.0,
+                1.5,
+                17.788592341958662
+              ],
+              [
+                1.0,
+                0.3677216592803889,
+                15.605951613451868
+              ],
+              [
+                5.0,
+                1.5,
+                17.836536248297758
+              ],
+              [
+                1.0,
+                1.0441063241610071,
+                16.915166820516916
+              ],
+              [
+                2.0,
+                2.5,
+                20.16157632196485
+              ],
+              [
+                1.0,
+                1.7239581960578598,
+                19.544654680864447
+              ],
+              [
+                3.0,
+                2.5,
+                18.606772282126137
+              ],
+              [
+                1.0,
+                5.232298803328792,
+                22.826451789332726
+              ],
+              [
+                4.0,
+                2.5,
+                19.267530438633326
+              ],
+              [
+                1.0,
+                1.0190197888616137,
+                16.478082914650944
+              ],
+              [
+                5.0,
+                2.5,
+                20.96684717762986
+              ],
+              [
+                1.0,
+                9.627893944581189,
+                16.348302968183333
+              ],
+              [
+                2.0,
+                3.5,
+                21.733214235411673
+              ],
+              [
+                1.0,
+                1.5900786578500747,
+                20.320051683605733
+              ],
+              [
+                3.0,
+                3.5,
+                20.999976134061082
+              ],
+              [
+                1.0,
+                2.5707916438650957,
+                19.375435968421456
+              ],
+              [
+                4.0,
+                3.5,
+                19.557153306981657
+              ],
+              [
+                1.0,
+                2.3990964832664052,
+                18.719192095407603
+              ],
+              [
+                5.0,
+                3.5,
+                21.096323248057846
+              ],
+              [
+                1.0,
+                2.941784508798151,
+                21.269662851333333
+              ],
+              [
+                2.0,
+                0.5,
+                16.283307301802722
+              ],
+              [
+                1.0,
+                6.259629258052579,
+                20.83036854574119
+              ],
+              [
+                3.0,
+                0.5,
+                17.056354767789713
+              ],
+              [
+                1.0,
+                9.314816957235507,
+                17.977328126327144
+              ],
+              [
+                4.0,
+                0.5,
+                15.604562066335175
+              ],
+              [
+                1.0,
+                3.8737492900356054,
+                21.212809066022835
+              ],
+              [
+                5.0,
+                0.5,
+                15.258414000348965
+              ],
+              [
+                1.0,
+                1.6312471913337334,
+                17.74789712813731
+              ],
+              [
+                2.0,
+                1.5,
+                19.294895452853993
+              ],
+              [
+                1.0,
+                2.9737725380216973,
+                20.148000634615205
+              ],
+              [
+                3.0,
+                1.5,
+                17.453439485275503
+              ],
+              [
+                1.0,
+                1.7998755528229837,
+                18.469783007760128
+              ],
+              [
+                4.0,
+                1.5,
+                17.05850848497969
+              ],
+              [
+                1.0,
+                9.520114103556335,
+                14.587550839907012
+              ],
+              [
+                5.0,
+                1.5,
+                17.607857473544243
+              ],
+              [
+                1.0,
+                4.34571223666453,
+                20.041953405891142
+              ],
+              [
+                2.0,
+                2.5,
+                20.83940802536104
+              ],
+              [
+                1.0,
+                8.56506418415387,
+                17.021322955327143
+              ],
+              [
+                3.0,
+                2.5,
+                19.40742978168934
+              ],
+              [
+                1.0,
+                8.69664981238744,
+                16.816319168180225
+              ],
+              [
+                4.0,
+                2.5,
+                21.309757187030296
+              ],
+              [
+                1.0,
+                8.137623891566246,
+                19.53564246165924
+              ],
+              [
+                5.0,
+                2.5,
+                19.928622825058735
+              ],
+              [
+                1.0,
+                1.0266427091966013,
+                16.119966136608188
+              ],
+              [
+                2.0,
+                3.5,
+                20.760143326026128
+              ],
+              [
+                1.0,
+                9.893444253910692,
+                13.93767434899782
+              ],
+              [
+                3.0,
+                3.5,
+                20.55320163611211
+              ],
+              [
+                1.0,
+                2.8679932947066966,
+                21.117130989846814
+              ],
+              [
+                4.0,
+                3.5,
+                20.91097714322626
+              ],
+              [
+                1.0,
+                1.5261125723151558,
+                18.182519781907008
+              ],
+              [
+                5.0,
+                3.5,
+                20.429532951443008
+              ]
+            ]
+          }
+        },
+        {
+          "sequence": 2,
+          "turn": 4,
+          "kind": "event_report",
+          "source": "commissioning_report_source",
+          "request": {
+            "n": 64
+          },
+          "delivery_variable": "commissioning_report",
+          "data": {
+            "columns": [
+              "line",
+              "driver",
+              "outcome"
+            ],
+            "dtypes": [
+              "float64",
+              "float64",
+              "float64"
+            ],
+            "data": [
+              [
+                2.0,
+                1.0,
+                16.763434370179624
+              ],
+              [
+                3.0,
+                1.0,
+                15.73060309782094
+              ],
+              [
+                4.0,
+                1.0,
+                17.687782673482126
+              ],
+              [
+                5.0,
+                1.0,
+                16.334220966418197
+              ],
+              [
+                2.0,
+                3.0,
+                22.034867104324782
+              ],
+              [
+                3.0,
+                3.0,
+                20.798028957878707
+              ],
+              [
+                4.0,
+                3.0,
+                21.271361335601608
+              ],
+              [
+                5.0,
+                3.0,
+                21.230614110859932
+              ],
+              [
+                2.0,
+                5.0,
+                23.3604952160773
+              ],
+              [
+                3.0,
+                5.0,
+                21.87708002638229
+              ],
+              [
+                4.0,
+                5.0,
+                22.233928923002882
+              ],
+              [
+                5.0,
+                5.0,
+                22.06164925860554
+              ],
+              [
+                2.0,
+                6.2,
+                23.100473452721545
+              ],
+              [
+                3.0,
+                6.2,
+                21.17675789604921
+              ],
+              [
+                4.0,
+                6.2,
+                21.438386478415115
+              ],
+              [
+                5.0,
+                6.2,
+                22.165659274991064
+              ],
+              [
+                2.0,
+                7.4,
+                23.00543789040472
+              ],
+              [
+                3.0,
+                7.4,
+                16.67353952075025
+              ],
+              [
+                4.0,
+                7.4,
+                19.015082852533276
+              ],
+              [
+                5.0,
+                7.4,
+                20.60985466919151
+              ],
+              [
+                2.0,
+                8.6,
+                20.89196866629064
+              ],
+              [
+                3.0,
+                8.6,
+                14.870214987881539
+              ],
+              [
+                4.0,
+                8.6,
+                16.907473011842843
+              ],
+              [
+                5.0,
+                8.6,
+                18.505918143230236
+              ],
+              [
+                2.0,
+                9.6,
+                20.077943121687838
+              ],
+              [
+                3.0,
+                9.6,
+                11.374780916002722
+              ],
+              [
+                4.0,
+                9.6,
+                16.30476743559479
+              ],
+              [
+                5.0,
+                9.6,
+                15.380194885058078
+              ],
+              [
+                2.0,
+                7.9,
+                22.687890284010763
+              ],
+              [
+                3.0,
+                7.9,
+                15.308223475503866
+              ],
+              [
+                4.0,
+                7.9,
+                20.065466823932212
+              ],
+              [
+                5.0,
+                7.9,
+                18.586182103257073
+              ],
+              [
+                2.0,
+                1.0,
+                17.901316058988698
+              ],
+              [
+                3.0,
+                1.0,
+                15.663734807607161
+              ],
+              [
+                4.0,
+                1.0,
+                17.87552593948531
+              ],
+              [
+                5.0,
+                1.0,
+                17.20779659477244
+              ],
+              [
+                2.0,
+                3.0,
+                20.868578969883583
+              ],
+              [
+                3.0,
+                3.0,
+                19.910103619699395
+              ],
+              [
+                4.0,
+                3.0,
+                21.391930664309935
+              ],
+              [
+                5.0,
+                3.0,
+                20.3669630270384
+              ],
+              [
+                2.0,
+                5.0,
+                23.736158804935133
+              ],
+              [
+                3.0,
+                5.0,
+                21.523526716334803
+              ],
+              [
+                4.0,
+                5.0,
+                21.237020522020384
+              ],
+              [
+                5.0,
+                5.0,
+                20.907161787172267
+              ],
+              [
+                2.0,
+                6.2,
+                23.49699628714431
+              ],
+              [
+                3.0,
+                6.2,
+                21.17876179135695
+              ],
+              [
+                4.0,
+                6.2,
+                20.258840379078467
+              ],
+              [
+                5.0,
+                6.2,
+                21.658166434664746
+              ],
+              [
+                2.0,
+                7.4,
+                22.548268784286062
+              ],
+              [
+                3.0,
+                7.4,
+                18.714139002040547
+              ],
+              [
+                4.0,
+                7.4,
+                19.207588264038264
+              ],
+              [
+                5.0,
+                7.4,
+                19.44718087951525
+              ],
+              [
+                2.0,
+                8.6,
+                21.62203841692504
+              ],
+              [
+                3.0,
+                8.6,
+                14.769849512155224
+              ],
+              [
+                4.0,
+                8.6,
+                17.963067863056494
+              ],
+              [
+                5.0,
+                8.6,
+                18.27353086759243
+              ],
+              [
+                2.0,
+                9.6,
+                19.588549919104025
+              ],
+              [
+                3.0,
+                9.6,
+                12.731456490715926
+              ],
+              [
+                4.0,
+                9.6,
+                15.585951092302778
+              ],
+              [
+                5.0,
+                9.6,
+                15.864308656467953
+              ],
+              [
+                2.0,
+                7.9,
+                24.004279116733954
+              ],
+              [
+                3.0,
+                7.9,
+                15.413152271317696
+              ],
+              [
+                4.0,
+                7.9,
+                19.087498650667516
+              ],
+              [
+                5.0,
+                7.9,
+                19.605356761126668
+              ]
+            ]
+          }
+        }
+      ],
+      "tokens_continuation": 6640,
+      "reference": {
+        "code": "def _prior_model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get('line'))\n    driver = float(regime.config.get('driver'))\n    b = np.array([14.418031802181106, 2.95344754513154, -0.29694915515547127], dtype=float)\n    offsets = {1: 0.0, 2: 0.5198694545970578, 3: -0.4142491136573055, 4: -0.20400650219100744, 5: -0.16594282468149757}\n    resid_sd = 0.8405152823834008\n    mu = b[0] + b[1] * driver + b[2] * driver ** 2 + offsets.get(line, 0.0)\n    outcome = rng.normal(mu, resid_sd, size=n)\n    return pd.DataFrame({'outcome': outcome})\n\n_REFERENCE_CORRECTIONS = {\n    2: (np.array([0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 6, 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8, 6.9, 7, 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.9, 8, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 9, 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9, 10]), np.array([14.93699785, 15.24488579, 15.50955442, 15.80357313, 16.03982851, 16.33595996, 16.58123622, 16.83579800, 17.06980102, 17.35620374, 17.61009495, 17.87275450, 18.06278660, 18.25407957, 18.48283173, 18.66543479, 18.83577575, 19.08979224, 19.30963592, 19.47933813, 19.68147719, 19.83628769, 20.01400926, 20.17695915, 20.29535327, 20.46607383, 20.59105114, 20.74404039, 20.86990616, 20.99984186, 21.14772938, 21.21640863, 21.37432993, 21.47361960, 21.54383671, 21.65992456, 21.69338703, 21.81841177, 21.91857737, 21.93136572, 21.99033664, 22.05868411, 22.09580653, 22.15730799, 22.16679612, 22.23483368, 22.23665248, 22.26796663, 22.27855178, 22.30017848, 22.28105166, 22.28924555, 22.25173833, 22.23181209, 22.23926218, 22.18307997, 22.17275228, 22.11800048, 22.09698372, 22.02125354, 21.95846591, 21.92356822, 21.81625588, 21.76634053, 21.67026921, 21.58432464, 21.48515346, 21.38585463, 21.30080104, 21.16815812, 21.02666287, 20.94252371, 20.79529081, 20.67430009, 20.50327871, 20.37819585, 20.21173531, 20.05385415, 19.92381171, 19.76083231, 19.53144922, 19.42037760, 19.23001935, 19.02796617, 18.78568454, 18.63021367, 18.37118058, 18.18158902, 17.87656092, 17.72476430, 17.44200680, 17.23960112, 16.99059633, 16.74234617, 16.44075070, 16.17796271, 15.92258436, 15.62364046, 15.38655341, 15.10623621, 14.77097954]), np.array([0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.17112182, 0.33509801, 0.47758973, 0.66789920, 0.78837357, 0.95669087, 1.07004688, 1.17157581, 1.22241699, 1.26727535, 1.25632012, 1.28591715, 1.29334513, 1.26936946, 1.30555953, 1.29298928, 1.32249811, 1.31648762, 1.36396705, 1.39784117, 1.40372337, 1.48247899, 1.49848007, 1.55072386, 1.58537930, 1.62825139, 1.66869285, 1.69478245, 1.77080640, 1.86047938, 1.90004463, 2.01240364, 2.11067214, 2.27357463, 2.45785755, 2.76548747, 3.09186111, 3.36307293, 3.58525239, 3.72302177, 3.59190521, 3.43848020, 3.24413442, 3.08638080, 2.88715952, 2.88582296, 2.88062652, 2.99654639, 2.96715231, 3.07887443, 3.12263783, 3.22763123, 3.34873866, 3.54229786, 3.71839382, 3.91066216, 4.20960606, 4.44669311, 4.72701031, 5.06226698]), np.array([1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.07488290, 1.03203945, 1.06691759, 1.04384658, 1.06963165, 1.06768456, 1.04405204, 1.08887171, 1.02139039, 1.05038793, 1.05942423, 1.05764606, 1.04284064, 1.01959700, 1.06169918, 1.02958601, 1.05659367, 1.04265128, 1.04363049, 1.03447487, 1.07351693, 1.05486943, 1.05921061, 1.04035862, 1.03444627, 1.05730772, 1.05534985, 1.05299886, 1.06828388, 1.06058537, 1.01733675, 1.06015802, 1.05973438, 1.04950342, 1.03845941, 1.06625183, 1.04697670, 1.07046402, 1.04457583, 1.07600687, 1.05844696, 1.06217087, 1.05112998, 1.07443141, 1.06117653, 1.03096601, 1.05057041, 1.05756114, 1.05333429, 1.04910698, 1.06258999, 1.04467133, 1.03084698, 1.05529425, 1.04048440, 1.05133783, 1.09952945, 1.04286955, 1.03163795, 1.07681446])),\n    3: (np.array([0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 6, 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8, 6.9, 7, 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.9, 8, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 9, 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9, 10]), np.array([14.01579319, 14.26889257, 14.60818514, 14.88261507, 15.13479174, 15.44696784, 15.70243185, 15.90650256, 16.14046176, 16.42783932, 16.67296296, 16.91234139, 17.14562249, 17.35195137, 17.58393962, 17.75250371, 17.93742797, 18.22572921, 18.35914345, 18.53820752, 18.68241920, 18.90672564, 19.05629215, 19.25148838, 19.37050811, 19.50909691, 19.64637956, 19.84682024, 19.96889161, 20.07684212, 20.19256914, 20.30949470, 20.42748520, 20.51480849, 20.63937547, 20.71230655, 20.77889271, 20.88794649, 20.92826285, 21.00707695, 21.03473151, 21.12266963, 21.16281587, 21.22027242, 21.27934403, 21.29227312, 21.28769397, 21.32639729, 21.33745929, 21.34124055, 21.34699581, 21.35601247, 21.31890155, 21.32020811, 21.27120905, 21.27227568, 21.24652022, 21.19979746, 21.12608114, 21.07778416, 21.03830012, 20.95114925, 20.89089586, 20.79186381, 20.73826698, 20.63467060, 20.53363217, 20.47570342, 20.33917095, 20.22918763, 20.12871035, 20.00962252, 19.86978285, 19.76451291, 19.59861279, 19.44933692, 19.29116497, 19.10565357, 18.96862601, 18.80075293, 18.59095853, 18.44184394, 18.26052451, 18.10892177, 17.84156972, 17.63255816, 17.45850155, 17.20516465, 16.98703360, 16.71190534, 16.53574893, 16.28127259, 16.04443634, 15.75796409, 15.52461140, 15.24750409, 14.98885603, 14.72948647, 14.44502385, 14.15764787, 13.84565129]), np.array([0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.34652482, 0.35225962, 0.33620740, 0.31381746, 0.33260145, 0.36367914, 0.34601391, 0.35028360, 0.35588172, 0.35330756, 0.33979444, 0.36373150, 0.34104697, 0.36093722, 0.32350424, 0.30610907, 0.30337022, 0.32178724, 0.30942050, 0.28334969, 0.30052786, 0.28686398, 0.28195708, 0.17895491, 0.07892363, -0.06506281, -0.28792476, -0.46231741, -0.68776220, -0.94158462, -1.19003667, -1.42534565, -1.69720170, -1.90477353, -2.21271264, -2.61857536, -3.00180629, -3.33611665, -3.44006506, -3.34731347, -3.28147478, -3.16196323, -3.06299922, -2.85141566, -2.71360124, -2.63846930, -2.52182372, -2.47829142, -2.41312072, -2.47973206, -2.49828505, -2.56219110, -2.60162548, -2.71679517, -2.80827738, -2.93573733, -2.67636777, -2.39190515, -2.10452917, -1.79253259]), np.array([1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.00000000, 1.06671483, 1.06180485, 1.05759321, 1.05315488, 1.05447177, 1.07209863, 1.08261362, 1.04071128, 1.03237293, 1.05914915, 1.07782779, 1.06244545, 1.05057588, 1.04771034, 1.06224912, 1.04023950, 1.05378511, 1.08736558, 1.06130474, 1.06235985, 1.04179445, 1.05102618, 1.04844133, 1.06854497, 1.04529644, 1.00333434, 1.03137695, 1.06177172, 1.05066688, 1.07148794, 1.02698056, 1.05720065, 1.07676592, 1.06064779, 1.03916605, 1.09073657, 1.04170784, 1.07199423, 1.04742437, 1.05211463, 1.03734296, 1.08314719, 1.07524571, 1.04609577, 1.05944244, 1.04993929, 1.04372349, 1.06813970, 1.06303471, 1.04538327, 1.06357074, 1.04952953, 1.06899587, 1.05897071, 1.04157714, 1.02175477, 1.07082883, 1.02595258, 1.06482228, 1.06546334])),\n}\n\ndef model(regime, n, seed):\n    frame = _prior_model(regime, n, seed)\n    line = int(regime.config[\"line\"])\n    if line not in _REFERENCE_CORRECTIONS:\n        return frame\n    driver = float(regime.config[\"driver\"])\n    if driver <= 4.0:\n        return frame\n    X, PRIOR_MEAN, DELTA, SCALE = _REFERENCE_CORRECTIONS[line]\n    out = frame.copy()\n    prior_mean = float(np.interp(driver, X, PRIOR_MEAN))\n    target_mean = prior_mean + float(np.interp(driver, X, DELTA))\n    scale = float(np.interp(driver, X, SCALE))\n    out[\"outcome\"] = target_mean + (out[\"outcome\"] - prior_mean) * scale\n    return out\n",
+        "diagnostics": {
+          "kind": "prior_preserving_v1_reference_not_unique_posterior",
+          "ledger_records": 2,
+          "qualification_rows": 96,
+          "later_rows": 64,
+          "update_threshold": 1.35,
+          "standardized_mean_abs_residual": {
+            "2": 3.435916675561039,
+            "3": 2.466742555561061,
+            "4": 0.6629844979761784,
+            "5": 0.5576060965555435
+          },
+          "updated_lines": [
+            2,
+            3
+          ],
+          "prior_preserved_byte_exact": false,
+          "preserved_lines": [
+            1,
+            4,
+            5
+          ],
+          "preserved_region": "driver<=4 for every line",
+          "correction_max_abs": {
+            "2": 5.062266981465918,
+            "3": 3.4400650601874982
+          },
+          "spread_scale_range": {
+            "2": [
+              1.0,
+              1.0995294504788224
+            ],
+            "3": [
+              1.0,
+              1.0907365728880394
+            ]
+          }
+        },
+        "captured_fraction_diagnostic": {
+          "M_post_first_changed": {
+            "resolved": false,
+            "fraction": null,
+            "reason": "unscoreable"
+          },
+          "M_final": {
+            "resolved": false,
+            "fraction": null,
+            "reason": "unscoreable"
+          }
+        }
+      },
+      "checkpoint_scores": {
+        "M_pre": {
+          "hash": "def93a4a0695",
+          "scoreable": true,
+          "error": null,
+          "global_R": 0.2500755206017672,
+          "global_R_unclipped": 0.2500755206017672,
+          "mdl_bytes": 380,
+          "groups": {
+            "full": {
+              "resolved": true,
+              "R": 0.2465073685630785,
+              "R_unclipped": 0.2465073685630785,
+              "resolution": 2.114826517235909,
+              "fidelity": -1.6234642023918031
+            },
+            "initial": {
+              "resolved": true,
+              "R": 0.5647675412140136,
+              "R_unclipped": 0.5647675412140136,
+              "resolution": 0.7827126227512944,
+              "fidelity": -0.36725245200145995
+            },
+            "diagnostic": {
+              "resolved": true,
+              "R": 0.2132947862208024,
+              "R_unclipped": 0.2132947862208024,
+              "resolution": 2.5715512810592047,
+              "fidelity": -2.054165373954207
+            },
+            "line_1": {
+              "resolved": true,
+              "R": 0.7790748165606048,
+              "R_unclipped": 0.7790748165606048,
+              "resolution": 0.8132291235805822,
+              "fidelity": -0.20320587833150802
+            },
+            "line_1_initial": {
+              "resolved": true,
+              "R": 0.7700513473858026,
+              "R_unclipped": 0.7700513473858026,
+              "resolution": 0.7885448493414353,
+              "fidelity": -0.2013961130999119
+            },
+            "line_1_diagnostic": {
+              "resolved": true,
+              "R": 0.7820437736523745,
+              "R_unclipped": 0.7820437736523745,
+              "resolution": 0.8216923033197182,
+              "fidelity": -0.20382636926805528
+            },
+            "line_2": {
+              "resolved": true,
+              "R": 0.103605840973541,
+              "R_unclipped": 0.103605840973541,
+              "resolution": 3.9126917964039554,
+              "fidelity": -3.5396473436819518
+            },
+            "line_2_initial": {
+              "resolved": true,
+              "R": 0.036421954625786505,
+              "R_unclipped": 0.036421954625786505,
+              "resolution": 0.7562808924407229,
+              "fidelity": -0.7568184122485373
+            },
+            "line_2_diagnostic": {
+              "resolved": true,
+              "R": 0.1070935122089335,
+              "R_unclipped": 0.1070935122089335,
+              "resolution": 4.994889820619921,
+              "fidelity": -4.493760120173408
+            },
+            "line_3": {
+              "resolved": true,
+              "R": 0.1166918467367935,
+              "R_unclipped": 0.1166918467367935,
+              "resolution": 4.223292829236683,
+              "fidelity": -3.759288814248691
+            },
+            "line_3_initial": {
+              "resolved": true,
+              "R": 0.45995550726921247,
+              "R_unclipped": 0.45995550726921247,
+              "resolution": 0.7851893376601538,
+              "fidelity": -0.4469021163116688
+            },
+            "line_3_diagnostic": {
+              "resolved": true,
+              "R": 0.09958558458676019,
+              "R_unclipped": 0.09958558458676019,
+              "resolution": 5.4020711692057795,
+              "fidelity": -4.894964253541384
+            },
+            "line_4": {
+              "resolved": true,
+              "R": 0.6411110976002379,
+              "R_unclipped": 0.6411110976002379,
+              "resolution": 0.8111743259409712,
+              "fidelity": -0.31797671294748125
+            },
+            "line_4_initial": {
+              "resolved": true,
+              "R": 0.7563261784963439,
+              "R_unclipped": 0.7563261784963439,
+              "resolution": 0.7712396719328038,
+              "fidelity": -0.21940125334247912
+            },
+            "line_4_diagnostic": {
+              "resolved": true,
+              "R": 0.6041769245238577,
+              "R_unclipped": 0.6041769245238577,
+              "resolution": 0.8248662073152,
+              "fidelity": -0.351774013383482
+            },
+            "line_5": {
+              "resolved": true,
+              "R": 0.6817629302931928,
+              "R_unclipped": 0.6817629302931928,
+              "resolution": 0.8137445110173511,
+              "fidelity": -0.29720226274938505
+            },
+            "line_5_initial": {
+              "resolved": true,
+              "R": 0.7768321494934399,
+              "R_unclipped": 0.7768321494934399,
+              "resolution": 0.8123083623813561,
+              "fidelity": -0.21174436500470287
+            },
+            "line_5_diagnostic": {
+              "resolved": true,
+              "R": 0.6492449719575569,
+              "R_unclipped": 0.6492449719575569,
+              "resolution": 0.8142369048354066,
+              "fidelity": -0.3265021134047046
+            }
+          }
+        },
+        "M_post_first_seen": {
+          "hash": "03f7f12658ee",
+          "scoreable": true,
+          "error": null,
+          "global_R": 0.8132298160531525,
+          "global_R_unclipped": 0.8132298160531525,
+          "mdl_bytes": 571,
+          "groups": {
+            "full": {
+              "resolved": true,
+              "R": 0.8069592630781064,
+              "R_unclipped": 0.8069592630781064,
+              "resolution": 2.114826517235909,
+              "fidelity": -0.4382056742363195
+            },
+            "initial": {
+              "resolved": true,
+              "R": 0.5665853815690497,
+              "R_unclipped": 0.5665853815690497,
+              "resolution": 0.7827126227512944,
+              "fidelity": -0.3658296054094265
+            },
+            "diagnostic": {
+              "resolved": true,
+              "R": 0.8320438888610131,
+              "R_unclipped": 0.8320438888610131,
+              "resolution": 2.5715512810592047,
+              "fidelity": -0.4630203264055399
+            },
+            "line_1": {
+              "resolved": true,
+              "R": 0.6413981206205008,
+              "R_unclipped": 0.6413981206205008,
+              "resolution": 0.8132291235805822,
+              "fidelity": -0.31516857710834906
+            },
+            "line_1_initial": {
+              "resolved": true,
+              "R": 0.7381503276071015,
+              "R_unclipped": 0.7381503276071015,
+              "resolution": 0.7885448493414353,
+              "fidelity": -0.22655149793514598
+            },
+            "line_1_diagnostic": {
+              "resolved": true,
+              "R": 0.6095641169227453,
+              "R_unclipped": 0.6095641169227453,
+              "resolution": 0.8216923033197182,
+              "fidelity": -0.3455515756820187
+            },
+            "line_2": {
+              "resolved": true,
+              "R": 0.8339315265682644,
+              "R_unclipped": 0.8339315265682644,
+              "resolution": 3.9126917964039554,
+              "fidelity": -0.6821080249523831
+            },
+            "line_2_initial": {
+              "resolved": true,
+              "R": 0.0,
+              "R_unclipped": -0.05667499322617295,
+              "resolution": 0.7562808924407229,
+              "fidelity": -0.8272258550535246
+            },
+            "line_2_diagnostic": {
+              "resolved": true,
+              "R": 0.8801649749439988,
+              "R_unclipped": 0.8801649749439988,
+              "resolution": 4.994889820619921,
+              "fidelity": -0.6323533403462774
+            },
+            "line_3": {
+              "resolved": true,
+              "R": 0.9015874631021051,
+              "R_unclipped": 0.9015874631021051,
+              "resolution": 4.223292829236683,
+              "fidelity": -0.44444478595376435
+            },
+            "line_3_initial": {
+              "resolved": true,
+              "R": 0.40549101979732494,
+              "R_unclipped": 0.40549101979732494,
+              "resolution": 0.7851893376601538,
+              "fidelity": -0.48966705115571996
+            },
+            "line_3_diagnostic": {
+              "resolved": true,
+              "R": 0.9263100212596099,
+              "R_unclipped": 0.9263100212596099,
+              "resolution": 5.4020711692057795,
+              "fidelity": -0.42894000931309373
+            },
+            "line_4": {
+              "resolved": true,
+              "R": 0.3802862892833412,
+              "R_unclipped": 0.3802862892833412,
+              "resolution": 0.8111743259409712,
+              "fidelity": -0.529551101022623
+            },
+            "line_4_initial": {
+              "resolved": true,
+              "R": 0.83661180713813,
+              "R_unclipped": 0.83661180713813,
+              "resolution": 0.7712396719328038,
+              "fidelity": -0.15748179144786909
+            },
+            "line_4_diagnostic": {
+              "resolved": true,
+              "R": 0.2340033068427393,
+              "R_unclipped": 0.2340033068427393,
+              "resolution": 0.8248662073152,
+              "fidelity": -0.6571177214482531
+            },
+            "line_5": {
+              "resolved": true,
+              "R": 0.7769357757703105,
+              "R_unclipped": 0.7769357757703105,
+              "resolution": 0.8137445110173511,
+              "fidelity": -0.2197558821444779
+            },
+            "line_5_initial": {
+              "resolved": true,
+              "R": 0.8796533654476573,
+              "R_unclipped": 0.8796533654476573,
+              "resolution": 0.8123083623813561,
+              "fidelity": -0.12822183145487281
+            },
+            "line_5_diagnostic": {
+              "resolved": true,
+              "R": 0.7418017299712237,
+              "R_unclipped": 0.7418017299712237,
+              "resolution": 0.8142369048354066,
+              "fidelity": -0.2511389852380568
+            }
+          }
+        },
+        "M_post_first_changed": {
+          "hash": "03f7f12658ee",
+          "scoreable": true,
+          "error": null,
+          "global_R": 0.8132298160531525,
+          "global_R_unclipped": 0.8132298160531525,
+          "mdl_bytes": 571,
+          "groups": {
+            "full": {
+              "resolved": true,
+              "R": 0.8069592630781064,
+              "R_unclipped": 0.8069592630781064,
+              "resolution": 2.114826517235909,
+              "fidelity": -0.4382056742363195
+            },
+            "initial": {
+              "resolved": true,
+              "R": 0.5665853815690497,
+              "R_unclipped": 0.5665853815690497,
+              "resolution": 0.7827126227512944,
+              "fidelity": -0.3658296054094265
+            },
+            "diagnostic": {
+              "resolved": true,
+              "R": 0.8320438888610131,
+              "R_unclipped": 0.8320438888610131,
+              "resolution": 2.5715512810592047,
+              "fidelity": -0.4630203264055399
+            },
+            "line_1": {
+              "resolved": true,
+              "R": 0.6413981206205008,
+              "R_unclipped": 0.6413981206205008,
+              "resolution": 0.8132291235805822,
+              "fidelity": -0.31516857710834906
+            },
+            "line_1_initial": {
+              "resolved": true,
+              "R": 0.7381503276071015,
+              "R_unclipped": 0.7381503276071015,
+              "resolution": 0.7885448493414353,
+              "fidelity": -0.22655149793514598
+            },
+            "line_1_diagnostic": {
+              "resolved": true,
+              "R": 0.6095641169227453,
+              "R_unclipped": 0.6095641169227453,
+              "resolution": 0.8216923033197182,
+              "fidelity": -0.3455515756820187
+            },
+            "line_2": {
+              "resolved": true,
+              "R": 0.8339315265682644,
+              "R_unclipped": 0.8339315265682644,
+              "resolution": 3.9126917964039554,
+              "fidelity": -0.6821080249523831
+            },
+            "line_2_initial": {
+              "resolved": true,
+              "R": 0.0,
+              "R_unclipped": -0.05667499322617295,
+              "resolution": 0.7562808924407229,
+              "fidelity": -0.8272258550535246
+            },
+            "line_2_diagnostic": {
+              "resolved": true,
+              "R": 0.8801649749439988,
+              "R_unclipped": 0.8801649749439988,
+              "resolution": 4.994889820619921,
+              "fidelity": -0.6323533403462774
+            },
+            "line_3": {
+              "resolved": true,
+              "R": 0.9015874631021051,
+              "R_unclipped": 0.9015874631021051,
+              "resolution": 4.223292829236683,
+              "fidelity": -0.44444478595376435
+            },
+            "line_3_initial": {
+              "resolved": true,
+              "R": 0.40549101979732494,
+              "R_unclipped": 0.40549101979732494,
+              "resolution": 0.7851893376601538,
+              "fidelity": -0.48966705115571996
+            },
+            "line_3_diagnostic": {
+              "resolved": true,
+              "R": 0.9263100212596099,
+              "R_unclipped": 0.9263100212596099,
+              "resolution": 5.4020711692057795,
+              "fidelity": -0.42894000931309373
+            },
+            "line_4": {
+              "resolved": true,
+              "R": 0.3802862892833412,
+              "R_unclipped": 0.3802862892833412,
+              "resolution": 0.8111743259409712,
+              "fidelity": -0.529551101022623
+            },
+            "line_4_initial": {
+              "resolved": true,
+              "R": 0.83661180713813,
+              "R_unclipped": 0.83661180713813,
+              "resolution": 0.7712396719328038,
+              "fidelity": -0.15748179144786909
+            },
+            "line_4_diagnostic": {
+              "resolved": true,
+              "R": 0.2340033068427393,
+              "R_unclipped": 0.2340033068427393,
+              "resolution": 0.8248662073152,
+              "fidelity": -0.6571177214482531
+            },
+            "line_5": {
+              "resolved": true,
+              "R": 0.7769357757703105,
+              "R_unclipped": 0.7769357757703105,
+              "resolution": 0.8137445110173511,
+              "fidelity": -0.2197558821444779
+            },
+            "line_5_initial": {
+              "resolved": true,
+              "R": 0.8796533654476573,
+              "R_unclipped": 0.8796533654476573,
+              "resolution": 0.8123083623813561,
+              "fidelity": -0.12822183145487281
+            },
+            "line_5_diagnostic": {
+              "resolved": true,
+              "R": 0.7418017299712237,
+              "R_unclipped": 0.7418017299712237,
+              "resolution": 0.8142369048354066,
+              "fidelity": -0.2511389852380568
+            }
+          }
+        },
+        "M_final": {
+          "hash": "03f7f12658ee",
+          "scoreable": true,
+          "error": null,
+          "global_R": 0.8132298160531525,
+          "global_R_unclipped": 0.8132298160531525,
+          "mdl_bytes": 571,
+          "groups": {
+            "full": {
+              "resolved": true,
+              "R": 0.8069592630781064,
+              "R_unclipped": 0.8069592630781064,
+              "resolution": 2.114826517235909,
+              "fidelity": -0.4382056742363195
+            },
+            "initial": {
+              "resolved": true,
+              "R": 0.5665853815690497,
+              "R_unclipped": 0.5665853815690497,
+              "resolution": 0.7827126227512944,
+              "fidelity": -0.3658296054094265
+            },
+            "diagnostic": {
+              "resolved": true,
+              "R": 0.8320438888610131,
+              "R_unclipped": 0.8320438888610131,
+              "resolution": 2.5715512810592047,
+              "fidelity": -0.4630203264055399
+            },
+            "line_1": {
+              "resolved": true,
+              "R": 0.6413981206205008,
+              "R_unclipped": 0.6413981206205008,
+              "resolution": 0.8132291235805822,
+              "fidelity": -0.31516857710834906
+            },
+            "line_1_initial": {
+              "resolved": true,
+              "R": 0.7381503276071015,
+              "R_unclipped": 0.7381503276071015,
+              "resolution": 0.7885448493414353,
+              "fidelity": -0.22655149793514598
+            },
+            "line_1_diagnostic": {
+              "resolved": true,
+              "R": 0.6095641169227453,
+              "R_unclipped": 0.6095641169227453,
+              "resolution": 0.8216923033197182,
+              "fidelity": -0.3455515756820187
+            },
+            "line_2": {
+              "resolved": true,
+              "R": 0.8339315265682644,
+              "R_unclipped": 0.8339315265682644,
+              "resolution": 3.9126917964039554,
+              "fidelity": -0.6821080249523831
+            },
+            "line_2_initial": {
+              "resolved": true,
+              "R": 0.0,
+              "R_unclipped": -0.05667499322617295,
+              "resolution": 0.7562808924407229,
+              "fidelity": -0.8272258550535246
+            },
+            "line_2_diagnostic": {
+              "resolved": true,
+              "R": 0.8801649749439988,
+              "R_unclipped": 0.8801649749439988,
+              "resolution": 4.994889820619921,
+              "fidelity": -0.6323533403462774
+            },
+            "line_3": {
+              "resolved": true,
+              "R": 0.9015874631021051,
+              "R_unclipped": 0.9015874631021051,
+              "resolution": 4.223292829236683,
+              "fidelity": -0.44444478595376435
+            },
+            "line_3_initial": {
+              "resolved": true,
+              "R": 0.40549101979732494,
+              "R_unclipped": 0.40549101979732494,
+              "resolution": 0.7851893376601538,
+              "fidelity": -0.48966705115571996
+            },
+            "line_3_diagnostic": {
+              "resolved": true,
+              "R": 0.9263100212596099,
+              "R_unclipped": 0.9263100212596099,
+              "resolution": 5.4020711692057795,
+              "fidelity": -0.42894000931309373
+            },
+            "line_4": {
+              "resolved": true,
+              "R": 0.3802862892833412,
+              "R_unclipped": 0.3802862892833412,
+              "resolution": 0.8111743259409712,
+              "fidelity": -0.529551101022623
+            },
+            "line_4_initial": {
+              "resolved": true,
+              "R": 0.83661180713813,
+              "R_unclipped": 0.83661180713813,
+              "resolution": 0.7712396719328038,
+              "fidelity": -0.15748179144786909
+            },
+            "line_4_diagnostic": {
+              "resolved": true,
+              "R": 0.2340033068427393,
+              "R_unclipped": 0.2340033068427393,
+              "resolution": 0.8248662073152,
+              "fidelity": -0.6571177214482531
+            },
+            "line_5": {
+              "resolved": true,
+              "R": 0.7769357757703105,
+              "R_unclipped": 0.7769357757703105,
+              "resolution": 0.8137445110173511,
+              "fidelity": -0.2197558821444779
+            },
+            "line_5_initial": {
+              "resolved": true,
+              "R": 0.8796533654476573,
+              "R_unclipped": 0.8796533654476573,
+              "resolution": 0.8123083623813561,
+              "fidelity": -0.12822183145487281
+            },
+            "line_5_diagnostic": {
+              "resolved": true,
+              "R": 0.7418017299712237,
+              "R_unclipped": 0.7418017299712237,
+              "resolution": 0.8142369048354066,
+              "fidelity": -0.2511389852380568
+            }
+          }
+        },
+        "M_reference": {
+          "hash": "38d76f3b56c4",
+          "scoreable": false,
+          "error": "sandbox init failed: NameError(\"name 'np' is not defined\")",
+          "groups": {}
+        }
+      }
+    },
+    "transfer": {
+      "case_id": "overgen_stream_twin_v0",
+      "replay_checks": [
+        {
+          "turn": 1,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 2,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        },
+        {
+          "turn": 3,
+          "stdout": true,
+          "error": true,
+          "working_model": true,
+          "working_model_status": true
+        }
+      ],
+      "replay_exact": true,
+      "report_count": 1,
+      "abort": "submitted",
+      "accepted": true,
+      "R": 0.6752414360261692,
+      "submission_code": "def model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    coefs = {1: [14.418031802181106, 2.95344754513154, -0.29694915515547127], 2: [14.43045775094134, 3.345516952591176, -0.3412827051200682], 3: [13.511027299682114, 3.203803033648012, -0.3103182631061201], 4: [14.630396245516582, 2.8019086256360617, -0.28272915695473655], 5: [14.072153960460831, 3.0643195842549495, -0.30217131334921943]}\n    resid_sd = 0.7945409208100487\n    b0, b1, b2 = coefs[line]\n    mu = b0 + b1*driver + b2*(driver**2)\n    outcome = rng.normal(mu, resid_sd, size=n)\n    return pd.DataFrame({\"outcome\": outcome})",
+      "trace": [
+        {
+          "turn": 4,
+          "notices": [
+            "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5.\nThe report is already loaded as DataFrame `commissioning_report`."
+          ],
+          "reply_text": "REASONING: The free commissioning report arriving now is crucial: it should reveal the full-range behavior of lines 2\u20135, which is exactly where scoring is extra-weighted. My current hypothesis is still that all lines share a common concave quadratic shape with mostly line-specific offsets, but the new report could show line-specific curvature or variance changes at high driver. Since experiments cost budget and we now have the key report for free, the best next step is to inspect and merge `commissioning_report`, compare high-range trends across lines against the current pooled-shape model, and then update `working_model` from the combined data\u2014likely without spending any budget unless the new report looks very sparse or surprising.\n```python\nimport numpy as np\nimport pandas as pd\n\nprint(\"commissioning_report head:\")\nprint(commissioning_report.head())\nprint(\"\\nshape:\", commissioning_report.shape)\n\ncr = commissioning_report.copy()\ncr[\"line\"] = cr[\"line\"].astype(int)\ncr[\"driver\"] = cr[\"driver\"].astype(float)\ncr[\"outcome\"] = cr[\"outcome\"].astype(float)\n\nprint(\"\\ncounts by line:\")\nprint(cr.groupby(\"line\").size())\n\nprint(\"\\ndriver ranges by line:\")\nprint(cr.groupby(\"line\")[\"driver\"].agg([\"min\", \"max\", \"nunique\"]))\n\nprint(\"\\nfirst few unique drivers by line:\")\nfor line in sorted(cr[\"line\"].unique()):\n    vals = np.sort(cr.loc[cr.line == line, \"driver\"].unique())\n    print(f\"line {line}: first={vals[:8]}, last={vals[-8:]}\")\n\nall_df = pd.concat([qual.copy(), cr], ignore_index=True)\nall_df[\"line\"] = all_df[\"line\"].astype(int)\nall_df[\"driver\"] = all_df[\"driver\"].astype(float)\nall_df[\"outcome\"] = all_df[\"outcome\"].astype(float)\n\nprint(\"\\ncombined counts by line:\")\nprint(all_df.groupby(\"line\").size())\n\nprint(\"\\ncombined mean outcome by line for high driver bins:\")\ntmp = all_df.assign(bin=pd.cut(all_df[\"driver\"], bins=[0,2,4,6,8,10], include_lowest=True))\nprint(tmp.groupby([\"line\",\"bin\"])[\"outcome\"].mean().unstack().round(3))\n\n# Compare pooled quadratic+offset vs line-specific quadratic on combined data\nd1 = all_df[all_df.line == 1]\nA1 = np.column_stack([np.ones(len(d1)), d1[\"driver\"].to_numpy(), d1[\"driver\"].to_numpy()**2])\nb1 = np.linalg.lstsq(A1, d1[\"outcome\"].to_numpy(), rcond=None)[0]\n\noffsets = {}\nfor line in sorted(all_df[\"line\"].unique()):\n    d = all_df[all_df.line == line]\n    mu = b1[0] + b1[1]*d[\"driver\"].to_numpy() + b1[2]*d[\"driver\"].to_numpy()**2\n    offsets[line] = float(np.mean(d[\"outcome\"].to_numpy() - mu))\n\npred_pool = []\nfor line in sorted(all_df[\"line\"].unique()):\n    d = all_df[all_df.line == line]\n    pred_pool.append(b1[0] + b1[1]*d[\"driver\"].to_numpy() + b1[2]*d[\"driver\"].to_numpy()**2 + offsets[line])\npred_pool = np.concatenate(pred_pool)\nrmse_pool = float(np.sqrt(np.mean((all_df[\"outcome\"].to_numpy() - pred_pool)**2)))\n\ncoefs_line = {}\npred_line = []\nfor line in sorted(all_df[\"line\"].unique()):\n    d = all_df[all_df.line == line]\n    A = np.column_stack([np.ones(len(d)), d[\"driver\"].to_numpy(), d[\"driver\"].to_numpy()**2])\n    b = np.linalg.lstsq(A, d[\"outcome\"].to_numpy(), rcond=None)[0]\n    coefs_line[line] = [float(x) for x in b]\n    pred_line.append(A @ b)\npred_line = np.concatenate(pred_line)\nrmse_line = float(np.sqrt(np.mean((all_df[\"outcome\"].to_numpy() - pred_line)**2)))\n\nprint(\"\\ncombined pooled quadratic+offset RMSE:\", round(rmse_pool, 4))\nprint(\"combined line-specific quadratic RMSE:\", round(rmse_line, 4))\nprint(\"line-specific coefficients:\", {k: [round(x,4) for x in v] for k,v in coefs_line.items()})\n```",
+          "cell": "import numpy as np\nimport pandas as pd\n\nprint(\"commissioning_report head:\")\nprint(commissioning_report.head())\nprint(\"\\nshape:\", commissioning_report.shape)\n\ncr = commissioning_report.copy()\ncr[\"line\"] = cr[\"line\"].astype(int)\ncr[\"driver\"] = cr[\"driver\"].astype(float)\ncr[\"outcome\"] = cr[\"outcome\"].astype(float)\n\nprint(\"\\ncounts by line:\")\nprint(cr.groupby(\"line\").size())\n\nprint(\"\\ndriver ranges by line:\")\nprint(cr.groupby(\"line\")[\"driver\"].agg([\"min\", \"max\", \"nunique\"]))\n\nprint(\"\\nfirst few unique drivers by line:\")\nfor line in sorted(cr[\"line\"].unique()):\n    vals = np.sort(cr.loc[cr.line == line, \"driver\"].unique())\n    print(f\"line {line}: first={vals[:8]}, last={vals[-8:]}\")\n\nall_df = pd.concat([qual.copy(), cr], ignore_index=True)\nall_df[\"line\"] = all_df[\"line\"].astype(int)\nall_df[\"driver\"] = all_df[\"driver\"].astype(float)\nall_df[\"outcome\"] = all_df[\"outcome\"].astype(float)\n\nprint(\"\\ncombined counts by line:\")\nprint(all_df.groupby(\"line\").size())\n\nprint(\"\\ncombined mean outcome by line for high driver bins:\")\ntmp = all_df.assign(bin=pd.cut(all_df[\"driver\"], bins=[0,2,4,6,8,10], include_lowest=True))\nprint(tmp.groupby([\"line\",\"bin\"])[\"outcome\"].mean().unstack().round(3))\n\n# Compare pooled quadratic+offset vs line-specific quadratic on combined data\nd1 = all_df[all_df.line == 1]\nA1 = np.column_stack([np.ones(len(d1)), d1[\"driver\"].to_numpy(), d1[\"driver\"].to_numpy()**2])\nb1 = np.linalg.lstsq(A1, d1[\"outcome\"].to_numpy(), rcond=None)[0]\n\noffsets = {}\nfor line in sorted(all_df[\"line\"].unique()):\n    d = all_df[all_df.line == line]\n    mu = b1[0] + b1[1]*d[\"driver\"].to_numpy() + b1[2]*d[\"driver\"].to_numpy()**2\n    offsets[line] = float(np.mean(d[\"outcome\"].to_numpy() - mu))\n\npred_pool = []\nfor line in sorted(all_df[\"line\"].unique()):\n    d = all_df[all_df.line == line]\n    pred_pool.append(b1[0] + b1[1]*d[\"driver\"].to_numpy() + b1[2]*d[\"driver\"].to_numpy()**2 + offsets[line])\npred_pool = np.concatenate(pred_pool)\nrmse_pool = float(np.sqrt(np.mean((all_df[\"outcome\"].to_numpy() - pred_pool)**2)))\n\ncoefs_line = {}\npred_line = []\nfor line in sorted(all_df[\"line\"].unique()):\n    d = all_df[all_df.line == line]\n    A = np.column_stack([np.ones(len(d)), d[\"driver\"].to_numpy(), d[\"driver\"].to_numpy()**2])\n    b = np.linalg.lstsq(A, d[\"outcome\"].to_numpy(), rcond=None)[0]\n    coefs_line[line] = [float(x) for x in b]\n    pred_line.append(A @ b)\npred_line = np.concatenate(pred_line)\nrmse_line = float(np.sqrt(np.mean((all_df[\"outcome\"].to_numpy() - pred_line)**2)))\n\nprint(\"\\ncombined pooled quadratic+offset RMSE:\", round(rmse_pool, 4))\nprint(\"combined line-specific quadratic RMSE:\", round(rmse_line, 4))\nprint(\"line-specific coefficients:\", {k: [round(x,4) for x in v] for k,v in coefs_line.items()})",
+          "cell_result": {
+            "ok": true,
+            "stdout": "commissioning_report head:\n   line  driver    outcome\n0   2.0     1.0  16.763434\n1   3.0     1.0  15.730603\n2   4.0     1.0  17.687783\n3   5.0     1.0  16.334221\n4   2.0     3.0  22.034867\n\nshape: (64, 3)\n\ncounts by line:\nline\n2    16\n3    16\n4    16\n5    16\ndtype: int64\n\ndriver ranges by line:\n      min  max  nunique\nline                   \n2     1.0  9.6        8\n3     1.0  9.6        8\n4     1.0  9.6        8\n5     1.0  9.6        8\n\nfirst few unique drivers by line:\nline 2: first=[1.  3.  5.  6.2 7.4 7.9 8.6 9.6], last=[1.  3.  5.  6.2 7.4 7.9 8.6 9.6]\nline 3: first=[1.  3.  5.  6.2 7.4 7.9 8.6 9.6], last=[1.  3.  5.  6.2 7.4 7.9 8.6 9.6]\nline 4: first=[1.  3.  5.  6.2 7.4 7.9 8.6 9.6], last=[1.  3.  5.  6.2 7.4 7.9 8.6 9.6]\nline 5: first=[1.  3.  5.  6.2 7.4 7.9 8.6 9.6], last=[1.  3.  5.  6.2 7.4 7.9 8.6 9.6]\n\ncombined counts by line:\nline\n1    48\n2    28\n3    28\n4    28\n5    28\ndtype: int64\n\ncombined mean outcome by line for high driver bins:\n<cell>:34: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.\nbin   (-0.001, 2.0]  (2.0, 4.0]  (4.0, 6.0]  (6.0, 8.0]  (8.0, 10.0]\nline                                                                \n1            17.420      20.721      21.590      19.993       17.231\n2            17.364      21.260      23.215      20.707       16.384\n3            16.348      20.192      21.997      20.241       17.135\n4            17.008      20.614      21.735      19.845       16.690\n5            16.778      20.515      21.484      20.345       17.006\n\ncombined pooled quadratic+offset RMSE: 3.1025\ncombined line-specific quadratic RMSE: 3.1436\nline-specific coefficients: {np.int64(1): [14.418, 2.9534, -0.2969], np.int64(2): [14.4305, 3.3455, -0.3413], np.int64(3): [13.511, 3.2038, -0.3103], np.int64(4): [14.6304, 2.8019, -0.2827], np.int64(5): [14.0722, 3.0643, -0.3022]}\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "def model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    b = np.array([14.418031802181106, 2.95344754513154, -0.29694915515547127], dtype=float)\n    offsets = {1: 0.0, 2: 0.5198694545970578, 3: -0.4142491136573055, 4: -0.20400650219100744, 5: -0.16594282468149757}\n    resid_sd = 0.8405152823834008\n    mu = b[0] + b[1]*driver + b[2]*(driver**2) + offsets.get(line, 0.0)\n    outcome = rng.normal(mu, resid_sd, size=n)\n    return pd.DataFrame({\"outcome\": outcome})"
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 4
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            }
+          ]
+        },
+        {
+          "turn": 5,
+          "notices": [],
+          "reply_text": "REASONING: The commissioning report strongly supports the shared-shape hypothesis: all lines peak around the midrange and fall off similarly, with only modest coefficient differences. The surprisingly large RMSE versus earlier residual SD suggests there may be appreciable between-batch heterogeneity or heavier noise, but for prediction we mainly need a realistic marginal distribution, and a per-line quadratic with pooled residual variance is a sensible final model. Since we now have free full-range coverage for every line and no obvious need to spend budget, I should estimate a robust residual distribution from the combined data, update `working_model`, and submit a final model.\n```python\nimport numpy as np\nimport pandas as pd\n\nall_df = pd.concat([qual.copy(), commissioning_report.copy()], ignore_index=True)\nall_df[\"line\"] = all_df[\"line\"].astype(int)\nall_df[\"driver\"] = all_df[\"driver\"].astype(float)\nall_df[\"outcome\"] = all_df[\"outcome\"].astype(float)\n\n# Fit per-line quadratics\ncoefs = {}\npred = np.zeros(len(all_df), dtype=float)\nfor line in sorted(all_df[\"line\"].unique()):\n    idx = all_df[\"line\"].to_numpy() == line\n    x = all_df.loc[idx, \"driver\"].to_numpy(dtype=float)\n    y = all_df.loc[idx, \"outcome\"].to_numpy(dtype=float)\n    A = np.column_stack([np.ones(len(x)), x, x**2])\n    b = np.linalg.lstsq(A, y, rcond=None)[0]\n    coefs[int(line)] = [float(v) for v in b]\n    pred[idx] = A @ b\n\nresid = all_df[\"outcome\"].to_numpy(dtype=float) - pred\nresid_sd = float(np.std(resid, ddof=len(coefs)*3))\nq10, q90 = np.quantile(resid, [0.1, 0.9])\nprint(\"per-line quadratic coefficients:\")\nprint({k: [round(v,4) for v in vals] for k, vals in coefs.items()})\nprint(\"residual sd:\", round(resid_sd, 4))\nprint(\"residual q10/q90:\", round(float(q10),4), round(float(q90),4))\n\nworking_model = f\"\"\"\ndef model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    coefs = {coefs}\n    resid_sd = {resid_sd!r}\n    b0, b1, b2 = coefs[line]\n    mu = b0 + b1*driver + b2*(driver**2)\n    outcome = rng.normal(mu, resid_sd, size=n)\n    return pd.DataFrame({{\"outcome\": outcome}})\n\"\"\".strip()\n\nprint(\"\\nworking_model:\")\nprint(working_model[:1000])\n\nres = env.submit(working_model)\nprint(\"\\nsubmit accepted:\", res.accepted)\nprint(\"submit error:\", getattr(res, \"error\", None))\n```",
+          "cell": "import numpy as np\nimport pandas as pd\n\nall_df = pd.concat([qual.copy(), commissioning_report.copy()], ignore_index=True)\nall_df[\"line\"] = all_df[\"line\"].astype(int)\nall_df[\"driver\"] = all_df[\"driver\"].astype(float)\nall_df[\"outcome\"] = all_df[\"outcome\"].astype(float)\n\n# Fit per-line quadratics\ncoefs = {}\npred = np.zeros(len(all_df), dtype=float)\nfor line in sorted(all_df[\"line\"].unique()):\n    idx = all_df[\"line\"].to_numpy() == line\n    x = all_df.loc[idx, \"driver\"].to_numpy(dtype=float)\n    y = all_df.loc[idx, \"outcome\"].to_numpy(dtype=float)\n    A = np.column_stack([np.ones(len(x)), x, x**2])\n    b = np.linalg.lstsq(A, y, rcond=None)[0]\n    coefs[int(line)] = [float(v) for v in b]\n    pred[idx] = A @ b\n\nresid = all_df[\"outcome\"].to_numpy(dtype=float) - pred\nresid_sd = float(np.std(resid, ddof=len(coefs)*3))\nq10, q90 = np.quantile(resid, [0.1, 0.9])\nprint(\"per-line quadratic coefficients:\")\nprint({k: [round(v,4) for v in vals] for k, vals in coefs.items()})\nprint(\"residual sd:\", round(resid_sd, 4))\nprint(\"residual q10/q90:\", round(float(q10),4), round(float(q90),4))\n\nworking_model = f\"\"\"\ndef model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    coefs = {coefs}\n    resid_sd = {resid_sd!r}\n    b0, b1, b2 = coefs[line]\n    mu = b0 + b1*driver + b2*(driver**2)\n    outcome = rng.normal(mu, resid_sd, size=n)\n    return pd.DataFrame({{\"outcome\": outcome}})\n\"\"\".strip()\n\nprint(\"\\nworking_model:\")\nprint(working_model[:1000])\n\nres = env.submit(working_model)\nprint(\"\\nsubmit accepted:\", res.accepted)\nprint(\"submit error:\", getattr(res, \"error\", None))",
+          "cell_result": {
+            "ok": true,
+            "stdout": "per-line quadratic coefficients:\n{1: [14.418, 2.9534, -0.2969], 2: [14.4305, 3.3455, -0.3413], 3: [13.511, 3.2038, -0.3103], 4: [14.6304, 2.8019, -0.2827], 5: [14.0722, 3.0643, -0.3022]}\nresidual sd: 0.7945\nresidual q10/q90: -0.9506 0.9577\n\nworking_model:\ndef model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    coefs = {1: [14.418031802181106, 2.95344754513154, -0.29694915515547127], 2: [14.43045775094134, 3.345516952591176, -0.3412827051200682], 3: [13.511027299682114, 3.203803033648012, -0.3103182631061201], 4: [14.630396245516582, 2.8019086256360617, -0.28272915695473655], 5: [14.072153960460831, 3.0643195842549495, -0.30217131334921943]}\n    resid_sd = 0.7945409208100487\n    b0, b1, b2 = coefs[line]\n    mu = b0 + b1*driver + b2*(driver**2)\n    outcome = rng.normal(mu, resid_sd, size=n)\n    return pd.DataFrame({\"outcome\": outcome})\n\nsubmit accepted: True\nsubmit error: None\n",
+            "error": null,
+            "truncated": false
+          },
+          "working_model": {
+            "status": "captured",
+            "code": "def model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    coefs = {1: [14.418031802181106, 2.95344754513154, -0.29694915515547127], 2: [14.43045775094134, 3.345516952591176, -0.3412827051200682], 3: [13.511027299682114, 3.203803033648012, -0.3103182631061201], 4: [14.630396245516582, 2.8019086256360617, -0.28272915695473655], 5: [14.072153960460831, 3.0643195842549495, -0.30217131334921943]}\n    resid_sd = 0.7945409208100487\n    b0, b1, b2 = coefs[line]\n    mu = b0 + b1*driver + b2*(driver**2)\n    outcome = rng.normal(mu, resid_sd, size=n)\n    return pd.DataFrame({\"outcome\": outcome})"
+          },
+          "budget_remaining": 900.0,
+          "trajectory": [
+            {
+              "verb": "observe",
+              "args": {
+                "source": "qualification_report",
+                "n": 96
+              },
+              "cost": 0.0,
+              "note": ""
+            },
+            {
+              "verb": "event",
+              "args": {
+                "source": "commissioning_report_source",
+                "turn": 4
+              },
+              "cost": 0.0,
+              "note": "COMMISSIONING INBOX \u2014 scheduled range-extension report for lines 2-5."
+            },
+            {
+              "verb": "submit",
+              "args": {
+                "accepted": true
+              },
+              "cost": 0.0,
+              "note": "R=0.675 (server-side)"
+            }
+          ]
+        }
+      ],
+      "evidence_ledger": [
+        {
+          "sequence": 1,
+          "turn": 1,
+          "kind": "observe",
+          "source": "qualification_report",
+          "request": {
+            "n": 96
+          },
+          "delivery_variable": null,
+          "data": {
+            "columns": [
+              "line",
+              "driver",
+              "outcome"
+            ],
+            "dtypes": [
+              "float64",
+              "float64",
+              "float64"
+            ],
+            "data": [
+              [
+                1.0,
+                6.865454614219021,
+                20.479049362627777
+              ],
+              [
+                2.0,
+                0.5,
+                16.8531692943737
+              ],
+              [
+                1.0,
+                8.68327106025433,
+                18.252921888771972
+              ],
+              [
+                3.0,
+                0.5,
+                15.324941561991947
+              ],
+              [
+                1.0,
+                7.330772351466489,
+                19.744260901436107
+              ],
+              [
+                4.0,
+                0.5,
+                16.028343683919772
+              ],
+              [
+                1.0,
+                7.899992655806086,
+                20.228774936975118
+              ],
+              [
+                5.0,
+                0.5,
+                15.439001393971665
+              ],
+              [
+                1.0,
+                4.349377312573245,
+                22.235976261449114
+              ],
+              [
+                2.0,
+                1.5,
+                19.416994413974844
+              ],
+              [
+                1.0,
+                7.65969908818807,
+                19.954905366669884
+              ],
+              [
+                3.0,
+                1.5,
+                17.74030692366497
+              ],
+              [
+                1.0,
+                3.5904821358325756,
+                21.286387768513087
+              ],
+              [
+                4.0,
+                1.5,
+                19.110913852533415
+              ],
+              [
+                1.0,
+                0.1023738194316437,
+                14.43519548951933
+              ],
+              [
+                5.0,
+                1.5,
+                19.10672583037026
+              ],
+              [
+                1.0,
+                9.041057523702932,
+                16.23231424347104
+              ],
+              [
+                2.0,
+                2.5,
+                21.73581672383132
+              ],
+              [
+                1.0,
+                0.9531257338248633,
+                17.177567275469716
+              ],
+              [
+                3.0,
+                2.5,
+                19.47635957592009
+              ],
+              [
+                1.0,
+                3.112094940645603,
+                22.312608566331203
+              ],
+              [
+                4.0,
+                2.5,
+                19.156841773013902
+              ],
+              [
+                1.0,
+                8.638968293847539,
+                17.452846973979028
+              ],
+              [
+                5.0,
+                2.5,
+                19.042845934594126
+              ],
+              [
+                1.0,
+                3.0987020661698095,
+                20.411471651987913
+              ],
+              [
+                2.0,
+                3.5,
+                21.94978454571243
+              ],
+              [
+                1.0,
+                7.863886158401971,
+                18.200752506520903
+              ],
+              [
+                3.0,
+                3.5,
+                21.78782987323599
+              ],
+              [
+                1.0,
+                2.3306372040666554,
+                21.36141847263077
+              ],
+              [
+                4.0,
+                3.5,
+                22.043749937964943
+              ],
+              [
+                1.0,
+                5.55035222689413,
+                20.421720704711756
+              ],
+              [
+                5.0,
+                3.5,
+                21.05513381002195
+              ],
+              [
+                1.0,
+                1.8014046215413815,
+                18.044398225510193
+              ],
+              [
+                2.0,
+                0.5,
+                14.65971685638629
+              ],
+              [
+                1.0,
+                8.026165461877275,
+                17.6313653175995
+              ],
+              [
+                3.0,
+                0.5,
+                14.310451465325775
+              ],
+              [
+                1.0,
+                7.128903465355188,
+                20.162789895693543
+              ],
+              [
+                4.0,
+                0.5,
+                14.906317691666372
+              ],
+              [
+                1.0,
+                6.780278657980272,
+                20.345884121774933
+              ],
+              [
+                5.0,
+                0.5,
+                15.432171145019172
+              ],
+              [
+                1.0,
+                5.248248260428712,
+                22.424426681999403
+              ],
+              [
+                2.0,
+                1.5,
+                17.741732892001263
+              ],
+              [
+                1.0,
+                8.038303024579141,
+                19.887176262231204
+              ],
+              [
+                3.0,
+                1.5,
+                17.503273083455234
+              ],
+              [
+                1.0,
+                8.9304321525826,
+                18.320276814461536
+              ],
+              [
+                4.0,
+                1.5,
+                17.788592341958662
+              ],
+              [
+                1.0,
+                0.3677216592803889,
+                15.605951613451868
+              ],
+              [
+                5.0,
+                1.5,
+                17.836536248297758
+              ],
+              [
+                1.0,
+                1.0441063241610071,
+                16.915166820516916
+              ],
+              [
+                2.0,
+                2.5,
+                20.16157632196485
+              ],
+              [
+                1.0,
+                1.7239581960578598,
+                19.544654680864447
+              ],
+              [
+                3.0,
+                2.5,
+                18.606772282126137
+              ],
+              [
+                1.0,
+                5.232298803328792,
+                22.826451789332726
+              ],
+              [
+                4.0,
+                2.5,
+                19.267530438633326
+              ],
+              [
+                1.0,
+                1.0190197888616137,
+                16.478082914650944
+              ],
+              [
+                5.0,
+                2.5,
+                20.96684717762986
+              ],
+              [
+                1.0,
+                9.627893944581189,
+                16.348302968183333
+              ],
+              [
+                2.0,
+                3.5,
+                21.733214235411673
+              ],
+              [
+                1.0,
+                1.5900786578500747,
+                20.320051683605733
+              ],
+              [
+                3.0,
+                3.5,
+                20.999976134061082
+              ],
+              [
+                1.0,
+                2.5707916438650957,
+                19.375435968421456
+              ],
+              [
+                4.0,
+                3.5,
+                19.557153306981657
+              ],
+              [
+                1.0,
+                2.3990964832664052,
+                18.719192095407603
+              ],
+              [
+                5.0,
+                3.5,
+                21.096323248057846
+              ],
+              [
+                1.0,
+                2.941784508798151,
+                21.269662851333333
+              ],
+              [
+                2.0,
+                0.5,
+                16.283307301802722
+              ],
+              [
+                1.0,
+                6.259629258052579,
+                20.83036854574119
+              ],
+              [
+                3.0,
+                0.5,
+                17.056354767789713
+              ],
+              [
+                1.0,
+                9.314816957235507,
+                17.977328126327144
+              ],
+              [
+                4.0,
+                0.5,
+                15.604562066335175
+              ],
+              [
+                1.0,
+                3.8737492900356054,
+                21.212809066022835
+              ],
+              [
+                5.0,
+                0.5,
+                15.258414000348965
+              ],
+              [
+                1.0,
+                1.6312471913337334,
+                17.74789712813731
+              ],
+              [
+                2.0,
+                1.5,
+                19.294895452853993
+              ],
+              [
+                1.0,
+                2.9737725380216973,
+                20.148000634615205
+              ],
+              [
+                3.0,
+                1.5,
+                17.453439485275503
+              ],
+              [
+                1.0,
+                1.7998755528229837,
+                18.469783007760128
+              ],
+              [
+                4.0,
+                1.5,
+                17.05850848497969
+              ],
+              [
+                1.0,
+                9.520114103556335,
+                14.587550839907012
+              ],
+              [
+                5.0,
+                1.5,
+                17.607857473544243
+              ],
+              [
+                1.0,
+                4.34571223666453,
+                20.041953405891142
+              ],
+              [
+                2.0,
+                2.5,
+                20.83940802536104
+              ],
+              [
+                1.0,
+                8.56506418415387,
+                17.021322955327143
+              ],
+              [
+                3.0,
+                2.5,
+                19.40742978168934
+              ],
+              [
+                1.0,
+                8.69664981238744,
+                16.816319168180225
+              ],
+              [
+                4.0,
+                2.5,
+                21.309757187030296
+              ],
+              [
+                1.0,
+                8.137623891566246,
+                19.53564246165924
+              ],
+              [
+                5.0,
+                2.5,
+                19.928622825058735
+              ],
+              [
+                1.0,
+                1.0266427091966013,
+                16.119966136608188
+              ],
+              [
+                2.0,
+                3.5,
+                20.760143326026128
+              ],
+              [
+                1.0,
+                9.893444253910692,
+                13.93767434899782
+              ],
+              [
+                3.0,
+                3.5,
+                20.55320163611211
+              ],
+              [
+                1.0,
+                2.8679932947066966,
+                21.117130989846814
+              ],
+              [
+                4.0,
+                3.5,
+                20.91097714322626
+              ],
+              [
+                1.0,
+                1.5261125723151558,
+                18.182519781907008
+              ],
+              [
+                5.0,
+                3.5,
+                20.429532951443008
+              ]
+            ]
+          }
+        },
+        {
+          "sequence": 2,
+          "turn": 4,
+          "kind": "event_report",
+          "source": "commissioning_report_source",
+          "request": {
+            "n": 64
+          },
+          "delivery_variable": "commissioning_report",
+          "data": {
+            "columns": [
+              "line",
+              "driver",
+              "outcome"
+            ],
+            "dtypes": [
+              "float64",
+              "float64",
+              "float64"
+            ],
+            "data": [
+              [
+                2.0,
+                1.0,
+                16.763434370179624
+              ],
+              [
+                3.0,
+                1.0,
+                15.73060309782094
+              ],
+              [
+                4.0,
+                1.0,
+                17.687782673482126
+              ],
+              [
+                5.0,
+                1.0,
+                16.334220966418197
+              ],
+              [
+                2.0,
+                3.0,
+                22.034867104324782
+              ],
+              [
+                3.0,
+                3.0,
+                20.798028957878707
+              ],
+              [
+                4.0,
+                3.0,
+                21.271361335601608
+              ],
+              [
+                5.0,
+                3.0,
+                21.230614110859932
+              ],
+              [
+                2.0,
+                5.0,
+                23.027161882743968
+              ],
+              [
+                3.0,
+                5.0,
+                22.17337632267859
+              ],
+              [
+                4.0,
+                5.0,
+                22.233928923002882
+              ],
+              [
+                5.0,
+                5.0,
+                22.06164925860554
+              ],
+              [
+                2.0,
+                6.2,
+                21.729140119388212
+              ],
+              [
+                3.0,
+                6.2,
+                22.395720859012172
+              ],
+              [
+                4.0,
+                6.2,
+                21.438386478415115
+              ],
+              [
+                5.0,
+                6.2,
+                22.165659274991064
+              ],
+              [
+                2.0,
+                7.4,
+                20.30810455707139
+              ],
+              [
+                3.0,
+                7.4,
+                19.07116915037988
+              ],
+              [
+                4.0,
+                7.4,
+                19.015082852533276
+              ],
+              [
+                5.0,
+                7.4,
+                20.60985466919151
+              ],
+              [
+                2.0,
+                8.6,
+                17.012635332957306
+              ],
+              [
+                3.0,
+                8.6,
+                18.318511284177838
+              ],
+              [
+                4.0,
+                8.6,
+                16.907473011842843
+              ],
+              [
+                5.0,
+                8.6,
+                18.505918143230236
+              ],
+              [
+                2.0,
+                9.6,
+                15.635276455021172
+              ],
+              [
+                3.0,
+                9.6,
+                15.32381795303976
+              ],
+              [
+                4.0,
+                9.6,
+                16.30476743559479
+              ],
+              [
+                5.0,
+                9.6,
+                15.380194885058078
+              ],
+              [
+                2.0,
+                7.9,
+                19.455765284010763
+              ],
+              [
+                3.0,
+                7.9,
+                18.181223475503867
+              ],
+              [
+                4.0,
+                7.9,
+                20.065466823932212
+              ],
+              [
+                5.0,
+                7.9,
+                18.586182103257073
+              ],
+              [
+                2.0,
+                1.0,
+                17.901316058988698
+              ],
+              [
+                3.0,
+                1.0,
+                15.663734807607161
+              ],
+              [
+                4.0,
+                1.0,
+                17.87552593948531
+              ],
+              [
+                5.0,
+                1.0,
+                17.20779659477244
+              ],
+              [
+                2.0,
+                3.0,
+                20.868578969883583
+              ],
+              [
+                3.0,
+                3.0,
+                19.910103619699395
+              ],
+              [
+                4.0,
+                3.0,
+                21.391930664309935
+              ],
+              [
+                5.0,
+                3.0,
+                20.3669630270384
+              ],
+              [
+                2.0,
+                5.0,
+                23.4028254716018
+              ],
+              [
+                3.0,
+                5.0,
+                21.8198230126311
+              ],
+              [
+                4.0,
+                5.0,
+                21.237020522020384
+              ],
+              [
+                5.0,
+                5.0,
+                20.907161787172267
+              ],
+              [
+                2.0,
+                6.2,
+                22.125662953810977
+              ],
+              [
+                3.0,
+                6.2,
+                22.397724754319913
+              ],
+              [
+                4.0,
+                6.2,
+                20.258840379078467
+              ],
+              [
+                5.0,
+                6.2,
+                21.658166434664746
+              ],
+              [
+                2.0,
+                7.4,
+                19.85093545095273
+              ],
+              [
+                3.0,
+                7.4,
+                21.111768631670177
+              ],
+              [
+                4.0,
+                7.4,
+                19.207588264038264
+              ],
+              [
+                5.0,
+                7.4,
+                19.44718087951525
+              ],
+              [
+                2.0,
+                8.6,
+                17.742705083591705
+              ],
+              [
+                3.0,
+                8.6,
+                18.21814580845152
+              ],
+              [
+                4.0,
+                8.6,
+                17.963067863056494
+              ],
+              [
+                5.0,
+                8.6,
+                18.27353086759243
+              ],
+              [
+                2.0,
+                9.6,
+                15.14588325243736
+              ],
+              [
+                3.0,
+                9.6,
+                16.680493527752965
+              ],
+              [
+                4.0,
+                9.6,
+                15.585951092302778
+              ],
+              [
+                5.0,
+                9.6,
+                15.864308656467953
+              ],
+              [
+                2.0,
+                7.9,
+                20.772154116733955
+              ],
+              [
+                3.0,
+                7.9,
+                18.286152271317697
+              ],
+              [
+                4.0,
+                7.9,
+                19.087498650667516
+              ],
+              [
+                5.0,
+                7.9,
+                19.605356761126668
+              ]
+            ]
+          }
+        }
+      ],
+      "tokens_continuation": 15202,
+      "reference": {
+        "code": "def model(regime, n, seed):\n    import numpy as np\n    import pandas as pd\n    rng = np.random.default_rng(seed)\n    line = int(regime.config.get(\"line\"))\n    driver = float(regime.config.get(\"driver\"))\n    b = np.array([14.418031802181106, 2.95344754513154, -0.29694915515547127], dtype=float)\n    offsets = {1: 0.0, 2: 0.5198694545970578, 3: -0.4142491136573055, 4: -0.20400650219100744, 5: -0.16594282468149757}\n    resid_sd = 0.8405152823834008\n    mu = b[0] + b[1]*driver + b[2]*(driver**2) + offsets.get(line, 0.0)\n    outcome = rng.normal(mu, resid_sd, size=n)\n    return pd.DataFrame({\"outcome\": outcome})",
+        "diagnostics": {
+          "kind": "prior_preserving_v1_reference_not_unique_posterior",
+          "ledger_records": 2,
+          "qualification_rows": 96,
+          "later_rows": 64,
+          "update_threshold": 1.35,
+          "standardized_mean_abs_residual": {
+            "2": 0.7323115002172561,
+            "3": 0.823253194050771,
+            "4": 0.6629844979761784,
+            "5": 0.5576060965555435
+          },
+          "updated_lines": [],
+          "prior_preserved_byte_exact": true,
+          "correction_max_abs": {}
+        },
+        "captured_fraction_diagnostic": {
+          "M_post_first_changed": {
+            "resolved": false,
+            "fraction": null,
+            "reason": "reference_gain_too_small",
+            "reference_gain": 0.0,
+            "observed_gain": 0.17060362325246436
+          },
+          "M_final": {
+            "resolved": false,
+            "fraction": null,
+            "reason": "reference_gain_too_small",
+            "reference_gain": 0.0,
+            "observed_gain": 0.17060362325246436
+          }
+        }
+      },
+      "checkpoint_scores": {
+        "M_pre": {
+          "hash": "def93a4a0695",
+          "scoreable": true,
+          "error": null,
+          "global_R": 0.5495192285990271,
+          "global_R_unclipped": 0.5495192285990271,
+          "mdl_bytes": 380,
+          "groups": {
+            "full": {
+              "resolved": true,
+              "R": 0.5416064032810176,
+              "R_unclipped": 0.5416064032810176,
+              "resolution": 0.8132379204370658,
+              "fidelity": -0.4027409706880538
+            },
+            "initial": {
+              "resolved": true,
+              "R": 0.5647675412140136,
+              "R_unclipped": 0.5647675412140136,
+              "resolution": 0.7827126227512944,
+              "fidelity": -0.36725245200145995
+            },
+            "diagnostic": {
+              "resolved": true,
+              "R": 0.5340606188132058,
+              "R_unclipped": 0.5340606188132058,
+              "resolution": 0.823703736786473,
+              "fidelity": -0.4149084628091715
+            },
+            "line_1": {
+              "resolved": true,
+              "R": 0.7790748165606048,
+              "R_unclipped": 0.7790748165606048,
+              "resolution": 0.8132291235805822,
+              "fidelity": -0.20320587833150802
+            },
+            "line_1_initial": {
+              "resolved": true,
+              "R": 0.7700513473858026,
+              "R_unclipped": 0.7700513473858026,
+              "resolution": 0.7885448493414353,
+              "fidelity": -0.2013961130999119
+            },
+            "line_1_diagnostic": {
+              "resolved": true,
+              "R": 0.7820437736523745,
+              "R_unclipped": 0.7820437736523745,
+              "resolution": 0.8216923033197182,
+              "fidelity": -0.20382636926805528
+            },
+            "line_2": {
+              "resolved": true,
+              "R": 0.3126149739090304,
+              "R_unclipped": 0.3126149739090304,
+              "resolution": 0.8261357205361027,
+              "fidelity": -0.6002055596485814
+            },
+            "line_2_initial": {
+              "resolved": true,
+              "R": 0.036421954625786505,
+              "R_unclipped": 0.036421954625786505,
+              "resolution": 0.7562808924407229,
+              "fidelity": -0.7568184122485373
+            },
+            "line_2_diagnostic": {
+              "resolved": true,
+              "R": 0.39686037269958646,
+              "R_unclipped": 0.39686037269958646,
+              "resolution": 0.8500859473116614,
+              "fidelity": -0.5465097244714537
+            },
+            "line_3": {
+              "resolved": true,
+              "R": 0.2938148821568798,
+              "R_unclipped": 0.2938148821568798,
+              "resolution": 0.8019059211103219,
+              "fidelity": -0.595114439763313
+            },
+            "line_3_initial": {
+              "resolved": true,
+              "R": 0.45995550726921247,
+              "R_unclipped": 0.45995550726921247,
+              "resolution": 0.7851893376601538,
+              "fidelity": -0.4469021163116688
+            },
+            "line_3_diagnostic": {
+              "resolved": true,
+              "R": 0.23843563394061362,
+              "R_unclipped": 0.23843563394061362,
+              "resolution": 0.8076373211503796,
+              "fidelity": -0.6459300935181623
+            },
+            "line_4": {
+              "resolved": true,
+              "R": 0.6411110976002379,
+              "R_unclipped": 0.6411110976002379,
+              "resolution": 0.8111743259409712,
+              "fidelity": -0.31797671294748125
+            },
+            "line_4_initial": {
+              "resolved": true,
+              "R": 0.7563261784963439,
+              "R_unclipped": 0.7563261784963439,
+              "resolution": 0.7712396719328038,
+              "fidelity": -0.21940125334247912
+            },
+            "line_4_diagnostic": {
+              "resolved": true,
+              "R": 0.6041769245238577,
+              "R_unclipped": 0.6041769245238577,
+              "resolution": 0.8248662073152,
+              "fidelity": -0.351774013383482
+            },
+            "line_5": {
+              "resolved": true,
+              "R": 0.6817629302931928,
+              "R_unclipped": 0.6817629302931928,
+              "resolution": 0.8137445110173511,
+              "fidelity": -0.29720226274938505
+            },
+            "line_5_initial": {
+              "resolved": true,
+              "R": 0.7768321494934399,
+              "R_unclipped": 0.7768321494934399,
+              "resolution": 0.8123083623813561,
+              "fidelity": -0.21174436500470287
+            },
+            "line_5_diagnostic": {
+              "resolved": true,
+              "R": 0.6492449719575569,
+              "R_unclipped": 0.6492449719575569,
+              "resolution": 0.8142369048354066,
+              "fidelity": -0.3265021134047046
+            }
+          }
+        },
+        "M_post_first_seen": {
+          "hash": "def93a4a0695",
+          "scoreable": true,
+          "error": null,
+          "global_R": 0.5495192285990271,
+          "global_R_unclipped": 0.5495192285990271,
+          "mdl_bytes": 380,
+          "groups": {
+            "full": {
+              "resolved": true,
+              "R": 0.5416064032810176,
+              "R_unclipped": 0.5416064032810176,
+              "resolution": 0.8132379204370658,
+              "fidelity": -0.4027409706880538
+            },
+            "initial": {
+              "resolved": true,
+              "R": 0.5647675412140136,
+              "R_unclipped": 0.5647675412140136,
+              "resolution": 0.7827126227512944,
+              "fidelity": -0.36725245200145995
+            },
+            "diagnostic": {
+              "resolved": true,
+              "R": 0.5340606188132058,
+              "R_unclipped": 0.5340606188132058,
+              "resolution": 0.823703736786473,
+              "fidelity": -0.4149084628091715
+            },
+            "line_1": {
+              "resolved": true,
+              "R": 0.7790748165606048,
+              "R_unclipped": 0.7790748165606048,
+              "resolution": 0.8132291235805822,
+              "fidelity": -0.20320587833150802
+            },
+            "line_1_initial": {
+              "resolved": true,
+              "R": 0.7700513473858026,
+              "R_unclipped": 0.7700513473858026,
+              "resolution": 0.7885448493414353,
+              "fidelity": -0.2013961130999119
+            },
+            "line_1_diagnostic": {
+              "resolved": true,
+              "R": 0.7820437736523745,
+              "R_unclipped": 0.7820437736523745,
+              "resolution": 0.8216923033197182,
+              "fidelity": -0.20382636926805528
+            },
+            "line_2": {
+              "resolved": true,
+              "R": 0.3126149739090304,
+              "R_unclipped": 0.3126149739090304,
+              "resolution": 0.8261357205361027,
+              "fidelity": -0.6002055596485814
+            },
+            "line_2_initial": {
+              "resolved": true,
+              "R": 0.036421954625786505,
+              "R_unclipped": 0.036421954625786505,
+              "resolution": 0.7562808924407229,
+              "fidelity": -0.7568184122485373
+            },
+            "line_2_diagnostic": {
+              "resolved": true,
+              "R": 0.39686037269958646,
+              "R_unclipped": 0.39686037269958646,
+              "resolution": 0.8500859473116614,
+              "fidelity": -0.5465097244714537
+            },
+            "line_3": {
+              "resolved": true,
+              "R": 0.2938148821568798,
+              "R_unclipped": 0.2938148821568798,
+              "resolution": 0.8019059211103219,
+              "fidelity": -0.595114439763313
+            },
+            "line_3_initial": {
+              "resolved": true,
+              "R": 0.45995550726921247,
+              "R_unclipped": 0.45995550726921247,
+              "resolution": 0.7851893376601538,
+              "fidelity": -0.4469021163116688
+            },
+            "line_3_diagnostic": {
+              "resolved": true,
+              "R": 0.23843563394061362,
+              "R_unclipped": 0.23843563394061362,
+              "resolution": 0.8076373211503796,
+              "fidelity": -0.6459300935181623
+            },
+            "line_4": {
+              "resolved": true,
+              "R": 0.6411110976002379,
+              "R_unclipped": 0.6411110976002379,
+              "resolution": 0.8111743259409712,
+              "fidelity": -0.31797671294748125
+            },
+            "line_4_initial": {
+              "resolved": true,
+              "R": 0.7563261784963439,
+              "R_unclipped": 0.7563261784963439,
+              "resolution": 0.7712396719328038,
+              "fidelity": -0.21940125334247912
+            },
+            "line_4_diagnostic": {
+              "resolved": true,
+              "R": 0.6041769245238577,
+              "R_unclipped": 0.6041769245238577,
+              "resolution": 0.8248662073152,
+              "fidelity": -0.351774013383482
+            },
+            "line_5": {
+              "resolved": true,
+              "R": 0.6817629302931928,
+              "R_unclipped": 0.6817629302931928,
+              "resolution": 0.8137445110173511,
+              "fidelity": -0.29720226274938505
+            },
+            "line_5_initial": {
+              "resolved": true,
+              "R": 0.7768321494934399,
+              "R_unclipped": 0.7768321494934399,
+              "resolution": 0.8123083623813561,
+              "fidelity": -0.21174436500470287
+            },
+            "line_5_diagnostic": {
+              "resolved": true,
+              "R": 0.6492449719575569,
+              "R_unclipped": 0.6492449719575569,
+              "resolution": 0.8142369048354066,
+              "fidelity": -0.3265021134047046
+            }
+          }
+        },
+        "M_post_first_changed": {
+          "hash": "894a67226e0d",
+          "scoreable": true,
+          "error": null,
+          "global_R": 0.6752414360261692,
+          "global_R_unclipped": 0.6752414360261692,
+          "mdl_bytes": 448,
+          "groups": {
+            "full": {
+              "resolved": true,
+              "R": 0.6675247526455228,
+              "R_unclipped": 0.6675247526455228,
+              "resolution": 0.8132379204370658,
+              "fidelity": -0.30033939410599575
+            },
+            "initial": {
+              "resolved": true,
+              "R": 0.5535282767469095,
+              "R_unclipped": 0.5535282767469095,
+              "resolution": 0.7827126227512944,
+              "fidelity": -0.37604956617030244
+            },
+            "diagnostic": {
+              "resolved": true,
+              "R": 0.7046642420656701,
+              "R_unclipped": 0.7046642420656701,
+              "resolution": 0.823703736786473,
+              "fidelity": -0.27438162082680495
+            },
+            "line_1": {
+              "resolved": true,
+              "R": 0.808176807233377,
+              "R_unclipped": 0.808176807233377,
+              "resolution": 0.8132291235805822,
+              "fidelity": -0.17953929196223922
+            },
+            "line_1_initial": {
+              "resolved": true,
+              "R": 0.8040337475883651,
+              "R_unclipped": 0.8040337475883651,
+              "resolution": 0.7885448493414353,
+              "fidelity": -0.1745994664519219
+            },
+            "line_1_diagnostic": {
+              "resolved": true,
+              "R": 0.8095399820917821,
+              "R_unclipped": 0.8095399820917821,
+              "resolution": 0.8216923033197182,
+              "fidelity": -0.18123294642291946
+            },
+            "line_2": {
+              "resolved": true,
+              "R": 0.39999894800518937,
+              "R_unclipped": 0.39999894800518937,
+              "resolution": 0.8261357205361027,
+              "fidelity": -0.528014537245343
+            },
+            "line_2_initial": {
+              "resolved": true,
+              "R": 0.0,
+              "R_unclipped": -0.06001639982337855,
+              "resolution": 0.7562808924407229,
+              "fidelity": -0.8297528970168666
+            },
+            "line_2_diagnostic": {
+              "resolved": true,
+              "R": 0.540314501700812,
+              "R_unclipped": 0.540314501700812,
+              "resolution": 0.8500859473116614,
+              "fidelity": -0.42456138532367765
+            },
+            "line_3": {
+              "resolved": true,
+              "R": 0.649520322720785,
+              "R_unclipped": 0.649520322720785,
+              "resolution": 0.8019059211103219,
+              "fidelity": -0.3098721408039617
+            },
+            "line_3_initial": {
+              "resolved": true,
+              "R": 0.39084739671559,
+              "R_unclipped": 0.39084739671559,
+              "resolution": 0.7851893376601538,
+              "fidelity": -0.5011650678642123
+            },
+            "line_3_diagnostic": {
+              "resolved": true,
+              "R": 0.7357431364750007,
+              "R_unclipped": 0.7357431364750007,
+              "resolution": 0.8076373211503796,
+              "fidelity": -0.2442859943833043
+            },
+            "line_4": {
+              "resolved": true,
+              "R": 0.6579354590139217,
+              "R_unclipped": 0.6579354590139217,
+              "resolution": 0.8111743259409712,
+              "fidelity": -0.3043292229183491
+            },
+            "line_4_initial": {
+              "resolved": true,
+              "R": 0.7138022985795209,
+              "R_unclipped": 0.7138022985795209,
+              "resolution": 0.7712396719328038,
+              "fidelity": -0.2521973565388397
+            },
+            "line_4_diagnostic": {
+              "resolved": true,
+              "R": 0.6400263840412901,
+              "R_unclipped": 0.6400263840412901,
+              "resolution": 0.8248662073152,
+              "fidelity": -0.3222030056770379
+            },
+            "line_5": {
+              "resolved": true,
+              "R": 0.8258628087706507,
+              "R_unclipped": 0.8258628087706507,
+              "resolution": 0.8137445110173511,
+              "fidelity": -0.17994177760008634
+            },
+            "line_5_initial": {
+              "resolved": true,
+              "R": 0.8866566030587087,
+              "R_unclipped": 0.8866566030587087,
+              "resolution": 0.8123083623813561,
+              "fidelity": -0.122533042979672
+            },
+            "line_5_diagnostic": {
+              "resolved": true,
+              "R": 0.8050685907645018,
+              "R_unclipped": 0.8050685907645018,
+              "resolution": 0.8142369048354066,
+              "fidelity": -0.1996247723270855
+            }
+          }
+        },
+        "M_final": {
+          "hash": "894a67226e0d",
+          "scoreable": true,
+          "error": null,
+          "global_R": 0.6752414360261692,
+          "global_R_unclipped": 0.6752414360261692,
+          "mdl_bytes": 448,
+          "groups": {
+            "full": {
+              "resolved": true,
+              "R": 0.6675247526455228,
+              "R_unclipped": 0.6675247526455228,
+              "resolution": 0.8132379204370658,
+              "fidelity": -0.30033939410599575
+            },
+            "initial": {
+              "resolved": true,
+              "R": 0.5535282767469095,
+              "R_unclipped": 0.5535282767469095,
+              "resolution": 0.7827126227512944,
+              "fidelity": -0.37604956617030244
+            },
+            "diagnostic": {
+              "resolved": true,
+              "R": 0.7046642420656701,
+              "R_unclipped": 0.7046642420656701,
+              "resolution": 0.823703736786473,
+              "fidelity": -0.27438162082680495
+            },
+            "line_1": {
+              "resolved": true,
+              "R": 0.808176807233377,
+              "R_unclipped": 0.808176807233377,
+              "resolution": 0.8132291235805822,
+              "fidelity": -0.17953929196223922
+            },
+            "line_1_initial": {
+              "resolved": true,
+              "R": 0.8040337475883651,
+              "R_unclipped": 0.8040337475883651,
+              "resolution": 0.7885448493414353,
+              "fidelity": -0.1745994664519219
+            },
+            "line_1_diagnostic": {
+              "resolved": true,
+              "R": 0.8095399820917821,
+              "R_unclipped": 0.8095399820917821,
+              "resolution": 0.8216923033197182,
+              "fidelity": -0.18123294642291946
+            },
+            "line_2": {
+              "resolved": true,
+              "R": 0.39999894800518937,
+              "R_unclipped": 0.39999894800518937,
+              "resolution": 0.8261357205361027,
+              "fidelity": -0.528014537245343
+            },
+            "line_2_initial": {
+              "resolved": true,
+              "R": 0.0,
+              "R_unclipped": -0.06001639982337855,
+              "resolution": 0.7562808924407229,
+              "fidelity": -0.8297528970168666
+            },
+            "line_2_diagnostic": {
+              "resolved": true,
+              "R": 0.540314501700812,
+              "R_unclipped": 0.540314501700812,
+              "resolution": 0.8500859473116614,
+              "fidelity": -0.42456138532367765
+            },
+            "line_3": {
+              "resolved": true,
+              "R": 0.649520322720785,
+              "R_unclipped": 0.649520322720785,
+              "resolution": 0.8019059211103219,
+              "fidelity": -0.3098721408039617
+            },
+            "line_3_initial": {
+              "resolved": true,
+              "R": 0.39084739671559,
+              "R_unclipped": 0.39084739671559,
+              "resolution": 0.7851893376601538,
+              "fidelity": -0.5011650678642123
+            },
+            "line_3_diagnostic": {
+              "resolved": true,
+              "R": 0.7357431364750007,
+              "R_unclipped": 0.7357431364750007,
+              "resolution": 0.8076373211503796,
+              "fidelity": -0.2442859943833043
+            },
+            "line_4": {
+              "resolved": true,
+              "R": 0.6579354590139217,
+              "R_unclipped": 0.6579354590139217,
+              "resolution": 0.8111743259409712,
+              "fidelity": -0.3043292229183491
+            },
+            "line_4_initial": {
+              "resolved": true,
+              "R": 0.7138022985795209,
+              "R_unclipped": 0.7138022985795209,
+              "resolution": 0.7712396719328038,
+              "fidelity": -0.2521973565388397
+            },
+            "line_4_diagnostic": {
+              "resolved": true,
+              "R": 0.6400263840412901,
+              "R_unclipped": 0.6400263840412901,
+              "resolution": 0.8248662073152,
+              "fidelity": -0.3222030056770379
+            },
+            "line_5": {
+              "resolved": true,
+              "R": 0.8258628087706507,
+              "R_unclipped": 0.8258628087706507,
+              "resolution": 0.8137445110173511,
+              "fidelity": -0.17994177760008634
+            },
+            "line_5_initial": {
+              "resolved": true,
+              "R": 0.8866566030587087,
+              "R_unclipped": 0.8866566030587087,
+              "resolution": 0.8123083623813561,
+              "fidelity": -0.122533042979672
+            },
+            "line_5_diagnostic": {
+              "resolved": true,
+              "R": 0.8050685907645018,
+              "R_unclipped": 0.8050685907645018,
+              "resolution": 0.8142369048354066,
+              "fidelity": -0.1996247723270855
+            }
+          }
+        },
+        "M_reference": {
+          "hash": "def93a4a0695",
+          "scoreable": true,
+          "error": null,
+          "global_R": 0.5495192285990271,
+          "global_R_unclipped": 0.5495192285990271,
+          "mdl_bytes": 380,
+          "groups": {
+            "full": {
+              "resolved": true,
+              "R": 0.5416064032810176,
+              "R_unclipped": 0.5416064032810176,
+              "resolution": 0.8132379204370658,
+              "fidelity": -0.4027409706880538
+            },
+            "initial": {
+              "resolved": true,
+              "R": 0.5647675412140136,
+              "R_unclipped": 0.5647675412140136,
+              "resolution": 0.7827126227512944,
+              "fidelity": -0.36725245200145995
+            },
+            "diagnostic": {
+              "resolved": true,
+              "R": 0.5340606188132058,
+              "R_unclipped": 0.5340606188132058,
+              "resolution": 0.823703736786473,
+              "fidelity": -0.4149084628091715
+            },
+            "line_1": {
+              "resolved": true,
+              "R": 0.7790748165606048,
+              "R_unclipped": 0.7790748165606048,
+              "resolution": 0.8132291235805822,
+              "fidelity": -0.20320587833150802
+            },
+            "line_1_initial": {
+              "resolved": true,
+              "R": 0.7700513473858026,
+              "R_unclipped": 0.7700513473858026,
+              "resolution": 0.7885448493414353,
+              "fidelity": -0.2013961130999119
+            },
+            "line_1_diagnostic": {
+              "resolved": true,
+              "R": 0.7820437736523745,
+              "R_unclipped": 0.7820437736523745,
+              "resolution": 0.8216923033197182,
+              "fidelity": -0.20382636926805528
+            },
+            "line_2": {
+              "resolved": true,
+              "R": 0.3126149739090304,
+              "R_unclipped": 0.3126149739090304,
+              "resolution": 0.8261357205361027,
+              "fidelity": -0.6002055596485814
+            },
+            "line_2_initial": {
+              "resolved": true,
+              "R": 0.036421954625786505,
+              "R_unclipped": 0.036421954625786505,
+              "resolution": 0.7562808924407229,
+              "fidelity": -0.7568184122485373
+            },
+            "line_2_diagnostic": {
+              "resolved": true,
+              "R": 0.39686037269958646,
+              "R_unclipped": 0.39686037269958646,
+              "resolution": 0.8500859473116614,
+              "fidelity": -0.5465097244714537
+            },
+            "line_3": {
+              "resolved": true,
+              "R": 0.2938148821568798,
+              "R_unclipped": 0.2938148821568798,
+              "resolution": 0.8019059211103219,
+              "fidelity": -0.595114439763313
+            },
+            "line_3_initial": {
+              "resolved": true,
+              "R": 0.45995550726921247,
+              "R_unclipped": 0.45995550726921247,
+              "resolution": 0.7851893376601538,
+              "fidelity": -0.4469021163116688
+            },
+            "line_3_diagnostic": {
+              "resolved": true,
+              "R": 0.23843563394061362,
+              "R_unclipped": 0.23843563394061362,
+              "resolution": 0.8076373211503796,
+              "fidelity": -0.6459300935181623
+            },
+            "line_4": {
+              "resolved": true,
+              "R": 0.6411110976002379,
+              "R_unclipped": 0.6411110976002379,
+              "resolution": 0.8111743259409712,
+              "fidelity": -0.31797671294748125
+            },
+            "line_4_initial": {
+              "resolved": true,
+              "R": 0.7563261784963439,
+              "R_unclipped": 0.7563261784963439,
+              "resolution": 0.7712396719328038,
+              "fidelity": -0.21940125334247912
+            },
+            "line_4_diagnostic": {
+              "resolved": true,
+              "R": 0.6041769245238577,
+              "R_unclipped": 0.6041769245238577,
+              "resolution": 0.8248662073152,
+              "fidelity": -0.351774013383482
+            },
+            "line_5": {
+              "resolved": true,
+              "R": 0.6817629302931928,
+              "R_unclipped": 0.6817629302931928,
+              "resolution": 0.8137445110173511,
+              "fidelity": -0.29720226274938505
+            },
+            "line_5_initial": {
+              "resolved": true,
+              "R": 0.7768321494934399,
+              "R_unclipped": 0.7768321494934399,
+              "resolution": 0.8123083623813561,
+              "fidelity": -0.21174436500470287
+            },
+            "line_5_diagnostic": {
+              "resolved": true,
+              "R": 0.6492449719575569,
+              "R_unclipped": 0.6492449719575569,
+              "resolution": 0.8142369048354066,
+              "fidelity": -0.3265021134047046
+            }
+          }
+        }
+      }
+    }
+  },
+  "gates": {
+    "M_pre_string": true,
+    "replay_exact_both": true,
+    "one_report_each": true,
+    "accepted_both": true,
+    "prefix_evidence_replay_exact_both": true
+  },
+  "all": true
+}

@@ -115,3 +115,13 @@ def test_kernel_accepts_scheduled_dataframe_injection(kernel):
     kernel.inject_dataframe("commissioning_report", pd.DataFrame({"x": [1, 2, 3]}))
     result = kernel.run_cell("print(commissioning_report['x'].sum())")
     assert result.ok and "6" in result.stdout
+
+
+def test_matplotlib_show_is_headless_and_does_not_block(kernel):
+    result = kernel.run_cell(
+        "import matplotlib.pyplot as plt\n"
+        "plt.plot([0, 1], [0, 1])\n"
+        "plt.show()\n"
+        "print('plot-finished')"
+    )
+    assert result.ok and "plot-finished" in result.stdout

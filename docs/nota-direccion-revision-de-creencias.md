@@ -166,6 +166,16 @@ Cada versión se compara con:
 - la versión anterior, para medir dirección y magnitud del cambio;
 - las acciones y la entrega posterior, para medir propagación y persistencia.
 
+Además se separan dos niveles que no deben confundirse:
+
+- **refinamiento dentro de una estructura:** cambian coeficientes, ruido o calibración sin
+  abandonar la explicación central;
+- **revisión estructural:** el modelo deja de compartir mecanismos, crea una alternativa o
+  cambia qué dependencias considera válidas.
+
+Un código distinto no prueba un pivote. La geometría de las predicciones ejecutables debe medir
+si la estructura realmente cambió y si lo hizo solo donde la evidencia lo exigía.
+
 Las métricas deben distinguir al menos:
 
 - no actualización;

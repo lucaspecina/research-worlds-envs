@@ -9,6 +9,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from wager.report.checkpoint_score import CheckpointScorer  # noqa: E402
+from wager.report.checkpoint_score import captured_reference_fraction  # noqa: E402
+from wager.factory.overgen_stream_tools import build_reference_from_ledger  # noqa: E402
 
 CASES = {
     "limited": ROOT / "cases" / "overgen_stream_v0",
@@ -44,12 +46,27 @@ def main():
     args = parser.parse_args()
     source = Path(args.path)
     payload = json.loads(source.read_text(encoding="utf-8"))
-    result = {"source": str(source), "scores": {}}
+    result = {"source": str(source), "scores": {}, "references": {}}
+    prior = payload["prefix"]["trace"][-1]["working_model"]["code"]
     for arm, case_dir in CASES.items():
         scorer = CheckpointScorer(case_dir)
-        result["scores"][arm] = scorer.score_many(
-            checkpoint_codes(payload["prefix"], payload["branches"][arm])
-        )
+        codes = checkpoint_codes(payload["prefix"], payload["branches"][arm])
+        ledger = payload["branches"][arm].get("evidence_ledger")
+        if ledger:
+            reference_code, diagnostics = build_reference_from_ledger(
+                ledger, prior_code=prior
+            )
+            codes["M_reference"] = reference_code
+            result["references"][arm] = {"diagnostics": diagnostics}
+        scores = scorer.score_many(codes)
+        result["scores"][arm] = scores
+        if "M_reference" in scores:
+            result["references"][arm]["captured_fraction_diagnostic"] = {
+                name: captured_reference_fraction(
+                    scores["M_pre"], scores[name], scores["M_reference"]
+                )
+                for name in ("M_post_first_changed", "M_final")
+            }
     target = Path(args.out) if args.out else source.with_name(source.stem + "_scores_v1.json")
     target.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     compact = {}

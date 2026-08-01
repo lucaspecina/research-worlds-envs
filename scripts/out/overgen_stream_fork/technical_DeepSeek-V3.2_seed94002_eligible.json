@@ -1,0 +1,577 @@
+{
+  "kind": "technical_live_history_fork_not_behavioral_evidence",
+  "model": "DeepSeek-V3.2",
+  "seed_offset": 94002,
+  "checkpoint": "eligible",
+  "prefix": {
+    "trace": [
+      {
+        "turn": 1,
+        "notices": [],
+        "reply_text": "**REASONING**: We need to start by understanding the current data from the qualification report, which is free. This will give us outcomes for line 1 across its full range (0-10) and lines 2-5 only in the low range (0-4). We should examine the data structure, check for noise, trends, and any line-to-line differences. Since experiments are expensive (300 per 20-batch campaign), we should first analyze the observational data thoroughly before planning any experiments. The initial working model can be a simple placeholder based on observed means and variances, but we'll update it as we learn more. Let's first load and inspect the qualification report.\n\n```python\n# First step: observe the qualification report to understand the data\ndf = env.observe(\"qualification_report\", 96)\nprint(\"Shape:\", df.shape)\nprint(\"\\nFirst few rows:\")\nprint(df.head())\nprint(\"\\nSummary statistics by line:\")\nfor line in sorted(df['line'].unique()):\n    line_data = df[df['line'] == line]\n    print(f\"Line {line}: driver range {line_data['driver'].min()}\u2013{line_data['driver'].max()}, \"\n          f\"n={len(line_data)}, outcome mean={line_data['outcome'].mean():.2f}, std={line_data['outcome'].std():.2f}\")\nprint(\"\\nDriver ranges per line:\")\nprint(df.groupby('line')['driver'].agg(['min', 'max', 'count']))\n```",
+        "cell": "# First step: observe the qualification report to understand the data\ndf = env.observe(\"qualification_report\", 96)\nprint(\"Shape:\", df.shape)\nprint(\"\\nFirst few rows:\")\nprint(df.head())\nprint(\"\\nSummary statistics by line:\")\nfor line in sorted(df['line'].unique()):\n    line_data = df[df['line'] == line]\n    print(f\"Line {line}: driver range {line_data['driver'].min()}\u2013{line_data['driver'].max()}, \"\n          f\"n={len(line_data)}, outcome mean={line_data['outcome'].mean():.2f}, std={line_data['outcome'].std():.2f}\")\nprint(\"\\nDriver ranges per line:\")\nprint(df.groupby('line')['driver'].agg(['min', 'max', 'count']))",
+        "cell_result": {
+          "ok": true,
+          "stdout": "Shape: (96, 3)\n\nFirst few rows:\n   line    driver    outcome\n0   1.0  5.916465  22.138096\n1   2.0  0.500000  16.212252\n2   1.0  6.325724  22.123032\n3   3.0  0.500000  16.513570\n4   1.0  1.679802  18.046108\n\nSummary statistics by line:\nLine 1.0: driver range 0.06330923069778116\u20139.913576922184255, n=48, outcome mean=19.41, std=3.07\nLine 2.0: driver range 0.5\u20133.5, n=12, outcome mean=18.75, std=2.20\nLine 3.0: driver range 0.5\u20133.5, n=12, outcome mean=18.69, std=2.03\nLine 4.0: driver range 0.5\u20133.5, n=12, outcome mean=18.40, std=2.45\nLine 5.0: driver range 0.5\u20133.5, n=12, outcome mean=18.65, std=2.31\n\nDriver ranges per line:\n           min       max  count\nline                           \n1.0   0.063309  9.913577     48\n2.0   0.500000  3.500000     12\n3.0   0.500000  3.500000     12\n4.0   0.500000  3.500000     12\n5.0   0.500000  3.500000     12\n",
+          "error": null,
+          "truncated": false
+        },
+        "working_model": {
+          "status": "missing",
+          "code": null
+        },
+        "budget_remaining": 900.0,
+        "trajectory": [
+          {
+            "verb": "observe",
+            "args": {
+              "source": "qualification_report",
+              "n": 96
+            },
+            "cost": 0.0,
+            "note": ""
+          }
+        ]
+      },
+      {
+        "turn": 2,
+        "notices": [],
+        "reply_text": "**REASONING**: The data shows line 1 has 48 observations spanning nearly the full driver range (0-10), while lines 2-5 each have 12 observations only in the low range (0.5-3.5). Outcome means for lines 2-5 in the low range are around 18.5-18.8, slightly below line 1's overall mean of 19.41. Line 1's outcome appears to vary with driver (we need to check the relationship). The key uncertainty is how lines 2-5 behave at higher driver settings (>4) \u2014 we suspect they might differ from line 1. Since we can't yet experiment on lines 2-5 beyond driver 4 (until the range extension occurs), we should first explore line 1's full-range behavior to model the driver-outcome relationship, and possibly use that to inform predictions for lines 2-5 in the high range, but we must also check if lines 2-5 differ from line 1 even in the low range. Let's visualize line 1's data to see the trend and noise.\n\n```python\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Separate line 1 data\nline1 = df[df['line'] == 1.0].copy()\nline1 = line1.sort_values('driver')\nplt.figure(figsize=(10,4))\nplt.scatter(line1['driver'], line1['outcome'], alpha=0.6, label='Line 1 observations')\n# Fit a simple linear trend to see direction\ncoeffs = np.polyfit(line1['driver'], line1['outcome'], 1)\ntrend = np.poly1d(coeffs)\nx_range = np.linspace(0, 10, 100)\nplt.plot(x_range, trend(x_range), 'r--', label=f'Linear fit: y={coeffs[0]:.2f}*x+{coeffs[1]:.2f}')\nplt.xlabel('Driver')\nplt.ylabel('Outcome')\nplt.title('Line 1: Outcome vs Driver (full range)')\nplt.legend()\nplt.grid(True)\nplt.show()\n\n# Check for nonlinearity: compute local means via binning\nline1['driver_bin'] = pd.cut(line1['driver'], bins=10)\nbin_means = line1.groupby('driver_bin').agg({'outcome':'mean', 'driver':'mean'})\nprint(\"Binned means for line 1:\")\nprint(bin_means[['driver', 'outcome']])\n\n# Compare lines 2-5 vs line 1 in overlapping low driver range (0-4)\nlow_range = df[df['driver'] <= 4]\nprint(\"\\nLow-range (driver<=4) statistics per line:\")\nprint(low_range.groupby('line')['outcome'].agg(['mean', 'std', 'count']))\n```",
+        "cell": "import matplotlib.pyplot as plt\nimport numpy as np\n\n# Separate line 1 data\nline1 = df[df['line'] == 1.0].copy()\nline1 = line1.sort_values('driver')\nplt.figure(figsize=(10,4))\nplt.scatter(line1['driver'], line1['outcome'], alpha=0.6, label='Line 1 observations')\n# Fit a simple linear trend to see direction\ncoeffs = np.polyfit(line1['driver'], line1['outcome'], 1)\ntrend = np.poly1d(coeffs)\nx_range = np.linspace(0, 10, 100)\nplt.plot(x_range, trend(x_range), 'r--', label=f'Linear fit: y={coeffs[0]:.2f}*x+{coeffs[1]:.2f}')\nplt.xlabel('Driver')\nplt.ylabel('Outcome')\nplt.title('Line 1: Outcome vs Driver (full range)')\nplt.legend()\nplt.grid(True)\nplt.show()\n\n# Check for nonlinearity: compute local means via binning\nline1['driver_bin'] = pd.cut(line1['driver'], bins=10)\nbin_means = line1.groupby('driver_bin').agg({'outcome':'mean', 'driver':'mean'})\nprint(\"Binned means for line 1:\")\nprint(bin_means[['driver', 'outcome']])\n\n# Compare lines 2-5 vs line 1 in overlapping low driver range (0-4)\nlow_range = df[df['driver'] <= 4]\nprint(\"\\nLow-range (driver<=4) statistics per line:\")\nprint(low_range.groupby('line')['outcome'].agg(['mean', 'std', 'count']))",
+        "cell_result": {
+          "ok": false,
+          "stdout": "",
+          "error": "cell exceeded 30.0s and was killed",
+          "truncated": false
+        },
+        "working_model": {
+          "status": "missing",
+          "code": null
+        },
+        "budget_remaining": 900.0,
+        "trajectory": []
+      }
+    ],
+    "evidence_ledger": [
+      {
+        "sequence": 1,
+        "turn": 1,
+        "kind": "observe",
+        "source": "qualification_report",
+        "request": {
+          "n": 96
+        },
+        "delivery_variable": null,
+        "data": {
+          "columns": [
+            "line",
+            "driver",
+            "outcome"
+          ],
+          "dtypes": [
+            "float64",
+            "float64",
+            "float64"
+          ],
+          "data": [
+            [
+              1.0,
+              5.916464806341162,
+              22.138095742857566
+            ],
+            [
+              2.0,
+              0.5,
+              16.212251977726417
+            ],
+            [
+              1.0,
+              6.325723879112637,
+              22.123032270383963
+            ],
+            [
+              3.0,
+              0.5,
+              16.513570199778393
+            ],
+            [
+              1.0,
+              1.6798020999893482,
+              18.046107681669195
+            ],
+            [
+              4.0,
+              0.5,
+              15.763298412611933
+            ],
+            [
+              1.0,
+              4.0495020103339385,
+              22.000283744292563
+            ],
+            [
+              5.0,
+              0.5,
+              16.01367700796273
+            ],
+            [
+              1.0,
+              9.799537200945348,
+              14.1610516712419
+            ],
+            [
+              2.0,
+              1.5,
+              18.57749591167859
+            ],
+            [
+              1.0,
+              3.61485071052168,
+              21.727205069601794
+            ],
+            [
+              3.0,
+              1.5,
+              18.13706848819584
+            ],
+            [
+              1.0,
+              0.06330923069778116,
+              13.653643382658311
+            ],
+            [
+              4.0,
+              1.5,
+              17.72023581141423
+            ],
+            [
+              1.0,
+              6.994080373484804,
+              22.445170102886742
+            ],
+            [
+              5.0,
+              1.5,
+              17.83395693787955
+            ],
+            [
+              1.0,
+              5.216002579192692,
+              23.180276484892072
+            ],
+            [
+              2.0,
+              2.5,
+              20.011392505474614
+            ],
+            [
+              1.0,
+              7.06142880677627,
+              21.990201745242327
+            ],
+            [
+              3.0,
+              2.5,
+              20.85107583218873
+            ],
+            [
+              1.0,
+              6.573175682276222,
+              20.841516115447273
+            ],
+            [
+              4.0,
+              2.5,
+              20.78683588966076
+            ],
+            [
+              1.0,
+              5.298622091052079,
+              20.733538107260223
+            ],
+            [
+              5.0,
+              2.5,
+              20.50785798523153
+            ],
+            [
+              1.0,
+              2.351366860865427,
+              20.10437476881228
+            ],
+            [
+              2.0,
+              3.5,
+              20.671678367856614
+            ],
+            [
+              1.0,
+              0.3826721281908785,
+              14.58038331348976
+            ],
+            [
+              3.0,
+              3.5,
+              20.197221003516788
+            ],
+            [
+              1.0,
+              7.053974447848582,
+              20.410768106617365
+            ],
+            [
+              4.0,
+              3.5,
+              19.86330608394726
+            ],
+            [
+              1.0,
+              3.155035154455174,
+              21.645982237819915
+            ],
+            [
+              5.0,
+              3.5,
+              21.403125572071488
+            ],
+            [
+              1.0,
+              2.869630468889813,
+              22.45538780609422
+            ],
+            [
+              2.0,
+              0.5,
+              15.252167732036085
+            ],
+            [
+              1.0,
+              9.172177382946934,
+              16.603617155924304
+            ],
+            [
+              3.0,
+              0.5,
+              15.77293836719056
+            ],
+            [
+              1.0,
+              2.823342715759547,
+              20.74085923596077
+            ],
+            [
+              4.0,
+              0.5,
+              13.708040607952782
+            ],
+            [
+              1.0,
+              9.247841793937218,
+              16.900410214677247
+            ],
+            [
+              5.0,
+              0.5,
+              14.91850017329731
+            ],
+            [
+              1.0,
+              5.774795673359828,
+              21.693095687716163
+            ],
+            [
+              2.0,
+              1.5,
+              17.734194612023042
+            ],
+            [
+              1.0,
+              8.702578251482196,
+              16.70239162744767
+            ],
+            [
+              3.0,
+              1.5,
+              18.06343167104038
+            ],
+            [
+              1.0,
+              6.89844403544925,
+              20.021960279995614
+            ],
+            [
+              4.0,
+              1.5,
+              18.901097569761767
+            ],
+            [
+              1.0,
+              9.913576922184255,
+              13.269445449855278
+            ],
+            [
+              5.0,
+              1.5,
+              18.82541759913765
+            ],
+            [
+              1.0,
+              3.7355899080874377,
+              22.612048662231057
+            ],
+            [
+              2.0,
+              2.5,
+              19.258795573550415
+            ],
+            [
+              1.0,
+              0.22380329172271063,
+              14.063910076048101
+            ],
+            [
+              3.0,
+              2.5,
+              19.892715125743326
+            ],
+            [
+              1.0,
+              7.022251844664062,
+              21.21318163632695
+            ],
+            [
+              4.0,
+              2.5,
+              20.681487314626125
+            ],
+            [
+              1.0,
+              4.391215072912647,
+              22.28977007006118
+            ],
+            [
+              5.0,
+              2.5,
+              20.504414198565655
+            ],
+            [
+              1.0,
+              2.5235899370585346,
+              20.87019561766402
+            ],
+            [
+              2.0,
+              3.5,
+              21.557870638838697
+            ],
+            [
+              1.0,
+              0.07864835261763514,
+              14.571865515913569
+            ],
+            [
+              3.0,
+              3.5,
+              21.0935729933064
+            ],
+            [
+              1.0,
+              4.796714820918596,
+              23.796590295073795
+            ],
+            [
+              4.0,
+              3.5,
+              21.310399608198086
+            ],
+            [
+              1.0,
+              2.2740772585570443,
+              19.998682161945613
+            ],
+            [
+              5.0,
+              3.5,
+              19.709111166882455
+            ],
+            [
+              1.0,
+              4.256861510209198,
+              22.153323795572177
+            ],
+            [
+              2.0,
+              0.5,
+              15.673776587486456
+            ],
+            [
+              1.0,
+              1.3305109820155814,
+              18.17158669604976
+            ],
+            [
+              3.0,
+              0.5,
+              15.575667075206942
+            ],
+            [
+              1.0,
+              0.24882863433104863,
+              15.479689734922689
+            ],
+            [
+              4.0,
+              0.5,
+              15.63491490249161
+            ],
+            [
+              1.0,
+              3.7829092023277724,
+              22.265738644596254
+            ],
+            [
+              5.0,
+              0.5,
+              14.641286317038704
+            ],
+            [
+              1.0,
+              9.469502272080273,
+              15.357143395098426
+            ],
+            [
+              2.0,
+              1.5,
+              18.2690647988625
+            ],
+            [
+              1.0,
+              1.5470979707718868,
+              16.97757608496301
+            ],
+            [
+              3.0,
+              1.5,
+              17.40852573581821
+            ],
+            [
+              1.0,
+              0.37072256029897277,
+              15.381970560718761
+            ],
+            [
+              4.0,
+              1.5,
+              16.71385240612746
+            ],
+            [
+              1.0,
+              3.6430458081010073,
+              22.124337288307643
+            ],
+            [
+              5.0,
+              1.5,
+              18.79306023419136
+            ],
+            [
+              1.0,
+              2.876062351448714,
+              20.348555138309624
+            ],
+            [
+              2.0,
+              2.5,
+              20.19665341819251
+            ],
+            [
+              1.0,
+              2.1546318186413336,
+              20.08079660029503
+            ],
+            [
+              3.0,
+              2.5,
+              19.947895454167202
+            ],
+            [
+              1.0,
+              8.740422613190384,
+              17.525819838065903
+            ],
+            [
+              4.0,
+              2.5,
+              20.073632229879088
+            ],
+            [
+              1.0,
+              9.31718389923914,
+              14.877429071786942
+            ],
+            [
+              5.0,
+              2.5,
+              20.42315211344454
+            ],
+            [
+              1.0,
+              4.09234189234706,
+              22.31989447930944
+            ],
+            [
+              2.0,
+              3.5,
+              21.60246612813849
+            ],
+            [
+              1.0,
+              7.524325694928695,
+              19.30605589015375
+            ],
+            [
+              3.0,
+              3.5,
+              20.795985332390433
+            ],
+            [
+              1.0,
+              7.453505815239597,
+              19.675091959271732
+            ],
+            [
+              4.0,
+              3.5,
+              19.65930835640503
+            ],
+            [
+              1.0,
+              6.824825438267975,
+              21.95609428696607
+            ],
+            [
+              5.0,
+              3.5,
+              20.207966681815453
+            ]
+          ]
+        }
+      }
+    ],
+    "next_prompt": "Kernel output (ok=True, budget remaining=900):\nShape: (96, 3)\n\nFirst few rows:\n   line    driver    outcome\n0   1.0  5.916465  22.138096\n1   2.0  0.500000  16.212252\n2   1.0  6.325724  22.123032\n3   3.0  0.500000  16.513570\n4   1.0  1.679802  18.046108\n\nSummary statistics by line:\nLine 1.0: driver range 0.06330923069778116\u20139.913576922184255, n=48, outcome mean=19.41, std=3.07\nLine 2.0: driver range 0.5\u20133.5, n=12, outcome mean=18.75, std=2.20\nLine 3.0: driver range 0.5\u20133.5, n=12, outcome mean=18.69, std=2.03\nLine 4.0: driver range 0.5\u20133.5, n=12, outcome mean=18.40, std=2.45\nLine 5.0: driver range 0.5\u20133.5, n=12, outcome mean=18.65, std=2.31\n\nDriver ranges per line:\n           min       max  count\nline                           \n1.0   0.063309  9.913577     48\n2.0   0.500000  3.500000     12\n3.0   0.500000  3.500000     12\n4.0   0.500000  3.500000     12\n5.0   0.500000  3.500000     12\n\n\nReason about what this result tells you (does it confirm or refute your current hypothesis? what does it imply for the next step?), then write your next cell (or build and env.submit(code) when your reasoning has converged).",
+    "tokens": 4142,
+    "checkpoint": "eligible",
+    "eligibility": {
+      "eligible": false,
+      "turn": null,
+      "gates": {},
+      "reason": "cell_timeout",
+      "failed_turn": 2
+    }
+  },
+  "branches": {},
+  "gates": {
+    "eligible_prefix": false
+  },
+  "all": false
+}

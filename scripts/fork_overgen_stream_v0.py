@@ -338,7 +338,8 @@ def main():
     for name, case_dir in (("limited", LIMITED), ("transfer", TRANSFER)):
         scorer = CheckpointScorer(case_dir)
         reference_code, reference_diagnostics = build_reference_from_ledger(
-            branches[name]["evidence_ledger"]
+            branches[name]["evidence_ledger"],
+            prior_code=prefix["trace"][-1]["working_model"]["code"],
         )
         scores, fractions = score_checkpoints(
             prefix, branches[name], scorer, reference_code
