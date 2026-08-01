@@ -108,6 +108,14 @@
 > recuerdos del chat) por Lucas+Codex+Claude → correr el probe → veredicto → contrato del
 > paper.** ABIERTO: solo detalles que la revisión final marque.
 >
+> **IMPLEMENTACIÓN EN CURSO — COMPUERTA FACTORY (ADR 0157):** el primer instrumento IID
+> recibió NO-GO honesto (6/8 familias fijas; dos tandas `doubt` no justificaban la revisión).
+> Sin llamar agentes, se corrigió a un panel diagnóstico estratificado con likelihood exacta;
+> calibración quemada 500/500 con 8 repeticiones. La revisión queda congelada y espera una
+> segunda cohorte fresca, consecutiva y sin reemplazo. Si pasa: siguiente corte = 1–2
+> episodios técnicos; si falla: no se construye el harness. En ambos casos se vuelve a mirar
+> un nivel arriba antes de seguir.
+>
 > **PASADA 1 CORRIDA Y CERRADA (2026-07-30, autónoma; ADRs 0154 pre-registro / 0155
 > resultados)**: diseño de Codex adoptado íntegro (factorial autoría×compromiso×evidencia,
 > 252 forks apareados, snapshot canónico); piso del instrumento verificado ANTES (0.25σ

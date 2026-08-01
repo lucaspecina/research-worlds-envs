@@ -96,6 +96,7 @@ def test_reward_modules_actually_import():
         "wager.reward.mdl",
         "wager.reward.seeds",
         "wager.reward.sandbox",
+        "wager.reward.decision_oracle",
     ):
         importlib.import_module(mod)
 
