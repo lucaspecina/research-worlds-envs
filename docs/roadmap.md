@@ -17,6 +17,33 @@
 > Los detalles que no amenacen validez o interpretación se resuelven probando; todo pivote se
 > registra con su evidencia y motivo para no reescribir la historia después.
 
+> ## ★ ALINEACIÓN OFICIAL ACTUAL (2026-07-31 — ADR 0161)
+>
+> La guía conceptual canónica es
+> **[`docs/nota-direccion-revision-de-creencias.md`](nota-direccion-revision-de-creencias.md)**.
+> Pregunta: **¿cuándo y por qué un agente ajusta correctamente su modelo durante una
+> investigación —pivotear, corregir, mantener o dudar en la magnitud justificada— y dónde se
+> pierde esa revisión antes de la acción y la entrega?**
+>
+> Correcciones vigentes: los factores NO forman una escala única de “carga”; **fricción** es
+> el retrabajo real que exige aplicar una corrección, no una tarifa artificial; la evidencia
+> se presenta como en el caso real y no se anuncia como especial salvo que ese sea el fenómeno;
+> el horizonte es una perilla, no 12–16 rondas por definición; KellyBench, Corral,
+> sobre-generalización y cierre son escenarios complementarios, ninguno “el proyecto”.
+>
+> **PAUSA DE DISEÑO, NO PÉRDIDA DE MAQUINARIA:** queda suspendida la `factory v4` como
+> siguiente acción del probe con panel señalado + costo + MANTENER/REABRIR. El harness técnico
+> de ADR 0160 se conserva; no habilita inferencia conductual.
+>
+> **SIGUIENTE ACCIÓN ÚNICA:** auditar brevemente los activos existentes (`overgen`+gemelo,
+> cinco líneas, `lab_largo`, mundos de nota) contra la tabla de fenómenos de la guía; elegir
+> el slice mínimo que reproduzca fielmente un caso sin delatar la evidencia; implementarlo y
+> probarlo temprano con un agente barato real y luego uno SOTA. Al cerrar, reevaluar un nivel
+> arriba antes de ampliar.
+>
+> Todo el bloque histórico posterior conserva decisiones y resultados, pero cualquier
+> “próximo paso” anterior queda supersedido por esta cabecera.
+
 > ## ★ LA PREGUNTA OFICIAL DEL PROYECTO (REFOCO 2, decisión de Lucas 2026-07-31 — ADR 0156)
 >
 > **Cuando evidencia nueva justifica una revisión conocida, ¿cómo se reparte el error entre
