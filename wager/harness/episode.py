@@ -77,6 +77,7 @@ def run_episode(
     cell_timeout_s: float = CELL_TIMEOUT_S,
     system_suffix: str = "",
     initial_note: str = "",
+    capture_working_model: bool = False,
 ) -> dict:
     # system_suffix (ADR 0095): appended to the base SYSTEM to activate a
     # general good-conduct DISPOSITION (careful/skeptical scientist) WITHOUT
@@ -109,6 +110,8 @@ def run_episode(
             # PREPENDED to this turn's prompt; the unlocked source is already
             # observable when the model's cell runs.
             notices = server.begin_turn(turn_idx)
+            for variable, report in server.pop_deliveries():
+                kernel.inject_dataframe(variable, report)
             if notices:
                 prompt = ("\n".join(f"[NOTICE] {n}" for n in notices)
                           + "\n\n" + prompt)
@@ -149,6 +152,11 @@ def run_episode(
                 "ok": result.ok, "stdout": result.stdout,
                 "error": result.error, "truncated": result.truncated,
             }
+            if capture_working_model:
+                rec["working_model"] = {
+                    "status": result.working_model_status,
+                    "code": result.working_model,
+                }
             rec["verbs"] = verbs
             rec["submit_attempts"] = [v for v in verbs if v["verb"] == "submit"]
             rec["budget_remaining"] = server.budget_remaining

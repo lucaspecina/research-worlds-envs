@@ -74,3 +74,33 @@ def test_event_fires_early_by_spend_fraction():
     s.observe("registros", 600)                          # 600/1000 = 60% >= 50%
     notices = s.begin_turn(2)                            # before trigger_turn=3
     assert len(notices) == 1 and notices[0].startswith("the log appeared")
+
+
+def test_routine_event_can_auto_deliver_a_finite_free_report():
+    event_source = SourceConfig(cost_per_row=0.0, hidden_columns=("x", "y"), max_rows=7)
+    config = EpisodeConfig(
+        budget=1000.0,
+        observe_sources={},
+        experiment=ExperimentCost(cost_fixed=10.0, cost_per_row=1.0),
+        smoke_regimes=[Regime(config={}, context={})],
+        events=[EpisodeEvent(
+            trigger_turn=2,
+            notice="scheduled report",
+            source_name="commissioning",
+            source=event_source,
+            auto_deliver_n=7,
+            delivery_variable="commissioning_report",
+        )],
+    )
+    scoring = ScoringArtifacts(world_source="", naive_code="", null_code="",
+                               battery=None, params=None)
+    server = WorldServer(world_sample=_world, columns=["x", "y"], brief="b",
+                         config=config, scoring=scoring)
+    notice = server.begin_turn(2)
+    assert "commissioning_report" in notice[0]
+    deliveries = server.pop_deliveries()
+    assert len(deliveries) == 1 and deliveries[0][0] == "commissioning_report"
+    assert deliveries[0][1].shape == (7, 1)
+    assert server.pop_deliveries() == []
+    with pytest.raises(ValueError):
+        server.observe("commissioning", 1)  # all finite rows were delivered

@@ -173,12 +173,28 @@ class EpisodeEvent(BaseModel):
     notice: str
     source_name: str | None = None
     source: SourceConfig | None = None
+    # Routine inbox delivery (ADR 0162): the rows arrive in the agent kernel
+    # as a DataFrame instead of requiring an attention-signalling observe().
+    # The source must be free and finite; delivered rows consume its cap.
+    auto_deliver_n: int | None = Field(default=None, ge=1)
+    delivery_variable: str | None = None
 
     @model_validator(mode="after")
     def _source_both_or_neither(self):
         if (self.source_name is None) != (self.source is None):
             raise ValueError("EpisodeEvent: source_name and source travel together "
                              "(both set for a data event, both None for a note-only event)")
+        if self.auto_deliver_n is not None:
+            if self.source is None or self.source_name is None:
+                raise ValueError("auto_deliver_n requires an event source")
+            if self.delivery_variable is None or not self.delivery_variable.isidentifier():
+                raise ValueError("auto delivery requires an identifier delivery_variable")
+            if self.source.cost_per_row != 0.0:
+                raise ValueError("auto-delivered routine reports must have zero row cost")
+            if self.source.max_rows is not None and self.auto_deliver_n > self.source.max_rows:
+                raise ValueError("auto_deliver_n exceeds the source max_rows")
+        elif self.delivery_variable is not None:
+            raise ValueError("delivery_variable requires auto_deliver_n")
         return self
 
 

@@ -35,11 +35,11 @@
 > siguiente acción del probe con panel señalado + costo + MANTENER/REABRIR. El harness técnico
 > de ADR 0160 se conserva; no habilita inferencia conductual.
 >
-> **SIGUIENTE ACCIÓN ÚNICA:** auditar brevemente los activos existentes (`overgen`+gemelo,
-> cinco líneas, `lab_largo`, mundos de nota) contra la tabla de fenómenos de la guía; elegir
-> el slice mínimo que reproduzca fielmente un caso sin delatar la evidencia; implementarlo y
-> probarlo temprano con un agente barato real y luego uno SOTA. Al cerrar, reevaluar un nivel
-> arriba antes de ampliar.
+> **SIGUIENTE ACCIÓN ÚNICA:** implementar el **fork apareado** de ADR 0163: un mismo prefijo
+> vivido continúa en `overgen_stream_v0` y su gemelo, con scoring de `M_pre → M_post → M_final`
+> por línea/región. Ejecutar un solo fork técnico DeepSeek antes de firmar una tanda. El mundo
+> se mantiene; no se tunea para fabricar fallas. Resultado del smoke 2 modelos × 2 polos:
+> [documento](research/2026-08-01-resultado-smoke-overgen-stream-v0.md).
 >
 > Todo el bloque histórico posterior conserva decisiones y resultados, pero cualquier
 > “próximo paso” anterior queda supersedido por esta cabecera.
@@ -48,11 +48,11 @@
 
 | Etapa | Trabajo concreto | Salida verificable | Estado |
 |---|---|---|---|
-| **0. Cobertura** | Cruzar fenómenos/casos de la guía con `overgen`, cinco líneas, `lab_largo`, mundos de nota y maquinaria común | Tabla `ya existe / adaptar / construir`, sin correr agentes | **EN CURSO — próximo paso** |
-| **1. Selección** | Elegir el primer caso por fidelidad, información científica, contraste bilateral y reutilización real | Contrato corto: caso, fenómeno, gemelo, llegada natural de evidencia, qué mide y qué no | Pendiente |
-| **2. Slice mínimo** | Construir verdad, evidencia, registro, oráculo y scoring necesarios; nada extra | Robots/reflejos certificados + camino completo verde | Pendiente |
-| **3. Agente real temprano** | Smoke barato para comprensión/UX y después una corrida SOTA | Traza completa; autopsia de demanda, fugas y explicaciones operativas | Pendiente |
-| **4. Probe apareado** | Pocas ramas/semillas quemadas, criterios escritos antes | Señal suficiente para mantener, modificar o abandonar el instrumento | Pendiente |
+| **0. Cobertura** | Cruzar fenómenos/casos de la guía con `overgen`, cinco líneas, `lab_largo`, mundos de nota y maquinaria común | [Tabla `ya existe / adaptar / construir`](research/2026-08-01-auditoria-cobertura-y-primer-slice.md), sin correr agentes | **CERRADA — MODIFICAR `overgen`** |
+| **1. Selección** | Elegir el primer caso por fidelidad, información científica, contraste bilateral y reutilización real | [Contrato corto](research/2026-08-01-contrato-slice-overgen-longitudinal-v0.md): caso, fenómeno, gemelo, llegada natural de evidencia, qué mide y qué no | **CERRADA — MANTENER; ADR 0162** |
+| **2. Slice mínimo** | Construir verdad, evidencia, registro, oráculo y scoring necesarios; nada extra | Robots/reflejos certificados + camino completo verde | **CERRADA — ambos polos PASS** |
+| **3. Agente real temprano** | Smoke barato para comprensión/UX y después una corrida SOTA | [2 modelos × 2 polos + autopsia](research/2026-08-01-resultado-smoke-overgen-stream-v0.md) | **CERRADA — MANTENER mundo / MODIFICAR inferencia** |
+| **4. Probe apareado** | Pocas ramas/semillas quemadas, criterios escritos antes | Señal suficiente para mantener, modificar o abandonar el instrumento | **EN CURSO — primero fork técnico** |
 | **5. Piloto y réplica** | Pre-registro pequeño, más de un modelo y una segunda estructura | Estimando con incertidumbre + prueba de generalización | Pendiente |
 | **6. Escala** | Generador dinámico, suite y eventualmente entrenamiento | Solo si los fenómenos anteriores sobrevivieron | Diferido |
 

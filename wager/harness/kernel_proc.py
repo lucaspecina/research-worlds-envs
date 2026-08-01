@@ -17,6 +17,7 @@ import io
 import json
 import multiprocessing
 import os
+import keyword
 import tempfile
 import traceback
 from dataclasses import dataclass
@@ -35,6 +36,11 @@ class CellResult:
     stdout: str
     error: str | None
     truncated: bool = False
+    # Passive trajectory measurement (ADR 0162). The worker snapshots a plain
+    # string named `working_model` after every cell. It never calls the world,
+    # scores the artifact, or returns feedback to the agent.
+    working_model: str | None = None
+    working_model_status: str = "missing"
 
 
 # ---- subprocess side ------------------------------------------------------
@@ -112,7 +118,10 @@ def _worker(conn):
             return
         if msg is None:
             return
-        if msg["type"] == "run_cell":
+        if msg["type"] == "inject_dataframe":
+            ns[msg["name"]] = pd.DataFrame(msg["data"])
+            conn.send({"type": "inject_done"})
+        elif msg["type"] == "run_cell":
             out = io.StringIO()
             error = None
             import contextlib
@@ -122,7 +131,22 @@ def _worker(conn):
                     exec(compile(msg["code"], "<cell>", "exec"), ns)  # noqa: S102
             except Exception:  # noqa: BLE001
                 error = traceback.format_exc()
-            conn.send({"type": "cell_done", "stdout": out.getvalue(), "error": error})
+            if "working_model" not in ns:
+                working_model = None
+                working_model_status = "missing"
+            elif isinstance(ns["working_model"], str):
+                working_model = ns["working_model"]
+                working_model_status = "captured"
+            else:
+                working_model = None
+                working_model_status = f"invalid_type:{type(ns['working_model']).__name__}"
+            conn.send({
+                "type": "cell_done",
+                "stdout": out.getvalue(),
+                "error": error,
+                "working_model": working_model,
+                "working_model_status": working_model_status,
+            })
 
 
 # ---- main side ------------------------------------------------------------
@@ -151,12 +175,31 @@ class KernelClient:
             elif msg["type"] == "cell_done":
                 return self._finish(msg)
 
+    def inject_dataframe(self, name: str, df: pd.DataFrame) -> None:
+        """Put a scheduled, server-supplied report in the persistent kernel."""
+        if not name.isidentifier() or keyword.iskeyword(name) or name == "env":
+            raise ValueError(f"unsafe delivery variable {name!r}")
+        self._conn.send({"type": "inject_dataframe", "name": name, "data": df.to_dict("list")})
+        if not self._conn.poll(self.cell_timeout_s):
+            self.close()
+            raise TimeoutError(f"dataframe injection exceeded {self.cell_timeout_s}s")
+        msg = self._conn.recv()
+        if msg.get("type") != "inject_done":
+            raise RuntimeError(f"unexpected injection response: {msg!r}")
+
     def _finish(self, msg) -> CellResult:
         stdout = msg["stdout"] or ""
         truncated = len(stdout) > STDOUT_CAP
         if truncated:
             stdout = stdout[:STDOUT_CAP] + f"\n... [output truncated: {len(msg['stdout'])} chars total]"
-        return CellResult(ok=msg["error"] is None, stdout=stdout, error=msg["error"], truncated=truncated)
+        return CellResult(
+            ok=msg["error"] is None,
+            stdout=stdout,
+            error=msg["error"],
+            truncated=truncated,
+            working_model=msg.get("working_model"),
+            working_model_status=msg.get("working_model_status", "missing"),
+        )
 
     def _dispatch(self, name: str, args: dict) -> dict:
         try:

@@ -91,3 +91,27 @@ def test_budget_error_surfaces_as_data(kernel):
     code = "env.observe('registros_proceso_2019_2023', 5000)\nenv.observe('registros_proceso_2019_2023', 5000)\nenv.observe('registros_proceso_2019_2023', 5000)\nenv.observe('registros_proceso_2019_2023', 1)\n"
     r = kernel.run_cell(code)
     assert not r.ok and "budget" in r.error.lower()
+
+
+def test_kernel_passively_snapshots_working_model(kernel):
+    """The snapshot is main-side metadata, never agent-visible feedback."""
+    absent = kernel.run_cell("x = 1")
+    assert absent.working_model is None
+    assert absent.working_model_status == "missing"
+
+    code = "def model(regime, n, seed):\n    return None\n"
+    captured = kernel.run_cell(f"working_model = {code!r}")
+    assert captured.working_model == code
+    assert captured.working_model_status == "captured"
+
+    invalid = kernel.run_cell("working_model = {'not': 'code'}")
+    assert invalid.working_model is None
+    assert invalid.working_model_status == "invalid_type:dict"
+
+
+def test_kernel_accepts_scheduled_dataframe_injection(kernel):
+    import pandas as pd
+
+    kernel.inject_dataframe("commissioning_report", pd.DataFrame({"x": [1, 2, 3]}))
+    result = kernel.run_cell("print(commissioning_report['x'].sum())")
+    assert result.ok and "6" in result.stdout

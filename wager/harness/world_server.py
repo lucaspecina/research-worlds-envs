@@ -78,6 +78,10 @@ class WorldServer:
     control_surface: dict = field(default_factory=dict)
     case_id: str = ""
     seed_offset: int = 0  # shifts observe/experiment draws across episodes (E0.5)
+    # Optional server-side operational availability rule supplied by world.py.
+    # It may reject a design before charging/sampling, based only on public
+    # episode state (turn and fired event indices).
+    experiment_guard: Callable | None = None
 
     def __post_init__(self) -> None:
         self._spent = 0.0
@@ -91,6 +95,7 @@ class WorldServer:
         self._turn = 0                   # last begin_turn index (register latency)
         self._register_jobs: list = []   # queued own-model diagnostics (lab largo)
         self._register_versions: dict = {}  # line -> artifact version counter
+        self._pending_deliveries: list[tuple[str, pd.DataFrame]] = []
 
     # --- sealed mid-episode events (D4, ADR 0081) -----------------------
     def begin_turn(self, turn_idx: int) -> list[str]:
@@ -108,8 +113,24 @@ class WorldServer:
                 self._fired_events.add(i)
                 if ev.source_name is not None:  # note-only events unlock nothing
                     self._unlocked[ev.source_name] = ev.source
-                    notices.append(ev.notice + "\n(env.describe() now lists the "
-                                   "newly available source.)")
+                    if ev.auto_deliver_n is not None:
+                        df = source_view(
+                            self.world_sample,
+                            ev.source,
+                            ev.auto_deliver_n,
+                            self._next_seed(740_000),
+                        )
+                        self._rows_bought[ev.source_name] = (
+                            self._rows_bought.get(ev.source_name, 0) + ev.auto_deliver_n
+                        )
+                        self._pending_deliveries.append((ev.delivery_variable, df))
+                        notices.append(
+                            ev.notice
+                            + f"\nThe report is already loaded as DataFrame `{ev.delivery_variable}`."
+                        )
+                    else:
+                        notices.append(ev.notice + "\n(env.describe() now lists the "
+                                       "newly available source.)")
                 else:
                     notices.append(ev.notice)
                 self._log("event", {"source": ev.source_name or "(note)", "turn": turn_idx},
@@ -120,6 +141,12 @@ class WorldServer:
             job["done"] = True
             notices.append(self._eval_register(job))
         return notices
+
+    def pop_deliveries(self) -> list[tuple[str, pd.DataFrame]]:
+        """Drain routine event payloads waiting for injection into the kernel."""
+        deliveries = self._pending_deliveries
+        self._pending_deliveries = []
+        return deliveries
 
     @property
     def _sources(self) -> dict:
@@ -237,6 +264,8 @@ class WorldServer:
 
     def experiment(self, design: ExperimentDesign) -> pd.DataFrame:
         self._guard_open()
+        if self.experiment_guard is not None:
+            self.experiment_guard(design, self._turn, frozenset(self._fired_events))
         # trajectory pricing (v0.68-R3): n counts UNITS; every (unit, timestamp)
         # reading is a row, and leaving the run going costs per horizon -- THE
         # knob that makes knowing K expensive. Static worlds: grid absent,

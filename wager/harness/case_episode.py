@@ -12,7 +12,7 @@ from wager.factory.case_loader import (
     load_ladder,
     load_meta,
     load_truth_code,
-    load_world_sample,
+    load_world_module,
     load_world_source,
     make_sample_transform,
     make_window_enrich,
@@ -50,8 +50,9 @@ def build_world_server(case_dir: str | Path, seed_offset: int = 0) -> WorldServe
         enrich_regime=make_window_enrich(case_dir, meta),
         sample_transform=make_sample_transform(meta),
     )
+    world_module = load_world_module(case_dir)
     return WorldServer(
-        world_sample=load_world_sample(case_dir),
+        world_sample=world_module.sample,
         columns=meta.column_names,
         brief=brief,
         config=meta.episode,
@@ -59,4 +60,5 @@ def build_world_server(case_dir: str | Path, seed_offset: int = 0) -> WorldServe
         control_surface=meta.episode.control_surface,
         case_id=meta.case_id,
         seed_offset=seed_offset,
+        experiment_guard=getattr(world_module, "experiment_guard", None),
     )
