@@ -41,14 +41,11 @@ def main() -> int:
     )
     print(json.dumps({
         "all": report["all"],
-        "fixed_cohort_count": report["fixed_cohort"]["count"],
-        "failed_families": sum(
-            not family["all"] for family in report["families"]
-        ),
-        "private_output": str(
-            args.output / "private" / "factory_certification.json"
-        ),
-        "public_output": str(args.output / "public" / "manifest.json"),
+        "fixed_cohort_count": report["fixed_cohort_count"],
+        "failed_families": report["failed_families"],
+        "private_output": report["private_report_path"],
+        "researcher_output": report["researcher_manifest_path"],
+        "agent_recipe_output": report["agent_recipe_path"],
     }, indent=2))
     return 0 if report["all"] else 1
 

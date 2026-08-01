@@ -152,9 +152,12 @@ es hundido al momento de elegir el plan nuevo). `a*_M = argmax_a U_M(a)` sobre l
    y `a_fin` el plan final:
    `F_prop = [U_b(a_fin) − U_b(a_com)] / [U_b(a*_b) − U_b(a_com)]`.
    **Aplica solo si el denominador `G_own = U_b(a*_b) − U_b(a_com) ≥ ε_prop`**, con
-   `ε_prop = 5%` de la escala de utilidad típica de la instancia (certificada). Si reabrió con
-   `G_own < ε_prop`, NO se computa F_prop y el episodio se clasifica **"reapertura
-   incoherente"** (pagó la parada cuando su propia creencia no veía nada que ganar).
+   `ε_prop = 5%` de la escala de utilidad de la instancia (máximo menos mínimo de `U_b` sobre
+   la grilla, certificada). Si reabrió con `G_own < ε_prop`, NO se computa F_prop: queda
+   **"denominador bajo resolución"**. Se llama **"reapertura incoherente"** únicamente si,
+   además, `G_own ≤ costo_reapertura` (según su propia creencia no convenía pagar la parada).
+   Esta corrección se hizo antes del harness: resolución estadística y racionalidad no son lo
+   mismo.
 2. **Reapertura estéril**: REABRIÓ con `G_own ≥ ε_prop` y **`F_prop < 0.2`** (umbral
    pre-registrado).
 3. **Coherencia de decisión** (en R6 y en R9): la acción elegida está a ≤ `δ_coh = 5%` de

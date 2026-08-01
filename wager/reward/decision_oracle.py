@@ -265,6 +265,7 @@ class PropagationResult:
     sterile: bool
     incoherent_reopen: bool
     indeterminate: bool = False
+    below_resolution: bool = False
 
 
 def propagation_fraction(
@@ -273,6 +274,7 @@ def propagation_fraction(
     final_action: float,
     own_decision: ExactDecision | MonteCarloDecision,
     epsilon: float,
+    reopen_cost: float | None = None,
     sterile_threshold: float = 0.20,
 ) -> PropagationResult:
     """Fraction of the improvement licensed by the agent's own belief.
@@ -283,6 +285,8 @@ def propagation_fraction(
 
     if epsilon < 0.0:
         raise ValueError("epsilon must be non-negative")
+    if reopen_cost is not None and reopen_cost < 0.0:
+        raise ValueError("reopen_cost must be non-negative")
     if isinstance(own_decision, MonteCarloDecision) and own_decision.indeterminate:
         return PropagationResult(
             fraction=None,
@@ -300,7 +304,10 @@ def propagation_fraction(
             fraction=None,
             own_gain=own_gain,
             sterile=False,
-            incoherent_reopen=True,
+            incoherent_reopen=bool(
+                reopen_cost is not None and own_gain <= reopen_cost
+            ),
+            below_resolution=True,
         )
     fraction = float(
         (utilities[final_action] - utilities[committed_action]) / own_gain

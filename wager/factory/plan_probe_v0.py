@@ -38,9 +38,9 @@ from wager.reward.decision_oracle import (
 
 Scenario = Literal["maintain", "revise", "doubt"]
 SCENARIOS: tuple[Scenario, ...] = ("maintain", "revise", "doubt")
-SCHEMA_VERSION = "wager.plan_probe_v0.factory.2"
+SCHEMA_VERSION = "wager.plan_probe_v0.factory.3"
 FROZEN_DESIGN_COMMIT = "585033e"
-INSTRUMENT_REVISION = "stratified-diagnostic-panel-r8-v1"
+INSTRUMENT_REVISION = "stratified-diagnostic-panel-r8-metricfix-v2"
 
 
 def derive_factory_seed(base_seed: int, tag: str) -> int:
@@ -94,7 +94,7 @@ class ProbeConfig:
     doubt_width_ratio_min: float = 1.12
     cost_margin_low_mult: float = 1.30
     cost_margin_high_mult: float = 0.70
-    typical_utility_scale: float = 20.0
+    propagation_epsilon_fraction: float = 0.05
 
     def __post_init__(self) -> None:
         if len(self.scenario_prior) != len(SCENARIOS):
@@ -145,6 +145,58 @@ class ProbeConfig:
             "noise_base": self.noise_base,
             "noise_high_slope": self.noise_high_slope,
             "decision": asdict(self.decision),
+            "propagation_epsilon_fraction": self.propagation_epsilon_fraction,
+            "generative_contract": {
+                "independence": (
+                    "Conditional on one latent state, observation rows are "
+                    "independent except for the declared balanced panel design."
+                ),
+                "base_mean": "10 + gain * (1 - exp(-driver / scale))",
+                "base_sd": (
+                    "noise_base + noise_high_slope * max(driver - 5, 0)"
+                ),
+                "activation": {
+                    "below_initial_region": "phi(driver) = 0",
+                    "transition": (
+                        "t=(driver-initial_region_max)/(activation_end-"
+                        "initial_region_max); phi=t^2*(3-2*t) for 0<t<1"
+                    ),
+                    "above_activation_end": "phi(driver) = 1",
+                },
+                "deployment_laws_for_target_line": {
+                    "maintain": "Normal(base_mean, base_sd)",
+                    "revise": (
+                        "Normal(base_mean - amplitude*phi, base_sd)"
+                    ),
+                    "doubt": (
+                        "0.5*Normal(base_mean-amplitude*phi, base_sd) + "
+                        "0.5*Normal(base_mean+amplitude*phi, base_sd)"
+                    ),
+                },
+                "non_target_lines": (
+                    "Normal(base_mean, base_sd) in every scenario"
+                ),
+                "diagnostic_panel_laws_for_target_line": {
+                    "maintain": (
+                        "both strata: Normal(base_mean, base_sd)"
+                    ),
+                    "revise": (
+                        "both strata: Normal(base_mean-amplitude*phi, base_sd)"
+                    ),
+                    "doubt": (
+                        "stratum s in {-1,+1}: Normal(base_mean + "
+                        "s*amplitude*phi, base_sd)"
+                    ),
+                },
+                "utility": (
+                    "mean(outcome) - risk_penalty * max(0, safety_threshold "
+                    "- q_quantile_tau(outcome))"
+                ),
+                "reopen_rule": (
+                    "reopen iff best post-evidence utility minus committed-action "
+                    "utility exceeds the revealed reopen cost"
+                ),
+            },
         }
 
 
@@ -761,6 +813,10 @@ def certify_family(family: ProbeFamily, config: ProbeConfig | None = None) -> di
     config = config or ProbeConfig()
     pre = exact_posterior(family, config)
     pre_decision = pre.decision()
+    utility_scale = float(
+        max(pre_decision.utilities.values()) - min(pre_decision.utilities.values())
+    )
+    epsilon_prop = config.propagation_epsilon_fraction * utility_scale
     scenario_reports: dict[str, dict] = {}
     posteriors: dict[Scenario, ExactPosterior] = {}
     all_gates: dict[str, dict] = {}
@@ -803,6 +859,8 @@ def certify_family(family: ProbeFamily, config: ProbeConfig | None = None) -> di
             "pre_action": pre_decision.action,
             "post_action": decision.action,
             "gross_gain": gross_gain,
+            "propagation_epsilon": epsilon_prop,
+            "propagation_denominator_resolved": gross_gain >= epsilon_prop,
             "reopen_low": reopen_is_optimal(gross_gain, low),
             "reopen_high": reopen_is_optimal(gross_gain, high),
             "posterior_q10_at_optimum": q10_opt,
@@ -926,7 +984,7 @@ def certify_family(family: ProbeFamily, config: ProbeConfig | None = None) -> di
             denominator = gross_gain
             fraction = (
                 None
-                if denominator < 0.05 * config.typical_utility_scale
+                if denominator < epsilon_prop
                 else float(
                     (decision.utilities[little_action] - committed_utility)
                     / denominator
@@ -941,7 +999,7 @@ def certify_family(family: ProbeFamily, config: ProbeConfig | None = None) -> di
     all_gates["change_a_bit_loses"] = _gate(
         max(reopened_regrets, default=0.0),
         "ge",
-        0.05 * config.typical_utility_scale,
+        epsilon_prop,
     )
 
     return {
@@ -950,6 +1008,8 @@ def certify_family(family: ProbeFamily, config: ProbeConfig | None = None) -> di
         "instrument": config.public_recipe(),
         "pre": {
             "action": pre_decision.action,
+            "utility_scale": utility_scale,
+            "propagation_epsilon": epsilon_prop,
             "action_utilities": {str(k): v for k, v in pre_decision.utilities.items()},
             "scenario_probabilities": {
                 scenario: pre.scenario_probability(scenario) for scenario in SCENARIOS
@@ -1045,6 +1105,31 @@ def _public_family_id(prefix_sha256: str, recipe_sha256: str) -> str:
     return "family_" + hashlib.sha256(payload).hexdigest()[:16]
 
 
+def build_agent_recipe(
+    config: ProbeConfig | None = None,
+    *,
+    target_line: int | None = None,
+) -> dict:
+    """Return only normative information safe for one agent episode.
+
+    Cohort layout, seed rules, prefix hashes, certification outcomes and the
+    researcher-side balancing scheme are intentionally absent.  A harness may
+    add the current public target line, but never a ``ProbeFamily`` or report.
+    """
+
+    config = config or ProbeConfig()
+    if target_line is not None and target_line not in config.lines:
+        raise ValueError(f"target_line must be one of {list(config.lines)}")
+    recipe = {
+        "schema_version": SCHEMA_VERSION,
+        "kind": "agent_normative_recipe",
+        "instrument": config.public_recipe(),
+    }
+    if target_line is not None:
+        recipe["current_episode"] = {"target_line": int(target_line)}
+    return recipe
+
+
 def write_factory_report(
     output_dir: str | Path,
     *,
@@ -1124,9 +1209,9 @@ def write_factory_report(
             and all(c["all"] for _, c in cohort)
         ),
     }
-    public_manifest = {
+    researcher_manifest = {
         "schema_version": SCHEMA_VERSION,
-        "kind": "agent_safe_factory_manifest_no_answers",
+        "kind": "researcher_public_factory_manifest_not_agent_facing",
         "frozen_design_commit": FROZEN_DESIGN_COMMIT,
         "instrument_revision": INSTRUMENT_REVISION,
         "instrument": recipe,
@@ -1159,8 +1244,19 @@ def write_factory_report(
     (private_dir / "factory_certification.json").write_text(
         json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
-    (public_dir / "manifest.json").write_text(
-        json.dumps(public_manifest, indent=2, sort_keys=True) + "\n",
+    (public_dir / "researcher_manifest.json").write_text(
+        json.dumps(researcher_manifest, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    return report
+    (public_dir / "agent_recipe.json").write_text(
+        json.dumps(build_agent_recipe(config), indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return {
+        "all": report["all"],
+        "fixed_cohort_count": count,
+        "failed_families": sum(not certificate["all"] for _, certificate in cohort),
+        "private_report_path": str(private_dir / "factory_certification.json"),
+        "researcher_manifest_path": str(public_dir / "researcher_manifest.json"),
+        "agent_recipe_path": str(public_dir / "agent_recipe.json"),
+    }

@@ -108,13 +108,21 @@
 > recuerdos del chat) por Lucas+Codex+Claude → correr el probe → veredicto → contrato del
 > paper.** ABIERTO: solo detalles que la revisión final marque.
 >
-> **IMPLEMENTACIÓN EN CURSO — COMPUERTA FACTORY (ADR 0157):** el primer instrumento IID
-> recibió NO-GO honesto (6/8 familias fijas; dos tandas `doubt` no justificaban la revisión).
-> Sin llamar agentes, se corrigió a un panel diagnóstico estratificado con likelihood exacta;
-> calibración quemada 500/500 con 8 repeticiones. La revisión queda congelada y espera una
-> segunda cohorte fresca, consecutiva y sin reemplazo. Si pasa: siguiente corte = 1–2
-> episodios técnicos; si falla: no se construye el harness. En ambos casos se vuelve a mirar
-> un nivel arriba antes de seguir.
+> **IMPLEMENTACIÓN EN CURSO — COMPUERTA FACTORY PASS (ADR 0157):** el primer instrumento IID
+> recibió NO-GO honesto (6/8 familias fijas); se corrigió a un panel diagnóstico estratificado
+> con likelihood exacta, se commiteó antes de mirar y la cohorte fresca pasó **8/8**, sin
+> reemplazo (calibración quemada 500/500). Público/privado separado; costo no revela escenario;
+> reflejos tontos pierden. **Esto habilita solo el siguiente corte: un episodio técnico vertical
+> del flujo registro→plan→evidencia→costo→entrega.** No es resultado de agentes ni evidencia del
+> paper. Re-evaluación: pregunta intacta; principal riesgo ahora = naturalidad del plan y del
+> registro, no la geometría matemática; diversidad dinámica sigue como contribución futura,
+> no claim ganado por esta fábrica estrecha. **Enmienda pre-harness:** F_prop bajo resolución
+> ya no se confunde con reapertura irracional (ADR 0157); `factory.3` espera una última cohorte
+> fresca tras ese cambio de clasificación.
+> Auditoría de frontera: la receta agent-facing queda separada del manifiesto del investigador
+> y ahora incluye el contrato matemático completo; nunca recibe cohorte/hashes/seeds/gates.
+> El soporte de dos tripletas alcanza para cableado técnico, pero BLOQUEA aún las corridas
+> conductuales por riesgo de “menú superficial”.
 >
 > **PASADA 1 CORRIDA Y CERRADA (2026-07-30, autónoma; ADRs 0154 pre-registro / 0155
 > resultados)**: diseño de Codex adoptado íntegro (factorial autoría×compromiso×evidencia,

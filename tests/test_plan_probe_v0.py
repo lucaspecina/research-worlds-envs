@@ -9,6 +9,7 @@ from wager.factory.plan_probe_v0 import (
     SCENARIOS,
     VALIDATION_SEED_START,
     ProbeConfig,
+    build_agent_recipe,
     certify_family,
     evaluate_fixed_cohort,
     exact_posterior,
@@ -18,6 +19,7 @@ from wager.factory.plan_probe_v0 import (
 )
 from wager.reward.decision_oracle import (
     DecisionInstrument,
+    ExactDecision,
     NormalMixture,
     exact_optimal_action,
     monte_carlo_optimal_action,
@@ -187,6 +189,31 @@ def test_propagation_fraction_distinguishes_sterile_and_complete_repair():
     assert not complete.sterile and np.isclose(complete.fraction, 1.0)
 
 
+def test_small_propagation_denominator_is_not_automatically_incoherent():
+    decision = ExactDecision(
+        action=2.0,
+        utility=1.5,
+        utilities={1.0: 1.0, 2.0: 1.5},
+    )
+    justified_but_unresolved = propagation_fraction(
+        committed_action=1.0,
+        final_action=2.0,
+        own_decision=decision,
+        epsilon=1.0,
+        reopen_cost=0.2,
+    )
+    unjustified = propagation_fraction(
+        committed_action=1.0,
+        final_action=2.0,
+        own_decision=decision,
+        epsilon=1.0,
+        reopen_cost=0.6,
+    )
+    assert justified_but_unresolved.below_resolution
+    assert not justified_but_unresolved.incoherent_reopen
+    assert unjustified.below_resolution and unjustified.incoherent_reopen
+
+
 def test_fixed_cohort_is_consecutive_and_never_rejection_selected():
     cohort = evaluate_fixed_cohort(count=4)
     seeds = [family.candidate_seed for family, _ in cohort]
@@ -195,16 +222,27 @@ def test_fixed_cohort_is_consecutive_and_never_rejection_selected():
 
 
 def test_factory_writes_separate_private_and_agent_safe_manifests(tmp_path):
-    report = write_factory_report(tmp_path, count=4)
+    result = write_factory_report(tmp_path, count=4)
     private_path = tmp_path / "private" / "factory_certification.json"
-    public_path = tmp_path / "public" / "manifest.json"
-    assert private_path.exists() and public_path.exists()
+    researcher_path = tmp_path / "public" / "researcher_manifest.json"
+    agent_path = tmp_path / "public" / "agent_recipe.json"
+    assert private_path.exists() and researcher_path.exists() and agent_path.exists()
+    assert set(result) == {
+        "all",
+        "fixed_cohort_count",
+        "failed_families",
+        "private_report_path",
+        "researcher_manifest_path",
+        "agent_recipe_path",
+    }
+    report = json.loads(private_path.read_text(encoding="utf-8"))
     assert report["fixed_cohort"]["consecutive_no_skips"]
     assert not report["fixed_cohort"]["selection_on_realized_evidence"]
     assert report["batch_gates"]["cost_only_accuracy_is_chance"]["passed"]
     assert report["batch_gates"]["scenario_cost_mutual_information_zero"]["passed"]
 
-    public = json.loads(public_path.read_text(encoding="utf-8"))
+    agent = json.loads(agent_path.read_text(encoding="utf-8"))
+    researcher = json.loads(researcher_path.read_text(encoding="utf-8"))
 
     def keys(value):
         if isinstance(value, dict):
@@ -227,8 +265,26 @@ def test_factory_writes_separate_private_and_agent_safe_manifests(tmp_path):
         "post_action",
         "gross_gain",
         "truth_utility_at_reference_action",
+        "cohort",
+        "factory_gate_passed",
+        "frozen_design_commit",
+        "prefix_sha256",
+        "family_id",
     }
-    assert forbidden.isdisjoint(set(keys(public)))
+    assert forbidden.isdisjoint(set(keys(agent)))
+    assert "cohort" in set(keys(researcher))
+    contract = agent["instrument"]["generative_contract"]
+    assert "gain" in contract["base_mean"]
+    assert "0.5*Normal" in contract["deployment_laws_for_target_line"]["doubt"]
+    assert "risk_penalty" in contract["utility"]
     assert "candidate_seed" in set(keys(json.loads(
         private_path.read_text(encoding="utf-8")
     )))
+
+
+def test_agent_recipe_can_add_only_the_current_public_target_line():
+    recipe = build_agent_recipe(target_line=3)
+    assert recipe["current_episode"] == {"target_line": 3}
+    serialized = json.dumps(recipe, sort_keys=True)
+    for forbidden in ("candidate_seed", "cohort", "prefix_sha256", "factory_gate"):
+        assert forbidden not in serialized
