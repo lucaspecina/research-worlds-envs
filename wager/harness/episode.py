@@ -161,6 +161,18 @@ def run_episode(
                 abort_reason = "submitted"
                 break
 
+            # KernelClient intentionally kills the isolated process after a
+            # cell timeout.  Continuing would turn the next round into an
+            # uninformative BrokenPipe and discard the partial trace.  Preserve
+            # the timeout as the actual terminal reason instead.
+            if (
+                not result.ok
+                and result.error
+                and result.error.startswith("cell exceeded ")
+            ):
+                abort_reason = "cell_timeout"
+                break
+
             if chat.usage.total_tokens > max_tokens:
                 abort_reason = "max_tokens"
                 break

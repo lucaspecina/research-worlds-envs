@@ -108,25 +108,19 @@
 > recuerdos del chat) por Lucas+Codex+Claude → correr el probe → veredicto → contrato del
 > paper.** ABIERTO: solo detalles que la revisión final marque.
 >
-> **IMPLEMENTACIÓN EN CURSO — COMPUERTA FACTORY PASS (ADR 0157):** el primer instrumento IID
-> recibió NO-GO honesto (6/8 familias fijas); se corrigió a un panel diagnóstico estratificado
-> con likelihood exacta, se commiteó antes de mirar y la cohorte fresca pasó **8/8**, sin
-> reemplazo (calibración quemada 500/500). Público/privado separado; costo no revela escenario;
-> reflejos tontos pierden. **Esto habilita solo el siguiente corte: un episodio técnico vertical
-> del flujo registro→plan→evidencia→costo→entrega.** No es resultado de agentes ni evidencia del
-> paper. Re-evaluación: pregunta intacta; principal riesgo ahora = naturalidad del plan y del
-> registro, no la geometría matemática; diversidad dinámica sigue como contribución futura,
-> no claim ganado por esta fábrica estrecha. **Enmienda pre-harness:** F_prop bajo resolución
-> ya no se confunde con reapertura irracional (ADR 0157); `factory.3` espera una última cohorte
-> fresca tras ese cambio de clasificación.
-> Auditoría de frontera: la receta agent-facing queda separada del manifiesto del investigador
-> y ahora incluye el contrato matemático completo; nunca recibe cohorte/hashes/seeds/gates.
-> El soporte de dos tripletas alcanza para cableado técnico, pero BLOQUEA aún las corridas
-> conductuales por riesgo de “menú superficial”.
-> **FACTORY.3 CERRADA PASS 8/8 (ADR 0159):** cohorte fresca y fija; F_prop estable 8/8 en
-> `revise` y 3/8 en `doubt`; receta del agente sin información de muestreo. **Siguiente acción:
-> implementar y correr UN episodio técnico scripted.** No llamar agentes todavía: primero
-> cableado causal/opaco; luego reevaluación y ampliación del soporte antimenú.
+> **HARNESS REAL CERRADO; INSTRUMENTO CONDUCTUAL TODAVÍA NO-GO (ADR 0160):** episodio
+> scripted PASS y agentes reales corridos. DeepSeek expuso fallas de UX que ya se corrigieron
+> (reloj visible, timeout honesto, replay byte-idéntico de datos ya vistos); **gpt-5.4 completó
+> las 12 rondas con 4/4 modelos válidos, 8→7, REABRIR, entrega aceptada y regret factual/legal
+> 0**. Esto valida integración, NO conducta. La reevaluación subió un nivel y encontró: (a)
+> dos tripletas = menú superficial; (b) la factory certificaba desde `a_pre*`, pero el agente
+> puede comprometer otra acción, cambiando las seis ramas; (c) la vara MC/costo quedó
+> indeterminada; (d) ambos costos se filtraban antes de Mbelief. La fuga ya está cerrada:
+> ningún costo ni distribución aparece hasta R9. **SIGUIENTE ACCIÓN ÚNICA: factory v4** —
+> soporte rico + certificación condicionada al compromiso pretratamiento + margen absoluto
+> sobre error. Después, un smoke barato real y uno SOTA; recién entonces piloto/contrato.
+> Semillas técnicas 90000-90006 quemadas; crudos privados en
+> `scripts/out/probe_v0_plan/technical/`.
 >
 > **PASADA 1 CORRIDA Y CERRADA (2026-07-30, autónoma; ADRs 0154 pre-registro / 0155
 > resultados)**: diseño de Codex adoptado íntegro (factorial autoría×compromiso×evidencia,

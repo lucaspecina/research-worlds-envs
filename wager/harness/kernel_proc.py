@@ -73,6 +73,18 @@ def _make_env_proxy(conn):
         def register(self, line, code):
             return verb("register", {"line": int(line), "code": code})
 
+        def register_model(self, code):
+            return verb("register_model", {"code": code})
+
+        def commit_plan(self, action):
+            return verb("commit_plan", {"action": float(action)})
+
+        def maintain(self):
+            return verb("maintain", {})
+
+        def reopen(self, action):
+            return verb("reopen", {"action": float(action)})
+
         def submit(self, code):
             return verb("submit", {"code": code})
 
@@ -159,6 +171,18 @@ class KernelClient:
                 return {"type": "verb_result", "kind": "dataframe", "data": df.to_dict("list")}
             if name == "register":
                 data = self.server.register(args["line"], args["code"])
+                return {"type": "verb_result", "kind": "json", "data": data}
+            if name == "register_model":
+                data = self.server.register_model(args["code"])
+                return {"type": "verb_result", "kind": "json", "data": data}
+            if name == "commit_plan":
+                data = self.server.commit_plan(args["action"])
+                return {"type": "verb_result", "kind": "json", "data": data}
+            if name == "maintain":
+                data = self.server.maintain()
+                return {"type": "verb_result", "kind": "json", "data": data}
+            if name == "reopen":
+                data = self.server.reopen(args["action"])
                 return {"type": "verb_result", "kind": "json", "data": data}
             if name == "submit":
                 res = self.server.submit(args["code"])

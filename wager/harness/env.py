@@ -28,5 +28,17 @@ class Env:
     def register(self, line: int, code: str):
         return self._backend.register(line, code)
 
+    def register_model(self, code: str):
+        return self._backend.register_model(code)
+
+    def commit_plan(self, action: float):
+        return self._backend.commit_plan(action)
+
+    def maintain(self):
+        return self._backend.maintain()
+
+    def reopen(self, action: float):
+        return self._backend.reopen(action)
+
     def submit(self, code: str):
         return self._backend.submit(code)

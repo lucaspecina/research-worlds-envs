@@ -214,6 +214,24 @@ def test_small_propagation_denominator_is_not_automatically_incoherent():
     assert unjustified.below_resolution and unjustified.incoherent_reopen
 
 
+def test_resolved_propagation_can_still_be_incoherent_after_cost():
+    decision = ExactDecision(
+        action=3.0,
+        utility=2.0,
+        utilities={1.0: 1.0, 2.0: 1.5, 3.0: 2.0},
+    )
+    result = propagation_fraction(
+        committed_action=1.0,
+        final_action=3.0,
+        own_decision=decision,
+        epsilon=0.1,
+        reopen_cost=1.2,
+    )
+    assert not result.below_resolution
+    assert result.fraction == pytest.approx(1.0)
+    assert result.incoherent_reopen
+
+
 def test_fixed_cohort_is_consecutive_and_never_rejection_selected():
     cohort = evaluate_fixed_cohort(count=4)
     seeds = [family.candidate_seed for family, _ in cohort]

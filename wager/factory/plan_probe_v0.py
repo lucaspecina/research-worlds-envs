@@ -1120,10 +1120,18 @@ def build_agent_recipe(
     config = config or ProbeConfig()
     if target_line is not None and target_line not in config.lines:
         raise ValueError(f"target_line must be one of {list(config.lines)}")
+    instrument = config.public_recipe()
+    # Causal hygiene: the operational friction is revealed only after Mbelief
+    # has been registered.  The researcher-side recipe remains complete, but
+    # neither possible cost nor its distribution may shape the agent's earlier
+    # model or commitment.
+    instrument["decision"] = dict(instrument["decision"])
+    instrument["decision"].pop("reopen_cost_low", None)
+    instrument["decision"].pop("reopen_cost_high", None)
     recipe = {
         "schema_version": SCHEMA_VERSION,
         "kind": "agent_normative_recipe",
-        "instrument": config.public_recipe(),
+        "instrument": instrument,
     }
     if target_line is not None:
         recipe["current_episode"] = {"target_line": int(target_line)}

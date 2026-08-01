@@ -316,7 +316,12 @@ def propagation_fraction(
         fraction=fraction,
         own_gain=own_gain,
         sterile=bool(fraction < sterile_threshold),
-        incoherent_reopen=False,
+        # Statistical resolution and decision rationality are distinct.  A
+        # well-resolved improvement can still be smaller than the reopening
+        # price, making the choice incoherent under the agent's own belief.
+        incoherent_reopen=bool(
+            reopen_cost is not None and own_gain <= reopen_cost
+        ),
     )
 
 
