@@ -7,18 +7,15 @@
 > nueva de vicios entra SOLO acá; `mundos-por-vicio.md` deriva mundos; `failure-modes.md`
 > guarda la tesis.
 
-## EL FOCO ACTUAL (decisión de Lucas, 2026-07-13)
+## FOCO VIGENTE (ADR 0161; 2026-07-31)
 
-**Vicio 1 — la calibración de la revisión de creencias (EL PIVOTEO)**: la capacidad de mover tu
-creencia en proporción a la calidad de la evidencia — el pivoteo famoso que tan difícil les
-resulta a las IAs. Con sus fallas: **rigidez** (no cambiar ante evidencia) y **dejarse
-influenciar** por DOS canales — la **presión social** (alguien con autoridad te empuja sin
-datos: la sycophancy) y el **sesgo por contenido** (te MUESTRAN algo — una idea, un paper, una
-pista — y toda tu investigación se curva hacia eso, perdiendo el centro; de esto hay evidencia
-PROPIA: los experimentos de pistas, donde hasta un placebo de estilo movía la nota). Camino
-firmado (r23 + ADR 0142): sonda barata por replay ANTES de construir, con criterio de muerte
-pre-registrado → el mundo híbrido revisión×verificación-de-paja si la sonda vive. Detalle:
-[vicio-1](vicio-1-calibracion-de-creencias.md).
+**Vicio 1 — calibración de la revisión de creencias:** entender cuándo un agente cambia,
+conserva o aumenta/reduce su incertidumbre en la magnitud justificada por la evidencia, y dónde
+esa revisión se pierde antes de sus acciones o entrega. La guía conceptual vigente es
+[`docs/nota-direccion-revision-de-creencias.md`](../nota-direccion-revision-de-creencias.md) y el
+próximo paso vive en [`docs/roadmap.md`](../roadmap.md). El camino social/contenido de ADR 0142 y
+sus sondas posteriores quedan como historia experimental, no como plan actual. Detalle de la
+evidencia y anatomía: [vicio-1](vicio-1-calibracion-de-creencias.md).
 
 ## Etiquetas de rigor (obligatorias en esta capa)
 

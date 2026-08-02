@@ -1,8 +1,10 @@
 # Vicio 1 — La calibración de la revisión de creencias (EL PIVOTEO)
 
-> **EL FOCO del proyecto (decisión de Lucas, 2026-07-13; ADR 0142).** Eje: Competencia.
-> Etiquetas y marco: ver [README](README.md). Estado WAGER: `first_story` hecho (control del
-> polo-rigidez en frontier; e instrumenta el canal-contenido vía folklore).
+> **FOCO vigente (ADR 0161):** este dossier conserva la evidencia y anatomía detallada del vicio.
+> La dirección conceptual actual vive en
+> [`docs/nota-direccion-revision-de-creencias.md`](../nota-direccion-revision-de-creencias.md) y el
+> próximo paso en [`docs/roadmap.md`](../roadmap.md); las decisiones ADR 0142–0149 son historia
+> experimental, no el plan vigente. Eje: Competencia; etiquetas y marco: ver [README](README.md).
 > **Regla de esta capa: toda fuente nombrada lleva su LINK en la primera mención** — el estado
 > de lectura vive en [lectura-de-fuentes.md](../lectura-de-fuentes.md); los IDs de abajo fueron
 > verificados contra arXiv (título↔claim) el 2026-07-13.
@@ -320,8 +322,10 @@ demasiado limpias del fenómeno.
    temprano — en la primera palabra de la respuesta, antes de razonar (el snowball).
 2. **La evidencia en contra llega sucia**: mezclada con algo que confirma, o discutible
    ("puede ser ruido del sensor"). Ante la mezcla elige leer la mitad que le conviene: con una
-   pieza a favor y una en contra vuelve a su idea la mitad de las veces; con dos y dos, el
-   99.8% (la tabla de Xie).
+   pieza a favor y una en contra vuelve a su idea aproximadamente 43–65% de las veces; con dos
+   y dos, aproximadamente 54–76% según el modelo (tabla 6 de Xie). **Corrección 2026-08-01:**
+   el `99.8%` corresponde a dos piezas confirmatorias y cero contradictorias (`2/2`, 100% del
+   contexto a favor), no al conflicto balanceado `2/4`.
 3. **Cambiar cuesta algo**: rehacer el modelo, tirar trabajo comprado, quedar mal con lo que
    ya firmó.
 
@@ -365,7 +369,7 @@ exactamente lo que el mundo v1 del pivoteo tiene que tener — y por diseño tie
 | **RadLE** (GPT-5) | diagnóstico por imagen única, razonamiento largo | **transición hallazgos→conclusión** | sus hallazgos intermedios contradicen la 1ª hipótesis | ve lo correcto y concluye lo inicial (30% vs 83% radiólogos) |
 | **Jeong** (chicos, agéntico) | agente web ≥5 fuentes → informe | la política entera, desde FORMACIÓN | creencia pre-cargada al inicio | −26.9% búsquedas, −16.9% fuentes, informe "fluido y plausible"; a mitad de tarea: débil |
 | **Investigator** (conversacional) | diagnóstico técnico guiado sobre hilos reales | todo el diálogo | causa equivocada sugerida al INICIO y sostenida | desafío espontáneo 1-2/30; con chequeo pedido 27-28/30 |
-| **Xie** (viñeta 1-turno) | QA con evidencia externa | — | contradicción **MEZCLADA** con confirmación | única coherente → acepta 91-96%; mixta 1+1 → vuelve a la suya 43-65%; 2+2 → 99.8%; orden ±49.5pp |
+| **Xie** (viñeta 1-turno) | QA con evidencia externa | — | contradicción **MEZCLADA** con confirmación | contraevidencia sola → acepta ~84–96%; mixta 1+1 → vuelve a la suya 43–65%; 2+2 → ~54–76% (el 99.8% era 2+0, sin conflicto); orden hasta 49.5pp |
 | **Kumaran** (viñeta 2-turnos) | binaria + consejo con precisión declarada | 2º turno | **ver su propia respuesta** / consejo contrario | cambia 13.1% vs 32.5% sin verse (desaparece si "es de otro LLM"); contrario sobre-pesado 2.58×; acantilado en confianza 0.77 |
 | **snowball** (viñeta) | Sí/No + justificación (primalidad/grafos) | **el PRIMER token** | pregunta que exige cómputo secuencial | se compromete antes de razonar (95-98%) y fabrica justificaciones que reconoce falsas aparte (67-87%) |
 | **Yang** (7-8B) | QA + continuación libre | inmediatamente post-respuesta | error propio que SABE incorrecto | retracta 11-26%; lo gobierna la creencia interna momentánea (steering la enciende/apaga) |

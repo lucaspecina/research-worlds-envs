@@ -7,6 +7,10 @@
 
 ## Estado actual `[VOLÁTIL — mantener al día]`
 
+> **OPERATIVA DE EQUIPO (ADR 0172):** Codex supervisa la dirección científica y mantiene el mapa;
+> Claude trabaja como worker persistente de implementación, ejecución y contrapunto. Roles,
+> enforcement y canal: [`docs/operativa-codex-claude.md`](operativa-codex-claude.md).
+
 > **REGLA DE NAVEGACIÓN (Lucas, 2026-07-31): avanzar y volver a mirar un paso arriba.**
 > Trabajamos con una hipótesis concreta, la probamos pronto y usamos el resultado para decidir;
 > no intentamos resolver por discusión todos los detalles antes de construir. Al cerrar CADA
@@ -19,6 +23,17 @@
 > **Un negativo no dispara abandono automático:** primero se inspeccionan trazas y artefactos,
 > se proponen explicaciones rivales y se prueban cambios mínimos de contenido con agentes reales.
 > No confundimos “esta versión no creó el fenómeno” con “el fenómeno no existe”.
+>
+> **AUDITORÍA FUNDAMENTAL DEL MUNDO (Lucas, 2026-08-02):** antes de agregar tratamientos,
+> infraestructura o más corridas, cuestionar el anfitrión mismo. Toda ficha nueva debe declarar:
+> (1) qué fenómeno puede producir naturalmente ese mundo; (2) cuáles ejes están materialmente
+> presentes y cuáles no; (3) complejidad cognitiva real —no cantidad nominal de filas—;
+> (4) pasos significativos, estado acumulado y artefactos/dependencias que sobreviven entre pasos;
+> (5) qué puede releer el agente y qué debe recordar o reconstruir; y (6) qué explicación basada en
+> el mundo, la interfaz o el protocolo competiría con una falla del agente. Un mundo pequeño puede
+> ser un buen microscopio, pero sus resultados no autorizan claims sobre carga, compromiso, memoria
+> o fricción que el episodio no instancie. Si el host no tiene headroom causal para el fenómeno, se
+> cambia el mundo antes de optimizar el elicitor.
 
 > ## ★ ALINEACIÓN OFICIAL ACTUAL (2026-07-31 — ADR 0161)
 >
@@ -38,13 +53,196 @@
 > siguiente acción del probe con panel señalado + costo + MANTENER/REABRIR. El harness técnico
 > de ADR 0160 se conserva; no habilita inferencia conductual.
 >
-> **SIGUIENTE ACCIÓN ÚNICA:** clean vs mixed no atenuó la revisión en el donante SOTA y no se
-> perseguirá el efecto agregando relleno (ADR 0171). Mantener la baseline apareada y retirar el
-> reporte servido: el hito solo habilita el rango, y la evidencia debe surgir de las campañas que
-> el agente elija. Escribir una ficha mínima, certificar polos y correr agente barato + una réplica
-> SOTA si la mecánica pasa. Esto prueba búsqueda e incorporación natural dentro del mismo mundo.
-> Resultado y gate: [probe natural](research/2026-08-01-resultado-probe-timing-natural-overgen-v0.md),
-> ADR 0169.
+> **ESTADO 2026-08-01 — REEVALUACIÓN ECOLÓGICA:** retirar el reporte servido logró que el agente
+> eligiera campañas reales, pero `overgen` siguió siendo cognitivamente pequeño: puede releer y
+> reagrupar todo, el problema se reduce a unas pocas regresiones y casi nada depende de la teoría.
+> El fork de acción propia además falló su igualdad causal en el primer intento; no se escaló a
+> SOTA. Resultado:
+> [probe dato propio](research/2026-08-01-resultado-probe-dato-propio-deepseek94700.md).
+>
+> La hipótesis “el vicio aparece cuando el pasado solo sobrevive en los apuntes” se trató como
+> mecanismo candidato, no como nuevo pivote. Un probe real `H+N / N-self` dio signo mixto: la
+> historia completa ancló la forma vieja en `REVISE`; el estado comprimido detectó el cambio pero
+> perdió continuidad operativa y no confirmó la hipótesis original. Resultado:
+> [historia vs apuntes](research/2026-08-01-resultado-probe-historia-vs-apuntes-94101.md).
+>
+> **RESULTADO 2026-08-01 — ESTRUCTURA CAUSAL:** el rerun real seed 94801 pasó todas las
+> compuertas técnicas (misma acción de ocho experimentos en ambos gemelos; `R=0.887/0.815`;
+> firmas humedad/grade correctas). La autopsia encontró que `Mpre` ignoraba los controles:
+> hubo aprendizaje causal bilateral, pero aún no revisión/conservación de una creencia causal
+> formada. [Resultado](research/2026-08-01-resultado-probe-causal-limpio-94801.md).
+>
+> **RESULTADO 2026-08-01 — STRESS REAL DE HISTORIAL:** en el donante DeepSeek 94101, la
+> continuación nativa subactualizó 2/2 ante evidencia limpia (`F=0.04/0.00`) y la conversación
+> fresca, con idéntico workspace y sin hint, revisó 2/2 (`F=1.06/0.91`). La autopsia localizó
+> `notar → interpretar`: vio residuos grandes pero los absorbió dentro de la clase vieja. El
+> transcript atribuido a otro también falló; filler igualado fue inestable. **Pero la réplica
+> por donante no generalizó el mecanismo:** 96304 nativo revisó y su fresco quedó censurado por
+> desorientación/max-turns; 96306 entendió curvas distintas pero no las implementó bien. gpt-5.4
+> revisó incluso con señal 16/256 e historial sintético largo.
+> Resultado completo:
+> [stress historial/evidencia](research/2026-08-01-resultado-stress-historial-y-evidencia.md).
+>
+> **RESULTADO 2026-08-01 — PROPAGACIÓN FRONTIER:** en dos historiales independientes de gpt-5.4,
+> el modelo asimiló el reporte (`F=0.97–1.08`) pero dejó vieja la única decisión dependiente en
+> 4/6 continuaciones válidas; los controles RETAIN fueron limpios y el control mecánico editó 6/6.
+> Un recordatorio genérico de consistencia —sin nombrar el plan ni dar la respuesta— eliminó la
+> brecha en 4/4 REVISE y mantuvo RETAIN 4/4. Un handoff real `modelo + plan` también la eliminó en
+> los dos donantes: ambos artefactos vivos y entregados quedaron correctos. Aumentar luego el plan
+> a seis decisiones tampoco creó fricción: gpt-5.4 propagó `6/6` en los dos donantes
+> (`F_model=1.060/0.940`) y preservó RETAIN. Multiplicar casilleros queda cerrado como sustituto
+> artificial del retrabajo real. Resultado y autopsia:
+> [propagación frontier](research/2026-08-01-resultado-probe-propagacion-frontier-v0.md).
+>
+> **DECISIÓN UN NIVEL ARRIBA:** conservar 94101 como control positivo local de interpretación y
+> la nueva sonda como control positivo reproducible de **propagación/saliencia**. Retirar dos claims
+> prematuros: “el historial completo causa terquedad” y “más dependencias ya muestran una curva de
+> fricción”. En el instrumento actual, el cuello inmediato es gestión prospectiva del estado: si el
+> checklist se vuelve saliente, el frontier lo resuelve. No seguir agregando filler.
+>
+> **RESULTADO 2026-08-01 — FIRST-STORY SCM:** los twins y el reward pasaron certificados, pero
+> 0/4 DeepSeek (`97000–97003`) tenía `Mpre` antes del primer experimento. Los agentes hicieron lo
+> racional: buscaron evidencia —tres con campañas útiles— antes de comprometer una explicación.
+> No hubo fork ni evidencia post-checkpoint; no informa una tasa de revisión. El host comenzaba
+> demasiado temprano. [Resultado](research/2026-08-01-resultado-probe-first-story-scm-v0.md).
+>
+> **ACCIÓN YA EJECUTADA — histórico 2026-08-01; resultado inmediatamente debajo:** misma física
+> causal, ahora con pasado propio vivido. El agente aprende
+> `G→Y` investigando South; una transición rutinaria abre North y su primer experimento propio
+> confirma transferencia en RETAIN o la refuta en REVISE. Esto prueba revisión/conservación de una
+> creencia realmente formada sin servir una corrección. Después del control limpio, si funciona,
+> la próxima perilla de contenido es conflicto confirmatorio+contradictorio igualado, no filler.
+>
+> **RESULTADO 2026-08-01 — TRANSFERENCIA SOUTH→NORTH:** el control limpio pasó con dos agentes
+> reales. DeepSeek movió el efecto North de `G` `7.59→0.20` en REVISE y lo conservó en `8.20`
+> en RETAIN; gpt-5.4 hizo `7.87→−0.04/8.08`. Ambos preservaron la ley South (~`7.6–7.9`,
+> verdad `8`). La campaña fue elegida por el propio agente y no hubo prompt post-evidencia en
+> gpt-5.4. Los scores globales siguieron modestos: el claim es revisión **estructural**, no
+> modelización perfecta. [Resultado](research/2026-08-01-resultado-probe-scm-transfer-v0.md).
+>
+> **AUDITORÍA PRE-CORRIDA:** el primer diseño de “panel natural confirmatorio” se abandonó antes
+> de gastar: las campañas limpias ya contenían un bloque North natural grande junto a los bloques
+> off-manifold, y ambos modelos revisaron. Repetirlo habría sido renombrar el mismo control negativo.
+>
+> **RESULTADO 2026-08-01 — NORTH HETEROGÉNEO:** dos agentes reales revisaron aproximadamente
+> bien la media en los tres polos, pero DeepSeek y gpt-5.4 aplanaron la mezcla 75/25 en una sola
+> distribución gaussiana en **4/4 forks** (dos seeds por modelo): captura de la firma estructural
+> `A3≈0%` en todos. El residuo de no-pivoteo de un DeepSeek en REVISE no se replicó. Hay una
+> falla distribucional replicada. Un control con exactamente las mismas 19 tablas mostró que ni
+> dar un turno extra al agente nativo ni quitar todo el historial/modelo previo en un analista
+> fresco recupera la mezcla (`A3≈0%` en ambos): **no es evidencia de compromiso con South**;
+> sobrevive como tendencia general a resumir heterogeneidad estructurada como ruido.
+> Un ajustador cero-LLM sobre exactamente las filas servidas seleccionó la mezcla de dos leyes
+> por BIC, CV y todos los folds en **tres donantes** (`97501`, `97400`, `97401`); ganó además los
+> dos holdouts de campaña que podían construirse honestamente. Recuperó la existencia y orientación
+> de las dos leyes, aunque no sus pesos/asimetría con precisión uniforme. Los agentes dejaron
+> `A3≈0` en los tres. La estructura era estadísticamente recuperable; el límite ahora es del agente,
+> no una imposibilidad de la muestra finita.
+> [Resultado](research/2026-08-01-resultado-probe-north-heterogeneo-v0.md).
+>
+> **CONTROL GENÉRICO NEGATIVO:** pedir explícitamente comprobar residuos y la adecuación de una
+> única familia tampoco recuperó la estructura (`A3≈0`): gpt-5.4 comparó Normal vs colas pesadas,
+> pero no propuso subpoblaciones latentes. No es un simple olvido de mirar dispersión.
+>
+> **CONTROL DE FAMILIA CERRADO:** después de invalidar una corrida que no leyó el
+> manifiesto, se detectó que el supuesto par plano/plano había dejado el baseline en JSON por un
+> argumento omitido. El raw queda preservado y no se llama par causal. El baseline plano corregido
+> y válido dio media North `1.67`, South `8.13` y `A3≈0`; declarar modos latentes produjo solo
+> una mezcla residual (`A3≈0`). Al declarar mezclas de leyes, gpt-5.4 sí las implementó, pero las
+> estimó con forma y efecto equivocados y degradó South. Se cierra la escalera de hints: más
+> pistas serían una receta de programación.
+>
+> **CAMUFLAJE ON-MANIFOLD CERRADO:** con 800 filas rutinarias visualmente confirmatorias pero
+> `LLR=0`, DeepSeek redujo su revisión solo `0.149` y gpt-5.4 `0.005`; el umbral previo era `0.25`.
+> No fue un elicitor robusto. [Resultado](research/2026-08-01-resultado-probe-camuflaje-on-manifold-v0.md).
+>
+> **RESULTADO 2026-08-01 — PASADO VIVIDO ACELERADO:** cuatro campañas North realmente procesadas
+> no crearon rigidez ante un audit limpio y extremo: DeepSeek revisó `7.57→0.23` en el primer turno
+> (`U=.969`) y conservó correctamente el gemelo RETAIN. Las ramas frescas quedaron inválidas por
+> una interfaz ambigua y no se interpretan. Una sobrecorrección espontánea hacia South en seed
+> `97800` **no replicó** en la corrida precomprometida `97802`: volvió a revisar North con fuerza
+> (`U=1.227`) pero preservó South. Queda como anécdota `n=1`, no como falla reproducida.
+> [Resultado](research/2026-08-01-resultado-probe-pasado-acelerado-vivido-v0.md).
+>
+> **AUDITORÍA DE CONFLICTO FIRMADO:** una corrida v0 produjo una diferencia nominal grande
+> (`B=.61`), pero el instrumento era inválido: las varas limpias apuntaban a la verdad oculta
+> cuando la evidencia finita implicaba pendientes `3.17/4.84`, exactamente las que estimó el
+> agente; además hubo experimentos posteriores y un orden confundido con recencia. La v1 corregida
+> pasó todas las compuertas con DeepSeek y gpt-5.4, pero dio contraste nulo (`B≈.013/0`): ambos
+> siguieron la referencia de evidencia finita aun con estudios de signos opuestos. Se cierra esta
+> implementación sin tuning; una futura versión deberá variar solo `study_id` sobre exactamente el
+> mismo multiset de filas. [Auditoría](research/2026-08-01-resultado-probe-conflicto-firmado-v0.md).
+>
+> **RESULTADO — LOCALIZACIÓN/REFACTOR v0:** DeepSeek produjo la firma candidata: con fuente
+> SHARED corrigió North pero borró South; con SPLIT corrigió North y preservó South. Su gate formal
+> falló porque SHARED-RETAIN no entregó. gpt-5.4 sí entregó 4/4 pero **no replicó**: reconstruyó
+> casi todo desde el audit North y dañó South también con SPLIT y en RETAIN. La autopsia encontró
+> que el handoff fresco llevaba `Mpre` pero no las 16 piezas de evidencia que lo habían producido;
+> gpt buscó datos South, no los encontró y usó North como fallback. Por tanto v0 no identifica
+> representación/refactor. [Resultado](research/2026-08-01-resultado-probe-localizacion-refactor-v0.md).
+>
+> **LECCIÓN METODOLÓGICA:** el modelo ejecutable puede medir qué predecía el agente sin ser por sí
+> solo un estado suficiente para continuar la investigación: falta por qué lo creía y qué evidencia
+> lo sostenía. No confundir `Mbelief` como medición con snapshot cognitivo completo.
+>
+> **RESULTADO — SNAPSHOT CON PROCEDENCIA v1:** el certificado congeló las 16 piezas crudas y pasó
+> 21/21 compuertas, pero las dos ramas DeepSeek RETAIN fallaron el gate de fidelidad: inspeccionaron
+> ledger y audit, reconstruyeron ampliamente el modelo, dañaron North/South y agotaron cinco turnos
+> sin entregar. SHARED terminó `7.57→10.28/12.74`; SPLIT `7.57→0/15.20`. No se corrió REVISE ni se
+> ajustó el prompt. Modelo ejecutable + evidencia completa siguen sin equivaler a trayectoria vivida.
+> [Resultado](research/2026-08-01-resultado-probe-localizacion-refactor-con-procedencia-v1.md).
+>
+> **REEVALUACIÓN UN NIVEL ARRIBA (2026-08-02):** se abandona `source-layout` como línea inmediata.
+> Un replay nativo que cambie SHARED→SPLIT a mitad de una conversación contradice la memoria del
+> agente; formar ambas representaciones desde cero sería caro y respondería una pregunta secundaria.
+> La señal robusta que sí sobrevivió es más básica: DeepSeek y gpt actualizaron correctamente dentro
+> de una familia simple, pero aplanaron en 4/4 una estructura de dos leyes recuperable por un ajustador
+> cero-LLM. Eso todavía puede ser dificultad general de modelado, no resistencia a revisar lo propio.
+>
+> **AUDITORÍA DEL ANFITRIÓN:** South→North no es una investigación larga aunque tenga 1.200–1.700
+> filas: son 5–16 decisiones del LLM, un SCM de dos controles y un único artefacto ejecutable. Sí
+> instancia autoría vivida, evidencia posterior, cambio bilateral y revisión estructural; no instancia
+> memoria forzada, compromiso profundo, dependencias ni retrabajo real. Se conserva únicamente como
+> microscopio de topología de revisión. Auditoría completa:
+> [mundo SCM](research/2026-08-02-auditoria-fundamental-mundo-scm-transfer.md).
+>
+> **RESULTADO 2026-08-02 — TOPOLOGÍA VISIBLE VS LATENTE:** el primer donante real DeepSeek
+> `98300` pasó todas las compuertas. RETAIN conservó la ley (`ΔG=7.65`, verdad `8`), REVISE la
+> reemplazó casi perfectamente (`F=1.01`), y LOCAL pasó de promediar A/B a capturar `83.2%` de la
+> partición causal visible. LATENT corrigió aproximadamente el efecto medio (`F=1.08`) pero volvió
+> a entregar una sola Normal ancha: `A3≈0` frente a verdad `0.358`. Un ajustador cero-LLM eligió la
+> estructura correcta por BIC y CV desde las 80 filas iniciales idénticas LOCAL/LATENT. La autopsia
+> muestra dispersión anómala observada pero absorbida como ruido y cierre con presupuesto de sobra.
+> Es evidencia exploratoria de **actualización estructural incompleta**, no de terquedad general.
+> [Resultado y cautelas](research/2026-08-02-resultado-probe-topologia-local-visible-vs-latente-v1.md).
+>
+> **RÉPLICA GPT-5.4 2026-08-02:** después de tres seeds no elegibles por interfaz, `98403` completó
+> las cuatro ramas. RETAIN y REVISE pasaron. LOCAL aprendió `96.6%` de la partición A/B sobre la
+> rebanada que investigó (`H=5`), pero extrapoló una pendiente H absurda porque nunca la varió.
+> LATENT sí reparó la superficie media 2D (`ΔG=1.84`, `ΔH=−5.94`, casi la verdad) y aun así volvió
+> a entregar una sola Normal: `A3≈0`. Es convergencia exploratoria entre DeepSeek y gpt-5.4 del
+> **aplanamiento de estructura latente**, junto con un segundo fallo distinto de cobertura y
+> extrapolación. [Resultado y límites](research/2026-08-02-resultado-replica-gpt-topologia-v1-1.md).
+>
+> **CONTROL 2D IGUALADO:** el primer intento se invalidó porque ocultaba al agente la procedencia
+> de las tablas; se preservó y se corrigió sin cambiar una sola observación. En v1, BIC+CV recuperan
+> holgadamente ambas estructuras. GPT capturó `95.0%` de la partición visible en grado; en LATENT
+> corrigió casi toda la superficie media pero dejó `A3≈0` frente a verdad `0.333`. LOCAL no resolvió
+> completamente humedad y ambas ramas sobrescribieron metadata correcta con supuestos propios.
+> [Resultado y auditoría](research/2026-08-02-resultado-control-topologia-evidencia-2d.md).
+>
+> **CONTROL DE TURNO Y CIERRE DEL SCM:** en LATENT v2, el guard rechazó la primera entrega y GPT
+> recibió sus tablas y ajustes en un segundo turno real. No revisó: reenvió byte-idéntico el modelo
+> unimodal (`Mfirst=Mlast`; media casi correcta, `A3≈0` frente a `0.333`). El cierre same-cell no
+> explica la falla. Se cierra este anfitrión sin buscar seeds, prompts ni hints: hay convergencia
+> exploratoria de **actualización de parámetros sin apertura espontánea de estructura latente**, no
+> una tasa de terquedad general. [Resultado](research/2026-08-02-resultado-control-topologia-evidencia-2d.md).
+>
+> **REEVALUACIÓN Y SIGUIENTE ACCIÓN ÚNICA:** probar generalización en un mundo dinámico realmente
+> distinto, antes de escalar. Candidato preferido bajo auditoría: `logistic_yield_v0` — trayectorias,
+> consecuencia futura en `t=16` y reward cero-LLM existente. Primero se congela un slice mínimo y
+> se prueba pronto con agentes reales; no se construye una infraestructura general ni se adapta el
+> mundo por inercia si la auditoría fundamental muestra que tampoco tiene complejidad adecuada.
 >
 > Todo el bloque histórico posterior conserva decisiones y resultados, pero cualquier
 > “próximo paso” anterior queda supersedido por esta cabecera.
@@ -58,8 +256,25 @@
 | **2. Slice mínimo** | Construir verdad, evidencia, registro, oráculo y scoring necesarios; nada extra | Robots/reflejos certificados + camino completo verde | **CERRADA — ambos polos PASS** |
 | **3. Agente real temprano** | Smoke barato para comprensión/UX y después una corrida SOTA | [2 modelos × 2 polos + autopsia](research/2026-08-01-resultado-smoke-overgen-stream-v0.md) | **CERRADA — MANTENER mundo / MODIFICAR inferencia** |
 | **4. Probe apareado** | Pocas ramas/semillas quemadas, criterios escritos antes | Señal suficiente para mantener, modificar o abandonar el instrumento | **CERRADO — resultado negativo informativo; autopsia abierta, ADR 0169** |
-| **5. Iteración de contenido** | Hipótesis rivales desde las trazas; una modificación por variante; agentes reales rápidos | Saber qué condiciones naturales forman y ponen a prueba la creencia objetivo | **BASELINE PASS; mixed nulo; siguiente dato propio, ADR 0171** |
-| **6. Segunda estructura real** | Dato propio contradictorio a mitad del flujo; slice mínimo + agente barato + réplica SOTA | Probar generalización fuera de `overgen` | Pendiente |
+| **5. Iteración de contenido** | Hipótesis rivales desde las trazas; una modificación por variante; agentes reales rápidos | Saber qué condiciones naturales forman y ponen a prueba la creencia objetivo | **CERRADA — `overgen` queda control, no elicitor principal** |
+| **6. Segunda estructura real** | Mundo causal proveedor-vs-hall; dato propio, acción bifurcada y gemelo bilateral | [Fork técnico PASS; constructo incompleto](research/2026-08-01-resultado-probe-causal-limpio-94801.md): falta `Mpre` causal formado | **DIFERIDA — no fue el elicitor más barato** |
+| **6b. Historial × evidencia** | Stress extremo, conversación fresca y réplica por donante con agentes reales | [Control positivo local; mecanismo no generalizó](research/2026-08-01-resultado-stress-historial-y-evidencia.md) | **CERRADA — MOVER A PROPAGACIÓN** |
+| **6c. Propagación frontier** | Mismo modelo actualizado, decisiones dependientes y diagnóstico de saliencia | [Brecha reproducida; recordatorio la cura](research/2026-08-01-resultado-probe-propagacion-frontier-v0.md) | **CERRADA — MANTENER FENÓMENO / MODIFICAR INTERFAZ** |
+| **6d. Handoff de primera clase** | Modelo + plan con consecuencia separada, sin recordatorio posterior; control radio 6 | [Gap desaparece y 6/6 decisiones se propagan en dos donantes](research/2026-08-01-resultado-probe-propagacion-frontier-v0.md) | **CERRADA — CASO DE SALIENCIA; CONTAR EDICIONES NO CREA FRICCIÓN** |
+| **6e. SCM causal bilateral** | Misma historia; evidencia propia refuta/confirma una explicación formada | [Física PASS; 0/4 sin creencia previa](research/2026-08-01-resultado-probe-first-story-scm-v0.md) | **CERRADA — HOST EMPIEZA DEMASIADO TEMPRANO** |
+| **6f. Transferencia South→North** | El agente aprende una ley causal y luego prueba si transfiere en un sitio gemelo | [DeepSeek + gpt-5.4 pasan bilateralmente](research/2026-08-01-resultado-probe-scm-transfer-v0.md) | **CERRADA — HOST VALIDADO** |
+| **6g. Evidencia conflictiva** | Tercer polo North con mecanismos mezclados y misma campaña propia | [Media revisada; mezcla estructural aplanada en 4/4 forks](research/2026-08-01-resultado-probe-north-heterogeneo-v0.md) | **CERRADA — FENÓMENO SÍ, CAUSA ABIERTA** |
+| **6h. Control fresco de mezcla** | Misma evidencia MIXED sin trayectoria South vivida | [Fresco y nativo+reflexión aplanan igual](research/2026-08-01-resultado-probe-north-heterogeneo-v0.md) | **CERRADA — NO ES ANCLAJE; CAUSA GENERAL** |
+| **6i. Model criticism genérico** | Mismos crudos; pedir chequeo metodológico sin revelar hipótesis | Inspecciona residuos pero mantiene `A3≈0` | **CERRADA — NO BASTA; HIPÓTESIS SIGUE AUSENTE** |
+| **6j. Familia generativa declarada** | Mismos crudos; baseline plano, modos latentes y mezcla de leyes explícitamente legales | Pista genérica: `A3≈0`; leyes explícitas: mezcla implementada pero mal estimada; control cero-LLM selecciona dos leyes en 3/3 donantes | **CERRADA — FALLA DEL AGENTE, NO IMPOSIBILIDAD FINITA** |
+| **6k. Camuflaje on-manifold** | Misma campaña propia + 800 filas visualmente confirmatorias con `LLR=0` | Caída `0.149/0.005`, menor al umbral previo `0.25` | **CERRADA — NULO, NO ESCALAR VOLUMEN** |
+| **6l. Conflicto genuino** | Evidencia real a favor y en contra, neto/formato/volumen igualados | [v0 inválida; v1 válida nula en DeepSeek y gpt-5.4](research/2026-08-01-resultado-probe-conflicto-firmado-v0.md) | **CERRADA — ESTA RECETA NO ELICITA; SOLO RETOMAR CON MISMAS FILAS** |
+| **6m. Pasado vivido acelerado** | Cuatro ciclos North antes de audit bilateral limpio | [REVISE fuerte en dos seeds; no rigidez; sobrepropagación de 97800 no replica](research/2026-08-01-resultado-probe-pasado-acelerado-vivido-v0.md) | **CERRADA — NULO DEL ELICITOR; PISTA N=1 RETIRADA** |
+| **6n. Localización/refactor v0** | Mismo `Mpre` predictivo, código shared vs split × REVISE/RETAIN | [DeepSeek candidato; gpt no replica y revela snapshot incompleto](research/2026-08-01-resultado-probe-localizacion-refactor-v0.md) | **CERRADA — INSTRUMENTO CONFUNDIDO POR PROCEDENCIA** |
+| **6o. Fidelidad con procedencia** | Snapshot con las 16 piezas crudas previas; primero solo SHARED/SPLIT-RETAIN | [21/21 mecánico; ambas RETAIN reconstruyen, dañan y no entregan](research/2026-08-01-resultado-probe-localizacion-refactor-con-procedencia-v1.md) | **CERRADA — SNAPSHOT FRESCO NO FIEL; REVISE PROHIBIDO** |
+| **6p. Continuación realmente nativa** | Conservar conversación/kernel vividos; auditar si SHARED/SPLIT puede intervenirse sin contradecir la memoria | El swap al checkpoint contradice la trayectoria; formar ambos layouts desde el origen es caro | **DIFERIDA — PREGUNTA SECUNDARIA** |
+| **6q. Topología observable vs latente** | Mismo SCM y evidencia marginal; RETAIN/REVISE/LOCAL/LATENT, variando si la partición está visible | [DeepSeek `98300`](research/2026-08-02-resultado-probe-topologia-local-visible-vs-latente-v1.md), [gpt-5.4 `98403`](research/2026-08-02-resultado-replica-gpt-topologia-v1-1.md) y [control 2D + turno real](research/2026-08-02-resultado-control-topologia-evidencia-2d.md): partición visible `83–95%`; LATENT `A3≈0` aun tras revisar outputs | **CERRADA — CONVERGENCIA EXPLORATORIA; GENERALIZAR EN OTRO HOST** |
+| **6r. Generalización dinámica** | Llevar el contraste mínimo a un mundo de trayectorias con consecuencia futura, auditando primero el host | Ficha mínima + smoke con agentes reales en `logistic_yield_v0` si pasa auditoría | **EN DISEÑO — NO ESCALAR INFRA ANTES DE SEÑAL** |
 | **7. Piloto y réplica** | Pre-registro pequeño, más de un modelo y dos estructuras | Estimando con incertidumbre + prueba de generalización | Pendiente |
 | **8. Escala** | Generador dinámico, suite y eventualmente entrenamiento | Solo si los fenómenos anteriores sobrevivieron | Diferido |
 
@@ -76,6 +291,12 @@ inesperado importante y antes de optimizar el mismo diseño, se ejecuta esta rev
 > 6. **Prioridad:** con lo aprendido, ¿el siguiente paso sigue siendo el de mayor valor?
 > 7. **Decisión explícita:** **MANTENER / MODIFICAR / PIVOTEAR / ABANDONAR**, con evidencia y
 >    cambio de creencia del equipo registrados.
+> 8. **Mundo:** ¿este anfitrión puede producir el vicio de manera natural, o estamos intentando
+>    inducir con prompts algo que su escala, historia y dependencias no contienen?
+> 9. **Complejidad efectiva:** ¿hay trabajo cognitivo entrelazado y estado persistente, o solo muchas
+>    filas de un problema de baja dimensión que el agente puede recalcular completo?
+> 10. **Alcance de los ejes:** ¿qué factores existen realmente en el episodio? Ningún nulo se extiende
+>     a autoría, memoria, fricción o compromiso si el mundo no los materializa.
 
 **Cadencia:** al comenzar una sesión se leen guía + cabecera del roadmap; al cerrar una etapa
 se actualizan esta tabla y el gate. Un detalle local se resuelve probando; una amenaza al

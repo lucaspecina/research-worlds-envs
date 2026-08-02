@@ -60,14 +60,19 @@ y también producir efectos opuestos.
    el modelo anterior.
 6. **Momento y horizonte.** Formación, mitad o cierre; después de cinco pasos o de quinientos.
    El tiempo no es el mecanismo por definición: puede ser un proxy del compromiso acumulado.
+7. **Representación del pasado.** Datos y transcript completos reutilizables; resumen neutral;
+   apuntes escritos por el propio agente; o memoria recuperada selectivamente. Que una señal esté
+   disponible, que sea recuperada y que gobierne la decisión son cosas distintas. La compresión
+   puede ayudar al quitar ruido o perjudicar al congelar una conclusión: el signo se mide, no se
+   presupone.
 
 ### C. La revisión que sería necesaria
 
-7. **Tamaño del cambio.** Retocar un parámetro, separar un componente o reemplazar la
+8. **Tamaño del cambio.** Retocar un parámetro, separar un componente o reemplazar la
    estructura explicativa central.
-8. **Fricción real de revisión.** Cuántas dependencias, análisis, decisiones o partes del
+9. **Fricción real de revisión.** Cuántas dependencias, análisis, decisiones o partes del
    artefacto deben rehacerse para aplicar correctamente el cambio.
-9. **Recursos restantes.** Tiempo, presupuesto y oportunidades de comprobar o implementar.
+10. **Recursos restantes.** Tiempo, presupuesto y oportunidades de comprobar o implementar.
    Esto condiciona qué reparación es racional, pero no define la fricción.
 
 **Fricción no significa cobrar una tarifa artificial por cambiar de opinión.** Un costo
@@ -76,10 +81,10 @@ misma corrección puede exigir tocar una pieza o reconstruir una obra entera.
 
 ### D. Extensiones importantes, no asumidas como centro
 
-10. **Estacionariedad.** Aprender más sobre un mecanismo fijo frente a detectar que el mundo
+11. **Estacionariedad.** Aprender más sobre un mecanismo fijo frente a detectar que el mundo
     realmente cambió.
-11. **Entorno social.** Fuente, autoridad, pares, identidad y consenso.
-12. **Orden de llegada.** La misma evidencia en secuencias distintas puede producir otra
+12. **Entorno social.** Fuente, autoridad, pares, identidad y consenso.
+13. **Orden de llegada.** La misma evidencia en secuencias distintas puede producir otra
     trayectoria.
 
 Estos ejes están registrados para no olvidarlos, no para construir un factorial gigantesco.
@@ -119,12 +124,14 @@ que se consulta antes de diseñar o pivotear un mundo.
 | **Información intermedia tratada como fondo** | OSWorld 2.0 | Un dato relevante aparece dentro del flujo ordinario, no como anuncio de “evidencia importante” |
 | **Ve lo correcto y vuelve a la primera idea** | RadLE | Los hallazgos intermedios contradicen el diagnóstico inicial, pero la conclusión lo restaura |
 | **Evidencia mezclada leída selectivamente** | Xie et al. | Una contradicción limpia se incorpora; la misma tensión mezclada con confirmación produce rigidez |
+| **Conflicto estructural promediado como ruido** | North heterogéneo WAGER `[PROPIO, 2026-08-01]` | Dos mecanismos coexisten; acertar la media pero reemplazar la mezcla por una Normal ancha sigue siendo una creencia incorrecta |
 | **Compromiso con la respuesta propia** | Kumaran et al. | El mismo contenido pesa distinto si el trabajo anterior se vive como propio o ajeno |
 | **Sobre-generalización desde un caso chico** | WAGER `[PROPIO]` + `overgen_v0` | Una regla verdadera en un juguete o subdominio se promueve a ley general sin revisar indicios que limitan su alcance |
 | **Generalizar sí era correcto** | `overgen_twin_v0` | El gemelo donde la ley realmente transfiere impide aprender “nunca generalices” |
 | **Sabe qué debería hacer, pero hace otra cosa** | KellyBench / Pal / Investigator | Separar declaración, modelo vigente, búsqueda y decisión con consecuencias |
 | **Persistencia racional** | Xie limpio / gemelos estables | La nueva información no justifica abandonar el modelo; pivotear por reflejo debe perder |
 | **Mayor incertidumbre como respuesta correcta** | BeliefTrack/BASIL + mundos cerrados WAGER | Evidencia legítima descarta certeza sin seleccionar todavía una explicación única |
+| **Estado viejo visible que sigue gobernando** | STALE / MemSyco | Comparar historia completa, resumen y memoria recuperada; separar pérdida de información de autoridad indebida del estado viejo |
 
 El ejemplo propio “un caso de KellyBench → rediseñemos todo como KellyBench” pertenece a la
 misma familia de **alcance mal calibrado**. Es una advertencia de proceso, no evidencia sobre
@@ -146,11 +153,17 @@ agentes ni una razón para convertir KellyBench en el centro del proyecto.
 5. **El prefijo y el estado previo se igualan cuando se afirma causalidad.** Los forks parten
    del mismo trabajo y varían una condición. Comparar mundos o horizontes distintos habla de
    generalización, no identifica por sí solo una causa.
+   **La unidad de generalización es el donante, no cada rama:** diez continuaciones del mismo
+   prefijo localizan un efecto dentro de esa trayectoria; no sustituyen diez investigaciones
+   independientes.
 6. **La longitud es una perilla.** Ningún número fijo de rondas representa “trayectoria larga”.
 7. **La dificultad operativa se controla.** Escribir código inválido, olvidar el protocolo o
    perder contexto no se confunde con juicio epistémico.
 8. **Las estrategias reflejas deben perder.** Cambiar siempre, mantener siempre, ensanchar
    siempre y copiar la última señal deben fallar en algún gemelo certificado.
+9. **La creencia previa debe ser sustantiva.** Que `Mpre` compile no demuestra que exista
+   algo relevante para revisar. Antes del fork se certifica que sus predicciones responden
+   al mecanismo o alcance que el tratamiento podría racionalmente conservar o cambiar.
 
 ## 6. Cómo se mide sin leer la mente del agente
 
@@ -201,16 +214,36 @@ complementarios y muchas instancias generables:
    amplio (`overgen_v0` / `overgen_twin_v0`).
 3. **Dato propio a mitad del flujo:** una investigación produce evidencia sutil contra su propia
    hipótesis (estructura Corral).
-4. **Trayectoria prolongada:** el modelo puede quedar obsoleto a lo largo de muchos resultados
+4. **Representación del pasado:** la misma continuación parte de historia completa, resumen
+   neutral o apuntes propios, con compuerta previa de fidelidad y controles bilaterales.
+5. **Trayectoria prolongada:** el modelo puede quedar obsoleto a lo largo de muchos resultados
    ordinarios (estructura KellyBench), sin convertir esa estructura en todo WAGER.
-5. **Formación y cierre:** una creencia temprana puede curvar la búsqueda; una corrección tardía
+6. **Formación y cierre:** una creencia temprana puede curvar la búsqueda; una corrección tardía
    puede reconocerse pero no llegar a la entrega.
-6. **Fricción estructural:** la misma fuerza de evidencia exige una corrección local o un pivote
+7. **Fricción estructural:** la misma fuerza de evidencia exige una corrección local o un pivote
    que invalida dependencias.
 
 La fábrica dinámica es una contribución potencial importante: cada familia debe parametrizar
 mecanismos, fuerza de evidencia, trayectoria y alcance del cambio para producir muchas
 instancias certificadas. Primero se valida el fenómeno en pocos mundos; después se escala.
+
+### Qué significa que un mundo sea dinámico
+
+No significa agregar filas ni turnos de relleno. Una instancia cognitivamente viva varía seis
+propiedades que pueden combinarse sin construir un factorial gigante:
+
+| Perilla | De menor a mayor |
+|---|---|
+| **Estado entrelazado** | un estadístico suficiente → hipótesis, anomalías y subproblemas acoplados |
+| **Geometría de evidencia** | limpia/local → mixta, indirecta o que obliga a aumentar incertidumbre |
+| **Ecología de llegada** | reporte señalado → dato rutinario → consecuencia de una acción propia |
+| **Radio de revisión** | parámetro → módulo → mecanismo causal central |
+| **Dependencias** | nada usa el modelo → una decisión → varios artefactos/decisiones encadenados |
+| **Incrustación temporal** | evidencia antes del uso → después de varios usos, con oportunidades posteriores de persistir o revertir |
+
+La representación del pasado se cruza después sobre el mismo donante; no se confunde con un mundo
+distinto. Cada ciclo ordinario debe cambiar estado, crear/usar una dependencia o producir una
+consecuencia: si no, longitud no es carga científica.
 
 ## 8. Qué sería un resultado científico importante
 
@@ -232,14 +265,21 @@ fallas reales y no enseñan un reflejo superficial.
 
 Antes de firmar un mundo, interpretar una corrida o pivotear el programa, responder:
 
-1. ¿Qué caso real y qué fila de esta guía estamos reproduciendo?
-2. ¿Cómo apareció realmente la evidencia: propia, rutinaria, externa, limpia o mezclada?
-3. ¿Qué respuesta debería ser correcta y qué gemelo derrota el reflejo opuesto?
-4. ¿Estamos midiendo búsqueda, atención, interpretación, asimilación o propagación?
-5. ¿La fricción surge del trabajo que debe rehacerse o la inventamos como señal artificial?
-6. ¿El horizonte reproduce el fenómeno o elegimos una cantidad cómoda de rondas?
-7. ¿El resultado generaliza o estamos convirtiendo el último caso observado en todo el proyecto?
-8. ¿Después de esta etapa conviene mantener, modificar o abandonar la hipótesis?
+1. **Mundo antes que tratamiento:** ¿este anfitrión puede producir naturalmente el fenómeno, o
+   estamos intentando inducir con prompts algo que su escala, historia y dependencias no contienen?
+2. **Complejidad efectiva:** ¿hay estado entrelazado, pasos significativos y trabajo persistente, o
+   solo muchas filas de un problema de baja dimensión que puede recalcularse completo?
+3. **Ejes realmente presentes:** ¿cuáles de autoría, compromiso, memoria, visibilidad, fricción y
+   propagación están materializados? Un nulo no informa sobre un eje ausente.
+4. ¿Qué caso real y qué fila de esta guía estamos reproduciendo?
+5. ¿Cómo apareció realmente la evidencia: propia, rutinaria, externa, limpia o mezclada?
+6. ¿Qué respuesta debería ser correcta y qué gemelo derrota el reflejo opuesto?
+7. ¿Estamos midiendo búsqueda, atención, interpretación, asimilación o propagación?
+8. ¿La fricción surge del trabajo que debe rehacerse o la inventamos como señal artificial?
+9. ¿El horizonte reproduce el fenómeno o elegimos una cantidad cómoda de rondas?
+10. ¿El resultado generaliza o estamos convirtiendo el último caso observado en todo el proyecto?
+11. ¿Qué explicación basada en el mundo, la interfaz o el protocolo compite con una falla del agente?
+12. ¿Después de esta etapa conviene mantener, modificar o abandonar la hipótesis o el mundo?
 
 ### Regla de investigación ante un resultado negativo
 
