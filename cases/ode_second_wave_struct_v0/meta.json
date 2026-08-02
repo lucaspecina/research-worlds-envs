@@ -1,0 +1,74 @@
+{
+  "case_id": "ode_second_wave_struct_v0",
+  "suite": "ode_second_wave_probe",
+  "columns": [
+    {"name": "unit_id", "dtype": "float", "unit": null, "description": "run identifier within the returned batch (0..n-1)"},
+    {"name": "t", "dtype": "float", "unit": "h", "description": "elapsed process time of the reading"},
+    {"name": "y", "dtype": "float", "unit": "kg", "description": "cumulative yield of the run at time t"}
+  ],
+  "operators": [
+    {"name": "line_b_law", "layer": "mechanism", "knobs": {"plateau_b": 170.0, "rate_b": 0.55, "second_wave_k2": 70.0, "second_wave_mid": 14.0}, "ablation": {}}
+  ],
+  "stakes": {
+    "narrative": "A batch plant operates Line A and is commissioning Line B (same process family, new formulation). Scheduling and pricing rely on trajectory forecasts for both lines; the historical record covers only ramp-up hours, and the commissioning plan consumes the line-B forecast as part of the ordinary workflow.",
+    "decision_variables": [],
+    "context_relevance": {},
+    "decision_relevance": {},
+    "functionals": []
+  },
+  "scoring": {
+    "lambda_mdl": 0.00010128773858650133,
+    "lambda_provisional": true,
+    "n_samples": 400,
+    "m_reps": 2,
+    "model_call_timeout_s": 10.0
+  },
+  "trajectory_protocol": {"version": "traj.1", "grid_key": "t_grid", "format": "long", "unit_column": "unit_id"},
+  "episode": {
+    "budget": 2600.0,
+    "observe_sources": {
+      "line_a_history": {
+        "cost_per_row": 0.5,
+        "config": {},
+        "context": {"line": "A", "t_grid": [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0]},
+        "channel": {"column": "y", "noise_sd": 3.0, "replicates": 1}
+      }
+    },
+    "experiment": {"cost_fixed": 60.0, "cost_per_row": 1.0, "cost_per_horizon": 15.0},
+    "experiment_meter": "line_a_history",
+    "events": [
+      {
+        "trigger_turn": 999,
+        "trigger_spend_frac": 1.0,
+        "notice": "OPERATIONS UPDATE - Line B completed its scheduled commissioning. Its first routine campaign runs are attached in the standard commissioning record format.",
+        "source_name": "line_b_commissioning",
+        "source": {
+          "cost_per_row": 0.0,
+          "config": {},
+        "context": {"line": "B", "t_grid": [0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0, 20.0, 22.0, 24.0]},
+          "channel": {"column": "y", "noise_sd": 3.0, "replicates": 1},
+          "max_rows": 24
+        },
+        "auto_deliver_n": 24,
+        "delivery_variable": "line_b_commissioning_report"
+      }
+    ],
+    "submit_requires_all_events": true,
+    "smoke_regimes": [
+      {"config": {}, "context": {"line": "A", "t_grid": [0.0, 2.0, 4.0, 6.0]}, "horizon": null},
+      {"config": {}, "context": {"line": "A", "t_grid": [0.0, 4.0, 8.0, 12.0, 16.0]}, "horizon": null},
+      {"config": {}, "context": {"line": "B", "t_grid": [0.0, 6.0, 12.0, 18.0, 24.0]}, "horizon": null}
+    ],
+    "control_surface": {
+      "settable": {},
+      "context": {
+        "line": {"description": "production line of the regime: \"A\" (operating) or \"B\" (commissioning; forecast required at all times)"},
+        "t_grid": {"description": "measurement schedule: the timestamps (hours) at which readings are taken; in experiments YOU choose it (each extra hour of horizon costs), and each evaluation regime declares the grid your model must report"}
+      },
+      "instruments": {},
+      "experiment_note": "each experiment call launches n fresh Line A runs read at your t_grid; cost = fixed + per reading (n x len(t_grid)) + per hour of horizon (max of t_grid); the bench cannot run Line B until it is commissioned",
+      "deliverable_note": "model(regime, n, seed) must return LONG format: one row per reading with columns exactly [unit_id, t, y]; n counts RUNS (units), the table contains each unit at exactly the timestamps in regime.context['t_grid'], and regime.context['line'] must be honored. Model the PROCESS: your model reproduces the true trajectories, not meter error."
+    }
+  },
+  "prior_reliability": null
+}
