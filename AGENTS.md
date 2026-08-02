@@ -43,6 +43,17 @@ local que tenga enfrente.
   barato → autopsia de trazas y artefactos → decisión superior. Los modelos pequeños sirven para
   descubrir elicitadores y depurar; cualquier claim sobre frontier exige confirmación en modelos
   avanzados e instancias no usadas durante la iteración.
+- Separar siempre **DESCUBRIMIENTO** de **CONFIRMACIÓN**. En descubrimiento se permiten variaciones
+  creativas y sustantivas para hallar una firma recurrente, pero cada prueba declara antes su
+  microhipótesis y sus controles de capacidad. En confirmación, la pregunta, el mundo, las métricas
+  y la vara quedan congelados; no se sigue buscando una formulación que “dé”.
+- La revisión de creencias es el blanco inicial, no una conclusión protegida. Si emerge otra falla
+  de investigación más recurrente, medible y publicable, Codex la eleva a Lucas como candidata de
+  pivote con evidencia comparada; no la fuerza dentro del vocabulario vigente ni pivotea en silencio.
+- Al promover, abandonar o abrir una familia de escenarios —y al menos cada tres ciclos de
+  descubrimiento— volver a los casos documentados y trabajos más cercanos: cómo aparece allí la
+  falla, qué controles usan y qué diferencia sigue vacante. La relectura debe cambiar o reafirmar
+  explícitamente el diseño, no ser un apéndice bibliográfico.
 
 ## Uso de Claude worker
 

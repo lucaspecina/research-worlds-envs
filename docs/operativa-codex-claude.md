@@ -34,6 +34,25 @@ Después de una señal válida se permite un solo control decisivo en el mismo a
 paso debe cambiar de mundo/nivel o llevar una excepción explícita. Esta es una restricción de
 proceso, no un recordatorio blando.
 
+## Descubrimiento y confirmación
+
+- **Descubrimiento:** explorar cambios sustantivos de mundo, historia, longitud, interacción,
+  memoria, evidencia y tarea con agentes reales baratos. Cada celda lleva una microhipótesis antes
+  de correr, una compuerta de operabilidad/capacidad y una autopsia. Una firma no se promociona por
+  ser llamativa: se registra con negativos, explicaciones rivales y como máximo un control local.
+- **Confirmación:** después de una promoción explícita de Codex y Lucas, se congelan la pregunta
+  concreta, los estimandos, los controles, el host y la regla de decisión. Se usan donantes,
+  instancias y modelos frontier no empleados para seleccionar la firma.
+
+Claude mantiene la evidencia y las candidatas durante la minería; Codex evita tanto la búsqueda
+indefinida como la promoción prematura. Si la mejor regularidad queda fuera de revisión de
+creencias, se presenta como opción de pivote, con su costo de oportunidad, antes de cambiar rumbo.
+
+Al abrir o cerrar una familia y como máximo cada tres ciclos, Claude relee la anatomía de los casos
+reales y los proyectos comparables más cercanos. Las notas crudas van a `docs/research/`; se respeta
+el dueño vigente del registro oficial de lecturas. La salida declara si la comparación valida,
+compite con o cambia el diseño.
+
 ## Memoria que no depende del chat
 
 - Codex recibe siempre `AGENTS.md`.

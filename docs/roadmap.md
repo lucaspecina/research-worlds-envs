@@ -35,6 +35,16 @@
 > o fricción que el episodio no instancie. Si el host no tiene headroom causal para el fenómeno, se
 > cambia el mundo antes de optimizar el elicitor.
 
+> **FASE CIENTÍFICA ACTUAL — DESCUBRIR → CONGELAR → CONFIRMAR (ADR 0173; Lucas, 2026-08-02):**
+> la pregunta de revisión de creencias es el paraguas del programa, no todavía el claim estrecho
+> del paper. En descubrimiento se prueban variaciones sustantivas con agentes reales baratos y una
+> microhipótesis escrita antes de cada corrida; se inspeccionan trazas y se buscan firmas recurrentes,
+> sin confundir incapacidad básica con vicio. Una candidata que sobreviva se congela y se confirma
+> con instancias frescas y frontier; los datos usados para encontrarla no sirven como confirmación.
+> Si emerge otra falla de investigación más robusta, medible y publicable, se presenta a Lucas como
+> candidata de pivote. Abrir/cerrar una familia o completar tres ciclos obliga a releer sus casos
+> reales y los trabajos comparables más cercanos.
+
 > ## ★ ALINEACIÓN OFICIAL ACTUAL (2026-07-31 — ADR 0161)
 >
 > La guía conceptual canónica es
@@ -238,11 +248,19 @@
 > exploratoria de **actualización de parámetros sin apertura espontánea de estructura latente**, no
 > una tasa de terquedad general. [Resultado](research/2026-08-02-resultado-control-topologia-evidencia-2d.md).
 >
-> **REEVALUACIÓN Y SIGUIENTE ACCIÓN ÚNICA:** probar generalización en un mundo dinámico realmente
-> distinto, antes de escalar. Candidato preferido bajo auditoría: `logistic_yield_v0` — trayectorias,
-> consecuencia futura en `t=16` y reward cero-LLM existente. Primero se congela un slice mínimo y
-> se prueba pronto con agentes reales; no se construye una infraestructura general ni se adapta el
-> mundo por inercia si la auditoría fundamental muestra que tampoco tiene complejidad adecuada.
+> **REEVALUACIÓN Y SIGUIENTE ACCIÓN ÚNICA:** todavía no se congela la pregunta final del paper.
+> La candidata líder es **actualización paramétrica sin apertura estructural**: en dos familias de
+> modelos, el agente corrigió la superficie media pero aplanó una estructura latente recuperable.
+> Su prueba decisiva es generalizar en un mundo dinámico realmente distinto. Candidato preferido
+> bajo auditoría: `logistic_yield_v0` — trayectorias, consecuencia futura en `t=16` y reward cero-LLM
+> existente. Se hace un slice mínimo, primero con la escalera barata de
+> [minería](research/2026-08-02-estrategia-modelos-chicos-para-mineria.md) y pronto con agente fuerte.
+> Si no generaliza, la firma vuelve al banco: no se tunea el host hasta obtenerla.
+>
+> **EMBUDO DE CANDIDATAS (no claims):** (1) apertura estructural — líder, falta otro mundo;
+> (2) propagación/saliencia — reproducida pero curable con recordatorio/handoff, posible resultado
+> de interfaz; (3) cobertura/extrapolación y otras fallas vistas en autopsias — banco abierto, aún
+> sin aislamiento. Una candidata nueva puede entrar aunque no sea “revisión de creencias”.
 >
 > Todo el bloque histórico posterior conserva decisiones y resultados, pero cualquier
 > “próximo paso” anterior queda supersedido por esta cabecera.

@@ -11,6 +11,12 @@ investigación, empezando por revisión de creencias según evidencia. La implem
 objetivo: si el mundo no materializa el fenómeno, se cambia el mundo antes de ampliar
 infraestructura o cantidad de corridas.
 
+**Dos fases que no se mezclan (ADR 0173):** durante descubrimiento, probar variaciones sustantivas
+con microhipótesis previas, agentes reales baratos y autopsia; durante confirmación, congelar la
+pregunta, diseño, métricas e instancias y validar en frontier held-out. Una falla ajena al foco que
+sea recurrente, medible y potencialmente publicable entra como candidata explícita de pivote para
+Lucas; no se descarta ni se rebautiza para que encaje.
+
 Mapa de docs (abrí el que la tarea pida, no todos):
 
 - **`WIKI.md`** — entender de cero, sin jerga: qué es, cómo funciona, dónde estamos.

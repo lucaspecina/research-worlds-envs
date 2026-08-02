@@ -25,6 +25,13 @@ La conducta se cobra sobre un **modelo predictivo ejecutable** y sus consecuenci
 verdad oculta del mundo, sin un LLM en el reward. La prosa sirve para diagnosticar, no para
 decidir si acertó.
 
+Esta es la **pregunta programática**, no todavía la pregunta estrecha del paper. En la fase actual
+buscamos una regularidad compacta, recurrente y aislable dentro de este espacio. La candidata líder
+es la diferencia entre **actualizar parámetros dentro de una estructura conocida** y **abrir o
+cambiar la estructura del modelo cuando la evidencia lo exige**; sigue siendo candidata hasta que
+generalice fuera de la familia donde apareció. Una falla investigativa distinta puede desplazarla
+si resulta más robusta, medible y científicamente interesante, mediante una decisión explícita.
+
 ## 1. Qué puede exigir racionalmente la evidencia
 
 | Evidencia disponible | Respuesta correcta |
