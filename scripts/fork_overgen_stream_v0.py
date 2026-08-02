@@ -128,6 +128,40 @@ def _apply_report_variant(server, variant):
     return server
 
 
+def _apply_protocol_variant(server, variant):
+    """Small content protocols used by exploratory forks.
+
+    ``own_experiment`` removes the centrally served report.  Event 0 remains
+    the operational milestone because the experiment guard uses its fired
+    state to open the high range.
+    """
+    if variant != "own_experiment":
+        return server
+    promised = (
+        "- The planned range extension for lines 2-5 occurs later in the same episode. The lab system\n"
+        "  will place its ordinary commissioning report directly in your Python workspace when ready."
+    )
+    replacement = (
+        "- The planned range extension for lines 2-5 occurs later in the same episode. Once it is\n"
+        "  operational, their full range can be measured through the same ordinary campaigns."
+    )
+    if promised not in server.brief:
+        raise RuntimeError("own_experiment brief patch no longer matches the authored brief")
+    server.brief = server.brief.replace(promised, replacement)
+    event = server.config.events[0].model_copy(update={
+        "notice": (
+            "OPERATIONS UPDATE — the scheduled range extension for lines 2-5 is now "
+            "operational; ordinary campaigns may use their full driver range."
+        ),
+        "source_name": None,
+        "source": None,
+        "auto_deliver_n": None,
+        "delivery_variable": None,
+    })
+    server.config = server.config.model_copy(update={"events": [event]})
+    return server
+
+
 def _initial_prompt(server):
     sheet = server.describe()
     return (
@@ -183,11 +217,13 @@ def _record(turn, reply, cell, result, server, notices, trajectory_start=0):
 
 
 def run_prefix(model, seed_offset, checkpoint="fixed", max_prefix_turns=ELIGIBLE_MAX_PREFIX_TURNS,
-               content_variant=None):
-    server = _apply_content_variant(
+               content_variant=None, protocol_variant=None, system_prompt=SYSTEM,
+               feedback_builder=None, min_prefix_turns=0):
+    server = _apply_protocol_variant(_apply_content_variant(
         build_world_server(LIMITED, seed_offset=seed_offset), content_variant
-    )
-    chat = FoundryChat(system=SYSTEM, model=model,
+    ), protocol_variant)
+    feedback_builder = feedback_builder or _feedback
+    chat = FoundryChat(system=system_prompt, model=model,
                        max_completion_tokens=MAX_COMPLETION_TOKENS)
     prompt = _initial_prompt(server)
     trace = []
@@ -231,7 +267,7 @@ def run_prefix(model, seed_offset, checkpoint="fixed", max_prefix_turns=ELIGIBLE
                     "failed_turn": turn,
                 }
                 break
-            prompt = _feedback(result, server)
+            prompt = feedback_builder(result, server)
             if checkpoint in ("eligible", "formed"):
                 observed = sum(
                     int(event.args.get("n", 0))
@@ -249,6 +285,7 @@ def run_prefix(model, seed_offset, checkpoint="fixed", max_prefix_turns=ELIGIBLE
                     ),
                 }
                 if checkpoint == "eligible":
+                    gates["minimum_turn"] = turn >= min_prefix_turns
                     gates["quiet_turn"] = not any(
                         event.verb in ("observe", "experiment", "event") for event in new_events
                     )
@@ -402,9 +439,14 @@ def main():
         "--checkpoint", choices=("fixed", "eligible", "formed"), default="fixed"
     )
     parser.add_argument("--max-prefix-turns", type=int, default=ELIGIBLE_MAX_PREFIX_TURNS)
+    parser.add_argument("--min-prefix-turns", type=int, default=0)
     parser.add_argument("--max-turns", type=int, default=None)
     parser.add_argument("--content-variant", choices=("paired_low",), default=None)
     parser.add_argument("--include-mixed-arms", action="store_true")
+    parser.add_argument(
+        "--prefix-only", action="store_true",
+        help="Stop after saving the donor prefix; do not run continuation branches.",
+    )
     parser.add_argument("--out", default=None)
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
@@ -421,6 +463,7 @@ def main():
         args.checkpoint,
         args.max_prefix_turns,
         args.content_variant,
+        min_prefix_turns=args.min_prefix_turns,
     )
     if not prefix["eligibility"]["eligible"]:
         payload = {
@@ -437,6 +480,26 @@ def main():
         }
         target.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
         print(json.dumps({"out": str(target), "gates": payload["gates"], "all": False}, indent=2))
+        return
+    if args.prefix_only:
+        payload = {
+            "kind": "technical_live_history_prefix_candidate_not_behavioral_evidence",
+            "model": args.model,
+            "seed_offset": args.seed_offset,
+            "checkpoint": args.checkpoint,
+            "content_variant": args.content_variant,
+            "prefix": {k: v for k, v in prefix.items() if k != "messages"},
+            "branches": {},
+            "gates": {"eligible_prefix": True},
+            "all": True,
+        }
+        target.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+        print(json.dumps({
+            "out": str(target),
+            "eligibility": prefix["eligibility"],
+            "turns": len(prefix["trace"]),
+            "tokens_cumulative": prefix["tokens"],
+        }, indent=2))
         return
     branch_specs = {
         "limited": (LIMITED, None),

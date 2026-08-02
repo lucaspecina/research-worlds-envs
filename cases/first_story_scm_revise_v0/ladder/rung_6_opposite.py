@@ -1,0 +1,17 @@
+"""Structural rival: the grade-response SCM (wrong in REVISE)."""
+
+import numpy as np
+import pandas as pd
+
+
+def model(regime, n, seed):
+    rng = np.random.default_rng(seed)
+    t = rng.uniform(0.0, 1.0, n)
+    eh = rng.normal(0.0, 0.5, n)
+    ef = rng.normal(0.0, 0.9, n)
+    ey = rng.normal(0.0, 2.0, n)
+    h = np.full(n, float(regime.config["humidity"])) if "humidity" in regime.config else 2.0 + 6.0 * t + eh
+    g_set = "feedstock_grade" in regime.config
+    g = np.full(n, float(regime.config["feedstock_grade"])) if g_set else 10.0 - h
+    mu_y = 20.0 + 2.0 * g if g_set else 40.0 - 2.0 * h
+    return pd.DataFrame({"feedstock": g + ef, "outcome": mu_y + ey})

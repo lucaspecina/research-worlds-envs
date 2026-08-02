@@ -16,10 +16,11 @@ class ExperimentDesign(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     config: dict[str, float] = Field(default_factory=dict)  # do(): fixed knobs
-    # trajectory worlds (v0.68-R3): the measurement SCHEDULE travels here as a
-    # declared tuple (t_grid) -- same typed union as Regime.context; n then
-    # counts UNITS (trajectories), readings = n x len(t_grid).
-    context: dict[str, float | tuple[float, ...]] = Field(default_factory=dict)
+    # Numeric/categorical context travels with the experiment. Trajectory
+    # worlds (v0.68-R3) additionally carry their measurement SCHEDULE as a
+    # declared tuple (t_grid); n then counts UNITS (trajectories), readings =
+    # n x len(t_grid).
+    context: dict[str, float | str | tuple[float, ...]] = Field(default_factory=dict)
     n: int = Field(gt=0, le=5000)  # bounded: runaway guard on a single draw
     horizon: int | None = None
 
@@ -103,8 +104,9 @@ class SourceConfig(BaseModel):
 
     cost_per_row: float = Field(ge=0)
     config: dict[str, float] = Field(default_factory=dict)
-    # a source may DECLARE its historical sampling grid (t_grid) here (v0.68-R3)
-    context: dict[str, float | tuple[float, ...]] = Field(default_factory=dict)
+    # A source may fix numeric/categorical context and may DECLARE its
+    # historical sampling grid (t_grid) here (v0.68-R3).
+    context: dict[str, float | str | tuple[float, ...]] = Field(default_factory=dict)
     # declared corruption pipeline (applied by the harness/factory VIEW, never
     # by the scorer): selection filter (sampling) + measurement channel.
     # pipeline_order (Decision Log v0.53-1): select_then_measure = survivorship
