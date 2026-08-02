@@ -6,6 +6,11 @@ Operativa del repo para Claude Code.
 para saber dónde estamos y qué sigue — es la única fuente de verdad del estado. Si no conocés el proyecto, leé
 **`WIKI.md`** primero.
 
+**Objetivo operativo superior:** reproducir fielmente con agentes reales fallas documentadas de
+investigación, empezando por revisión de creencias según evidencia. La implementación no es el
+objetivo: si el mundo no materializa el fenómeno, se cambia el mundo antes de ampliar
+infraestructura o cantidad de corridas.
+
 Mapa de docs (abrí el que la tarea pida, no todos):
 
 - **`WIKI.md`** — entender de cero, sin jerga: qué es, cómo funciona, dónde estamos.
@@ -84,25 +89,24 @@ propone la edición del doc + un ADR nuevo en `docs/adr/`.
   partir, GOs sin ejecutar — cada ítem tildado ✓ o explícitamente VIVO con su próximo paso.
   Un pendiente que no aparece en el ledger es un pendiente caído en silencio.
 
-## Codex (GPT-5.6 Sol) — segunda opinión / pensar juntos (ADR 0116)
+## Codex supervisor + Claude worker persistente (ADR 0172; supersede la operativa de ADR 0116)
 
-Codex es un **compañero de pensamiento y crítica**, NO un escritor de código. Su rol es **segunda
-opinión, crítica y pulido de ideas** en cuestiones de **diseño / reflexión / análisis** — una tercera
-lectura independiente (como el "otro feedback"), no un ejecutor. **También sirve para criticar y ayudar
-a DIRECCIONAR el CORE del proyecto** — su dirección, su rol, su objetivo — y proponer mejoras,
-**pivoteos o cambios grandes**, no solo decisiones puntuales.
+Lucas conserva la autoridad final. **Codex supervisa la dirección científica cotidiana**: mantiene
+el mapa completo, cuestiona el mundo, decide qué incertidumbre vale comprar y cierra cada ciclo con
+MANTENER / MODIFICAR / PIVOTEAR / ABANDONAR. Claude es el **worker principal y contrapunto**:
+implementa, ejecuta agentes y tests, investiga subtareas, autopsia resultados y propone alternativas.
 
-- **Cuándo consultarlo**: ante una **decisión importante y no trivial** (diseño, interpretación de un
-  resultado, repensar un enfoque, pulir una idea), o **cuando Lucas lo pide**. Claude puede
-  **preguntarle a Lucas "¿querés que le consulte a Codex?"** antes de hacerlo. **JAMÁS para que
-  escriba el código** — la solución la pensamos y la escribimos nosotros; a Codex se le pide *pensar
-  la solución, analizar, criticar, reflexionar*.
-- **Cómo — sesión PERSISTENTE (ida y vuelta con memoria, no mensajes aislados)**: modelo
-  `gpt-5.6-sol` / esfuerzo `max` (default en `~/.codex/config.toml`; el ID correcto es **`gpt-5.6-sol`**,
-  NO `gpt-5.6`, que el login ChatGPT rechaza). Arrancar con `codex exec --skip-git-repo-check "..."`
-  y **continuar la misma sesión** con `codex exec resume --last "..."` — retiene todo el hilo.
-- **La dinámica buscada**: que Codex CRITIQUE lo que estamos haciendo y genere el ida-y-vuelta que
-  pule la idea. Lo que diga Codex se le reporta a Lucas **en llano** (memoria *comunicar-sin-jerga*).
+Antes de una tarea sustantiva, leer `docs/operativa-codex-claude.md` y la cabecera vigente de
+`docs/roadmap.md`. El encargo de Codex fija alcance y condición de salida; Claude puede objetarlo con
+evidencia, pero no expandirlo ni encadenar tuning por iniciativa propia. Toda devolución termina con
+un bloque breve **“Nivel arriba”**: aprendizaje real, límite del claim, explicación rival y si este
+mundo sigue siendo el uso de mayor valor.
+
+Claude también participa en ping-pong intelectual: puede atacar diseños, ofrecer interpretaciones
+independientes y proponer direcciones nuevas. Codex debe revisar crudos/diffs por sí mismo y decide;
+consenso entre modelos no reemplaza evidencia. Las llamadas directas usan exclusivamente la sesión
+worker persistente con `claude-fable-5/max`, o `claude-opus-5/max` si Fable no está disponible.
+Detalles y refrescos de rol: `docs/operativa-codex-claude.md`.
 
 ## Referencia SREG — política de cuarentena
 

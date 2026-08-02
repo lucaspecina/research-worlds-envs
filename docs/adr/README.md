@@ -182,3 +182,4 @@
 | 0169 | v1.69 | 2026-08-01 | [Probe natural: no escalar todavía; autopsia e iteración de contenido](0169-v1.69-probe-natural-no-escala-overgen-y-siguiente-caso-propio.md) | Vigente — variantes mínimas con agentes reales |
 | 0170 | v1.70 | 2026-08-01 | [Grilla apareada da baseline SOTA; habilita contraste de visibilidad](0170-v1.70-grilla-apareada-da-baseline-sota-y-habilita-visibilidad.md) | Vigente — clean vs mixed, mismo historial |
 | 0171 | v1.71 | 2026-08-01 | [Mixed no atenúa; siguiente evidencia propia dentro de overgen](0171-v1.71-mixed-no-atenua-y-siguiente-evidencia-propia.md) | Vigente — probe de campañas elegidas por el agente |
+| 0172 | v1.72 | 2026-08-02 | [Codex supervisor científico + Claude worker persistente; roles siempre en contexto, sesión exclusiva Fable/Opus max y salida dura anti-optimización local](0172-v1.72-codex-supervisor-claude-worker-persistente.md) | Vigente |
