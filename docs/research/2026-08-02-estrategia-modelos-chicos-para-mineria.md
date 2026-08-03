@@ -18,13 +18,18 @@ curriculum de entrenamiento, pero no sostiene un claim sobre agentes frontier.
 
 | Etapa | Modelos candidatos disponibles en Foundry | Uso |
 |---|---|---|
-| Interfaz | `gpt-5.4-nano-2026-03-17` o `Phi-4-mini-instruct` | Endpoint, turnos, sandbox y entrega ejecutable; sin lectura conductual |
-| Minería | `gpt-5.4-mini-2026-03-17`, `claude-haiku-4-5`, `qwen3-32b` | Buscar firmas en varias familias; `gpt-oss-20b` es reemplazo posible |
+| Interfaz | `gpt-5.4-nano` o `Phi-4` | Endpoint, turnos, sandbox y entrega ejecutable; sin lectura conductual |
+| Minería | `gpt-5.4-mini`; luego `Phi-4` si hace falta otra familia | Buscar firmas baratas antes de promoverlas |
 | Puente | `DeepSeek-V3.2` | Comparar con la evidencia WAGER ya acumulada |
 | Confirmación | `gpt-5.4` y una segunda familia frontier si el presupuesto lo permite | Estudio congelado sobre donantes/instancias reservados |
 
 La restricción Fable/Opus del ADR 0172 rige al **Claude worker**, no a los modelos que actúan como
 sujetos experimentales.
+
+Los nombres de la tabla son los **deployments realmente disponibles** en `amalia-resource`,
+verificados el 2026-08-02. `claude-haiku-4-5` figura desplegado pero no acepta el endpoint Chat
+Completions usado por el harness actual; `qwen3-32b` no está desplegado. No se construye otra API
+solo para esta minería mientras haya sujetos baratos compatibles.
 
 ## Gate para no confundir incapacidad con vicio
 
