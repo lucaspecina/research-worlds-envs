@@ -22,7 +22,20 @@ def test_describe_is_free_and_shows_surface(server):
     d = server.describe()
     assert d["schema"] == ["dose", "marker", "outcome"]
     assert "settable" in d["control_surface"]
+    assert d["experiment_cost"]["cost_per_horizon"] == 0.0
     assert server.budget_remaining == rem0  # describe is free
+
+
+def test_describe_discloses_trajectory_horizon_cost():
+    """Agents must be able to price long campaigns before buying them."""
+    case_dir = Path(__file__).resolve().parents[1] / "cases" / "logistic_yield_v0"
+    trajectory_server = build_world_server(case_dir)
+
+    assert trajectory_server.describe()["experiment_cost"] == {
+        "cost_fixed": 100.0,
+        "cost_per_row": 1.0,
+        "cost_per_horizon": 50.0,
+    }
 
 
 def test_observe_debits_budget(server):

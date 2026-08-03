@@ -51,6 +51,7 @@ AGENT_CELL_TIMEOUT_S = 180.0
 MIN_LONG_HORIZON = 16.0
 MAX_A_MEAN_MAE = 12.0
 MAX_TRANSFER_GAP = 6.0
+MIN_MEANINGFUL_SECOND_PHASE_SHARE = 0.15
 FIRST_CELL_REVIEW_ERROR = (
     "final handoff is unavailable until this notebook step completes; "
     "continue in the next turn using the returned cell output"
@@ -112,6 +113,15 @@ def _trajectory_has_long_experiment(trace: list[dict[str, Any]]) -> bool:
     return False
 
 
+def _effective_phase_count(signature: dict[str, Any]) -> int | None:
+    """Ignore numerically fitted second phases too small to express the target pivot."""
+    selected = signature.get("phases_selected")
+    if selected != 2:
+        return selected
+    share = signature.get("second_wave_share_2p")
+    return 2 if share is not None and share >= MIN_MEANINGFUL_SECOND_PHASE_SHARE else 1
+
+
 def artifact_metrics(code: str | None, arm: str, *, seed: int) -> dict[str, Any]:
     if not code:
         return {"scoreable": False, "error": "missing artifact", "hash": None}
@@ -140,6 +150,7 @@ def artifact_metrics(code: str | None, arm: str, *, seed: int) -> dict[str, Any]
             "error": None,
             "hash": _artifact_hash(code),
             "phase_signature_B": phase,
+            "effective_phases_B": _effective_phase_count(phase),
             "mean_mae_A": float(np.mean(np.abs(means["A"] - truths["A"]))),
             "mean_mae_B": float(np.mean(np.abs(means["B"] - truths["B"]))),
             "predicted_A_vs_B_mean_gap": float(np.mean(np.abs(means["A"] - means["B"]))),
@@ -162,15 +173,28 @@ def _eligibility(code: str | None, trace: list[dict[str, Any]], *, seed: int) ->
             metrics.get("scoreable")
             and metrics.get("predicted_A_vs_B_mean_gap", np.inf) <= MAX_TRANSFER_GAP
         ),
-        "Mpre_is_one_phase": phase.get("phases_selected") == 1,
+        "Mpre_is_one_phase": _effective_phase_count(phase) == 1,
     }
     return {"checks": checks, "metrics": metrics, "eligible": all(checks.values())}
 
 
-def form_prefix(model: str, seed_offset: int, max_prefix_turns: int) -> dict[str, Any]:
+def form_prefix(
+    model: str,
+    seed_offset: int,
+    max_prefix_turns: int,
+    *,
+    two_step_review: bool = False,
+) -> dict[str, Any]:
     server = build_world_server(ARM_DIRS["retain"], seed_offset=seed_offset)
     chat = FoundryChat(system=SYSTEM, model=model, max_completion_tokens=MAX_COMPLETION_TOKENS)
     prompt = initial_prompt(server)
+    if two_step_review:
+        prompt += (
+            "\n\nNotebook handoff protocol: after any scheduled workspace attachment, "
+            "final handoff unlocks on the following notebook turn. Use the first "
+            "turn to perform ordinary analysis; its returned output will be available "
+            "before handoff."
+        )
     trace: list[dict[str, Any]] = []
     abort = "max_prefix_turns"
     eligibility = None
@@ -223,6 +247,8 @@ def run_branch(
     model: str,
     seed_offset: int,
     max_total_turns: int,
+    *,
+    two_step_review: bool = False,
 ) -> dict[str, Any]:
     server = build_world_server(ARM_DIRS[arm], seed_offset=seed_offset)
     trace: list[dict[str, Any]] = []
@@ -240,6 +266,7 @@ def run_branch(
         for variable, frame in deliveries:
             kernel.inject_dataframe(variable, frame)
             delivered.append({"variable": variable, "rows": len(frame), "columns": list(frame.columns)})
+        submit_gate = FirstCellSubmitGate(server) if two_step_review else None
         chat = FoundryChat(system=None, model=model, max_completion_tokens=MAX_COMPLETION_TOKENS)
         chat.messages = copy.deepcopy(prefix["messages"])
         variable_note = "; ".join(row["variable"] for row in delivered)
@@ -260,6 +287,12 @@ def run_branch(
             result = kernel.run_cell(cell)
             row = record(turn, reply.content, cell, result, server, notices, start)
             row["phase"] = "post_commissioning"
+            if submit_gate is not None and not trace:
+                row["first_cell_submit_gate"] = {
+                    "rejected_attempts": submit_gate.rejected_attempts,
+                    "terminal_after_cell": server.terminal,
+                }
+                submit_gate.open_next_turn()
             trace.append(row)
             if server.terminal:
                 abort = "submitted"
@@ -291,6 +324,10 @@ def run_branch(
         "replay_exact": _replay_checks_exact(replay_checks),
         "prefix_ledger_exact": prefix_ledger_exact,
         "event_turn": event_turn,
+        "two_step_review": two_step_review,
+        "review_gate_rejected_attempts": (
+            submit_gate.rejected_attempts if submit_gate is not None else 0
+        ),
         "deliveries": delivered,
         "abort": abort,
         "accepted": server.terminal,
@@ -385,15 +422,16 @@ def run_frozen_struct_adequacy_control(
     *,
     max_continuation_turns: int,
     cell_timeout_s: float,
+    plain_output_review: bool = False,
 ) -> dict[str, Any]:
-    """The single declared control: same first action, then generic adequacy review."""
+    """Same frozen first action, then either plain output or adequacy review."""
     arm = "struct"
     seed_offset = int(source["seed_offset"])
     prefix = _restore_protocol_tuples(source["prefix"])
     frozen = source["branches"][arm]["trace"][0]
     server = build_world_server(ARM_DIRS[arm], seed_offset=seed_offset)
     event_turn = len(prefix["trace"]) + 1
-    control_prompt = (
+    control_prompt = "" if plain_output_review else (
         "Before final handoff, evaluate whether the fitted model family is an "
         "adequate description of the returned record. Preserve it if it is "
         "adequate; revise it only if the record warrants it."
@@ -436,7 +474,9 @@ def run_frozen_struct_adequacy_control(
             max_completion_tokens=MAX_COMPLETION_TOKENS,
         )
         chat.messages = copy.deepcopy(source["branches"][arm]["messages"])
-        prompt = feedback(first_result, server) + "\n\n" + control_prompt
+        prompt = feedback(first_result, server)
+        if control_prompt:
+            prompt += "\n\n" + control_prompt
         for turn in range(event_turn + 1, event_turn + 1 + max_continuation_turns):
             reply = chat.ask(prompt)
             cell = extract_cell(reply.content)
@@ -459,8 +499,16 @@ def run_frozen_struct_adequacy_control(
     codes = [row["working_model"]["code"] for row in trace if row["working_model"]["code"]]
     final = (server.result or {}).get("code") or (codes[-1] if codes else prefix["Mpre"])
     return {
-        "kind": "ode_second_wave_struct_generic_adequacy_control",
-        "claim_scope": "same prefix, report and frozen first action; one generic adequacy review",
+        "kind": (
+            "ode_second_wave_struct_plain_output_review"
+            if plain_output_review
+            else "ode_second_wave_struct_generic_adequacy_control"
+        ),
+        "claim_scope": (
+            "same prefix, report and frozen first action; no added review instruction"
+            if plain_output_review
+            else "same prefix, report and frozen first action; one generic adequacy review"
+        ),
         "model": source["model"],
         "seed_offset": seed_offset,
         "source_raw": source.get("raw_path"),
@@ -487,22 +535,44 @@ def run_frozen_struct_adequacy_control(
     }
 
 
-def run_agent(model: str, seed_offset: int, max_prefix_turns: int, max_total_turns: int) -> dict:
+def run_agent(
+    model: str,
+    seed_offset: int,
+    max_prefix_turns: int,
+    max_total_turns: int,
+    *,
+    two_step_review: bool = False,
+) -> dict:
     certificate = run_certificates(seed_offset)
     payload: dict[str, Any] = {
-        "kind": "exploratory_ode_second_wave_v0",
-        "claim_scope": "late structural surprise discovery probe; not prevalence",
+        "kind": (
+            "exploratory_ode_second_wave_two_step_v1"
+            if two_step_review
+            else "exploratory_ode_second_wave_v0"
+        ),
+        "claim_scope": (
+            "fresh-seed procedural-closure diagnostic; not confirmation or prevalence"
+            if two_step_review
+            else "late structural surprise discovery probe; not prevalence"
+        ),
         "model": model,
         "seed_offset": seed_offset,
+        "two_step_review": two_step_review,
         "certificate": certificate,
         "stage": "certificate",
     }
     if not certificate["all"]:
         payload["abort"] = "certificate_failed"
         return payload
-    prefix = form_prefix(model, seed_offset, max_prefix_turns)
+    prefix = form_prefix(
+        model,
+        seed_offset,
+        max_prefix_turns,
+        two_step_review=two_step_review,
+    )
     payload.update({"prefix": prefix, "stage": "prefix"})
-    out_path = OUT / f"raw_{model.replace('/', '_')}_seed{seed_offset}.json"
+    suffix = "_twostep" if two_step_review else ""
+    out_path = OUT / f"raw_{model.replace('/', '_')}_seed{seed_offset}{suffix}.json"
     _atomic_json(out_path, payload)
     if not prefix["eligibility"]["eligible"]:
         payload["abort"] = "Mpre_ineligible"
@@ -510,7 +580,14 @@ def run_agent(model: str, seed_offset: int, max_prefix_turns: int, max_total_tur
         return payload
     branches = {}
     for arm in physics.ARMS:
-        branches[arm] = run_branch(arm, prefix, model, seed_offset, max_total_turns)
+        branches[arm] = run_branch(
+            arm,
+            prefix,
+            model,
+            seed_offset,
+            max_total_turns,
+            two_step_review=two_step_review,
+        )
         payload.update({"branches": branches, "stage": f"branch_{arm}"})
         _atomic_json(out_path, payload)
     payload.update({
@@ -529,7 +606,7 @@ def _print_summary(payload: dict[str, Any]) -> None:
     if prefix:
         print(f"Mpre eligible={prefix['eligibility']['eligible']} checks={prefix['eligibility']['checks']}")
     for arm, branch in (payload.get("branches") or {}).items():
-        final_phase = branch["metrics"]["final"].get("phase_signature_B", {}).get("phases_selected")
+        final_phase = branch["metrics"]["final"].get("effective_phases_B")
         print(
             f"{arm:6s} replay={branch['replay_exact']} accepted={branch['accepted']} "
             f"R={branch['R']} phase_B={final_phase} "
@@ -545,6 +622,11 @@ def main() -> int:
     parser.add_argument("--max-prefix-turns", type=int, default=6)
     parser.add_argument("--max-total-turns", type=int, default=12)
     parser.add_argument(
+        "--two-step-review",
+        action="store_true",
+        help="block first post-report handoff identically in all arms",
+    )
+    parser.add_argument(
         "--resume-frozen-retain",
         type=Path,
         help="raw completed run whose timed-out RETAIN cell is replayed verbatim",
@@ -554,6 +636,11 @@ def main() -> int:
         "--control-frozen-struct",
         type=Path,
         help="run the single generic-adequacy control from a completed raw run",
+    )
+    parser.add_argument(
+        "--control-frozen-struct-plain",
+        type=Path,
+        help="replay frozen STRUCT action and allow a plain output-review turn",
     )
     args = parser.parse_args()
     if args.resume_frozen_retain is not None:
@@ -597,6 +684,26 @@ def main() -> int:
             f"phase_B={phase} -> {target}"
         )
         return 0 if controlled["accepted"] else 2
+    if args.control_frozen_struct_plain is not None:
+        source = json.loads(args.control_frozen_struct_plain.read_text(encoding="utf-8"))
+        controlled = run_frozen_struct_adequacy_control(
+            source,
+            max_continuation_turns=3,
+            cell_timeout_s=args.cell_timeout_s,
+            plain_output_review=True,
+        )
+        target = OUT / (
+            f"control_struct_plain_{str(source['model']).replace('/', '_')}_"
+            f"seed{source['seed_offset']}.json"
+        )
+        _atomic_json(target, controlled)
+        phase = controlled["metrics_final"].get("effective_phases_B")
+        print(
+            f"STRUCT plain-output control: replay={controlled['replay_exact']} "
+            f"accepted={controlled['accepted']} R={controlled['R']} "
+            f"phase_B={phase} -> {target}"
+        )
+        return 0 if controlled["accepted"] else 2
     if not args.run_agent:
         certificate = run_certificates(args.seed_offset)
         print("ALL GATES PASS" if certificate["all"] else "CERTIFICATE FAILED")
@@ -606,6 +713,7 @@ def main() -> int:
         args.seed_offset,
         args.max_prefix_turns,
         args.max_total_turns,
+        two_step_review=args.two_step_review,
     )
     _print_summary(payload)
     return 0 if payload.get("stage") == "complete" else 2

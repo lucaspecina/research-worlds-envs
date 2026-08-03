@@ -3,6 +3,12 @@
 **Estado:** exploración cerrada. Hay una señal real en un donante elegible de
 `gpt-5.4`, pero no una tasa ni una réplica confirmatoria.
 
+> **Actualización posterior:** el control sin hint donde el agente simplemente
+> pudo leer su stdout antes de entregar recuperó dos fases y `R=0.9766`. Por tanto,
+> la lectura estructural de este documento queda supersedida por
+> [`2026-08-02-resultado-probe-ode-dos-pasos-v1.md`](2026-08-02-resultado-probe-ode-dos-pasos-v1.md):
+> este ODE identifica cierre procedural, no resistencia estructural robusta.
+
 ## Pregunta probada
 
 Versión concreta de «le cuesta pivotear»:

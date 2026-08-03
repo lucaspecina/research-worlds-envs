@@ -262,6 +262,11 @@ class WorldServer:
             "experiment_cost": {
                 "cost_fixed": self.config.experiment.cost_fixed,
                 "cost_per_row": self.config.experiment.cost_per_row,
+                # Trajectory worlds can charge for how long a run remains
+                # active.  This is part of the agent's decision problem, not
+                # hidden world state, so describe() must disclose it alongside
+                # the other exact experiment costs.
+                "cost_per_horizon": self.config.experiment.cost_per_horizon,
             },
             "control_surface": self.control_surface,
             "budget_total": self.config.budget,

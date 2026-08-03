@@ -32,13 +32,18 @@ N_DIAG = 2000
 def main():
     trace_path = Path(sys.argv[1])
     tr = json.loads(trace_path.read_text(encoding="utf-8"))
-    code = tr["submission_code"]
+    code = tr.get("submission_code")
+    if not code:
+        print(f"trace: {trace_path.name} — no accepted submission to diagnose")
+        return
     meta = CaseMeta.from_json_file(CASE / "meta.json")
     spec = meta.stakes.functionals[0]
     battery = load_battery(CASE)
     transform = make_sample_transform(meta)
 
-    print(f"trace: {trace_path.name}  R={tr['R']}  R_uncl={tr['R_unclipped']:+.3f}")
+    r_unclipped = tr.get("R_unclipped")
+    r_unclipped_text = f"{r_unclipped:+.3f}" if r_unclipped is not None else "n/a"
+    print(f"trace: {trace_path.name}  R={tr.get('R')}  R_uncl={r_unclipped_text}")
     print("item  feed   P_truth  P_sub   |dP|")
     rows = []
     with SandboxedSubmission(code, meta.column_names, timeout_s=30.0) as sb:

@@ -5,6 +5,7 @@ import numpy as np
 from pandas.testing import assert_frame_equal
 
 from cases import ode_second_wave_v0_common as physics
+from scripts.probe_ode_second_wave_v0 import _effective_phase_count
 from wager.factory.case_loader import load_truth_code, load_world_module
 from wager.reward.sandbox import SandboxedSubmission
 
@@ -70,3 +71,12 @@ def test_param_and_struct_have_matched_update_size_and_plateau():
     param = physics._b_components("param", z)
     struct = physics._b_components("struct", z)
     np.testing.assert_allclose(param["K"], struct["K1"] + struct["K2"], atol=1e-12)
+
+
+def test_artifact_phase_count_ignores_only_tiny_numerical_second_phase():
+    tiny = {"phases_selected": 2, "second_wave_share_2p": 0.047}
+    structural = {"phases_selected": 2, "second_wave_share_2p": 0.41}
+    one = {"phases_selected": 1, "second_wave_share_2p": 0.40}
+    assert _effective_phase_count(tiny) == 1
+    assert _effective_phase_count(structural) == 2
+    assert _effective_phase_count(one) == 1

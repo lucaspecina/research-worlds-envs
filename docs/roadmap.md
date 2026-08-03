@@ -248,29 +248,38 @@
 > exploratoria de **actualización de parámetros sin apertura espontánea de estructura latente**, no
 > una tasa de terquedad general. [Resultado](research/2026-08-02-resultado-control-topologia-evidencia-2d.md).
 >
-> **RESULTADO 2026-08-02 — GENERALIZACIÓN ODE:** el primer STRUCT falló su propia auditoría y se
-> corrigió antes de llamar agentes. En el mundo válido, un donante elegible de `gpt-5.4` conservó
-> RETAIN (`R=.978`), resolvió PARAM con una fase (`96.5%` del error medio removido) y en STRUCT
-> corrigió gran parte de la media (`81.2%`) pero entregó una sola fase cuando BIC, CV y holdout
-> exigían dos. `gpt-5.4-mini` y DeepSeek quedaron inelegibles antes del contraste. El control
-> genérico recuperó el reconocimiento de una subida tardía, pero el agente intentó otra familia
-> de una sola fase y agotó el tiempo. Esto generaliza exploratoriamente la firma SCM a ODE, pero
-> también descubre un rival: **cierre antes de leer el propio diagnóstico**.
-> [Resultado y límites](research/2026-08-02-resultado-probe-ode-apertura-estructural-v0.md).
+> **RESULTADO 2026-08-02 — ODE Y CIERRE PROCEDURAL:** v0 produjo una aparente generalización:
+> el único donante elegible de `gpt-5.4` pasó RETAIN/PARAM y comprimió STRUCT en una fase. El
+> control decisivo mantuvo el mismo checkpoint, reporte y primera acción congelada, pero dejó que
+> el agente leyera su stdout antes de entregar, sin ningún hint de adecuación. Recuperó
+> espontáneamente dos fases (`MAE B 5.43→0.90`, `R=.9766`). Dos donantes frescos quedaron
+> censurados antes del fork y no se buscaron más. **Este ODE no prueba resistencia estructural:**
+> identifica cierre del flujo antes de que el propio diagnóstico pueda gobernar la entrega.
+> [v0](research/2026-08-02-resultado-probe-ode-apertura-estructural-v0.md) ·
+> [control final](research/2026-08-02-resultado-probe-ode-dos-pasos-v1.md).
 >
-> **REEVALUACIÓN Y SIGUIENTE ACCIÓN:** todavía no se congela la pregunta final del paper. Se
-> mantiene como líder **actualización local dentro de la familia elegida sin apertura estructural
-> suficiente**; no se afirma aún que la causa sea “tener que cambiar mucho”. El siguiente ciclo
-> separa naturalmente `inspeccionar → decidir → entregar` con semillas frescas, sin seguir tuneando
-> esta física. En paralelo se conserva una candidata realmente distinta —cobertura e incertidumbre
-> fuera del soporte observado— para evitar casarnos con la primera señal.
+> **RESULTADO 2026-08-02 — COBERTURA CON COSTOS VISIBLES:** la primera versión estaba confundida:
+> `env.describe()` ocultaba el costo por horizonte que el servidor sí cobraba. Tras corregirlo y
+> quemar seeds frescas, DeepSeek y gpt-5.4 cubrieron feeds `0–10` y llegaron a `t=24`; la candidata
+> de falta de adquisición no apareció. DeepSeek no cerró en diez turnos; gpt-5.4 entregó `R=0`
+> después de intentar una cartera que excedía el presupuesto y extrapolar una ley equivocada.
+> Eso abre, sin promoverla, una candidata distinta de planificación experimental/invariantes.
+> [Resultado](research/2026-08-02-resultado-probe-cobertura-con-costos-visibles-v1.md).
 >
-> **EMBUDO DE CANDIDATAS (no claims):** (1) apertura estructural — líder, ya cruzó SCM→ODE de
-> forma exploratoria; falta confirmación fresca y separar cierre procedural;
-> (2) propagación/saliencia — reproducida pero curable con recordatorio/handoff, posible resultado
-> de interfaz; (3) cobertura/extrapolación e incertidumbre fuera de soporte — siguiente candidata
-> independiente a aislar; (4) otras fallas vistas en autopsias — banco abierto. Una candidata nueva
-> puede entrar aunque no sea “revisión de creencias”.
+> **REEVALUACIÓN Y SIGUIENTE ACCIÓN:** todavía no se congela la pregunta final del paper. Sigue
+> viva la señal de **cierre/autoridad del diagnóstico**; la apertura latente persiste solo en SCM;
+> cobertura se cierra en el host logístico. La hipótesis de fricción real tampoco se da por cierta:
+> el repo no contiene hoy dependencias materiales, y seis ediciones simples ya dieron nulo. Antes
+> de construir un host grande, el siguiente slice busca headroom barato comparando corrección local
+> con reabrir una estructura propia compartida; un nulo la retira. La candidata rival es persistencia
+> post-corrección y la firma latente sigue disponible para generalización.
+>
+> **EMBUDO DE CANDIDATAS (no claims):** (1) cierre/autoridad del diagnóstico — rescate limpio en
+> ODE y convergencia con propagación, falta réplica independiente; (2) apertura estructural latente
+> — persiste en SCM pero no generalizó a ODE; (3) tamaño/endogeneidad de la revisión — siguiente
+> microprobe, todavía no fricción material; (4) planificación experimental/invariantes — `n=1`,
+> banco; (5) persistencia post-corrección y otras fallas — banco abierto. Una
+> candidata nueva puede entrar aunque no sea “revisión de creencias”.
 >
 > Todo el bloque histórico posterior conserva decisiones y resultados, pero cualquier
 > “próximo paso” anterior queda supersedido por esta cabecera.
@@ -302,8 +311,9 @@
 | **6o. Fidelidad con procedencia** | Snapshot con las 16 piezas crudas previas; primero solo SHARED/SPLIT-RETAIN | [21/21 mecánico; ambas RETAIN reconstruyen, dañan y no entregan](research/2026-08-01-resultado-probe-localizacion-refactor-con-procedencia-v1.md) | **CERRADA — SNAPSHOT FRESCO NO FIEL; REVISE PROHIBIDO** |
 | **6p. Continuación realmente nativa** | Conservar conversación/kernel vividos; auditar si SHARED/SPLIT puede intervenirse sin contradecir la memoria | El swap al checkpoint contradice la trayectoria; formar ambos layouts desde el origen es caro | **DIFERIDA — PREGUNTA SECUNDARIA** |
 | **6q. Topología observable vs latente** | Mismo SCM y evidencia marginal; RETAIN/REVISE/LOCAL/LATENT, variando si la partición está visible | [DeepSeek `98300`](research/2026-08-02-resultado-probe-topologia-local-visible-vs-latente-v1.md), [gpt-5.4 `98403`](research/2026-08-02-resultado-replica-gpt-topologia-v1-1.md) y [control 2D + turno real](research/2026-08-02-resultado-control-topologia-evidencia-2d.md): partición visible `83–95%`; LATENT `A3≈0` aun tras revisar outputs | **CERRADA — CONVERGENCIA EXPLORATORIA; GENERALIZAR EN OTRO HOST** |
-| **6r. Generalización dinámica** | Llevar el contraste mínimo a un mundo de trayectorias con consecuencia futura, auditando primero el host | [gpt-5.4 pasa PARAM y subexpande STRUCT; control refina mecanismo](research/2026-08-02-resultado-probe-ode-apertura-estructural-v0.md) | **CERRADA — SEÑAL EXPLORATORIA; MANTENER CANDIDATA** |
-| **6s. Separación y cartera** | Separar revisión del diagnóstico de la entrega; abrir en paralelo cobertura/incertidumbre fuera de soporte | Dos microhipótesis y probes reales mínimos sobre semillas frescas | **SIGUIENTE — SIN TUNEAR ODE PARA OBTENER EFECTO** |
+| **6r. Generalización dinámica** | Llevar el contraste mínimo a un mundo de trayectorias y separar estructura de cierre same-cell | [el turno sin hint rescata STRUCT a dos fases y R=.9766](research/2026-08-02-resultado-probe-ode-dos-pasos-v1.md) | **CERRADA — FALLA PROCEDURAL; NO GENERALIZA RIGIDEZ ESTRUCTURAL** |
+| **6s. Cobertura fuera de soporte** | Brief neutral y costos realmente visibles; medir si la cartera cubre tiempo y feeds | [ambos agentes cubren; DeepSeek censurado y gpt falla después](research/2026-08-02-resultado-probe-cobertura-con-costos-visibles-v1.md) | **CERRADA EN ESTE HOST — NO ELICITA FALTA DE ADQUISICIÓN** |
+| **6t. Tamaño/endogeneidad** | Misma evidencia rutinaria; corrección local vs reabrir estructura propia compartida; dos pasos para neutralizar cierre | Slice mínimo ODE o abandonar si el certificado no cierra | **SIGUIENTE — GATE BARATO ANTES DE CONSTRUIR FRICCIÓN REAL** |
 | **7. Piloto y réplica** | Pre-registro pequeño, más de un modelo y dos estructuras | Estimando con incertidumbre + prueba de generalización | Pendiente |
 | **8. Escala** | Generador dinámico, suite y eventualmente entrenamiento | Solo si los fenómenos anteriores sobrevivieron | Diferido |
 
