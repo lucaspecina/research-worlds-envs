@@ -68,10 +68,14 @@ El constructo defendible no es "el pozo" sino la CALIBRACIÓN DE CONTINUACIÓN, 
   causal limpio — la evidencia pública no alcanza (hueco declarado del campo). El diseño
   correcto si se testea: **aleatorizar SOLO la historia** (propio-vs-heredado con el MISMO
   estado presente; inversión alta/baja ídem) — firma = interacción propiedad × inversión.
-- **Understay (CIERRE PREMATURO)**: **el polo VIVO en frontier** `[POR-LEER, evidencia fuerte]`:
-  CausaLab — corridas fallidas dejan ~mitad del presupuesto SIN USAR y entregan modelos que
-  contradicen sus propios datos; UN chequeo de consistencia sube exactitud 48→60. NewtonBench —
-  el intérprete de código EMPUJA a modelos capaces a explotar demasiado pronto (tool paradox).
+- **Understay (CIERRE PREMATURO)**: **el polo VIVO en frontier**:
+  CausaLab `[POR-LEER, evidencia fuerte]` — corridas fallidas dejan ~mitad del presupuesto SIN
+  USAR y entregan modelos que contradicen sus propios datos; UN chequeo de consistencia sube
+  exactitud 48→60. NewtonBench `[VERIFICADO — leído 2026-08-06]` — el intérprete de código
+  EMPUJA a modelos capaces a explotar demasiado pronto (tool paradox; verbatim: *"accelerate
+  convergence to a 'good enough' solution, causing the model to prematurely settle in a local
+  optimum"*; GPT-5 72.9→69.6, Gemini-2.5-pro 65.0→62.0 con code; los débiles MEJORAN 4.6→13.0 —
+  correlacional, declarado por los autores).
   Cruza con nuestro 8.2 (corte afirmando completitud) y con el vicio-9 candidato.
 
 **Consecuencia de diseño (GIRO de prioridad)**: el próximo mundo de esta familia NO es el
