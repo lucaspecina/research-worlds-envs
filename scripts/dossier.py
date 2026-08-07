@@ -301,11 +301,17 @@ def main() -> None:
         if not d.is_dir() or d.name == "dossier":
             continue
         for f in sorted(d.glob("*.json")):
-            if _is_episode(f):
-                try:
-                    episodes.append(json.loads(f.read_text()) | {"_file": f, "_batch": d.name})
-                except Exception:
-                    pass
+            if not _is_episode(f):
+                continue
+            try:
+                d_ = json.loads(f.read_text())
+            except Exception:
+                continue
+            cid = d_.get("case_id")
+            ep = d_.get("episode")
+            if (isinstance(cid, str) and (ROOT / "cases" / cid / "meta.json").exists()
+                    and isinstance(ep, dict) and "trace" in ep):
+                episodes.append(d_ | {"_file": f, "_batch": d.name})
     episodes.sort(key=lambda p: p.get("run_at", ""), reverse=True)
 
     ctxs: dict[str, CaseCtx] = {}
