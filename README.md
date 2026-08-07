@@ -51,3 +51,11 @@ wager/
 cases/        los mundos (world.py oculto, meta.json, brief.md, ladder/, certificados)
 docs/         adr/, roadmap, open-questions, red-team, archived
 ```
+
+## Ver las corridas (el visor)
+
+```bash
+python scripts/dossier.py
+```
+
+Junta todas las corridas de `scripts/out/`, regenera el sitio (Tareas → tarea → corrida) y lo abre en el navegador.

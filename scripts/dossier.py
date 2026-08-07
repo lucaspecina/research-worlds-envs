@@ -12,7 +12,9 @@ instruments). Nada hardcodeado por caso. Una tarea = una suite; las variantes
 (p. ej. el gemelo) son condición SECRETA del servidor y se muestran como
 columna, explicadas en la sección de verdad oculta.
 
-Uso: python scripts/build_episode_dossier.py [dir]   (default: scripts/out/count_mix_smoke)
+Uso: python scripts/dossier.py          -> junta TODAS las corridas de scripts/out/*,
+                                           regenera el sitio y lo ABRE en el navegador
+     python scripts/dossier.py --no-open  (solo regenerar)
 """
 
 from __future__ import annotations
@@ -283,11 +285,27 @@ def task_html(suite: str, cases: dict[str, CaseCtx], runs: list[dict], out: Path
     return page(f"tarea {suite}", "".join(body))
 
 
+def _is_episode(f: Path) -> bool:
+    try:
+        head = f.read_text()[:400]
+        return '"case_id"' in head and '"model"' in head
+    except Exception:
+        return False
+
+
 def main() -> None:
-    src_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "scripts/out/count_mix_smoke"
-    out = src_dir / "dossier"
+    out = ROOT / "scripts/out/dossier"
     out.mkdir(parents=True, exist_ok=True)
-    episodes = [json.loads(f.read_text()) | {"_file": f} for f in sorted(src_dir.glob("*.json"))]
+    episodes = []
+    for d in sorted((ROOT / "scripts/out").iterdir()):
+        if not d.is_dir() or d.name == "dossier":
+            continue
+        for f in sorted(d.glob("*.json")):
+            if _is_episode(f):
+                try:
+                    episodes.append(json.loads(f.read_text()) | {"_file": f, "_batch": d.name})
+                except Exception:
+                    pass
     episodes.sort(key=lambda p: p.get("run_at", ""), reverse=True)
 
     ctxs: dict[str, CaseCtx] = {}
@@ -304,7 +322,7 @@ def main() -> None:
     for suite, runs in suites.items():
         task_page = f"task_{suite}.html"
         for p in runs:
-            p["_page"] = f"run_{p['_file'].stem}.html"
+            p["_page"] = f"run_{p['_batch']}__{p['_file'].stem}.html"
             (out / p["_page"]).write_text(run_html(p, ctxs[p["case_id"]], task_page))
         cases = {p["case_id"]: ctxs[p["case_id"]] for p in runs}
         (out / task_page).write_text(task_html(suite, cases, runs, out))
@@ -319,6 +337,9 @@ def main() -> None:
                   f"última: {esc(max(fechas) if fechas else '—')}</p></section>")
     (out / "index.html").write_text(page("Tareas", f"<h1>Tareas</h1>{cards}"))
     print(f"OK: {len(episodes)} corridas, {len(suites)} tareas -> {out / 'index.html'}")
+    if "--no-open" not in sys.argv:
+        import webbrowser
+        webbrowser.open((out / "index.html").as_uri())
 
 
 if __name__ == "__main__":
