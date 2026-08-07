@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from datetime import datetime
 import sys
 import time
 from pathlib import Path
@@ -137,12 +138,16 @@ def _shopping_signature(trace: list[dict]) -> dict:
 
 def run_cell(model: str, pole: str, seed: int, ins, tag: str, initial_note: str = "") -> dict:
     srv = build_world_server(ROOT / "cases" / POLES[pole], seed_offset=seed)
+    brief_snapshot = srv.describe().get("brief", "")
+    run_at = datetime.now().isoformat(timespec="seconds")
     t0 = time.time()
     ep = run_episode(srv, model=model, initial_note=initial_note)
     wall = time.time() - t0
     code = ep.get("submission_code")
     payload = {
         "tag": tag, "model": model, "pole": pole, "seed": seed,
+        "case_id": POLES[pole], "run_at": run_at,
+        "initial_note": initial_note, "brief": brief_snapshot,
         "abort_reason": ep.get("abort_reason"),
         "turns": len(ep.get("trace", [])),
         "accepted": ep.get("accepted"), "R": ep.get("R"),
