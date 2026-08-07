@@ -113,6 +113,15 @@ S≈0 → entregó forma de proceso único; S≈1 → capturó la estructura. Ni
 - **G5 mecánica:** determinismo por seed · escalera de verdades degradadas monótona · smoke de
   interfaz limpio (entrega válida, sin fricción no-epistémica).
 
+**DECISIÓN POST-SMOKE (Lucas, 2026-08-07 — registro visible):** el resultado principal cayó en
+INDETERMINADO (media-apertura: frailty continua 6/6, clases discretas 0/6), no en "no abrió", por
+lo que el gatillo original del brazo pista no disparó. Lucas autoriza ejecutar el brazo pista como
+**EL control único post-señal** (ADR 0172) — misma frase congelada, seeds reservadas 99350–99357,
+ambos polos y ambos modelos (2×2×2) — porque discrimina la localización que ahora importa:
+repertorio-ausente-pero-disponible-a-demanda vs incapacidad. El control de dosis NO se corre en
+este host (chocaría con el certificado anti-póster); la perilla de solapamiento pasa al diseño de
+confirmación. El mundo, los instrumentos y las lecturas quedan sin tocar.
+
 ## 7. Lectura congelada (por modelo, sobre el brazo principal)
 
 Con `F_mean ≥ 0.6` (corrigió el nivel; si no, el episodio no informa estructura y se reporta):
