@@ -23,12 +23,15 @@ from cases.count_mix_v0_common import (  # noqa: E402
     _DictRegime, _sample_counts, load_instance, program_functionals, s_valley,
     strong_baseline_program,
 )
+from wager.harness.case_episode import build_world_server  # noqa: E402
+from wager.harness.episode import SYSTEM  # noqa: E402
 from wager.report.html import code, details, esc, md, page, section, table  # noqa: E402
 
 SMOKE = ROOT / "scripts/out/count_mix_smoke"
 OUT = SMOKE / "dossier"
 
 # brief por era: v0 (tecnico/main/pista) desde git, v0.2 (v02_*) el actual
+_SHEET = ""  # se llena en main()
 BRIEF_V02 = (ROOT / "cases/count_mix_v0/brief.md").read_text()
 try:
     BRIEF_V0 = subprocess.run(
@@ -46,6 +49,41 @@ NOTES = {
 
 def brief_for(tag: str) -> str:
     return BRIEF_V02 if tag.startswith("v02") else BRIEF_V0
+
+
+def _sheet_json() -> str:
+    srv = build_world_server(ROOT / "cases/count_mix_v0", seed_offset=0)
+    sheet = srv.describe()
+    return json.dumps({k: v for k, v in sheet.items() if k != "brief"},
+                      indent=2, ensure_ascii=False, default=str)
+
+
+def _dataset_preview() -> str:
+    srv = build_world_server(ROOT / "cases/count_mix_v0", seed_offset=99300)
+    df = srv.observe("archivo", 12)
+    filas = table(["unit_id", "y (defectos)"],
+                  [[f"{r.unit_id:.0f}", f"{r.y:.0f}"] for r in df.itertuples()])
+    return ("<p><b>Columnas:</b> <code>unit_id</code> (identificador del lote; se repite si el "
+            "mismo lote se mide varias veces) y <code>y</code> (defectos de esa medición, entero "
+            "≥ 0). Así se ven las primeras 12 filas del archivo histórico (velocidad 1.0, tope "
+            "400 filas por partida; cada partida ve su propia tirada — las filas exactas de cada "
+            "una están en su dossier, turno 1):</p>" + filas)
+
+
+def first_prompt_html(tag: str) -> str:
+    note = NOTES.get(tag)
+    body = ("<p><b>1) El rol (system prompt — idéntico en todos los mundos WAGER):</b></p>"
+            + code(SYSTEM)
+            + "<p><b>2) El primer mensaje que recibe (brief + hoja técnica, textual):</b></p>"
+            + code("Here is the brief:\n\n" + brief_for(tag)
+                   + (("\n\n" + note) if note else "")
+                   + "\n\nMachine-readable sheet:\n" + _SHEET
+                   + "\n\nReason briefly about your opening plan, then write your first cell. "
+                     "`env` is already in the namespace.")
+            + "<p class='note'>A partir de ahí, cada turno recibe la salida de su propia celda "
+              "(stdout + presupuesto restante) y nada más. El dataset NUNCA se le muestra de "
+              "entrada: solo ve lo que compra con env.observe / env.experiment.</p>")
+    return details("ver el PROMPT EXACTO (rol + primer mensaje con hoja técnica)", body)
 
 
 def svg_hist(y_truth: np.ndarray, y_model: np.ndarray | None, title: str) -> str:
@@ -101,7 +139,9 @@ def episode_html(p: dict, inst: dict) -> str:
     note = NOTES.get(tag)
     if note:
         task += f"<div class='warn'><b>Ayuda agregada en el primer mensaje:</b> {esc(note)}</div>"
-    body.append(section("La tarea exacta que vio el agente", details("ver el encargo completo", task), "student"))
+    body.append(section("La tarea exacta que vio el agente",
+                        details("ver el encargo completo", task) + first_prompt_html(tag),
+                        "student"))
 
     turns = []
     for rec in p["episode"]["trace"]:
@@ -200,6 +240,10 @@ def main() -> None:
     truth_f = program_functionals(
         lambda r, n, s: _sample_counts("mix", inst["params"], r, n, s), geo, tail_at)
     strong_f = program_functionals(strong_baseline_program(y_train), geo, tail_at)
+    global _SHEET
+    _SHEET = _sheet_json()
+    explic_extra = ("<h3>El prompt exacto y el dataset</h3>" + first_prompt_html("main")
+                    + _dataset_preview())
     rows = []
     for f in sorted(SMOKE.glob("*.json")):
         p = json.loads(f.read_text())
@@ -269,7 +313,7 @@ window.addEventListener('load', aplicar);
            "<p class='sub'>Mismo problema en todas; lo que cambia entre tandas es el encargo y la ayuda. "
            "Vara del salto (mundos mezcla): 0 = entregó el modelo continuo, 1 = descubrió los dos grupos. "
            "Limpieza (gemelo): 1 = no inventó nada.</p>",
-           EXPLICACION,
+           EXPLICACION, explic_extra,
            "<h2>Las seis tandas, en orden cronológico</h2>",
            "<table><tr><th>#</th><th>tanda</th><th>qué fue</th></tr>" + leyenda + "</table>",
            "<h2>Las partidas</h2>", filtros,
