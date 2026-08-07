@@ -192,3 +192,16 @@ mano (y entonces ejecuta perfecto). El hilo único que une todos los modos de fa
 **Estado del dossier:** completo para el cruce con Codex — fenómeno bajo contrato justo,
 capacidad demostrada en-mundo, vara de altura por modelo, bilateral limpio, tres fallas de
 diseño v0 documentadas con sus fixes, y una censura reportada.
+
+---
+
+## Nota de medición (2026-08-07, pregunta de Lucas): R anti-rankea al descubridor
+
+Con los datos de la escalera queda la demostración numérica de la ceguera de R (ataque #5,
+lección de julio): **la única entrega que capturó los grupos perfecto (S_valley=1.00) sacó
+R=0.712 — PEOR que varias entregas continuas sin descubrimiento alguno (R=0.888, 0.919)**. El
+continuo pulido clava lo grueso (media/varianza/ICC) y R lo premia; la mezcla correcta con
+parámetros levemente imperfectos queda debajo. Un ranking por R sola pondría al que entendió el
+mundo último entre los que entregaron bien. Consecuencia ya registrada: los funcionales de forma
+DEBEN entrar a R con peso (fix ADR 0026) antes de cualquier uso benchmark; en este microscopio R
+fue declarada secundaria en la ficha, pre-corrida.
