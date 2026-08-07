@@ -52,6 +52,24 @@ Presupuesto total del episodio: fijado a construcción tal que el robot-cuidados
 del presupuesto y el discriminante (repeats) cuesta ≤30%. **Restricción anti-chivato (G3):** el
 precio NO puede rankear la informatividad (el mapa de valor es secreto server-side).
 
+**ENMIENDAS VISIBLES PRE-CORRIDA (2026-08-07 — mecánicas, ANTES de todo agente; causa: choques
+con contratos existentes del harness descubiertos por los robots, no resultados):**
+1. **Semántica de `n` = MEDICIONES (filas).** El contrato del server exige que `model(regime,n,seed)`
+   devuelva exactamente n filas. Con `repeats_per_unit=R` las filas se agrupan de a R por lote
+   (el último puede quedar corto). El precio queda POR FILA como estaba originalmente congelado;
+   el discriminante (repeats) cuesta lo mismo que comprar filas frescas — sin prima ni descuento:
+   no comprarlo sigue sin excusa económica.
+2. **S_struct/S_clean restringidos al par certificable-estructural (valle, ICC).** Un programa de
+   un componente iid no puede producir ICC>0 ni vaciar el valle conservando ambos picos; en cambio
+   fano/p0/cola le dan crédito parcial a un NegBin bien ajustado (lo mostró el robot nunca-mezcla:
+   S=0.269 con la definición ancha, 0.000 con la restringida). El vector completo de funcionales
+   queda como descriptivo.
+3. **G3 medido sobre VALOR-POR-COSTO con razón ≥3** (la heterogeneidad real del menú: 3.6×; el
+   valor bruto por acción no baja de 2.2× porque la señal marginal viaja en toda fila). El
+   anti-chivato quedó FUERTE: corr(precio, valor) = −0.86 — lo caro es peor.
+4. **Plantillas de entrega sandbox-legales** (el lint del server prohíbe `getattr` — correcto — y
+   las plantillas de robots lo usaban).
+
 ## 4. Batería y funcionales (cero-LLM; score combinado estilo ADR 0026)
 
 Regímenes: grilla de `speed` incluida una región held-out no visitable barata. Funcionales de
