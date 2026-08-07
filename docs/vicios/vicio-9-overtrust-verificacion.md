@@ -27,6 +27,16 @@ es computable sin juez.
   convence de haber terminado sin ejecutar los tests (49% terminación temprana).
 - Pariente WAGER `[VERIFICADO propio]`: vibe-physics ("dice verificado cuando no chequeó") es
   el caso límite sin test; el candidato 9 es el caso CON test-de-paja.
+- **Primer espécimen propio con traza** `[VERIFICADO propio][AGÉNTICO]` (count_mix_v0, brazo
+  receta, gpt-5.4 2/2, 2026-08-07): recibe la instrucción explícita de PROBAR la mezcla finita,
+  la lista entre sus familias candidatas… y la adjudica SIN ajustarla jamás, con chequeos de
+  adecuación que la rival también pasa (*"the estimated NB size stays roughly stable around
+  2–3… which is exactly what gamma mixing predicts"* — igualmente cierto bajo la mezcla) y
+  parsimonia en lugar de test (*"a parsimonious continuous alternative to a finite mixture"*).
+  La evidencia discriminante estaba IMPRESA en su propia salida (histograma con valle; cuartiles
+  bimodales de medias por lote) y no fue procesada. La firma mecánica se computó de trazas:
+  **1 celda de 28 ajustó formalmente la alternativa**.
+  [Autopsia con citas](../research/2026-08-07-autopsia-canales-de-ayuda.md).
 
 ## Firma mecánica (computable cero-LLM)
 
@@ -45,7 +55,10 @@ test propio; el robot-juicio paga el discriminante. **Par espejo**: la paranoia 
 PaperBench/Claude que EMPEORA sin submit).
 
 ## Estado
-EN EL CATÁLOGO (aprobado 2026-07-13, ADR 0141). CERO mundos; el boceto de arriba comparte
+EN EL CATÁLOGO (aprobado 2026-07-13, ADR 0141). Primer espécimen propio medido DE FACTO en
+count_mix_v0 (2026-08-07, brazo receta — ver Evidencia): el mundo no fue diseñado para este
+vicio pero su gemelo+rival fuerte hacen computable la firma. Mundo dedicado aún sin construir;
+el boceto de arriba comparte
 esqueleto con el mundo del cierre prematuro (prioridad #1) — probablemente se construyen como
 PAR de la misma familia (entregar-sin-verificar ↔ verificar-con-paja ↔ re-verificar-sin-fin).
 Cola [POR-LEER] antes de citar números en el paper.

@@ -235,7 +235,11 @@ cruza postulando la estructura no dada. Variantes: partir-una-causa-en-dos · la
 casi funciona (bloquea la mejor) · re-representar (el dial: cuántas cosas hay que cambiar a la vez).
 El robot revisor-de-a-pasitos DEBE fallar (certifica que hay salto, no rampa).
 
-**Estado.** v2 HECHO (el trofeo; la familia con margen demostrado). Partir-en-dos y solución-cebada:
+**Estado.** v2 HECHO (el trofeo; la familia con margen demostrado). **count_mix_v0+twin HECHO y
+MEDIDO (programa de saltos, 2026-08-07)**: 0/9 espontáneo con encargo justo; la escalera de ayudas
+mostró que la pista rescata según CANAL×modelo, no fuerza (evidencia canónica en
+`docs/vicios/vicio-4` y `vicio-9`; autopsia en
+[canales de ayuda](research/2026-08-07-autopsia-canales-de-ayuda.md)). Partir-en-dos y solución-cebada:
 sin mundo. Gemelo Vulcano: par bandera decidido → **ESTACIONADO en cantera (ADR 0117: es par de AHA,
 y los gemelos son agregado, no eje)**; su test de viabilidad (gratis) queda listo para rato ocioso.
 **Validado por afuera**: el position paper "LLMs can't jump" (2026) usa el ejemplo Vulcano exacto

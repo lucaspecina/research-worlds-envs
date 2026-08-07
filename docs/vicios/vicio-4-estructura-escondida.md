@@ -24,6 +24,17 @@ parámetros, promedia.
   picture"* — el vicio 1 dentro del benchmark del vicio 4). Nuestro trofeo `[VERIFICADO propio]`: 0/10
   postulan la mezcla; el genérico sin-mezcla no cierra la brecha. OSWorld estado-oculto
   `[VERIFICADO]` (inferir lo latente es juicio — el propio benchmark de operación lo dice).
+- **count_mix_v0 + gemelo (nuestra mesa, 2026-08-07)** `[VERIFICADO propio][AGÉNTICO]` — primer
+  mundo del programa de saltos (mezcla discreta de dos tasas por lote; gemelo continuo apareado
+  por media): **0/9 episodios espontáneos postulan los grupos** (gpt-5.4 y DeepSeek-V3.2, encargo
+  v0.2 corregido tras la auditoría de incentivos); todos entregan frailty gamma continua —
+  capturan la persistencia por lote (ICC≈verdad) sin la discretitud (valle≈0 contra el rival
+  fuerte). Gemelo limpio (0/10 espurio) y compra del experimento discriminante casi universal
+  (11/12): la pieza ausente es la HIPÓTESIS y su test, no el shopping. Con ayudas, la variable
+  activa es el CANAL de la pista × modelo, no su fuerza (evidencia en vicio-1 §1.C y vicio-9).
+  [Resultado](../research/2026-08-07-resultado-smoke-count-mix-v0.md) ·
+  [auditoría](../research/2026-08-07-auditoria-critica-slice-count-mix.md) ·
+  [autopsia de canales](../research/2026-08-07-autopsia-canales-de-ayuda.md).
 - **Es la celda del catálogo donde la evidencia externa ya nos esperaba** — y donde el par
   Neptuno/Vulcano (postular-entidad ↔ parchar) tiene además el respaldo del position paper
   "LLMs can't jump" `[VERIFICADO]` (usa literalmente el ejemplo Vulcano).
@@ -49,4 +60,7 @@ parámetros, promedia.
 ## Estado en WAGER y diseño
 - El trofeo valida; DiscoverPhysics obliga a diferenciarnos: **ellos LLM-judge, nosotros
   cero-LLM** — el claim de novedad del paper.
+- **count_mix_v0/twin (2026-08-07)**: segunda familia MEDIDA del vicio — certificada 19/19,
+  28 episodios v0.2, fenómeno replicado con el encargo justo (0/9); la escalera de ayudas
+  además LOCALIZA dónde muere la hipótesis regalada por modelo (canales, no dosis).
 - Pendientes de familia: partir-en-dos, solución-cebada, par Vulcano (specs en cantera).

@@ -266,7 +266,32 @@
 > Eso abre, sin promoverla, una candidata distinta de planificación experimental/invariantes.
 > [Resultado](research/2026-08-02-resultado-probe-cobertura-con-costos-visibles-v1.md).
 >
-> **REEVALUACIÓN Y SIGUIENTE ACCIÓN:** todavía no se congela la pregunta final del paper. Sigue
+> **RESULTADO 2026-08-05→07 — PROGRAMA DE SALTOS, SLICE 1 (count_mix):** Lucas fijó dirección
+> (2026-08-05): la **máquina de saltos creativos** pasa a línea PRIMARIA; revisión de creencias
+> queda como paraguas/secundaria (opción D). Se construyó y certificó (19/19) el primer par
+> mundo+gemelo del programa (`cases/count_mix_v0`: mezcla discreta de dos tasas por lote vs
+> frailty continua) y se corrieron 28 episodios v0.2 (gpt-5.4 + DeepSeek-V3.2, ~USD 3).
+> Resultados: **0/9 espontáneo** (nadie postula los grupos con el encargo justo — vicio 4
+> replicado en casa); gemelo 0/10 espurio; compra del experimento discriminante 11/12; **1 celda
+> de 28 con ajuste formal de la alternativa**; y la escalera de ayudas mostró que la pista
+> rescata según su **CANAL × modelo, no su fuerza** — gpt salta con la pista-mundo 2/2 y mata la
+> pista-método con parsimonia-sin-test 0/2 (primer espécimen propio del vicio 9); DeepSeek al
+> revés (ejecuta la receta; deja decaer su propio plan). Deuda de instrumento: R anti-rankea al
+> descubridor (captura 1.00 → R 0.712; pendiente ADR 0026 en versión benchmark). Evidencia
+> canónica en vicios 4/9/1.C; hallazgos indexados en
+> [`docs/research/README.md`](research/README.md).
+> [Menú estratégico](research/2026-08-05-menu-estrategico-y-maquina-de-saltos.md) ·
+> [resultado](research/2026-08-07-resultado-smoke-count-mix-v0.md) ·
+> [auditoría](research/2026-08-07-auditoria-critica-slice-count-mix.md) ·
+> [autopsia de canales](research/2026-08-07-autopsia-canales-de-ayuda.md).
+>
+> **PRÓXIMO PASO (2026-08-07):** consulta a Codex (sesión persistente, contrapunto ADR 0172) con
+> el dossier del slice para MANTENER/MODIFICAR/PIVOTEAR. Decisiones en mesa: des-ruido del 2×2
+> de ayudas (+8 seeds), frase nueva nivel4b "comparación mandada" (pre-registrada, no regala ni
+> patrón ni modelo — manda el ACTO ausente), tercera familia de modelos en Foundry, y versión
+> confirmatoria del mundo (necesidad DOBLE + estructura que pague en extrapolación, ADR 0150).
+>
+> **REEVALUACIÓN Y SIGUIENTE ACCIÓN (histórica 2026-08-02; superseded por el bloque de arriba):** todavía no se congela la pregunta final del paper. Sigue
 > viva la señal de **cierre/autoridad del diagnóstico**; la apertura latente persiste solo en SCM;
 > cobertura se cierra en el host logístico. La hipótesis de fricción real tampoco se da por cierta:
 > el repo no contiene hoy dependencias materiales, y seis ediciones simples ya dieron nulo. Antes
@@ -283,6 +308,11 @@
 >
 > Todo el bloque histórico posterior conserva decisiones y resultados, pero cualquier
 > “próximo paso” anterior queda supersedido por esta cabecera.
+>
+> **ACTUALIZACIÓN 2026-08-07:** la línea PRIMARIA vigente es el **programa de saltos** (decisión
+> de Lucas 2026-08-05; ver el bloque RESULTADO 2026-08-05→07 y su PRÓXIMO PASO — ese es el
+> próximo paso vigente). El embudo de candidatas de revisión de creencias sigue abierto como
+> paraguas secundario; la escalera de canales de count_mix alimenta ambas líneas.
 
 ### Plan activo — ciclos cortos con reevaluación obligatoria
 
