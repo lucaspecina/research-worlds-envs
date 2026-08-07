@@ -247,21 +247,23 @@ def task_html(suite: str, cases: dict[str, CaseCtx], runs: list[dict], out: Path
         trs = ""
         for r in rs:
             ayuda = (r.get("initial_note") or "").strip()
+            lab = r.get("ayuda_label") or ("sí" if ayuda else "no")
             r_txt = f"{r.get('R'):.3f}" if r.get("R") is not None else "—"
             toks = (r.get("tokens") or {}).get("total") or "—"
-            trs += (f"<tr data-t='t{ti}' data-modelo='{esc(r['model'])}' data-ayuda='{'si' if ayuda else 'no'}'>"
+            trs += (f"<tr data-t='t{ti}' data-modelo='{esc(r['model'])}' data-ayuda='{esc(lab)}'>"
                     f"<td class='num'>{esc(r.get('run_at', '—'))}</td><td>{esc(r['model'])}</td>"
-                    f"<td title='{esc(ayuda)}'>{esc((ayuda[:45] + '…') if len(ayuda) > 45 else (ayuda or 'no'))}</td>"
+                    f"<td title='{esc(ayuda) if ayuda else 'sin ayuda'}'><b>{esc(lab)}</b></td>"
                     f"<td class='num'>{r['seed']}</td><td class='num'>{r.get('turns', '—')}</td>"
                     f"<td class='num'>{r.get('budget_spent', 0):.0f}</td><td class='num'>{toks}</td>"
                     f"<td>{metric_chips(r.get('instruments', {}))}</td><td class='num'>{r_txt}</td>"
                     f"<td>{esc(r.get('abort_reason'))}</td><td><a href='{r['_page']}'>abrir</a></td></tr>")
         bts_m = "".join(f"<button onclick=\"setF('t{ti}','modelo','{esc(m)}')\">{esc(m)}</button>" for m in modelos)
+        labs = sorted({(r.get("ayuda_label") or ("sí" if (r.get("initial_note") or "").strip() else "no")) for r in rs},
+                      key=lambda x: ["no", "poca", "media", "mucha", "sí"].index(x) if x in ["no", "poca", "media", "mucha", "sí"] else 9)
+        bts_a = "".join(f"<button onclick=\"setF('t{ti}','ayuda','{esc(l)}')\">{esc(l)}</button>" for l in labs)
         filtros = (f"<div style='margin:8px 0;padding:8px;border:1px solid #e3e3e3;border-radius:8px;background:#fafafa'>"
                    f"<b>Modelo:</b> <button onclick=\"setF('t{ti}','modelo','todos')\">Todos</button>{bts_m}"
-                   f" &nbsp;<b>Ayuda:</b> <button onclick=\"setF('t{ti}','ayuda','todos')\">Todas</button>"
-                   f"<button onclick=\"setF('t{ti}','ayuda','no')\">Sin ayuda</button>"
-                   f"<button onclick=\"setF('t{ti}','ayuda','si')\">Con ayuda</button>"
+                   f" &nbsp;<b>Ayuda:</b> <button onclick=\"setF('t{ti}','ayuda','todos')\">Todas</button>{bts_a}"
                    f"<span id='count-t{ti}' style='margin-left:10px;color:#666'></span></div>")
         tablas += (f"<h3>{esc(ctx.titulo)}</h3><p class='note'>{esc(ctx.descripcion)}</p>" + filtros
                    + "<table><tr><th>fecha</th><th>modelo</th><th>ayuda</th><th>seed</th><th>turnos</th>"

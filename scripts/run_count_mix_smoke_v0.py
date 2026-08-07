@@ -148,6 +148,10 @@ def run_cell(model: str, pole: str, seed: int, ins, tag: str, initial_note: str 
         "tag": tag, "model": model, "pole": pole, "seed": seed,
         "case_id": POLES[pole], "run_at": run_at,
         "initial_note": initial_note, "brief": brief_snapshot,
+        "ayuda_label": ("no" if not initial_note else
+                        ("poca" if "subpoblaci" in initial_note else
+                         "media" if "tipos distintos" in initial_note else
+                         "mucha" if "mezcla finita" in initial_note else "sí")),
         "abort_reason": ep.get("abort_reason"),
         "turns": len(ep.get("trace", [])),
         "accepted": ep.get("accepted"), "R": ep.get("R"),
