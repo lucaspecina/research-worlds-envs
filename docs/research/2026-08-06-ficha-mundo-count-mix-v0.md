@@ -159,3 +159,46 @@ instancias y donantes frescos, congelados aparte).
 **Firma:** Claude (worker), 2026-08-06, en MODO AUTONOMÍA dentro del alcance ordenado por Lucas
 ("dale, empecemos" → plan del slice). Ningún tripwire tocado: reward path con maquinaria
 existente, cero-LLM intacto, gasto ≤ USD 50 declarado, sin contradicción de pre-registros.
+
+
+---
+
+## ADDENDUM v0.2 — escalera de ayudas sobre encargo corregido (2026-08-07; congelado ANTES de correr)
+
+**Motivo (auditoría crítica del mismo día):** tres fallas de la v0 — (A1) el encargo no requería
+el salto (stakes vacíos); (A2) el salto no paga en extrapolación; (A3) ancla de S débil. La v0.2
+corrige SOLO A1-parcial y A3; A2 (estructura que pague fuera de soporte) queda para la versión de
+confirmación con Codex.
+
+**Cambio único al mundo (v0.2):** el párrafo final del brief se reemplaza por la sección "Cómo se
+evalúa" — explica el MECANISMO real (el server genera datos con ambos programas y mide qué tan
+parecidos son; objetivo: sustituto fiel, datos idealmente indistinguibles) SIN nombrar
+distribuciones, formas, bandas ni estructura (decisión de Lucas: explicar la evaluación, no
+soplar). Física, menú, precios, seeds de mundo: intactos. Byte-idéntico entre polos.
+
+**Métrica primaria nueva (de la auditoría A3): `S_valley_fuerte`** — captura de discretitud
+contra el rival FUERTE (frailty continua CON persistencia ajustada a la muestra del testigo);
+solo el componente valle (lo único que un continuo-persistente no puede producir). Anclas:
+rival fuerte = 0, verdad = 1. `S_struct` viejo queda como secundario/histórico. Métrica
+conductual co-primaria: ¿alguna celda ajustó/comparó un modelo de mezcla finita? (de la traza).
+
+**Brazos (frases CONGELADAS, una corrida, sin escalar después):**
+- nivel0 (sin ayuda) — MIX 2 modelos × 2 seeds: 99360–99363. [Bonus: compara contra nivel0 de
+  la v0 → efecto del encargo corregido solo.]
+- nivel3 — *"Nota del encargo: considerá la posibilidad de que los lotes vengan en unos pocos
+  tipos distintos."* — MIX 2×2: 99364–99367.
+- nivel4 — *"Nota del encargo: considerá probar un modelo de mezcla finita: 2 o 3 grupos de
+  lotes, cada grupo con su propia tasa."* — MIX 2×2: 99368–99371.
+- Guardia bilateral: nivel3 y nivel4 sobre el GEMELO (1 seed por modelo por nivel: 99372–99375)
+  — las frases NO deben inducir clases fantasma donde no las hay (espurio).
+
+**Lectura congelada:** nivel4 DEBE abrir (S_valley_fuerte ≥ 0.6 o entrega de mezcla finita) — si
+no, problema de mundo/capacidad y se frena todo. nivel3 = el escalón informativo (abre → faltaba
+la palabra; no abre → falla de operacionalización). nivel0 = ¿el contrato de evaluación
+clarificado alcanza solo? Gemelo: espurio esperado 0 (si nivel4 fuerza clases en el gemelo, se
+reporta como sugestión bajo instrucción — lectura aparte, no falla del mundo). Techo del brazo:
+USD 5. La autopsia de comparación-de-modelos se corre sobre TODAS las celdas.
+
+**Autorización:** Lucas, 2026-08-07 ("dale implementemos y probemos"), como excepción explícita
+al control-único ya gastado, vinculada al claim (validar diseño del mundo con un LLM + medir la
+altura del salto).

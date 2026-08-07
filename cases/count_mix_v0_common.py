@@ -424,3 +424,31 @@ def s_clean(model_f: dict, single_truth_f: dict, forced_f: dict) -> dict:
     d_model = float(np.mean(ratios)) if ratios else 0.0
     return {"S_clean": float(np.clip(1.0 - d_model, 0.0, 1.0)),
             "D_model": d_model, "components_used": used}
+
+
+def strong_baseline_program(y_train: np.ndarray):
+    """The STRONG continuous rival (auditoria 2026-08-07): gamma-frailty WITH
+    unit persistence, fitted to the witness sample. Captures mean, dispersion
+    and ICC without discrete classes -- the honest zero-anchor for the jump."""
+    nb = _fit_negbin(np.asarray(y_train, float))["params"]
+    m, r_shape = nb["mean"], 1.0 / nb["alpha"]
+
+    def prog(regime, n, seed, m=m, r=r_shape):
+        speed, repeats = _regime_knobs(regime)
+        rng = np.random.default_rng(np.random.SeedSequence([int(seed), 0xFA11]))
+        ids = _unit_ids_for(n, repeats)
+        n_units = int(ids[-1]) + 1 if n else 0
+        lam_u = rng.gamma(r, (m * speed) / r, n_units)
+        y = rng.poisson(lam_u[ids.astype(int)]).astype(float)
+        return pd.DataFrame({"unit_id": ids, "y": y})
+
+    return prog
+
+
+def s_valley(model_f: dict, truth_f: dict, strong_base_f: dict) -> float:
+    """Discreteness capture vs the STRONG rival: valley component only
+    (the one signature a continuous-persistent model cannot produce)."""
+    scale = abs(strong_base_f["valley"] - truth_f["valley"])
+    if scale < 1e-3:
+        return 0.0
+    return float(np.clip(1.0 - abs(model_f["valley"] - truth_f["valley"]) / scale, 0.0, 1.0))

@@ -27,6 +27,11 @@ condiciones que podés no haber visto.
   mediciones en menos lotes, midiendo varias veces cada uno.
 - `submit(code)`: entrega tu modelo. El presupuesto es finito y no se reembolsa.
 
-La nota compara el comportamiento de tu modelo contra el proceso real en
-condiciones elegidas por el servidor. No hay respuestas de texto: solo el
-modelo ejecutable.
+## Cómo se evalúa
+
+No hay respuestas de texto: tu entrega es el modelo ejecutable. El servidor
+genera datos con tu modelo y con el proceso real bajo las mismas condiciones
+— incluidas algunas que podés no haber visto — y mide qué tan parecidos son
+los datos que producen uno y otro. El objetivo es un sustituto fiel del
+sistema: idealmente, los datos generados por tu modelo no deberían poder
+distinguirse de los del proceso real.

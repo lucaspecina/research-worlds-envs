@@ -31,7 +31,8 @@ import numpy as np  # noqa: E402
 
 from cases.count_mix_v0_common import (  # noqa: E402
     _DictRegime, forced_mix_program, load_instance, program_functionals,
-    s_clean, s_struct, single_baseline_program, spurious_mixture_flag,
+    s_clean, s_struct, s_valley, single_baseline_program,
+    spurious_mixture_flag, strong_baseline_program,
 )
 from wager.harness.case_episode import build_world_server  # noqa: E402
 from wager.harness.episode import run_episode  # noqa: E402
@@ -46,6 +47,20 @@ PISTA_CELLS = [("DeepSeek-V3.2", "mix", 99350), ("DeepSeek-V3.2", "mix", 99351),
                ("gpt-5.4", "mix", 99352), ("gpt-5.4", "mix", 99353),
                ("DeepSeek-V3.2", "single", 99354), ("DeepSeek-V3.2", "single", 99355),
                ("gpt-5.4", "single", 99356), ("gpt-5.4", "single", 99357)]
+
+# --- escalera v0.2 (ficha addendum 2026-08-07; frases CONGELADAS) -----------
+NIVEL3 = "Nota del encargo: considerá la posibilidad de que los lotes vengan en unos pocos tipos distintos."
+NIVEL4 = "Nota del encargo: considerá probar un modelo de mezcla finita: 2 o 3 grupos de lotes, cada grupo con su propia tasa."
+ESCALERA_CELLS = (
+    [("nivel0", "", "DeepSeek-V3.2", "mix", s) for s in (99360, 99361)]
+    + [("nivel0", "", "gpt-5.4", "mix", s) for s in (99362, 99363)]
+    + [("nivel3", NIVEL3, "DeepSeek-V3.2", "mix", s) for s in (99364, 99365)]
+    + [("nivel3", NIVEL3, "gpt-5.4", "mix", s) for s in (99366, 99367)]
+    + [("nivel4", NIVEL4, "DeepSeek-V3.2", "mix", s) for s in (99368, 99369)]
+    + [("nivel4", NIVEL4, "gpt-5.4", "mix", s) for s in (99370, 99371)]
+    + [("nivel3", NIVEL3, "DeepSeek-V3.2", "single", 99372), ("nivel3", NIVEL3, "gpt-5.4", "single", 99373),
+       ("nivel4", NIVEL4, "DeepSeek-V3.2", "single", 99374), ("nivel4", NIVEL4, "gpt-5.4", "single", 99375)]
+)
 TEC_MODEL = "DeepSeek-V3.2"                     # tecnico barato con sujeto real
 
 # celdas del brazo principal en orden fijo: (model, pole, seed)
@@ -71,9 +86,11 @@ def _instruments():
                     inst["witness_sample_seed"])["y"].to_numpy(float)
     base_prog, _ = single_baseline_program(y_train)
     base_f = program_functionals(base_prog, geo, tail_at)
+    strong_f = program_functionals(strong_baseline_program(y_train), geo, tail_at)
     forced_f = program_functionals(forced_mix_program(params["lam0"]), geo, tail_at)
     return {"geo": geo, "tail_at": tail_at, "truth_f": truth_f,
-            "single_truth_f": single_truth_f, "base_f": base_f, "forced_f": forced_f}
+            "single_truth_f": single_truth_f, "base_f": base_f,
+            "strong_f": strong_f, "forced_f": forced_f}
 
 
 def _score(code: str | None, pole: str, ins) -> dict:
@@ -89,6 +106,7 @@ def _score(code: str | None, pole: str, ins) -> dict:
     out: dict = {"scored": True, "functionals": f}
     if pole == "mix":
         out.update(s_struct(f, ins["truth_f"], ins["base_f"]))
+        out["S_valley_fuerte"] = s_valley(f, ins["truth_f"], ins["strong_f"])
         out["F_mean"] = float(np.clip(
             1 - abs(f["mean"] - ins["truth_f"]["mean"]) / ins["truth_f"]["mean"], 0, 1))
     else:
@@ -140,7 +158,7 @@ def run_cell(model: str, pole: str, seed: int, ins, tag: str, initial_note: str 
     path = OUT / f"{tag}__{model}__{pole}__{seed}.json"
     path.write_text(json.dumps(payload, indent=1, default=str))
     ins_line = payload["instruments"]
-    key = "S_struct" if pole == "mix" else "S_clean"
+    key = "S_valley_fuerte" if (pole == "mix" and "S_valley_fuerte" in ins_line) else ("S_struct" if pole == "mix" else "S_clean")
     val = ins_line.get(key)
     print(f"[{tag}] {model} {pole} seed={seed}: abort={payload['abort_reason']} "
           f"turns={payload['turns']} spent={payload['budget_spent']:.0f} "
@@ -151,12 +169,17 @@ def run_cell(model: str, pole: str, seed: int, ins, tag: str, initial_note: str 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("mode", choices=["tecnico", "main", "pista"])
+    ap.add_argument("mode", choices=["tecnico", "main", "pista", "escalera"])
     ap.add_argument("--only", type=int, default=None)
     args = ap.parse_args()
     ins = _instruments()
     if args.mode == "tecnico":
         run_cell(TEC_MODEL, "mix", TEC_SEED, ins, "tecnico")
+        return 0
+    if args.mode == "escalera":
+        cells = ESCALERA_CELLS if args.only is None else [ESCALERA_CELLS[args.only]]
+        for nivel, note, model, pole, seed in cells:
+            run_cell(model, pole, seed, ins, f"v02_{nivel}", initial_note=note)
         return 0
     if args.mode == "pista":
         cells = PISTA_CELLS if args.only is None else [PISTA_CELLS[args.only]]
