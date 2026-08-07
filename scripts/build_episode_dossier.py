@@ -98,6 +98,8 @@ class CaseCtx:
             self.preview = srv.observe(self.source_name, 10)
         except Exception:
             self.preview, self.source_name = None, None
+        mpath = self.dir / "metrics.json"
+        self.metrics_doc = json.loads(mpath.read_text()) if mpath.exists() else None
 
     def truth_samples(self, n=3000, seed=424242):
         return self.sample(self.regime, n, seed)[self.outcome.name].to_numpy(float)
@@ -160,12 +162,31 @@ def run_html(p: dict, ctx: CaseCtx, task_page: str) -> str:
             ev.append("<p><b>¿En qué se parecen y en qué difieren los datos?</b></p>")
             ev.append(table(["estadístico", "proceso real", "modelo entregado", "diferencia"],
                             [[k, f"{st[k]:.2f}", f"{sm[k]:.2f}", f"{sm[k]-st[k]:+.2f}"] for k in st]))
-        ev.append(f"<p><b>R (nota estándar del examen):</b> {p.get('R'):.3f}" if p.get("R") is not None else "")
-        ev.append(f"<p><b>Métricas del caso</b> <span class='note'>(definidas en su ficha)</span>: {metric_chips(ins)}</p>")
+        mdoc = ctx.metrics_doc or {}
+        defs = {m["key"]: m for m in mdoc.get("metricas", [])}
+        filas = []
+        for k, v in ins.items():
+            if isinstance(v, (int, float)):
+                d = defs.get(k, {})
+                filas.append([d.get("nombre", k), f"{v:.3f}",
+                              d.get("que_mide", "—"), d.get("anclas", "—")])
+        esp = ins.get("espurio") or {}
+        if isinstance(esp, dict) and "spurious" in esp:
+            d = defs.get("espurio", {})
+            filas.append([d.get("nombre", "espurio"), "SÍ" if esp["spurious"] else "no",
+                          d.get("que_mide", "—"), d.get("anclas", "—")])
+        if p.get("R") is not None:
+            filas.append(["R (nota estándar)", f"{p.get('R'):.3f}",
+                          mdoc.get("R", "comparación gruesa de datos generados"), "0 a 1"])
+        if filas:
+            ev.append("<p><b>Las métricas, explicadas:</b></p>")
+            ev.append(table(["métrica", "valor", "qué mide", "cómo leerla"], filas))
         fn = ins.get("functionals")
         if fn:
+            fdefs = mdoc.get("funcionales", {})
             ev.append(details("funcionales de forma de la entrega",
-                              table(["funcional", "valor"], [[k, f"{v:.3f}"] for k, v in fn.items()])))
+                              table(["funcional", "valor", "qué es"],
+                                    [[k, f"{v:.3f}", fdefs.get(k, "—")] for k, v in fn.items()])))
         body.append(section("Evaluación", "".join(ev), "eval"))
     else:
         body.append(section("Evaluación", "<div class='warn'>Censurada: no hubo entrega.</div>", "eval"))
@@ -194,6 +215,15 @@ def task_html(suite: str, cases: dict[str, CaseCtx], runs: list[dict], out: Path
                         + table(list(any_ctx.preview.columns),
                                 [[f"{v:g}" for v in row] for row in any_ctx.preview.itertuples(index=False)]))
                        if any_ctx.preview is not None else ""), "student")]
+
+    mdoc = any_ctx.metrics_doc or {}
+    if mdoc.get("metricas"):
+        body.append(section("Cómo se mide (las métricas de esta tarea)",
+                            table(["métrica", "qué mide", "cómo leerla", "aplica a"],
+                                  [[m.get("nombre", m["key"]), m.get("que_mide", "—"),
+                                    m.get("anclas", "—"), m.get("aplica", "ambas")]
+                                   for m in mdoc["metricas"]])
+                            + f"<p class='note'><b>R:</b> {esc(mdoc.get('R', ''))}</p>", "eval"))
 
     truth_rows = []
     for cid, ctx in sorted(cases.items()):
