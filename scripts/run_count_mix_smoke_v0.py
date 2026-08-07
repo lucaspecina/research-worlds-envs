@@ -52,6 +52,11 @@ PISTA_CELLS = [("DeepSeek-V3.2", "mix", 99350), ("DeepSeek-V3.2", "mix", 99351),
 # --- escalera v0.2 (ficha addendum 2026-08-07; frases CONGELADAS) -----------
 NIVEL3 = "Nota del encargo: considerá la posibilidad de que los lotes vengan en unos pocos tipos distintos."
 NIVEL4 = "Nota del encargo: considerá probar un modelo de mezcla finita: 2 o 3 grupos de lotes, cada grupo con su propia tasa."
+TANDA_V02 = ([("DeepSeek-V3.2", "mix", s) for s in (99380, 99381, 99382)]
+             + [("gpt-5.4", "mix", s) for s in (99383, 99384, 99385)]
+             + [("DeepSeek-V3.2", "single", s) for s in (99386, 99387, 99388)]
+             + [("gpt-5.4", "single", s) for s in (99389, 99390, 99391)])
+
 ESCALERA_CELLS = (
     [("nivel0", "", "DeepSeek-V3.2", "mix", s) for s in (99360, 99361)]
     + [("nivel0", "", "gpt-5.4", "mix", s) for s in (99362, 99363)]
@@ -106,7 +111,6 @@ def _score(code: str | None, pole: str, ins) -> dict:
         return {"scored": False, "reason": f"delivered code failed locally: {e!r}"}
     out: dict = {"scored": True, "functionals": f}
     if pole == "mix":
-        out.update(s_struct(f, ins["truth_f"], ins["base_f"]))
         out["S_valley_fuerte"] = s_valley(f, ins["truth_f"], ins["strong_f"])
         out["F_mean"] = float(np.clip(
             1 - abs(f["mean"] - ins["truth_f"]["mean"]) / ins["truth_f"]["mean"], 0, 1))
@@ -178,12 +182,17 @@ def run_cell(model: str, pole: str, seed: int, ins, tag: str, initial_note: str 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("mode", choices=["tecnico", "main", "pista", "escalera"])
+    ap.add_argument("mode", choices=["tecnico", "main", "pista", "escalera", "tanda_v02"])
     ap.add_argument("--only", type=int, default=None)
     args = ap.parse_args()
     ins = _instruments()
     if args.mode == "tecnico":
         run_cell(TEC_MODEL, "mix", TEC_SEED, ins, "tecnico")
+        return 0
+    if args.mode == "tanda_v02":
+        cells = TANDA_V02 if args.only is None else [TANDA_V02[args.only]]
+        for model, pole, seed in cells:
+            run_cell(model, pole, seed, ins, "v02_principal")
         return 0
     if args.mode == "escalera":
         cells = ESCALERA_CELLS if args.only is None else [ESCALERA_CELLS[args.only]]

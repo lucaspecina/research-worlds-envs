@@ -36,11 +36,13 @@ from wager.report.html import code, details, esc, md, page, section, table  # no
 
 
 PRIORIDAD = ("S_valley_fuerte", "S_clean", "F_mean")
+OCULTAS = {"S_struct"}  # historicas: siguen en los JSON, no en la vista
 
 
 def metric_chips(ins: dict) -> str:
     keys = [k for k in PRIORIDAD if isinstance(ins.get(k), (int, float))]
-    keys += [k for k, v in ins.items() if isinstance(v, (int, float)) and k not in keys]
+    keys += [k for k, v in ins.items()
+             if isinstance(v, (int, float)) and k not in keys and k not in OCULTAS]
     chips = [f"<code title='{esc(k)}'><b>{esc(k)}={ins[k]:.3f}</b></code>" if k == keys[0]
              else f"<code title='{esc(k)}'>{esc(k)}={ins[k]:.3f}</code>" for k in keys]
     esp = ins.get("espurio") or {}
@@ -177,7 +179,7 @@ def run_html(p: dict, ctx: CaseCtx, task_page: str) -> str:
         defs = {m["key"]: m for m in mdoc.get("metricas", [])}
         filas = []
         for k, v in ins.items():
-            if isinstance(v, (int, float)):
+            if isinstance(v, (int, float)) and k not in OCULTAS:
                 d = defs.get(k, {})
                 filas.append([d.get("nombre", k), f"{v:.3f}",
                               d.get("que_mide", "—"), d.get("anclas", "—")])
@@ -303,7 +305,7 @@ def main() -> None:
     out.mkdir(parents=True, exist_ok=True)
     episodes = []
     for d in sorted((ROOT / "scripts/out").iterdir()):
-        if not d.is_dir() or d.name in ("dossier", "explorer"):
+        if not d.is_dir() or d.name in ("dossier", "explorer", "archive"):
             continue
         for f in sorted(d.glob("*.json")):
             if not _is_episode(f):
