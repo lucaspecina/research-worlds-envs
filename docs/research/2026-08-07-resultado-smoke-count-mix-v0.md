@@ -101,11 +101,46 @@ DiscoverPhysics (fallan justo en especies/tipos), Chen et al. (la movida evitada
    valioso). La alternativa superior es cruzar ya con Codex/Lucas y sumar la tercera familia de
    modelos antes del control.
 
+## Brazo pista — el control único (ejecutado 2026-08-07 con GO de Lucas; registro en ficha)
+
+Frase congelada en el PRIMER prompt: *"considerá que los datos pueden venir de más de una
+subpoblación"*. 8/8 episodios válidos.
+
+| Celda | S | familia entregada | Menciones de clases discretas en la traza | ¿Ajustó mezcla-2 en código? |
+|---|---:|---|---|---|
+| DeepSeek MIX 99350 | 0.474 | gamma-frailty | "clustering", "two subpopulation" (t1–t2) | **0 celdas** |
+| DeepSeek MIX 99351 | 0.330 | gamma-frailty | "subpopulations via clustering or mixture" (t3) | **0 celdas** |
+| gpt-5.4 MIX 99352 | 0.376 | gamma-frailty | **cero** | 0 |
+| gpt-5.4 MIX 99353 | 0.373 | gamma-frailty | **cero** | 0 |
+| SINGLE (4 celdas) | 0.69–0.98 | poisson/frailty suave | — | espurio **0/4** |
+
+**La pista NO movió nada:** banda S idéntica al brazo espontáneo (0.33–0.47), gamma-frailty 4/4,
+repeats comprados 8/8. Y el gemelo quedó limpio 4/4 — la frase tampoco induce clases fantasma
+(sin sugestibilidad).
+
+**Lectura honesta, con su salvedad de instrumento:**
+- La historia simple "el repertorio está ausente pero disponible a demanda" (patrón
+  LLM-as-Investigator) **NO replicó** con esta frase: muerta en su forma simple.
+- "Incapacidad" TAMPOCO queda establecida: el control de familias declaradas de agosto mostró que
+  implementan mezclas cuando se les nombra la familia exacta. La localización fina que este brazo
+  deja: **la hipótesis discreta no sobrevive hasta código testeado ni cuando el tema viene
+  nombrado** — DeepSeek la DICE ("subpopulations via clustering or mixture") y no la prueba
+  (0 celdas de ajuste mezcla-2, con presupuesto sobrante); gpt-5.4 ni la verbaliza.
+- **Salvedad declarada:** la frase congelada sub-especifica lo discreto — "más de una
+  subpoblación" admite la lectura continua (cada lote su tasa: frailty ES muchas subpoblaciones).
+  GUARDIA intacta: una frase, un brazo, prohibido escalar pistas en este host ("más pistas =
+  receta de programación"). La versión nítida de la pista ("un número CHICO de clases") es
+  material para el diseño del siguiente nivel, no para este host.
+
+**El control único está GASTADO.** Corresponde subir de nivel (ADR 0172): cruce con Codex +
+tercera familia de modelos, con el dossier completo.
+
 ## Ledger del slice
 
 - 🟢 Pasos 1–5 del plan COMPLETOS: lecturas · ficha · construcción · certificación 19/19 ·
   smoke real 13/13 episodios válidos, bajo techo por 50×.
-- 🔴 VIVO — decisión de Lucas (+Codex): ¿control único de dosis en este host, o subir de nivel
-  (cruce + tercera familia + lectura del programa)?
+- 🟢 Control único EJECUTADO (brazo pista, decisión de Lucas): no rescata; localización afinada
+  a "la hipótesis discreta no llega a código testeado ni nombrada"; gemelo inmune a la frase.
+- 🔴 VIVO — SUBIR DE NIVEL: cruce con Codex + tercera familia de modelos, dossier completo.
 - 🟡 VIVO — actualizar cabecera de `docs/roadmap.md` con este resultado (con OK de Lucas).
 - ⚪ Brazo pista: no disparado por regla; queda documentado.
