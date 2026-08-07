@@ -52,6 +52,20 @@ PISTA_CELLS = [("DeepSeek-V3.2", "mix", 99350), ("DeepSeek-V3.2", "mix", 99351),
 # --- escalera v0.2 (ficha addendum 2026-08-07; frases CONGELADAS) -----------
 NIVEL3 = "Nota del encargo: considerá la posibilidad de que los lotes vengan en unos pocos tipos distintos."
 NIVEL4 = "Nota del encargo: considerá probar un modelo de mezcla finita: 2 o 3 grupos de lotes, cada grupo con su propia tasa."
+
+# --- canales vs wording (pre-registro 2026-08-07; frase CONGELADA) ----------
+NIVEL4B = ("Nota del encargo: antes de entregar, ajustá al menos dos familias de modelos "
+           "candidatas y quedate con la que gane en una comparación directa sobre los datos.")
+CANALES_V02 = (
+    [("nivel4b", NIVEL4B, "DeepSeek-V3.2", "mix", s) for s in (99340, 99341)]
+    + [("nivel4b", NIVEL4B, "gpt-5.4", "mix", s) for s in (99342, 99343)]
+    + [("nivel4b", NIVEL4B, "DeepSeek-V3.2", "single", 99344),
+       ("nivel4b", NIVEL4B, "gpt-5.4", "single", 99345)]
+    + [("nivel3", NIVEL3, "DeepSeek-V3.2", "mix", s) for s in (99392, 99393)]
+    + [("nivel3", NIVEL3, "gpt-5.4", "mix", s) for s in (99394, 99395)]
+    + [("nivel4", NIVEL4, "DeepSeek-V3.2", "mix", s) for s in (99396, 99397)]
+    + [("nivel4", NIVEL4, "gpt-5.4", "mix", s) for s in (99398, 99399)]
+)
 TANDA_V02 = ([("DeepSeek-V3.2", "mix", s) for s in (99380, 99381, 99382)]
              + [("gpt-5.4", "mix", s) for s in (99383, 99384, 99385)]
              + [("DeepSeek-V3.2", "single", s) for s in (99386, 99387, 99388)]
@@ -155,7 +169,8 @@ def run_cell(model: str, pole: str, seed: int, ins, tag: str, initial_note: str 
         "ayuda_label": ("no" if not initial_note else
                         ("poca" if "subpoblaci" in initial_note else
                          "media" if "tipos distintos" in initial_note else
-                         "mucha" if "mezcla finita" in initial_note else "sí")),
+                         "mucha" if "mezcla finita" in initial_note else
+                         "procedimiento" if "dos familias" in initial_note else "sí")),
         "abort_reason": ep.get("abort_reason"),
         "turns": len(ep.get("trace", [])),
         "accepted": ep.get("accepted"), "R": ep.get("R"),
@@ -182,7 +197,7 @@ def run_cell(model: str, pole: str, seed: int, ins, tag: str, initial_note: str 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("mode", choices=["tecnico", "main", "pista", "escalera", "tanda_v02"])
+    ap.add_argument("mode", choices=["tecnico", "main", "pista", "escalera", "tanda_v02", "canales_v02"])
     ap.add_argument("--only", type=int, default=None)
     args = ap.parse_args()
     ins = _instruments()
@@ -196,6 +211,11 @@ def main() -> int:
         return 0
     if args.mode == "escalera":
         cells = ESCALERA_CELLS if args.only is None else [ESCALERA_CELLS[args.only]]
+        for nivel, note, model, pole, seed in cells:
+            run_cell(model, pole, seed, ins, f"v02_{nivel}", initial_note=note)
+        return 0
+    if args.mode == "canales_v02":
+        cells = CANALES_V02 if args.only is None else [CANALES_V02[args.only]]
         for nivel, note, model, pole, seed in cells:
             run_cell(model, pole, seed, ins, f"v02_{nivel}", initial_note=note)
         return 0
