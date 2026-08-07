@@ -35,9 +35,14 @@ from wager.harness.episode import SYSTEM  # noqa: E402
 from wager.report.html import code, details, esc, md, page, section, table  # noqa: E402
 
 
+PRIORIDAD = ("S_valley_fuerte", "S_clean", "F_mean")
+
+
 def metric_chips(ins: dict) -> str:
-    chips = [f"<code title='{esc(k)}'>{esc(k)}={v:.3f}</code>"
-             for k, v in ins.items() if isinstance(v, (int, float))]
+    keys = [k for k in PRIORIDAD if isinstance(ins.get(k), (int, float))]
+    keys += [k for k, v in ins.items() if isinstance(v, (int, float)) and k not in keys]
+    chips = [f"<code title='{esc(k)}'><b>{esc(k)}={ins[k]:.3f}</b></code>" if k == keys[0]
+             else f"<code title='{esc(k)}'>{esc(k)}={ins[k]:.3f}</code>" for k in keys]
     esp = ins.get("espurio") or {}
     if isinstance(esp, dict) and "spurious" in esp:
         chips.append(f"<code>espurio={'SÍ' if esp['spurious'] else 'no'}</code>")
