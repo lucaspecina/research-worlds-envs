@@ -285,11 +285,26 @@
 > [auditoría](research/2026-08-07-auditoria-critica-slice-count-mix.md) ·
 > [autopsia de canales](research/2026-08-07-autopsia-canales-de-ayuda.md).
 >
+> **RESULTADO 2026-08-07 — PRE-REGISTRO CANALES VS WORDING (14 episodios, GO de Lucas):** la
+> teoría propia "lo que falta es el ACTO" **murió contra su pre-registro**: la frase que manda
+> la comparación (sin contenido) rescató **0/3 válidas** — y los tres OBEDECIERON: ajustaron y
+> compararon dos familias… **de su menú de siempre** (hasta NB vs ZINB con validación held-out
+> y KS). El acto mandado se ejecuta como teatro sobre un menú capturado (espécimen fuerte del
+> vicio 9). El des-ruido rompió además el patrón cruzado determinista: con n=4, gpt+concepto
+> **4/4** y DeepSeek+receta **3/3 válidas** (robustos), cruzados **1/4** y **1/4** (estocásticos,
+> no cero). Objeto medible que emerge: el salto exige que el CANDIDATO entre al menú de
+> hipótesis; la métrica se refina a "¿la comparación incluye un candidato estructuralmente
+> distinto del entregado?" (bajo orden: comparaciones 3/3, con-poder 0/3). Gemelo nivel4b limpio
+> (1/1 válida). Correcciones de alcance aplicadas en vicios 1.C/9 e índice (regla 3 del
+> pre-registro). [Pre-registro](research/2026-08-07-preregistro-canales-vs-wording.md) ·
+> [resultado](research/2026-08-07-resultado-preregistro-canales-vs-wording.md).
+>
 > **PRÓXIMO PASO (2026-08-07):** consulta a Codex (sesión persistente, contrapunto ADR 0172) con
-> el dossier del slice para MANTENER/MODIFICAR/PIVOTEAR. Decisiones en mesa: des-ruido del 2×2
-> de ayudas (+8 seeds), frase nueva nivel4b "comparación mandada" (pre-registrada, no regala ni
-> patrón ni modelo — manda el ACTO ausente), tercera familia de modelos en Foundry, y versión
-> confirmatoria del mundo (necesidad DOBLE + estructura que pague en extrapolación, ADR 0150).
+> el dossier completo — que ahora incluye un pre-registro corrido con refutación propia — para
+> MANTENER/MODIFICAR/PIVOTEAR. Decisiones en mesa: cómo testear "candidato-en-menú" sin regalar
+> el candidato (diseño abierto), tercera familia de modelos en Foundry, y versión confirmatoria
+> del mundo (necesidad DOBLE + estructura que pague en extrapolación, ADR 0150). Codex bloqueado
+> por cuota hasta 2026-08-08 00:35; receta en `scratch/codex-supervisor-session.json`.
 >
 > **REEVALUACIÓN Y SIGUIENTE ACCIÓN (histórica 2026-08-02; superseded por el bloque de arriba):** todavía no se congela la pregunta final del paper. Sigue
 > viva la señal de **cierre/autoridad del diagnóstico**; la apertura latente persiste solo en SCM;

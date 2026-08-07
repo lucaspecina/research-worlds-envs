@@ -28,15 +28,26 @@ es computable sin juez.
 - Pariente WAGER `[VERIFICADO propio]`: vibe-physics ("dice verificado cuando no chequeó") es
   el caso límite sin test; el candidato 9 es el caso CON test-de-paja.
 - **Primer espécimen propio con traza** `[VERIFICADO propio][AGÉNTICO]` (count_mix_v0, brazo
-  receta, gpt-5.4 2/2, 2026-08-07): recibe la instrucción explícita de PROBAR la mezcla finita,
+  receta, gpt-5.4, 2026-08-07): recibe la instrucción explícita de PROBAR la mezcla finita,
   la lista entre sus familias candidatas… y la adjudica SIN ajustarla jamás, con chequeos de
   adecuación que la rival también pasa (*"the estimated NB size stays roughly stable around
   2–3… which is exactly what gamma mixing predicts"* — igualmente cierto bajo la mezcla) y
   parsimonia en lugar de test (*"a parsimonious continuous alternative to a finite mixture"*).
   La evidencia discriminante estaba IMPRESA en su propia salida (histograma con valle; cuartiles
-  bimodales de medias por lote) y no fue procesada. La firma mecánica se computó de trazas:
-  **1 celda de 28 ajustó formalmente la alternativa**.
+  bimodales de medias por lote) y no fue procesada. Alcance corregido a n=4: la conducta es
+  3/4, no regla (una corrida adoptó el hint y saltó 0.997).
   [Autopsia con citas](../research/2026-08-07-autopsia-canales-de-ayuda.md).
+- **La comparación MANDADA ejecutada como teatro** `[VERIFICADO propio][AGÉNTICO]`
+  (count_mix_v0, brazo nivel4b pre-registrado, 2026-08-07) — la sub-forma NUEVA más fuerte:
+  se les ordena "ajustá ≥2 familias candidatas y quedate con la que gane en comparación
+  directa" (sin nombrar contenido) y **los 3 episodios válidos obedecen** — DeepSeek ajusta
+  Poisson-gamma vs NB-inflado-en-ceros con validación held-out y KS; gpt compara Poisson vs NB
+  o dos formas de la curva media-velocidad — **todas comparaciones reales sobre menús que solo
+  contienen sus defaults: 0/3 salta**. El esfuerzo de verificación es genuino; el ESPACIO del
+  test lo eligió el mismo prior. Ni la orden explícita de comparar desbloquea un menú de
+  hipótesis capturado — la firma computable se refina: no "¿corrió comparación?" (bajo orden:
+  3/3) sino "¿la comparación incluye un candidato estructuralmente distinto del entregado?"
+  (0/3). [Resultado del pre-registro](../research/2026-08-07-resultado-preregistro-canales-vs-wording.md).
 
 ## Firma mecánica (computable cero-LLM)
 

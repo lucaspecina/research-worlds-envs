@@ -1,5 +1,12 @@
 # Autopsia: por qué "ayuda fuerte" rindió peor que "ayuda media" (gpt-5.4)
 
+> **⚠️ ALCANCE CORREGIDO POR EL PRE-REGISTRO POSTERIOR (mismo día):** el patrón cruzado
+> determinista de este doc NO fue robusto a n=4 (gpt+receta saltó 1/4; DS+concepto 1/4) y la
+> predicción central del mecanismo ("mandar el acto produce el salto") FALLÓ 0/3 — la
+> comparación mandada se ejecutó como teatro sobre el menú propio. Los especímenes textuales de
+> abajo siguen siendo reales; las tasas y el mecanismo, superseded. Ver
+> [resultado del pre-registro](2026-08-07-resultado-preregistro-canales-vs-wording.md).
+
 > **Origen:** Lucas (2026-08-07): "es rarísimo esto de ayuda fuerte peor que ayuda media... no
 > tiene sentido para mí. Debe haber algo que no estamos viendo." Releí las 8 trayectorias con
 > ayuda de la escalera v0.2 (mix), turno por turno, con citas textuales.

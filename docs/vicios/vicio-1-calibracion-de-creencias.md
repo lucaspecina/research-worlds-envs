@@ -205,17 +205,19 @@ cambio de entrega es cortesía, no creencia.
     [ADR 0121](../adr/0121-v1.21-autopsia-0118-metodo-de-pistas-retirado.md) → re-diseño y
     fase 1 [ADR 0129](../adr/0129-v1.29-autopsia-fase1-resultado-varianza-demostrada-t4-gana.md).
     El folklore de [first_story_v0](../../cases/first_story_v0/) ES este canal instrumentado.
-  - **La escalera de ayudas de count_mix (evidencia propia, 2026-08-07)**
-    `[VERIFICADO propio][AGÉNTICO]` — actualización directa del K3 "la pista rescata 23/23": la
-    pista VERDADERA en mano NO alcanza — lo que rige es el **CANAL de la pista × modelo**. La
-    pista-mundo ("los lotes vienen en unos pocos tipos") rescata a gpt-5.4 2/2 — le redirige la
-    MIRADA: va a las medias por lote, ve la bimodalidad, adopta — y a DeepSeek 0/2 (planea el
-    test correcto y el plan decae en episodios largos). La pista-método ("probá la mezcla
-    finita") rescata a DeepSeek 1/1 válida (la ejecuta como spec, único ajuste formal de la
-    tanda) y a gpt-5.4 0/2 — cae a su menú de familias, donde el filtro de parsimonia la mata
-    sin test (espécimen del [vicio 9](vicio-9-overtrust-verificacion.md)). Alcance: 1 mundo,
-    n=2 por celda, 2 frases congeladas; mecanismo textual consistente 8/8 trazas.
-    [Autopsia con citas](../research/2026-08-07-autopsia-canales-de-ayuda.md).
+  - **La escalera de ayudas de count_mix (evidencia propia, 2026-08-07; alcance corregido por
+    pre-registro el mismo día)** `[VERIFICADO propio][AGÉNTICO]` — actualización directa del K3
+    "la pista rescata 23/23": la pista VERDADERA en mano NO alcanza, y el rescate depende de la
+    puerta por la que entra × modelo — pero de forma ESTOCÁSTICA, no determinista (n=4/celda):
+    gpt-5.4 con pista-mundo ("hay unos pocos tipos") salta **4/4** — le redirige la MIRADA a
+    las medias por lote — y con pista-método ("probá la mezcla finita") **1/4**; DeepSeek al
+    revés: pista-método **3/3 válidas** (la ejecuta como spec) y pista-mundo **1/4** (el plan
+    propio suele decaer). La tercera frase, procedimiento puro sin contenido ("ajustá ≥2
+    familias y compará"), rescató **0/3**: obedecen y comparan DENTRO del menú propio
+    (espécimen fuerte del [vicio 9](vicio-9-overtrust-verificacion.md)). Lección: lo que rige
+    es si el CANDIDATO entra al menú de hipótesis, no la fuerza ni el acto.
+    [Autopsia](../research/2026-08-07-autopsia-canales-de-ayuda.md) ·
+    [pre-registro corrido](../research/2026-08-07-resultado-preregistro-canales-vs-wording.md).
   - **Confabulación anclada** — [Lathkar et al., arXiv 2604.25931](https://arxiv.org/abs/2604.25931)
     `[VERIFICADO en abstract; POR-LEER cuerpo]`: *"providing one confirmed intermediate fact…
     increases the model's confident-wrong-answer rate"*; escala con capacidad (ρ=0.900).
