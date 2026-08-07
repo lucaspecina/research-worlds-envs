@@ -144,3 +144,51 @@ tercera familia de modelos, con el dossier completo.
 - 🔴 VIVO — SUBIR DE NIVEL: cruce con Codex + tercera familia de modelos, dossier completo.
 - 🟡 VIVO — actualizar cabecera de `docs/roadmap.md` con este resultado (con OK de Lucas).
 - ⚪ Brazo pista: no disparado por regla; queda documentado.
+
+
+---
+
+## Escalera de ayudas sobre v0.2 (encargo corregido) — resultado (2026-08-07, 16 episodios, addendum de ficha)
+
+Métrica: `S_valley_fuerte` (vara de la auditoría — discretitud contra el rival continuo CON
+persistencia; rival=0, verdad=1). 15/16 válidos; 1 censura (DeepSeek nivel4 99369, max_tokens a
+19 turnos, sin entrega — se reporta, no se re-rollea).
+
+| Nivel | DeepSeek-V3.2 | gpt-5.4 |
+|---|---|---|
+| **0 — sin ayuda** (contrato de evaluación clarificado) | 0.0 · 0.0 (gamma/negbin) | 0.0 · 0.0 (gamma) |
+| **3 — "unos pocos tipos distintos"** | 0.0 · 0.0 (gamma 2/2) | **0.874 · 0.965 (mezcla 2/2)** |
+| **4 — "probá mezcla finita 2–3 grupos"** | **1.000** (mezcla, con 3 celdas de comparación real) · CENS | 0.172 · 0.0 (**gamma otra vez — desobedeció la receta**) |
+| Gemelo (guardia, niveles 3+4) | espurio 0/2 (S_clean 0.68/0.93) | espurio 0/2 (0.98/0.98) |
+
+**Los cuatro hallazgos:**
+
+1. **El fenómeno sobrevive al contrato justo:** con el encargo explicando el examen ("sustituto
+   fiel, datos idealmente indistinguibles"), sin ayuda: **0/4 abren** (vara honesta = 0.0 los
+   cuatro). La rival "hicieron lo que se les pidió" está muerta y el fenómeno sigue.
+2. **La altura del salto es POR MODELO** (perfiles de vicio por modelo, otra vez — ADR 0111):
+   a gpt-5.4 le alcanza **la palabra** ("tipos" → 0.87/0.97); DeepSeek necesita **la receta**
+   (nivel 4 → 1.0, y ahí sí corrió comparaciones de verdad, 3 celdas — la única celda del slice
+   entero que comparó modelos).
+3. **La sorpresa: gpt-5.4 con la receta explícita se AUTO-CONVENCIÓ de volver al continuo.**
+   Verbatim del razonamiento final (99371): *"the estimated NB size stays roughly stable around
+   2–3 despite noise, which is exactly what gamma mixing… predicts"* — chequeos de adecuación
+   que son igualmente consistentes con AMBAS hipótesis, usados como si discriminaran; 0 celdas
+   de comparación frente a frente. No es desobediencia ni incapacidad (nivel 3 lo probó capaz):
+   es el mismo agujero de siempre — **decide entre hipótesis sin correr el test que las separa**.
+   Y la lectura es coherente con el gemelo: allá también resistió la instrucción nivel-4… donde
+   resistir era CORRECTO. Confía en sus chequeos en ambos mundos; sus chequeos no distinguen.
+4. **La exigencia de Lucas quedó satisfecha: LLMs resolvieron BIEN este mundo** — gpt 0.97
+   (nivel 3), DeepSeek 1.00 (nivel 4). El mundo está validado por agentes reales, no solo por
+   robots. Y la guardia bilateral aguantó las dos instrucciones: espurio 0/4 — nadie inventa
+   clases donde los datos dicen que no las hay.
+
+**Vara de altura resultante:** gpt-5.4 salta a UNA PALABRA de distancia (pero la re-litiga si le
+das la receta, porque sus desempates no discriminan); DeepSeek salta solo con la receta en la
+mano (y entonces ejecuta perfecto). El hilo único que une todos los modos de falla del slice:
+**la comparación discriminante entre hipótesis no se corre espontáneamente casi nunca**
+(1 celda de 27 episodios totales la corrió — DeepSeek nivel-4).
+
+**Estado del dossier:** completo para el cruce con Codex — fenómeno bajo contrato justo,
+capacidad demostrada en-mundo, vara de altura por modelo, bilateral limpio, tres fallas de
+diseño v0 documentadas con sus fixes, y una censura reportada.
