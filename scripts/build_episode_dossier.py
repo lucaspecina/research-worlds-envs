@@ -100,6 +100,10 @@ class CaseCtx:
             self.preview, self.source_name = None, None
         mpath = self.dir / "metrics.json"
         self.metrics_doc = json.loads(mpath.read_text()) if mpath.exists() else None
+        v = (self.metrics_doc or {}).get("variante", {})
+        self.titulo = v.get("titulo", case_id)
+        self.rol = v.get("rol", "principal")
+        self.descripcion = v.get("descripcion", "")
 
     def truth_samples(self, n=3000, seed=424242):
         return self.sample(self.regime, n, seed)[self.outcome.name].to_numpy(float)
@@ -109,7 +113,7 @@ def run_html(p: dict, ctx: CaseCtx, task_page: str) -> str:
     ins = p.get("instruments", {})
     ayuda = (p.get("initial_note") or "").strip()
     hdr = [["tarea", f"<a href='{task_page}'>{esc(p.get('suite', '?'))}</a> (ver ahí la explicación completa)"],
-           ["variante del mundo (secreta para el agente)", p.get("case_id", "?")],
+           ["mundo (secreto para el agente)", ctx.titulo],
            ["modelo agente", p["model"]], ["fecha", p.get("run_at", "—")], ["seed", p["seed"]],
            ["terminó por", p.get("abort_reason")], ["turnos", p.get("turns")],
            ["presupuesto gastado", f"{p.get('budget_spent', 0):.0f}"],
@@ -226,48 +230,53 @@ def task_html(suite: str, cases: dict[str, CaseCtx], runs: list[dict], out: Path
                             + f"<p class='note'><b>R:</b> {esc(mdoc.get('R', ''))}</p>", "eval"))
 
     truth_rows = []
-    for cid, ctx in sorted(cases.items()):
+    for cid, ctx in sorted(cases.items(), key=lambda kv: (kv[1].rol != "principal", kv[0])):
         for o in ctx.meta.operators:
-            truth_rows.append([cid, o.name, json.dumps(o.knobs, ensure_ascii=False)])
-    body.append(section("La verdad oculta (lado servidor — el agente NUNCA sabe en qué variante está)",
-                        table(["variante", "mecanismo", "parámetros"], truth_rows), "truth"))
+            truth_rows.append([ctx.titulo, o.name, json.dumps(o.knobs, ensure_ascii=False)])
+    body.append(section("La verdad oculta (lado servidor — el agente NUNCA sabe en qué mundo está)",
+                        table(["mundo", "mecanismo", "parámetros"], truth_rows), "truth"))
 
-    trs = ""
-    modelos = sorted({r["model"] for r in runs})
-    variantes = sorted({r.get("case_id", "?") for r in runs})
-    for r in runs:
-        ayuda = (r.get("initial_note") or "").strip()
-        r_txt = f"{r.get('R'):.3f}" if r.get("R") is not None else "—"
-        trs += (f"<tr data-variante='{esc(r.get('case_id', '?'))}' data-modelo='{esc(r['model'])}' "
-                f"data-ayuda='{'si' if ayuda else 'no'}'>"
-                f"<td class='num'>{esc(r.get('run_at', '—'))}</td>"
-                f"<td>{esc(r.get('case_id', '?'))}</td><td>{esc(r['model'])}</td>"
-                f"<td title='{esc(ayuda)}'>{esc((ayuda[:55] + '…') if len(ayuda) > 55 else (ayuda or 'no'))}</td>"
-                f"<td class='num'>{r['seed']}</td><td>{metric_chips(r.get('instruments', {}))}</td>"
-                f"<td class='num'>{r_txt}</td>"
-                f"<td>{esc(r.get('abort_reason'))}</td>"
-                f"<td><a href='{r['_page']}'>abrir</a></td></tr>")
-    bts_v = "".join(f"<button onclick=\"setF('variante','{esc(v)}')\">{esc(v)}</button>" for v in variantes)
-    bts_m = "".join(f"<button onclick=\"setF('modelo','{esc(mm)}')\">{esc(mm)}</button>" for mm in modelos)
-    filtros = ("<div style='margin:14px 0;padding:12px;border:1px solid #e3e3e3;border-radius:8px;background:#fafafa'>"
-               "<b>Variante:</b> <button onclick=\"setF('variante','todos')\">Todas</button>" + bts_v
-               + " <b>Modelo:</b> <button onclick=\"setF('modelo','todos')\">Todos</button>" + bts_m
-               + " <b>Ayuda:</b> <button onclick=\"setF('ayuda','todos')\">Todas</button>"
-                 "<button onclick=\"setF('ayuda','no')\">Sin ayuda</button>"
-                 "<button onclick=\"setF('ayuda','si')\">Con ayuda</button>"
-                 "<span id='count' style='margin-left:12px;color:#666'></span></div>"
-               "<script>var F={variante:'todos',modelo:'todos',ayuda:'todos'};"
-               "function setF(k,v){F[k]=v;aplicar();}"
-               "function aplicar(){var n=0;document.querySelectorAll('tr[data-variante]').forEach(function(tr){"
-               "var ok=true;if(F.variante!=='todos')ok=(tr.dataset.variante===F.variante);"
-               "if(ok&&F.modelo!=='todos')ok=(tr.dataset.modelo===F.modelo);"
+    # una tabla POR MUNDO (principal primero), con filtros propios
+    tablas = ""
+    ordered = sorted(cases.items(), key=lambda kv: (kv[1].rol != "principal", kv[0]))
+    for ti, (cid, ctx) in enumerate(ordered):
+        rs = [r for r in runs if r.get("case_id") == cid]
+        if not rs:
+            continue
+        modelos = sorted({r["model"] for r in rs})
+        trs = ""
+        for r in rs:
+            ayuda = (r.get("initial_note") or "").strip()
+            r_txt = f"{r.get('R'):.3f}" if r.get("R") is not None else "—"
+            toks = (r.get("tokens") or {}).get("total") or "—"
+            trs += (f"<tr data-t='t{ti}' data-modelo='{esc(r['model'])}' data-ayuda='{'si' if ayuda else 'no'}'>"
+                    f"<td class='num'>{esc(r.get('run_at', '—'))}</td><td>{esc(r['model'])}</td>"
+                    f"<td title='{esc(ayuda)}'>{esc((ayuda[:45] + '…') if len(ayuda) > 45 else (ayuda or 'no'))}</td>"
+                    f"<td class='num'>{r['seed']}</td><td class='num'>{r.get('turns', '—')}</td>"
+                    f"<td class='num'>{r.get('budget_spent', 0):.0f}</td><td class='num'>{toks}</td>"
+                    f"<td>{metric_chips(r.get('instruments', {}))}</td><td class='num'>{r_txt}</td>"
+                    f"<td>{esc(r.get('abort_reason'))}</td><td><a href='{r['_page']}'>abrir</a></td></tr>")
+        bts_m = "".join(f"<button onclick=\"setF('t{ti}','modelo','{esc(m)}')\">{esc(m)}</button>" for m in modelos)
+        filtros = (f"<div style='margin:8px 0;padding:8px;border:1px solid #e3e3e3;border-radius:8px;background:#fafafa'>"
+                   f"<b>Modelo:</b> <button onclick=\"setF('t{ti}','modelo','todos')\">Todos</button>{bts_m}"
+                   f" &nbsp;<b>Ayuda:</b> <button onclick=\"setF('t{ti}','ayuda','todos')\">Todas</button>"
+                   f"<button onclick=\"setF('t{ti}','ayuda','no')\">Sin ayuda</button>"
+                   f"<button onclick=\"setF('t{ti}','ayuda','si')\">Con ayuda</button>"
+                   f"<span id='count-t{ti}' style='margin-left:10px;color:#666'></span></div>")
+        tablas += (f"<h3>{esc(ctx.titulo)}</h3><p class='note'>{esc(ctx.descripcion)}</p>" + filtros
+                   + "<table><tr><th>fecha</th><th>modelo</th><th>ayuda</th><th>seed</th><th>turnos</th>"
+                     "<th>gastado</th><th>tokens</th><th>métricas</th><th>R</th><th>fin</th><th></th></tr>"
+                   + trs + "</table>")
+    tablas += ("<script>var FS={};"
+               "function setF(t,k,v){(FS[t]=FS[t]||{modelo:'todos',ayuda:'todos'})[k]=v;aplicar(t);}"
+               "function aplicar(t){var F=FS[t]||{modelo:'todos',ayuda:'todos'};var n=0;"
+               "document.querySelectorAll(\"tr[data-t='\"+t+\"']\").forEach(function(tr){var ok=true;"
+               "if(F.modelo!=='todos')ok=(tr.dataset.modelo===F.modelo);"
                "if(ok&&F.ayuda!=='todos')ok=(tr.dataset.ayuda===F.ayuda);"
                "tr.style.display=ok?'':'none';if(ok)n++;});"
-               "document.getElementById('count').textContent=n+' corridas';}"
-               "window.addEventListener('load',aplicar);</script>")
-    body += ["<h2>Las corridas (más nueva arriba)</h2>", filtros,
-             "<table><tr><th>fecha</th><th>variante</th><th>modelo</th><th>ayuda</th><th>seed</th>"
-             "<th>métricas</th><th>R</th><th>fin</th><th></th></tr>" + trs + "</table>",
+               "var c=document.getElementById('count-'+t);if(c)c.textContent=n+' corridas';}"
+               "</script>")
+    body += ["<h2>Las corridas (más nueva arriba)</h2>", tablas,
              "<p><a href='index.html'>← todas las tareas</a></p>"]
     return page(f"tarea {suite}", "".join(body))
 
@@ -304,7 +313,7 @@ def main() -> None:
         fechas = [r.get("run_at", "") for r in runs if r.get("run_at")]
         cards += (f"<section><h2><a href='task_{suite}.html'>{esc(suite)}</a></h2>"
                   f"<p>{esc(narrative)}</p>"
-                  f"<p class='note'>{len(runs)} corridas · {len({r['case_id'] for r in runs})} variantes · "
+                  f"<p class='note'>{len(runs)} corridas · {len({r['case_id'] for r in runs})} mundos (principal + control) · "
                   f"última: {esc(max(fechas) if fechas else '—')}</p></section>")
     (out / "index.html").write_text(page("Tareas", f"<h1>Tareas</h1>{cards}"))
     print(f"OK: {len(episodes)} corridas, {len(suites)} tareas -> {out / 'index.html'}")
