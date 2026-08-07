@@ -18,7 +18,10 @@ sys.path.insert(0, str(ROOT))
 
 import numpy as np  # noqa: E402
 
-from cases.count_mix_v0_common import _DictRegime, _sample_counts, load_instance  # noqa: E402
+from cases.count_mix_v0_common import (  # noqa: E402
+    _DictRegime, _sample_counts, load_instance, program_functionals, s_valley,
+    strong_baseline_program,
+)
 from wager.report.html import code, details, esc, md, page, section, table  # noqa: E402
 
 SMOKE = ROOT / "scripts/out/count_mix_smoke"
@@ -145,22 +148,39 @@ def episode_html(p: dict, inst: dict) -> str:
 def main() -> None:
     inst = load_instance()
     OUT.mkdir(parents=True, exist_ok=True)
+    geo, tail_at = inst["geometry"], inst["tail_at"]
+    y_train = _sample_counts("mix", inst["params"], _DictRegime({"speed": 1.0}),
+                             inst["witness_n"], inst["witness_sample_seed"])["y"].to_numpy(float)
+    truth_f = program_functionals(
+        lambda r, n, s: _sample_counts("mix", inst["params"], r, n, s), geo, tail_at)
+    strong_f = program_functionals(strong_baseline_program(y_train), geo, tail_at)
     rows = []
     for f in sorted(SMOKE.glob("*.json")):
         p = json.loads(f.read_text())
+        ins = p.get("instruments", {})
+        if (p["pole"] == "mix" and ins.get("S_valley_fuerte") is None
+                and ins.get("functionals")):
+            ins["S_valley_fuerte"] = s_valley(ins["functionals"], truth_f, strong_f)
+            p["instruments"] = ins
         name = f"dossier_{f.stem}.html"
         (OUT / name).write_text(episode_html(p, inst))
-        ins = p.get("instruments", {})
         key = next((k for k in ("S_valley_fuerte", "S_clean") if ins.get(k) is not None), None)
-        rows.append([f"<a href='{name}'>{esc(f.stem)}</a>", p["tag"], p["model"],
-                     "mezcla" if p["pole"] == "mix" else "gemelo", p["seed"],
-                     (f"{ins[key]:.3f}" if key else "censurado"),
+        metric = f"{ins[key]:.3f}" if key else ("censurado" if not ins.get("functionals") else "—")
+        rows.append([name, f.stem, p["tag"], p["model"],
+                     "mezcla" if p["pole"] == "mix" else "gemelo", p["seed"], metric,
                      f"{p.get('R'):.3f}" if p.get("R") is not None else "—",
                      p.get("abort_reason")])
+    trs = "".join(
+        f"<tr><td><a href='{name}'>{esc(stem)}</a></td><td>{esc(tag)}</td><td>{esc(model)}</td>"
+        f"<td>{esc(mundo)}</td><td class='num'>{seed}</td><td class='num'>{esc(metric)}</td>"
+        f"<td class='num'>{esc(r)}</td><td>{esc(fin)}</td></tr>"
+        for name, stem, tag, model, mundo, seed, metric, r, fin in rows)
     idx = [f"<h1>Dossier count_mix — {len(rows)} episodios</h1>",
            "<p class='sub'>Cada fila abre la partida completa: tarea exacta, razonamiento, código, "
-           "salidas, compras, entrega y evaluación con histograma.</p>",
-           table(["episodio", "brazo", "modelo", "mundo", "seed", "vara del salto / limpieza", "R", "fin"], rows)]
+           "salidas, compras, entrega y evaluación con histograma. La vara del salto (mundos mezcla): "
+           "0 = modelo continuo, 1 = capturó los dos grupos. Limpieza (gemelo): 1 = no inventó nada.</p>",
+           "<table><tr><th>episodio</th><th>brazo</th><th>modelo</th><th>mundo</th><th>seed</th>"
+           "<th>vara del salto / limpieza</th><th>R</th><th>fin</th></tr>" + trs + "</table>"]
     (OUT / "index.html").write_text(page("Dossier count_mix", "".join(idx)))
     print(f"OK: {len(rows)} dossiers -> {OUT / 'index.html'}")
 
