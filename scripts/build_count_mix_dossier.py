@@ -9,6 +9,7 @@ Sale: scripts/out/count_mix_smoke/dossier/index.html  (abrir en el navegador)
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -104,7 +105,9 @@ def episode_html(p: dict, inst: dict) -> str:
 
     turns = []
     for rec in p["episode"]["trace"]:
-        inner = ["<h4>Razonamiento</h4>", md(rec.get("reply_text", "")),]
+        # la prosa sola: el bloque de codigo se muestra UNA vez, en su seccion
+        prosa = re.sub(r"```(?:python)?.*?```", "", rec.get("reply_text", ""), flags=re.S).strip()
+        inner = ["<h4>Razonamiento</h4>", md(prosa)]
         if rec.get("cell"):
             inner += ["<h4>Código</h4>", code(rec["cell"])]
         cr = rec.get("cell_result") or {}
@@ -145,6 +148,49 @@ def episode_html(p: dict, inst: dict) -> str:
     return page(f"{tag} {model} {pole} {seed}", "".join(body))
 
 
+ARMS = {
+    "tecnico":    {"orden": 1, "nombre": "Prueba técnica",
+                   "desc": "1 partida para verificar que la interfaz funciona. Encargo ORIGINAL. No cuenta para conclusiones."},
+    "main":       {"orden": 2, "nombre": "Tanda principal (encargo original, sin ayuda)",
+                   "desc": "12 partidas: 2 modelos × 2 mundos × 3 seeds. El encargo NO explicaba bien la evaluación (falla detectada después en la auditoría)."},
+    "pista":      {"orden": 3, "nombre": "Control de pista (encargo original + frase vaga)",
+                   "desc": "8 partidas con la frase 'los datos pueden venir de más de una subpoblación'. No movió nada — la frase era absorbible."},
+    "v02_nivel0": {"orden": 4, "nombre": "ÚLTIMA TANDA — encargo corregido, sin ayuda",
+                   "desc": "4 partidas con el encargo nuevo (explica cómo se evalúa: 'datos indistinguibles del proceso'). Sin ninguna ayuda."},
+    "v02_nivel3": {"orden": 5, "nombre": "ÚLTIMA TANDA — ayuda suave",
+                   "desc": "4+2 partidas con la frase 'los lotes podrían venir en unos pocos tipos distintos'."},
+    "v02_nivel4": {"orden": 6, "nombre": "ÚLTIMA TANDA — ayuda fuerte (la receta)",
+                   "desc": "4+2 partidas con 'probá un modelo de mezcla finita: 2-3 grupos, cada uno con su tasa'."},
+}
+
+EXPLICACION = """
+<section class='student'>
+<h2>La tarea (idéntica en las 37 partidas)</h2>
+<p><b>Todas las partidas son el MISMO problema</b>, en una única instancia congelada del mundo.
+El agente es "el analista de calidad de una línea de producción". Su trabajo:</p>
+<ol>
+<li><b>Investigar</b>: puede comprar filas del archivo histórico (baratas; cada fila = un lote con su
+cantidad de defectos, medido a velocidad normal) o pagar experimentos (elige la velocidad de la
+línea y cuántas veces medir cada lote nuevo). Presupuesto finito: 1000.</li>
+<li><b>Entregar</b>: un programita <code>model(...)</code> que GENERA datos de defectos — su teoría
+del proceso, hecha código ejecutable.</li>
+<li><b>Ser evaluado</b> (nunca ve la nota): el servidor genera datos con su programa y con el proceso
+real bajo las mismas condiciones — incluidas condiciones que no vio — y mide qué tan parecidos son.</li>
+</ol>
+<p><b>El secreto del mundo "mezcla"</b>: los lotes vienen de DOS tipos ocultos (52% con tasa ~10.4
+defectos, 48% con ~1.9). En el histograma: dos jorobas con un valle. <b>El gemelo</b> es idéntico en
+todo, pero con UN solo proceso (media apareada): sirve para verificar que nadie invente grupos donde
+no los hay. El agente nunca sabe en cuál de los dos está.</p>
+<p><b>El dataset que ve</b>: filas (lote, defectos) — enteros: 0, 1, 9, 12, 0, 8… Nada le anuncia
+que haya tipos; la señal está en la FORMA (dos jorobas, exceso de ceros, mediciones del mismo lote
+que se parecen entre sí).</p>
+<p><b>Las dos versiones del encargo</b>: las tandas 1–3 corrieron con el encargo ORIGINAL (decía
+"reproducí el proceso" sin explicar la evaluación — la auditoría encontró que así el descubrimiento
+no era necesario para cumplir). Las tandas 4–6 (<b>la última</b>) corren con el encargo CORREGIDO,
+que explica cómo se evalúa sin soplar nada.</p>
+</section>"""
+
+
 def main() -> None:
     inst = load_instance()
     OUT.mkdir(parents=True, exist_ok=True)
@@ -166,21 +212,69 @@ def main() -> None:
         (OUT / name).write_text(episode_html(p, inst))
         key = next((k for k in ("S_valley_fuerte", "S_clean") if ins.get(k) is not None), None)
         metric = f"{ins[key]:.3f}" if key else ("censurado" if not ins.get("functionals") else "—")
-        rows.append([name, f.stem, p["tag"], p["model"],
+        rows.append((ARMS[p["tag"]]["orden"], name, p["tag"], p["model"],
                      "mezcla" if p["pole"] == "mix" else "gemelo", p["seed"], metric,
                      f"{p.get('R'):.3f}" if p.get("R") is not None else "—",
-                     p.get("abort_reason")])
+                     p.get("abort_reason")))
+    rows.sort()
+
+    leyenda = "".join(
+        f"<tr><td class='num'>{a['orden']}</td><td><b>{esc(a['nombre'])}</b></td><td>{esc(a['desc'])}</td></tr>"
+        for a in sorted(ARMS.values(), key=lambda x: x["orden"]))
     trs = "".join(
-        f"<tr><td><a href='{name}'>{esc(stem)}</a></td><td>{esc(tag)}</td><td>{esc(model)}</td>"
-        f"<td>{esc(mundo)}</td><td class='num'>{seed}</td><td class='num'>{esc(metric)}</td>"
+        f"<tr data-tanda='{orden}' data-modelo='{esc(model)}' data-mundo='{mundo}'>"
+        f"<td class='num'>{orden}</td><td><a href='{name}'>abrir</a></td>"
+        f"<td>{esc(ARMS[tag]['nombre'])}</td><td>{esc(model)}</td><td>{mundo}</td>"
+        f"<td class='num'>{seed}</td><td class='num'>{esc(metric)}</td>"
         f"<td class='num'>{esc(r)}</td><td>{esc(fin)}</td></tr>"
-        for name, stem, tag, model, mundo, seed, metric, r, fin in rows)
-    idx = [f"<h1>Dossier count_mix — {len(rows)} episodios</h1>",
-           "<p class='sub'>Cada fila abre la partida completa: tarea exacta, razonamiento, código, "
-           "salidas, compras, entrega y evaluación con histograma. La vara del salto (mundos mezcla): "
-           "0 = modelo continuo, 1 = capturó los dos grupos. Limpieza (gemelo): 1 = no inventó nada.</p>",
-           "<table><tr><th>episodio</th><th>brazo</th><th>modelo</th><th>mundo</th><th>seed</th>"
-           "<th>vara del salto / limpieza</th><th>R</th><th>fin</th></tr>" + trs + "</table>"]
+        for orden, name, tag, model, mundo, seed, metric, r, fin in rows)
+
+    filtros = """
+<div style='margin:14px 0;padding:12px;border:1px solid #e3e3e3;border-radius:8px;background:#fafafa'>
+<b>Tanda:</b>
+<button onclick="setF('tanda','ultima')" id="b-ultima">Última (encargo corregido)</button>
+<button onclick="setF('tanda','todas')" id="b-todas">Todas</button>
+<button onclick="setF('tanda','2')" id="b-2">Principal</button>
+<button onclick="setF('tanda','3')" id="b-3">Pista</button>
+&nbsp;&nbsp;<b>Modelo:</b>
+<button onclick="setF('modelo','todos')">Todos</button>
+<button onclick="setF('modelo','DeepSeek-V3.2')">DeepSeek</button>
+<button onclick="setF('modelo','gpt-5.4')">gpt-5.4</button>
+&nbsp;&nbsp;<b>Mundo:</b>
+<button onclick="setF('mundo','todos')">Ambos</button>
+<button onclick="setF('mundo','mezcla')">Mezcla</button>
+<button onclick="setF('mundo','gemelo')">Gemelo</button>
+<span id='count' style='margin-left:12px;color:#666'></span>
+</div>
+<script>
+var F = {tanda:'ultima', modelo:'todos', mundo:'todos'};
+function setF(k, v){ F[k] = v; aplicar(); }
+function aplicar(){
+  var n = 0;
+  document.querySelectorAll('tr[data-tanda]').forEach(function(tr){
+    var t = tr.dataset.tanda, ok = true;
+    if (F.tanda === 'ultima') ok = (t === '4' || t === '5' || t === '6');
+    else if (F.tanda !== 'todas') ok = (t === F.tanda);
+    if (ok && F.modelo !== 'todos') ok = (tr.dataset.modelo === F.modelo);
+    if (ok && F.mundo !== 'todos') ok = (tr.dataset.mundo === F.mundo);
+    tr.style.display = ok ? '' : 'none';
+    if (ok) n++;
+  });
+  document.getElementById('count').textContent = n + ' partidas';
+}
+window.addEventListener('load', aplicar);
+</script>"""
+
+    idx = ["<h1>Dossier count_mix — las 37 partidas de la semana</h1>",
+           "<p class='sub'>Mismo problema en todas; lo que cambia entre tandas es el encargo y la ayuda. "
+           "Vara del salto (mundos mezcla): 0 = entregó el modelo continuo, 1 = descubrió los dos grupos. "
+           "Limpieza (gemelo): 1 = no inventó nada.</p>",
+           EXPLICACION,
+           "<h2>Las seis tandas, en orden cronológico</h2>",
+           "<table><tr><th>#</th><th>tanda</th><th>qué fue</th></tr>" + leyenda + "</table>",
+           "<h2>Las partidas</h2>", filtros,
+           "<table><tr><th>#</th><th></th><th>tanda</th><th>modelo</th><th>mundo</th><th>seed</th>"
+           "<th>vara / limpieza</th><th>R</th><th>fin</th></tr>" + trs + "</table>"]
     (OUT / "index.html").write_text(page("Dossier count_mix", "".join(idx)))
     print(f"OK: {len(rows)} dossiers -> {OUT / 'index.html'}")
 
