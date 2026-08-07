@@ -35,7 +35,7 @@ from wager.harness.episode import SYSTEM  # noqa: E402
 from wager.report.html import code, details, esc, md, page, section, table  # noqa: E402
 
 
-PRIORIDAD = ("S_valley_fuerte", "S_clean", "F_mean")
+PRIORIDAD = ("S_valley_fuerte", "S_quiebre_fuerte", "S_clean", "F_mean")
 OCULTAS = {"S_struct"}  # historicas: siguen en los JSON, no en la vista
 
 
