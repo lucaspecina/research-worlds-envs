@@ -20,6 +20,7 @@ Lucas; no se descarta ni se rebautiza para que encaje.
 Mapa de docs (abrí el que la tarea pida, no todos):
 
 - **`WIKI.md`** — entender de cero, sin jerga: qué es, cómo funciona, dónde estamos.
+- **`docs/glosario.md`** — chuleta de una página: todos los nombres de la casa en llano (términos, métricas, operadores, vicios).
 - **`ARCHITECTURE.md`** — índice de la referencia técnica → **`docs/reference/`** (contratos, operadores, rivales, batería, scoring, harness; abrí el archivo del tema).
 - **`docs/roadmap.md`** — estado vivo + cartera E1 + programa E1→E4 (dónde estamos, qué falta, el plan).
 - **`docs/failure-modes.md`** — el corazón. La **definición operativa** del juicio (§0, dos polos) +

@@ -305,6 +305,10 @@
 > el candidato (diseño abierto), tercera familia de modelos en Foundry, y versión confirmatoria
 > del mundo (necesidad DOBLE + estructura que pague en extrapolación, ADR 0150). Codex bloqueado
 > por cuota hasta 2026-08-08 00:35; receta en `scratch/codex-supervisor-session.json`.
+> **Preparado para esa revisión:** borrador del mundo 2 — operador régimen oculto, con matriz
+> saltos×realismo y 4 preguntas abiertas —
+> [plan](research/2026-08-07-plan-mundo-2-regimen-borrador.md); y chuleta de términos de la casa
+> en [`docs/glosario.md`](glosario.md).
 >
 > **REEVALUACIÓN Y SIGUIENTE ACCIÓN (histórica 2026-08-02; superseded por el bloque de arriba):** todavía no se congela la pregunta final del paper. Sigue
 > viva la señal de **cierre/autoridad del diagnóstico**; la apertura latente persiste solo en SCM;
