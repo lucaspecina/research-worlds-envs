@@ -1,4 +1,4 @@
-"""Dossier post-mortem — TEMPLATE GENERAL, tres niveles:
+"""TRAJECTORY EXPLORER — visor post-mortem de corridas, TEMPLATE GENERAL, tres niveles:
 
   index.html            las TAREAS (suites): descripción simple + nº de corridas
   task_<suite>.html     la tarea en detalle (qué ve el agente, dataset, verdad
@@ -12,9 +12,9 @@ instruments). Nada hardcodeado por caso. Una tarea = una suite; las variantes
 (p. ej. el gemelo) son condición SECRETA del servidor y se muestran como
 columna, explicadas en la sección de verdad oculta.
 
-Uso: python scripts/dossier.py          -> junta TODAS las corridas de scripts/out/*,
-                                           regenera el sitio y lo ABRE en el navegador
-     python scripts/dossier.py --no-open  (solo regenerar)
+Uso:  doble click en explorer.command (raíz del repo)   <- lo más simple
+      python scripts/explorer.py            (regenera y abre)
+      python scripts/explorer.py --no-open  (solo regenerar)
 """
 
 from __future__ import annotations
@@ -294,11 +294,11 @@ def _is_episode(f: Path) -> bool:
 
 
 def main() -> None:
-    out = ROOT / "scripts/out/dossier"
+    out = ROOT / "scripts/out/explorer"
     out.mkdir(parents=True, exist_ok=True)
     episodes = []
     for d in sorted((ROOT / "scripts/out").iterdir()):
-        if not d.is_dir() or d.name == "dossier":
+        if not d.is_dir() or d.name in ("dossier", "explorer"):
             continue
         for f in sorted(d.glob("*.json")):
             if not _is_episode(f):
@@ -341,7 +341,8 @@ def main() -> None:
                   f"<p>{esc(narrative)}</p>"
                   f"<p class='note'>{len(runs)} corridas · {len({r['case_id'] for r in runs})} mundos (principal + control) · "
                   f"última: {esc(max(fechas) if fechas else '—')}</p></section>")
-    (out / "index.html").write_text(page("Tareas", f"<h1>Tareas</h1>{cards}"))
+    (out / "index.html").write_text(page("Trajectory Explorer",
+        f"<h1>Trajectory Explorer</h1><p class='sub'>Todas las tareas y sus corridas.</p>{cards}"))
     print(f"OK: {len(episodes)} corridas, {len(suites)} tareas -> {out / 'index.html'}")
     if "--no-open" not in sys.argv:
         import webbrowser

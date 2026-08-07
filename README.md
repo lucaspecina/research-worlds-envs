@@ -52,10 +52,8 @@ cases/        los mundos (world.py oculto, meta.json, brief.md, ladder/, certifi
 docs/         adr/, roadmap, open-questions, red-team, archived
 ```
 
-## Ver las corridas (el visor)
+## Trajectory Explorer (ver las corridas)
 
-```bash
-python scripts/dossier.py
-```
+**Doble click en `explorer.command`** (raíz del repo) — o `python scripts/explorer.py`.
 
 Junta todas las corridas de `scripts/out/`, regenera el sitio (Tareas → tarea → corrida) y lo abre en el navegador.
