@@ -1,3 +1,6 @@
+> **ARCHIVADO 2026-08-08.** Spec de la era revisión-de-creencias; el mundo first_story se construyó y su ciclo cerró. Se conserva como registro histórico;
+> no refleja el estado actual (ver `docs/roadmap.md`).
+
 # Mundo A — "La primera historia" (spec de trabajo — DECISIONES FIRMADAS)
 
 > **Estado: APROBADO CON DECISIONES D1-D5 (ADR 0081; doctrina en ADR 0080).** Primer

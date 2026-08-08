@@ -1,3 +1,6 @@
+> **ARCHIVADO 2026-08-08.** Contexto de la matriz E1 vieja; referencia docs que ya no existen. Se conserva como registro histórico;
+> no refleja el estado actual (ver `docs/roadmap.md`).
+
 # Mundos dinámicos (ODE) — contexto completo para la próxima sesión
 ### Qué son, por qué van ahora, y cómo se construyen sin romper nada
 

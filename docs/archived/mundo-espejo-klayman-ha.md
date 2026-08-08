@@ -1,3 +1,6 @@
+> **ARCHIVADO 2026-08-08.** Spec de un par nunca construido (era revisión-de-creencias). Se conserva como registro histórico;
+> no refleja el estado actual (ver `docs/roadmap.md`).
+
 # Mundo espejo Klayman-Ha (estructuras 1a/1b del vicio "no actualizar")
 
 > **Spec de diseño** (spec-first, precede al código). Es el PAR: dos mundos que comparten mecanismo

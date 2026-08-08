@@ -10,7 +10,7 @@
 > lista de memoria — es un scaffold para *ir a la literatura con paciencia, razonar, y
 > diseñar mundos de a uno*. Reemplaza al viejo `FAILURE_MODES.md` (disuelto en la
 > reestructura) con la estructura que ganamos discutiendo. Precedente de disciplina:
-> `docs/mundo-a-primera-historia.md`, `docs/proto-designer.md`.
+> `docs/archived/mundo-a-primera-historia.md`, `docs/archived/proto-designer.md`.
 
 ---
 
@@ -583,7 +583,7 @@ la maquinaria (off-support + MDL). Razones de la elección: el lado Neptuno YA e
 entidad oculta, la ley es otra). **REQUISITO pre-build**: test de viabilidad estilo #12 sobre el
 gemelo — el fit-con-entidad-espuria sobre el pool debe dejar residuo o pagar complejidad MEDIBLE; si
 no, el gemelo no discrimina y el par se rechaza (certificado del par, principio 10). *El par
-angosta/amplia (`docs/mundo-espejo-klayman-ha.md`) queda EN CANTERA: tier B puro, ambos polos desde
+angosta/amplia (`docs/archived/mundo-espejo-klayman-ha.md`) queda EN CANTERA: tier B puro, ambos polos desde
 cero, riesgo de que frontier lo resuelva de taquito.*
 > **★ VALIDACIÓN INDEPENDIENTE del par Vulcano ("Position: LLMs can't jump", OpenReview klU4737opt,
 > 2026).** Un position paper de filosofía de la ciencia usa EXACTAMENTE este ejemplo, sin conocernos:

@@ -554,7 +554,7 @@ Mecanismo verificado (twin 96.4% en outcome; dilución del contraste, no D_MAX).
 global sin candado → **NO se implementa; (d) puro + funcional**. Hallazgo colateral: c_F
 alto haría gameable el funcional (oracle-gamer→1) → el freeze de 0.25 es doblemente
 correcto (techo de ruido ∧ no-gameabilidad → mismo c_F). Anchura = dial de ATENCIÓN.
-**PROTO-DESIGNER arrancado (ADRs 0093)**: spec `docs/proto-designer.md` (consigna →
+**PROTO-DESIGNER arrancado (ADRs 0093)**: spec `docs/archived/proto-designer.md` (consigna →
 generador LLM → certificación cero-LLM → yield; 4 decisiones A/B/C/D). **Peldaño FÁCIL
 (re-skin) corrido: yield 1/1** — gpt-5.4 re-skineó #16 a un dominio de secado
 (`dryer_setting/moisture_probe/shelf_life`) con R byte-idénticos + gates PASS a la primera
@@ -879,7 +879,7 @@ D9 derivación automática para mundos-ventana.
 
 **Cantera (no cola — de acá se saca SOLO cuando el slot "construir" se libera)**: los 8 slots por
 autorar de la cartera (#8, #10, #13-15, #18-20) · #12 rediseño no-lineal (ADR 0076) · par
-angosta/amplia Klayman-Ha (spec lista, `docs/mundo-espejo-klayman-ha.md`) · Mundo B / dos-espacios
+angosta/amplia Klayman-Ha (spec lista, `docs/archived/mundo-espejo-klayman-ha.md`) · Mundo B / dos-espacios
 (pedigrí Klahr-Dunbar, ADR 0106) · proto-designer DIFÍCIL.
 
 ## Cartera E1 (20 slots; 11 hechos · 1 bloqueado · 8 por autorar)

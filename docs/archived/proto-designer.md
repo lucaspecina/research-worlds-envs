@@ -1,3 +1,6 @@
+> **ARCHIVADO 2026-08-08.** Borrador de la máquina generadora atado al formato viejo. Si se retoma la generación automática, se rediseña desde la taxonomía de saltos (docs/saltos.md) — este doc queda como antecedente. Se conserva como registro histórico;
+> no refleja el estado actual (ver `docs/roadmap.md`).
+
 # Proto-designer — spec de trabajo (la fábrica automática de mundos)
 
 > **Estado: BORRADOR DE DISEÑO (ADR 0093).** El multiplicador FUNDAMENTAL (Lucas): sin

@@ -1,3 +1,6 @@
+> **ARCHIVADO 2026-08-08.** Cerrado por su propia compuerta (ADR 0092): el candado no hacía falta. Se conserva como registro histórico;
+> no refleja el estado actual (ver `docs/roadmap.md`).
+
 # Candado selectivo — spec de trabajo (COMPUERTA CERRADA: NO se implementa)
 
 > **Estado: CERRADO POR LA COMPUERTA (ADR 0092).** La compuerta de necesidad (Lucas,

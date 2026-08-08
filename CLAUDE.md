@@ -6,8 +6,9 @@ Operativa del repo para Claude Code.
 para saber dónde estamos y qué sigue — es la única fuente de verdad del estado. Si no conocés el proyecto, leé
 **`WIKI.md`** primero.
 
-**Objetivo operativo superior:** reproducir fielmente con agentes reales fallas documentadas de
-investigación, empezando por revisión de creencias según evidencia. La implementación no es el
+**Objetivo operativo superior:** reproducir fielmente con agentes reales las fallas y los saltos
+documentados de la indagación (el marco: `WIKI-INDAGACION.md`). Línea primaria: el programa de
+saltos (creatividad = generar el candidato); paraguas secundario: revisión de creencias. La implementación no es el
 objetivo: si el mundo no materializa el fenómeno, se cambia el mundo antes de ampliar
 infraestructura o cantidad de corridas.
 

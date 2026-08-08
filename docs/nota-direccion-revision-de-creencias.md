@@ -1,5 +1,9 @@
 # WAGER — guía del programa de revisión de creencias
 
+> **NOTA 2026-08-08:** desde 2026-08-05 la línea PRIMARIA del proyecto es el programa de
+> saltos (ver `docs/roadmap.md` y `WIKI-INDAGACION.md`); la revisión de creencias sigue
+> como paraguas secundario y esta guía sigue vigente PARA ESA LÍNEA.
+>
 > **Guía conceptual canónica y viva.** Consolidada el 2026-07-31 por pedido de Lucas a
 > partir de la nota de dirección original, la anatomía de casos reales y los reassessments.
 > Sirve para volver periódicamente un paso arriba y comprobar que mundos, experimentos y
