@@ -361,3 +361,48 @@ inducción fallida) casi no ocurre en sus datos porque el puente era gratis. Nue
 miden EXACTAMENTE el hueco que ellos predicen y no cuantificaron.
 
 **Estado: LEÍDO completo** (48/48 pp., tablas y figuras incluidas).
+
+---
+
+## 8. Nersessian (1992), "How Do Scientists Think?" — el cambio conceptual como PROCESO
+
+**Qué es.** El paper canónico del análisis cognitivo-histórico: el cambio conceptual radical NO
+es un reemplazo súbito ("gestalt switch" kuhniano) sino un **proceso extendido de construcción
+de modelos intermedios** — analógicos, imagísticos, experimentos mentales, casos límite. El
+error de Kuhn: comparar solo los EXTREMOS (Newton vs relatividad) hace parecer abrupto lo que
+fue una cadena. "We need to give up the notion that 'creativity' is an *act* and try to fathom
+it as a *process*."
+
+**El caso Maxwell (el corazón):** para las ecuaciones del electromagnetismo construyó un modelo
+mecánico de vórtices que FALLABA (vórtices vecinos se frenan) → lo parchó con "idle wheels"
+(ruedas locas contrarrotantes) = **un híbrido que él mismo declaraba inexistente en la
+naturaleza** — y desde ese andamio falso-a-sabiendas extrajo una estructura matemática MÁS
+general que la newtoniana. Meses después ("Aha! now I know how to do it without the model")
+**rederivó las ecuaciones SIN el modelo** — el aha no es el momento de creación: es el momento
+de **soltar el andamio**. Firma fina: sus errores (el signo del displacement current) eran
+CORRECTOS en términos del modelo intermedio — prueba de que razonaba A TRAVÉS del modelo.
+
+**Implicación dura para nuestra vara: el binario salta/no-salta es el error de los endpoints.**
+- Medir solo el veredicto final = el error que ella le imputa a Kuhn. La unidad observable
+  debería ser la **cadena**: fuente cruda → fuente enriquecida → esquema → descarte del andamio.
+- Un agente que arma un HÍBRIDO (maquinaria vieja + entidad ad hoc para satisfacer una
+  restricción nueva) está A MITAD del camino correcto, no "fallando" — y el salto completo
+  tiene firma final específica: **sostener la conclusión sin el andamio**.
+- Firma cero-LLM candidata: errores sistemáticos COHERENTES con el modelo intermedio =
+  razonamiento-a-través-del-modelo (vs decoración post hoc).
+- Advertencia para como-medimos: comparar estado inicial vs final "VE" saltos de gestalt
+  espurios — es un modo de fallo del INSTRUMENTO, no del agente.
+
+**Condiciones de diseño que su análisis exige** (checklist para mundos de salto): (1) un
+dominio FUENTE con estructura propia disponible al agente (sin fuente análoga, el salto es
+imposible por diseño); (2) restricciones EXPLÍCITAS y suficientes del destino (pocas → la
+analogía se vuelve "too generative": sobre-importa — firma medible del gemelo); (3)
+**tolerancia a la falsedad provisoria**: un scoring que cobra caro cada postulación intermedia
+MATA el mecanismo — solo la adecuación final debe cobrar; (4) iteración/persistencia (episodios
+de un turno no pueden materializar el fenómeno; a Maxwell le llevó meses); (5) nivel intermedio
+de abstracción disponible (diagramas/representaciones externas); (6) casos límite: extrapolación
+controlada con camino de vuelta.
+
+**Estado: LEÍDO completo** (42/42 pp., PDF escaneado del sitio de la autora en Georgia Tech,
+leído como imagen — citas transcriptas a mano). El capítulo de 1999 (candidato original) está
+paywalled; el de 1992 es más rico para nuestro uso.

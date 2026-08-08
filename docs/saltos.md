@@ -348,8 +348,13 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
   [Extracción](research/2026-08-07-lecturas-programa-saltos.md).
 
 ### Filosofía e historia de la ciencia
-- **Nersessian, *Creating Scientific Concepts*** (2008) — razonamiento basado en modelos:
-  analogía, experimento mental, casos límite (Maxwell como caso).
+- **Nersessian** — razonamiento basado en modelos (analogía, experimento mental, casos
+  límite; Maxwell como caso). Su paper canónico 1992 `[LEÍDO completo 2026-08-07]`: el
+  cambio conceptual es una CADENA de modelos intermedios — Maxwell construyó un híbrido
+  falso-a-sabiendas (vórtices + ruedas locas) y de ahí extrajo estructura más general; el
+  "aha" es soltar el andamio, no crear. Implicación dura: el binario salta/no-salta es el
+  error de los endpoints — medir la cadena. El libro de 2008 sigue [POR-LEER].
+  [Extracción](research/2026-08-07-lecturas-programa-saltos.md).
 - **Darden, *Theory Change in Science*** (1991) — estrategias CONCRETAS de cambio de teoría en
   la genética temprana (agregar variable, dividir, alterar observación) — casi una taxonomía
   hermana de la nuestra.
