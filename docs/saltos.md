@@ -61,6 +61,20 @@ aceptarlo cuando la evidencia lo grita (eso es revisión de creencias — se ano
 **Confesión primero: la lista EXACTA de 11 es síntesis nuestra** — ningún paper publicó "estos
 son los 11 saltos". Lo que NO es intuición suelta:
 
+**¿Y no existe YA una lista curada de tipos de saltos/insights/abducciones?** (segunda pregunta
+de Lucas, misma noche). **NO — y el propio campo lo declara.** El estado del arte, verificado
+por lectura: Schurz `[LEÍDO]` clasifica QUÉ se abduce, no la movida, y es grueso donde importa
+("no hay patrón general" para la abducción de modelos teóricos); Darden `[POR-LEER]` es lo más
+cercano pero un solo dominio y sin validación; Thagard = escala de severidad, no tipología;
+Boden = 3 baldes; Ohlsson = mecanismos de proceso mental (en acertijos, no en ciencia); Kemp &
+Tenenbaum `[LEÍDO]` = formas estáticas, y ELLOS piden la "Universal Structure Grammar" que no
+existe; Chen et al. `[LEÍDO]` = la única validada con anotadores, pero de operaciones sobre
+ideas de papers — y tuvieron que construirla de cero en 2026 porque no había ninguna que
+heredar. **Consecuencia: la taxonomía no es background del paper — es una de sus
+contribuciones**, y se construye con el método de las taxonomías buenas (regla de entrada
+explícita + expedientes de casos + falsabilidad del marco + anotadores en etapa paper), no por
+gusto.
+
 1. **El marco tiene linaje formal — VERIFICADO A TEXTO COMPLETO** (2026-08-07): Ullman,
    Goodman & Tenenbaum 2012 `[LEÍDO]` formaliza EXACTAMENTE "teoría = programa; aprender =
    ediciones estructurales" (MCMC sobre agregar/borrar/cambiar leyes y predicados, con los
