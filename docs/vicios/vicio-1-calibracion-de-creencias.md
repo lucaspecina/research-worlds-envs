@@ -94,10 +94,18 @@ cambio de entrega es cortesía, no creencia.
     UN parámetro vs re-estructurar el modelo entregable).
   - **Disparador NUEVO no catalogado: el mundo que CAMBIA debajo del agente** —
     [KellyBench, Grady et al., arXiv 2604.27865](https://arxiv.org/abs/2604.27865)
-    `[POR-LEER][AGÉNTICO]`: temporada simulada de apuestas (500–1000 tool-calls); TODOS los
-    frontier pierden plata (el mejor −8%) y fallan en adaptar la estrategia al fracaso —
-    rigidez ESTRATÉGICA ante no-estacionariedad, distinta de la nuestra (mecanismo fijo +
-    evidencia nueva). Candidato a arquetipo propio: "el mecanismo cambia a mitad del episodio".
+    `[LEÍDO completo 2026-08-07][AGÉNTICO]`: temporada EPL simulada (500–1000 tool-calls,
+    5 modelos × 5 seeds); todos pierden EN PROMEDIO (mejor GPT-5.4 −7.9%; 3/25 seeds sueltos
+    positivos, 6/25 en ruina). **Corrección del claim previo**: NO hay switch inyectado — la
+    no-estacionariedad es la NATURAL del dominio (ascendidos sin historia; el mercado ganando
+    ventaja sobre modelos congelados); y la rigidez no es uniforme (7/25 nunca reentrena;
+    adaptativos −11.1% vs estáticos −70.0%). La firma fina es **knowledge-action gap**:
+    *"Models can write sophisticated code, diagnose their own failures, and articulate correct
+    strategies, yet persistently fail to execute those strategies"* — GLM-5 escribió TRES
+    documentos de autocrítica y no corrigió nada. Es la versión a escala de nuestros
+    especímenes count_regime ("outlier"/"ruido"). Candidato a arquetipo propio sigue vivo pero
+    reformulado: no "el mecanismo cambia a mitad" sino "el diagnóstico correcto que no gobierna
+    la acción". [Extracción](../research/2026-08-07-lecturas-programa-saltos.md).
   - **Separar creencia-no-movida de creencia-movida-acción-no**: el cuello frontier es la
     CONVERSIÓN evidencia→acción, no la adquisición ([RetailBench, arXiv 2606.15862](https://arxiv.org/abs/2606.15862)
     `[POR-LEER]`); y las confidencias declaradas contradicen las acciones — abandona respuestas

@@ -30,6 +30,10 @@
 | **Chen, Zhao & Cohan 2026 — "Measuring the Gap Between Human and LLM Research Ideas" (2607.01233, Yale/UChicago)** | 9 LLMs generan ideas desde el mismo contexto de literatura que un paper humano real; taxonomía de "research taste" de 2 ejes; 11.683 ideas humanas | PDF (Lucas lo puso en root; extraído con pymupdf) | **LEÍDO** (2026-07-10) → vicio de síntesis + gemelo de A1 |
 | **"Position: LLMs can't jump" (OpenReview klU4737opt, sub. ICML)** | Position paper: los LLMs no pueden ABDUCCIÓN (el "salto" E→axiomas); caso Einstein/Relatividad General; usa el ejemplo Vulcano | PDF (Lucas lo puso en root — OpenReview daba 403 anti-bot; extraído con pymupdf) | **LEÍDO** (2026-07-10) → valida el par Neptuno/Vulcano + los aha |
 | **Jagadish, Strittmatter et al. 2026 — AUTOCOG "Closing the Loop... Automated Cognitive Scientist" (2606.26448, Princeton/Griffiths+Daw)** | científico cognitivo AUTOMATIZADO en loop cerrado con HUMANOS reales (2 teorías compiten → diseño adversarial → Prolific → arbitraje → revisión); descubre teoría nueva confirmada pre-registro | arxiv pdf (extraído, pymupdf) | **LEÍDO** (2026-07-10, completo) → cómo-construir-mundos + como-medimos |
+| **KellyBench — Grady et al. (General Reasoning), "A Benchmark for Long-Horizon Sequential Decision Making" (2604.27865)** | Temporada EPL 2023/24 completa, 500–1000 tool-calls, reward denso cero-LLM (log-wealth); 5 modelos × 5 seeds | ar5iv html completo (lector paralelo) | **LEÍDO** (2026-08-07, con apéndices) → knowledge-action gap; corrige nuestro claim (no hay switch inyectado) |
+| **Benrimoh, Mikus & Rosenfeld — "The Einstein Test" (2501.06948)** | Position paper: test de re-descubrir CDIs desde corpus PRE-descubrimiento; protocolo 6 pasos con comité | PDF oficial (lector paralelo) | **LEÍDO** (2026-08-07) → convergencia total de diseño con WAGER; inviable sin verdad sintética |
+| **Shalyt, Regev, Soljačić & Kaminer — "Can AI Follow in Einstein's Footsteps?" (2607.27794)** | Perspective: trayectoria epistémica inversa de la IA-para-física; taxonomía A/B/C; "symmetry abduction" como paso faltante; taste = selección | ar5iv html completo (lector paralelo) | **LEÍDO** (2026-08-07) → endosa mundos-con-leyes-ocultas; vara de SELECCIÓN de saltos |
+| **Gentner — "Analogy" (Open Encyclopedia of Cognitive Science, MIT Press 2025; DOI 10.21428/e2759450.fed73a94)** | El resumen canónico de structure-mapping por su autora; criterios de evaluación; retrieval dominado por superficie (70/30); párrafo LLMs (Webb vs Lewis & Mitchell) | PDF oficial del lab (export MIT Press; lector paralelo) | **LEÍDO** (2026-08-07) → operacionaliza el salto 11 + gemelo; SME = criterios cero-LLM |
 | **Wahl, Schenk et al. 2026 — ModelSMC "A Probabilistic Framework for LLM-Based Model Discovery" (2602.18266, Macke/Tübingen, ICML)** | descubrimiento de simuladores mecanísticos como INFERENCIA (SMC: población de modelos-código pesados por likelihood marginal); 3 sistemas reales (SIR/riñón/Hodgkin-Huxley) | arxiv pdf (extraído, pymupdf) | **LEÍDO** (2026-07-10, completo) → receta "romper un simulador real" + no-identificabilidad |
 | **CLUSTER DEL FOCO (vicio 1; IDs verificados título↔claim contra arXiv el 2026-07-13)** — SycEval (Fanous et al., Stanford, AIES 2025) | 58.19% / regresiva 14.66%; persistencia 78.5% [77.2-79.8]; preventivo 61.75 vs en-contexto 56.52; el rebuttal CON CITA es el más regresivo (Z=6.59) — "parecer evidencia" persuade | arxiv.org/abs/2502.08177 | **LEÍDO** (2026-07-13) |
 | When Truth Is Overridden | ⚠ leída: MMLU multiple-choice de UN turno con la opinión PREPENDIDA ("I believe the answer is B") — es FORMACIÓN, no revisión; modelos ABIERTOS 7-8B (Llama3.1-8B 63.7%; rango 46.6–95.1; Falcon ~91%); la experticia declarada ("soy profesor") NO modula (~4.4pp); 3ª persona −13.6pp vs 1ª | arxiv.org/abs/2508.02087 | **LEÍDO** (2026-07-14) |
@@ -674,3 +678,18 @@ trabajos más cercanos se leyeron A TEXTO COMPLETO. Una línea por fuente; el de
 | GeneBench-Pro (OpenAI) ([PDF](https://cdn.openai.com/pdf/21938268-21af-442f-af93-3b2249afb241/genebench-pro.pdf)) | grading por scripts con tolerancias POR CAMPO (eval_config leído); todo-o-nada declarado como limitación — lo que F resuelve | ANCLA posicionam. |
 | Context Rot (Chroma) ([reporte](https://www.trychroma.com/research/context-rot)) | 18 modelos, 194k llamadas: el relleno degrada según posición/coherencia/similitud → igualar TODO eso entre brazos o el efecto es contexto, no creencias | CAMBIA DISEÑO |
 | PABU ([2602.09138](https://arxiv.org/abs/2602.09138)) | homónimo engañoso ("belief update" = qué retener del historial por eficiencia) | descartado |
+
+## Lecturas del programa de saltos — LEÍDAS COMPLETAS 2026-08-07 (4 lectores en paralelo)
+
+KellyBench (2604.27865) · The Einstein Test (2501.06948) · Einstein's Footsteps (2607.27794) ·
+Gentner "Analogy" (OECS/MIT Press 2025). **Extracción completa con citas verbatim, números,
+verificación de claims previos y límites, en un solo doc:**
+[`docs/research/2026-08-07-lecturas-programa-saltos.md`](research/2026-08-07-lecturas-programa-saltos.md).
+Correcciones que estas lecturas destaparon (ADR 0115 manda registrarlas acá):
+- **KellyBench**: nuestro claim de segunda mano decía "rigidez ante no-estacionariedad" a secas;
+  el paper NO inyecta un switch a mitad de temporada (la no-estacionariedad es la natural del
+  dominio) y la rigidez no es uniforme (adaptativos −11.1% vs estáticos −70.0%); la firma fina
+  es **knowledge-action gap** (diagnostican por escrito y no corrigen). Corregido en
+  vicio-1 §1.A y en el libro de los saltos.
+- **Footsteps**: dice "MANY great leaps" (no todos) y "not JUST producing" (el cuello es la
+  selección/taste, no solo la generación). Ajustado en el libro.

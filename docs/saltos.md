@@ -101,9 +101,12 @@ reales se las pierden.
 `[LEÍDO completo]` (el paper que linkeó Lucas en julio): los LLMs evitan la operación
 "desacoplar/partir en dos" al proponer ideas (2.3% humanos vs 0.2% modelos — ~10×
 menos), y este salto es esa operación aplicada a un rango; (2) [KellyBench, arXiv 2604.27865](https://arxiv.org/abs/2604.27865)
-(temporada simulada de apuestas): teníamos anotado de fuente secundaria que los frontier
-fallan en adaptarse cuando el mundo cambia a mitad de partida — `[EN LECTURA COMPLETA
-2026-08-07]` para confirmar o corregir antes de citarlo en serio.
+`[LEÍDO completo 2026-08-07]` (temporada EPL simulada, 500–1000 tool-calls): todos pierden en
+promedio (mejor −7.9%); OJO, sin switch inyectado — la no-estacionariedad es la natural del
+dominio; 7/25 nunca reentrena, adaptativos −11.1% vs estáticos −70.0%, y la firma fina es el
+**knowledge-action gap**: diagnostican su falla POR ESCRITO y no corrigen (uno escribió tres
+documentos de autocrítica y no cambió nada) — la versión a escala de nuestro espécimen
+"outlier". [Extracción](research/2026-08-07-lecturas-programa-saltos.md).
 
 **El espejo.** Inventar quiebres en procesos suaves (ver escalones en el ruido).
 
@@ -157,9 +160,18 @@ constitutiva a lo que parecía coincidencia banal.
 **El espejo.** Promover a "ley" cualquier regularidad de la muestra (sobreajustar la
 casualidad).
 
-**En WAGER**: sin mundo aún. (El paper can't-jump usa exactamente este salto como su caso duro:
-"Einstein's Footsteps" (fichado) argumenta que los grandes saltos parten de PRINCIPIOS de
-simetría y abducen la teoría.)
+**En LLMs**: [Einstein's Footsteps](https://arxiv.org/abs/2607.27794) `[LEÍDO completo
+2026-08-07]` le pone NOMBRE al paso faltante: **"symmetry abduction"** — los métodos actuales
+usan la simetría como filtro para ajustar datos; falta proponerla como principio GENERADOR
+("the crucial step"). De 4 casos reales (Laughlin, Bethe, Ginzburg-Landau, Parisi) abstrae la
+estructura: *"imponer una hipótesis estructurada extra (ansatz, simetría, gauge) — forzando
+simplicidad ANTES de deducir consecuencias falsables"*. Y agrega la media naranja de la vara:
+*"Novelty is cheap"* — lo difícil no es generar la idea sino estimar su rendimiento
+(payoff-per-effort, el "taste") → nuestros mundos deberían cobrar también la mala SELECCIÓN de
+saltos. Bonus: endosa textualmente nuestra metodología ("We can give AI systems artificial
+worlds with hidden laws and test whether they can invent simple theories inside those worlds").
+
+**En WAGER**: sin mundo aún.
 
 ## 7. El proceso del observador — "el patrón no está en el mundo: está en cómo mirás"
 
@@ -232,6 +244,18 @@ structure-mapping de Gentner (mapear RELACIONES, no parecidos superficiales).
 analogía de los LLMs colapsa justo cuando el problema deja de parecerse superficialmente a lo
 conocido.
 
+**La teoría, ahora fichada** ([Gentner OECS 2025](https://groups.psych.northwestern.edu/gentner/papers/Gentner-Analogy-OECS2025.pdf)
+`[LEÍDO completo 2026-08-07]`): la transferencia va en tres etapas (recuperar el análogo →
+mapear → evaluar), y el dato duro para nuestro gemelo es que **la recuperación espontánea está
+dominada por la SUPERFICIE** (70% recupera el análogo con parecido superficial vs 30% sin él —
+Trench & Minervino 2015). Criterios computables de transferencia válida: correspondencias 1-a-1
+por ROL, que lo compartido sea un SISTEMA causal (no rasgos sueltos), y que lo transplantado no
+contradiga lo ya sabido del destino — el check que la analogía falsa saltea. Regla de diseño
+que la teoría obliga: en la vida real superficie y estructura correlacionan, así que el mundo
+del gemelo debe DESCORRELACIONARLAS a propósito. Y existe implementación sin LLM de estos
+criterios (el Structure-Mapping Engine) — compatible con nuestro reward.
+[Extracción](research/2026-08-07-lecturas-programa-saltos.md).
+
 **En WAGER**: nuestra línea overgen (sobre-generalización y su gemelo) ya es este par,
 construida y certificada en la era anterior.
 
@@ -250,10 +274,13 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
 - **"Position: LLMs can't jump"** (OpenReview klU4737opt) `[LEÍDO 2026-07-10]` — el paper del
   programa: abducción como el salto E→axiomas; Vulcano vs relatividad; mundos interactivos
   como laboratorio.
-- **The Einstein Test** ([arXiv 2501.06948](https://arxiv.org/abs/2501.06948)) `[EN LECTURA]` —
-  re-descubrir breakthroughs desde el corpus PRE-descubrimiento.
+- **The Einstein Test** ([arXiv 2501.06948](https://arxiv.org/abs/2501.06948)) `[LEÍDO 2026-08-07]` —
+  position puro: re-descubrir breakthroughs desde el corpus PRE-descubrimiento, con brief
+  ciego de historiadores y derecho a declarar "no hay respuesta"; inviable sin re-entrenar por
+  descubrimiento → el hueco que llenamos con verdad sintética.
 - **Can AI Follow in Einstein's Footsteps?** ([arXiv 2607.27794](https://arxiv.org/abs/2607.27794))
-  `[EN LECTURA]` — los grandes saltos parten de principios de simetría; el cuello es el "taste".
+  `[LEÍDO 2026-08-07]` — "symmetry abduction" como el paso faltante; el cuello es la SELECCIÓN
+  ("novelty is cheap"); endosa los mundos con leyes ocultas.
 
 ### Creatividad e insight (ciencia cognitiva)
 - **Boden, *The Creative Mind*** (2ª ed. 2004) — la distinción combinacional / exploratoria /
@@ -278,7 +305,7 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
 ### Analogía (el salto +1)
 - **Gentner**, "Structure-Mapping: A Theoretical Framework for Analogy" (*Cognitive Science*
   1983) y su resumen autoritativo 2025 en la *Open Encyclopedia of Cognitive Science*
-  `[EN LECTURA]` — analogía = mapear relaciones, no parecidos.
+  `[LEÍDO 2026-08-07]` — analogía = mapear relaciones, no parecidos; criterios computables sin LLM (SME).
 - **Hofstadter & Sander, *Surfaces and Essences*** (2013) — la analogía como motor de todo
   pensamiento, con cientos de casos.
 - **Lewis & Mitchell** (tareas contrafactuales) `[fichado]` — dónde colapsa la analogía LLM.
@@ -301,8 +328,8 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
   justo donde hay estructura latente.
 - NewtonBench / LLM-SRBench `[LEÍDOS 2026-08-06]` — el estado del arte en descubrimiento de
   ecuaciones; qué miden y qué no ([extracción](research/2026-08-06-lectura-newtonbench-llm-srbench.md)).
-- KellyBench ([2604.27865](https://arxiv.org/abs/2604.27865)) `[EN LECTURA]` — no-estacionariedad
-  agéntica.
+- KellyBench ([2604.27865](https://arxiv.org/abs/2604.27865)) `[LEÍDO 2026-08-07]` —
+  no-estacionariedad natural + knowledge-action gap (diagnostican y no corrigen).
 
 ## El estado del tablero, en una mirada
 
