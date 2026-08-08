@@ -86,11 +86,18 @@ gusto.
    necesaria ("a functional language… much more expressive"). Nuestra taxonomía = la lista de
    ediciones que ese lenguaje necesita: ni huérfana ni ya-hecha. DreamCoder/LILO (en cola) son
    la versión moderna. [Detalle](research/2026-08-07-lecturas-programa-saltos.md).
-2. **Existen taxonomías con análisis de casos, y una es casi hermana:** **Darden, *Theory
-   Change in Science* (1991)** `[POR-LEER — PRIORIDAD 1 de la firma]` extrajo de 26 años de
-   genética real una lista explícita de ESTRATEGIAS de cambio de teoría ("agregar una
-   variable", "dividir un concepto", "alterar el proceso de observación"…) que mapean casi 1:1
-   con nuestros operadores 1/2/7. También: Thagard (*Conceptual Revolutions*, 9 grados de
+2. **Existen taxonomías con análisis de casos, y una es casi hermana:** **Darden** — sus 5
+   artículos accesibles `[LEÍDOS completos 2026-08-08]` (el libro 1991 sigue POR-LEER, espera
+   PDF): estrategias de cambio de teoría desde casos reales. **El careo dio**: coincidencia
+   fuerte en ops 1/2/7/8/11 — su caso ancla (postular genes letales para la anomalía 2:1) ES
+   literalmente nuestro operador 2; su schema-instantiation es nuestro 11 con mecánica más
+   fina. Sin correlato en ella: nuestros 3/4/6/9/10 (saltos de estructura matemática — su
+   catálogo es de mecanismos biológicos por etapas; el nuestro es más ancho). **Candidatas que
+   ella tiene y nosotros no**: BORRAR estructura (¡todos nuestros operadores agregan!),
+   systematic scan (cobertura anti-fijación), ensamblado modular, y la localización guiada por
+   la FIRMA de la anomalía (2:1 pide una edición distinta que 1:0:1). Más su tipología
+   monster/model/special-case para el lado de los vicios.
+   [Extracción](research/2026-08-07-lecturas-programa-saltos.md). También: Thagard (*Conceptual Revolutions*, 9 grados de
    cambio conceptual con casos) `[POR-LEER]`; Boden (3 tipos; la transformacional = cambiar el
    espacio) `[POR-LEER]`; y en era-LLM la taxonomía de operaciones de Chen `[LEÍDO]` —
    **validada con anotadores independientes**, el estándar que copiamos como receta.

@@ -578,3 +578,57 @@ imposible (para humanos también) y Dunbar agregando el gate intermedio (la señ
 CREÍDA — réplica comprable). La doctrina de diseño consolidada: ingeniar el impasse + medir la
 cadena (Nersessian) + réplica comprable (Dunbar) + vara de compresión de dos partes
 (Schmidhuber) + transfer diferencial como estándar (Knoblich/Ohlsson).
+
+---
+
+## 12. Darden — 5 textos a texto completo (1987 · 1994 · 1998 · MDC 2000 · 2002)
+
+**Qué es.** La fuente más cercana a nuestra lista buscada: estrategias de cambio de teoría
+extraídas de casos históricos REALES (genética 1900-1930 + 5 meses de observación en el
+laboratorio de Lederberg + biología molecular). Su marco de tres categorías: estrategias para
+**producir ideas** (analogía, abstracción→instanciación, tipos de teoría, relaciones entre
+campos) · para **evaluar** (test de predicciones; la escalera how-possibly→plausibly→actually)
+· para **resolver anomalías** (el corazón). Y un principio arquitectónico que nos habla directo:
+*"Given a good revision procedure, one's discovery methods can be weaker."*
+
+**Su pipeline de resolución de anomalías (6 pasos)** con las estrategias finas: confirmar la
+anomalía ANTES de rediseñar (¿es problema de datos?) → **exprimir la firma de la anomalía para
+elegir DÓNDE editar** (predicho 1:2:1, observado 2:1 → los AA faltantes DEBEN aparecer en el
+rediseño; una anomalía 1:0:1 pediría OTRA edición) → localización modular exhaustiva (cada paso
+puede fallar antes/en/después) → rediseño (tweak paramétrico vs fix estructural con biblioteca
+de procesos genéricos) → test → repertorio explicativo indexado por tipo de anomalía para
+reuso. Más: el **systematic scan** de Lederberg (generar el espacio de alternativas con ejes
+ortogonales ANTES de comprometerse — el antídoto explícito contra fijarse temprano) y el
+protocolo de **12 transformaciones** (negá cada supuesto / sustituí variable / insertá cláusula
+— 4 oraciones × 3 = 12 candidatas casi mecánicas, visto EN VIVO en el lab).
+
+**La tipología de anomalías (libro 2006, Intro leída):** **monster** (se excluye del dominio
+sin cambiar la teoría) · **model** (exige exemplar nuevo de alcance amplio) · **special-case**
+(exemplar para una subclase — reverse transcriptase). Con el veredicto histórico: linkage y
+reverse transcriptase NO podían ser monsters. → El "monster-barring ilegítimo" es la firma
+precisa de nuestro vicio de no-revisión, con casos reales etiquetables.
+
+**LA ALINEACIÓN (el careo "¿inventamos o curamos?"):**
+- Coincidencias fuertes: postular etapa/entidad no representada = **op 1**; ¡su caso ancla
+  (genes letales para la anomalía 2:1) ES nuestro **op 2** — postular una subclase oculta con
+  dinámica distinta!; cláusulas insertadas sobre la detección ("la reparación borra las
+  mutaciones ANTES de medirlas") = **op 7**; reverse transcriptase abriendo mecanismos con lazo
+  = **op 8**; schema instantiation / tipos de teoría = **op 11** (su operador central, con
+  mecánica más fina que la nuestra: niveles de abstracción, criterios de elección de tipo).
+- Sin correlato en ella: nuestros **3, 4, 6, 9, 10** (los saltos de estructura matemática) —
+  su catálogo está sesgado a mecanismos biológicos por etapas; nuestra cobertura es más ancha.
+- **Candidatas de ella que NO tenemos**: (a) **BORRAR estructura** (nuestros 11 operadores
+  AGREGAN; "el modelo tiene una etapa de más" no está — candidata real a la matriz);
+  (b) systematic scan (estrategia de cobertura — métrica conductual anti-fijación, pega directo
+  con nuestro hallazgo de no-generación de alternativas); (c) modular subassembly (componer de
+  una biblioteca de módulos conocidos — composición, no analogía); (d) forward/backward
+  chaining; (e) la localización guiada por la firma de la anomalía (habilidad puntuable por
+  consecuencias); (f) el repertorio explicativo (memoria entre episodios).
+
+**Rival honesta (del propio lector):** el buen encaje puede deberse en parte a que ambos marcos
+beben de la misma tradición (la IA de los 80: abstracción, diagnóstico, rediseño), no a
+convergencia de fenómenos.
+
+**Estado: LEÍDOS 5 completos** (1987 AI Magazine · Darden & Cook 1994 · 1998 Digital Phoenix ·
+Machamer/Darden/Craver 2000 · 2002 PSA) + Intro del libro 2006. El capítulo 1992 y el libro
+1991 (tablas canónicas 9.1/9.3) siguen POR-LEER — esperan PDF.
