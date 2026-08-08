@@ -408,9 +408,13 @@ trabajo es descubrir y que documentó métodos Y fallas con casos reales:
 - **Medicina**: la literatura de **error diagnóstico** (Graber; Croskerry) `[EN LECTURA]` —
   falla #1 documentada: cierre prematuro (nuestro vicio 2); anclaje; search satisficing. Tasas
   base HUMANAS de nuestros vicios, con casos.
-- **Derecho**: **visión de túnel** en condenas erróneas (Findley & Scott) `[EN LECTURA]` — el
-  compromiso temprano con un sospechoso re-lee toda la evidencia posterior (nuestro vicio 1
-  con expedientes).
+- **Derecho**: **visión de túnel** en condenas erróneas (Findley & Scott 2006) `[LEÍDO
+  completo 2026-08-08, 107 pp.]` — la forma canónica de nuestro hallazgo estrella en
+  profesionales: la contra-evidencia se examina INTENSAMENTE y se "redefine en una
+  categoría menos dañina" (= "outlier"); la firma del epiciclo (la corrida de 57 minutos
+  con mellizos); el autor real "ya descartado" a un paso; y contramedidas con evidencia
+  (la conciencia NO funciona; los ciegos SÍ — valida nuestro anti-leak; la reforma PEACE
+  desarmó el túnel sin perder rendimiento).
 - **Insight de campo**: Klein, *Seeing What Others Don't* `[POR-LEER — libro]` — ~120 casos
   reales de insight (bomberos, militares, detectives) con SU lista de disparadores
   (conexiones, coincidencias, contradicciones, desesperación creativa).

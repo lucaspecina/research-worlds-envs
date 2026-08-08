@@ -693,3 +693,70 @@ ACH sin validación de outcome; casi nada sobre REPLICAR como acto (su mundo rec
 no compra experimentos — nuestra extensión es genuina).
 
 **Estado: LEÍDO completo** (PDF oficial de cia.gov, 14 capítulos + front matter).
+
+---
+
+## 14. Findley & Scott (2006), "The Multiple Dimensions of Tunnel Vision in Criminal Cases" — LEÍDO COMPLETO (107 pp.)
+
+**Qué es.** LA síntesis de la visión de túnel en investigación criminal, anclada en condenas
+erróneas probadas por ADN (Marvin Anderson, Steven Avery, Central Park Jogger) + informes de
+comisiones. Tesis: tres dimensiones — sesgos cognitivos innatos + presiones institucionales
+que los amplifican + reglas que la PRESCRIBEN — y se intensifica etapa a etapa (cada fase
+hereda y ratifica la conclusión de la anterior).
+
+**Nuestro hallazgo estrella, con su forma canónica documentada:** el agente que ve la anomalía,
+le compra datos, y la descarta como "outlier" ES el patrón profesional descripto — incluida la
+fase de **escrutinio activo al servicio del descarte** (Gilovich: la información contradictoria
+se examina intensamente y *"is either considered too flawed to be relevant, or is redefined
+into a less damaging category"* — "outlier" ES la categoría menos dañina). Más la asimetría de
+estándares: para lo deseado *"Can I believe this?"*, para lo indeseado *"Must I believe
+this?"*. Y la mejor descripción jamás escrita de la "primera historia" (informe ABA, ¡1966!):
+*"what starts as a preliminary diagnosis designed to direct the inquiry tends, quickly and
+imperceptibly, to become a fixed conclusion"*.
+
+**Los casos son especímenes de manual:** Avery tenía 16 testigos de coartada y un ticket de
+caja — la fiscalía respondió con una reconstrucción de manejo a 10 mph sobre el límite con
+mellizos de seis días a bordo (LA FIRMA DEL EPICICLO: ante contra-evidencia, hipótesis
+auxiliares crecientemente implausibles en vez de actualizar). El autor real estaba EN el radar
+en ambos casos ("Allen has been ruled out") — la verdad accesible a costo bajo, pero solo
+REABRIENDO algo ya cerrado: el costo no es de cómputo, es de REVERSIÓN.
+
+**Estructuras que lo reproducen (oro para mundos fieles):** evidencia ambigua bidireccional
+(la lectura depende de la hipótesis) · el candidato verdadero visible-pero-descartado · la
+escalera de compromiso con ratificación (re-declarar la historia en cada checkpoint; medir si
+la confianza sube sin evidencia nueva — reiteration effect) · la firma del epiciclo
+(complejidad de la historia vs evidencia acomodada, medible) · los tres diales (solo-cognitivo /
++presión institucional [deadline, métrica que paga el cierre y no la verdad] / +prescripción) ·
+mundos donde el error PARECE cobrarse bien a corto plazo (sin feedback correctivo — por qué el
+vicio persiste en profesionales).
+
+**Contramedidas CON jerarquía de evidencia:** la conciencia del sesgo NO funciona (resiste
+instrucción — converge con Heuer y Ohlsson, y con nuestro nivel4b) · "considerá lo opuesto"
+ayuda algo pero hay que institucionalizarlo · **fresh look**: revisor SIN propiedad de la
+teoría, por escrito, ANTES del compromiso formal (el diseño del segundo-agente-auditor, con la
+variable clave: que no haya generado la hipótesis — la inversión personal amplifica) ·
+**ciegos**: el estudio de Dror (4 de 5 expertos en huellas REVIRTIERON su propio match previo
+al recibir contexto sesgador) — valida empíricamente nuestra maquinaria anti-leak ·
+accountability (saberse grabado cambia la conducta del interrogador) · y la única reforma con
+outcome a escala: el modelo británico PEACE (entrevistar para AVERIGUAR, no para confirmar) —
+las confesiones NO bajaron (55-62% post-reforma): desarmar el túnel no costó rendimiento.
+
+**Dos regalos metodológicos:** (1) marcador operacional del compromiso: el switch de
+"interview" a "interrogation" — el instante en que las compras de datos del agente dejan de
+poder REFUTAR su historia (detectable en trazas); (2) ADVERTENCIA para nuestras autopsias: el
+hindsight infecta el diagnóstico del túnel — juzgamos los descartes del agente CONOCIENDO la
+verdad del mundo → pre-registrar qué cuenta como "anomalía racionalmente descartable" ANTES de
+mirar la corrida.
+
+**Rival que la lectura deja viva:** que el agente descarte el outlier por convención
+estadística mal aplicada, no por compromiso con una historia → disociación experimental obvia:
+variar si el agente GENERÓ o HEREDÓ la primera historia (la teoría predice efecto mayor cuando
+es propia).
+
+**Límites.** Síntesis de law review (no estudio empírico propio); casos n=3 en profundidad +
+comisiones; contramedidas mayormente propuestas (solo PEACE/Dror/accountability con evidencia);
+sesgo de selección del género (solo exoneraciones probadas); generalización a ciencia por
+analogía.
+
+**Estado: LEÍDO completo** (107/107 pp., repositorio oficial UW Law; doctrina jurídica hojeada
+al nivel pedido).
