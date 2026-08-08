@@ -21,6 +21,21 @@ defectos; el proceso promedia 6"). Y **abducción**: pasa algo sorprendente e **
 que lo explicaría** ("¿y si en realidad son dos máquinas mezcladas?"). La abducción es la única
 de las tres que CREA — las otras dos ordenan lo que ya está.
 
+**Precisión que importa (pregunta de Lucas): salto ≠ toda abducción — salto = abducción
+CREATIVA.** La filosofía tiene EXACTAMENTE nuestra distinción, con nombres (Magnani,
+*Abduction, Reason and Science* 2001 `[POR-LEER]`): **abducción selectiva** = elegir la
+hipótesis de un repertorio que ya tenés (el médico que diagnostica elige entre enfermedades
+conocidas) vs **abducción creativa** = la explicación exige una hipótesis que el repertorio NO
+contiene — hay que agrandarlo. Nuestro hallazgo empírico dicho en ese idioma: los LLMs hacen
+abducción SELECTIVA bien (eligen, ajustan y comparan dentro del menú) y la CREATIVA no arranca
+(el menú no crece — 0/9 en count_mix). Y sí hay teoría de TIPOS: **Schurz, "Patterns of
+Abduction" (Synthese 2008)** `[EN LECTURA 2026-08-07]` — taxonomía sistemática (abducción de
+hechos / de leyes / de modelos teóricos / **existencial** [postular entidades: Neptuno] / de
+**causa común** [unificación] / **analógica** [Darwin]) que mapea directo a operadores
+nuestros — la tabla de alineación se arma con la lectura. Alrededor: Thagard (4 tipos
+computacionales, 1988), Aliseda (*Abductive Reasoning* 2006 — abducción COMO revisión de
+creencias: nuestras dos líneas en un marco), Gabbay & Woods, Hintikka `[POR-LEER todos]`.
+
 **El paper "Position: LLMs can't jump"** (OpenReview klU4737opt; LEÍDO completo 2026-07-10)
 sostiene que los LLMs dominan la inducción, mejoran en deducción, y son *"structurally
 incapable of the abductive jump"* — el salto de la experiencia a **axiomas nuevos**. Su caso de
@@ -40,6 +55,35 @@ variables existen, cómo se conectan, bajo qué restricciones, cómo se conviert
 tipo de salto de abajo es UNA forma concreta de cambiar la forma. Y la distinción que manda
 (Lucas, 2026-08-07): medimos **GENERAR** el candidato cuando nada lo dicta (creatividad), no
 aceptarlo cuando la evidencia lo grita (eso es revisión de creencias — se anota aparte).
+
+## ¿La lista es inventada? — la formalidad y sus antecedentes (pregunta de Lucas, 2026-08-07)
+
+**Confesión primero: la lista EXACTA de 11 es síntesis nuestra** — ningún paper publicó "estos
+son los 11 saltos". Lo que NO es intuición suelta:
+
+1. **El marco tiene linaje formal.** "Una teoría es un programa; aprender teorías = buscar
+   EDICIONES de programa" es una línea establecida de la ciencia cognitiva computacional:
+   Ullman, Goodman & Tenenbaum, *"Theory learning as stochastic search in a language of
+   thought"* (2012) `[POR-LEER]`; y Kemp & Tenenbaum, *"The discovery of structural form"*
+   (PNAS 2008) `[POR-LEER]` publicaron un ESPACIO FORMAL de formas estructurales (árboles,
+   anillos, cadenas, grillas) descubribles desde datos. Nuestra matriz componente×edición es
+   esa idea aplicada a programas generativos de mundos. DreamCoder/LILO (en cola) son la
+   versión moderna ("inventar conceptos = agregar primitivas al lenguaje").
+2. **Existen taxonomías con análisis de casos, y una es casi hermana:** **Darden, *Theory
+   Change in Science* (1991)** `[POR-LEER — PRIORIDAD 1 de la firma]` extrajo de 26 años de
+   genética real una lista explícita de ESTRATEGIAS de cambio de teoría ("agregar una
+   variable", "dividir un concepto", "alterar el proceso de observación"…) que mapean casi 1:1
+   con nuestros operadores 1/2/7. También: Thagard (*Conceptual Revolutions*, 9 grados de
+   cambio conceptual con casos) `[POR-LEER]`; Boden (3 tipos; la transformacional = cambiar el
+   espacio) `[POR-LEER]`; y en era-LLM la taxonomía de operaciones de Chen `[LEÍDO]` —
+   **validada con anotadores independientes**, el estándar que copiamos como receta.
+3. **Qué le falta a la nuestra para estar FIRMADA** (el trabajo declarado en fundamentos §8):
+   (a) leer Darden/Thagard/Boden/Ohlsson a texto completo y hacer la **tabla de alineación**
+   operador-por-operador (cobertura, sobras, faltantes contra lo que ellos hallaron en casos
+   reales); (b) el expediente de **≥2 casos históricos con fuente por operador**; (c) en etapa
+   paper, validación con anotadores independientes (κ) a la Chen. Hasta entonces el estado
+   honesto es: **bien fundada, no firmada** — y la incompletitud es detectable (un salto
+   histórico que no sea edición de ningún componente rompe el marco, y eso sería un hallazgo).
 
 ---
 
