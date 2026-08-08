@@ -135,6 +135,16 @@ Lectura honesta de la tabla: **① y ③ están llenos para los 11** (pendiente:
 de ① — eso es "firmar"); ② cubre 4; ④ es la vara más exigente (2 sólidos) y su vacío es
 NUESTRA contribución, no nuestra debilidad; ⑤ crece con cada mundo que medimos.
 
+**El reencuadre que resume todo (2026-08-08):** la "lista curada de saltos" que buscamos
+existe implícita desde hace décadas — es **el ÍNDICE de un manual de modelado estadístico**
+(mezclas · puntos de cambio · variables latentes · selección/censura · realimentación ·
+memoria · transformaciones · restricciones/conservación). Cada capítulo existe porque la
+ciencia se topó tantas veces con ESA estructura que hubo que darle método propio. Nadie leyó
+nunca ese índice como "el catálogo de los saltos posibles". **Nuestra taxonomía es esa
+relectura**: el inventario implícito del manual, vuelto explícito, ejecutable (cada operador
+compila a un mundo con certificados) y validable. Lo más cercano publicado en nuestro nivel:
+las estrategias de Darden (en lectura de sus artículos accesibles; el libro espera PDF).
+
 3. **Qué le falta a la nuestra para estar FIRMADA** (el trabajo declarado en fundamentos §8):
    (a) leer Darden/Thagard/Boden/Ohlsson a texto completo y hacer la **tabla de alineación**
    operador-por-operador (cobertura, sobras, faltantes contra lo que ellos hallaron en casos
