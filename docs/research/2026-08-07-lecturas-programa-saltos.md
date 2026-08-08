@@ -306,3 +306,58 @@ preliminares (el 1997 consolida); heurísticas extraídas, no causalidad probada
 
 **Estado: LEÍDO completo** (manuscrito 1995 del autor vía Wayback del Dunbar Lab + 1997 completo;
 citas del manuscrito, pueden diferir en detalle menor de la versión impresa MIT Press).
+
+---
+
+## 7. Klahr & Dunbar (1988), "Dual Space Search During Scientific Reasoning" — Cognitive Science 12(1)
+
+**Qué es.** El clásico fundacional: descubrir = buscar COORDINADAMENTE en dos espacios — el de
+hipótesis y el de experimentos (marco SDDS). Paradigma BigTrak: 20+10 sujetos descubren qué
+hace la tecla RPT de un robot programable (la regla verdadera es contraintuitiva: N no cuenta
+repeticiones, SELECCIONA un segmento — nadie arrancó con ella). Leído completo (48/48 pp., PDF
+oficial de CMU).
+
+**El modelo, en lo que nos toca:** el espacio de hipótesis está organizado en FRAMES (marcos);
+cambiar de hipótesis dentro del frame es barato (tocar un slot); **cambiar DE frame es el
+insight** ("Insight… is the instantiation of a new frame — this is what is meant by a
+restructuring of the representation"). GENERATE FRAME tiene exactamente dos vías: **EVOKE**
+(recuperarlo de la memoria/prior) o **INDUCE** (leerlo del patrón de resultados). Y la
+generación de experimentos vive en OTRO módulo (E-SPACE MOVE) — **la disociación que medimos
+(compran bien el experimento discriminante, no les nace el candidato) es estructural en el
+modelo de 1988.**
+
+**Los números humanos:** 19/20 descubren la regla (el mundo era generoso: existe una región del
+espacio de experimentos cuyo resultado EXHIBE la regla a la vista). Tras desconfirmación,
+retienen la hipótesis desconfirmada el **56%** de las veces. Dos perfiles: **Theorists** (7/20:
+cambian de frame consultando la memoria bajo una restricción abstraída de la evidencia — "la
+unidad de repetición es variable ⇒ ningún counter sirve") y **Experimenters** (13/20: agotado
+el frame, entran en modo SIN hipótesis ~6 experimentos, caen en la región discriminante, y el
+patrón les dicta el frame). La diferencia es CONOCIMIENTO PREVIO, no un rasgo.
+
+**Los tres regalos para WAGER:**
+1. **"La evidencia comprada bajo el frame equivocado puede INHIBIR el cambio de frame"**
+   (verbatim: "the information gathered from the exploration of the experiment space may have
+   inhibited subjects from switching") — el frame activo fija QUÉ atributos se miran; los datos
+   se codifican en el vocabulario del frame vigente. Nuestra descripción exacta, publicada en
+   1988.
+2. **La vía de escape que nuestros agentes NUNCA usan**: el modo ateórico ("it was permissible
+   to replace something with nothing" — quedarse SIN hipótesis y explorar). Nuestros agentes
+   siempre tienen un candidato → jamás entran al modo que en SDDS es la salida cuando la
+   memoria no da el frame. Hipótesis mecanística nueva para el fenómeno.
+3. **La conexión causal de nuestras dos líneas**: la retención de hipótesis desconfirmadas se
+   explica por la INCAPACIDAD DE GENERAR LA ALTERNATIVA (modo reemplazo de Einhorn & Hogarth:
+   no se suelta una explicación sin tener otra). El no-nace-el-candidato (saltos) es causa
+   documentada del no-revisa (creencias). No son dos fenómenos.
+
+**Intervenciones que funcionaron (baratas, pre-registrables para nuestros mundos):** enumerar
+hipótesis EN FRÍO antes de experimentar (Study 2: tiempo −68%, revisión tras desconfirmación
+44%→85%, y aparece el diseño discriminante entre pares — 5/10 humanos produjeron la regla
+correcta con CERO datos); el prompt de redescripción ("¿qué tienen en común todas las
+desconfirmaciones?").
+
+**Matiz anti-sobre-lectura:** en su mundo, el resultado discriminante llevaba la regla escrita
+encima (ves los últimos N pasos repetirse) — la disociación dura (discriminante comprado +
+inducción fallida) casi no ocurre en sus datos porque el puente era gratis. Nuestros mundos
+miden EXACTAMENTE el hueco que ellos predicen y no cuantificaron.
+
+**Estado: LEÍDO completo** (48/48 pp., tablas y figuras incluidas).

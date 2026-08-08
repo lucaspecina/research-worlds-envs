@@ -332,7 +332,12 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
 - **Ohlsson**, teoría del cambio representacional (*Deep Learning: How the Mind Overrides
   Experience*, 2011) — el insight como re-representación.
 - **Klahr & Dunbar**, "Dual Space Search During Scientific Reasoning" (*Cognitive Science*
-  1988) — descubrir = buscar en dos espacios (hipótesis × experimentos); nuestro juego es eso.
+  1988) `[LEÍDO completo 2026-08-07]` — descubrir = buscar en dos espacios (hipótesis ×
+  experimentos); el insight = instanciar un FRAME nuevo; y tres regalos: la evidencia
+  comprada bajo el frame equivocado INHIBE el salto (nuestros agentes, dicho en 1988); la
+  vía de escape es el modo SIN hipótesis (que los agentes nunca usan — siempre tienen un
+  candidato); y no-generar-la-alternativa es causa documentada de no-revisar (nuestras dos
+  líneas conectadas). [Extracción](research/2026-08-07-lecturas-programa-saltos.md).
 - **Dunbar**, "How scientists really reason" (1995, los laboratorios in vivo)
   `[LEÍDO completo 2026-08-07, + el paper 1997]` — un año DENTRO de 4 labs de élite: las
   analogías que descubren son CERCANAS (2/99 lejanas, cero descubrimientos); el individuo
