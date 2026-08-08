@@ -91,6 +91,8 @@ tiempo, pedir el dato que discrimina) — siempre medidas de a pares con su vici
 
 ## Dónde vive cada cosa
 
+Marco teórico: [WIKI-INDAGACION](../WIKI-INDAGACION.md) · saltos de bolsillo:
+[WIKI-SALTOS](../WIKI-SALTOS.md) · fallas de bolsillo: [WIKI-FALLAS](../WIKI-FALLAS.md) ·
 Estado y próximo paso: [roadmap](roadmap.md) · hallazgos: [índice](research/README.md) ·
 evidencia de vicios: [docs/vicios/](vicios/README.md) · cómo se mide: [como-medimos](como-medimos.md) ·
 mundos por vicio: [derivación](mundos-por-vicio.md) · corridas navegables: `explorer.command`.

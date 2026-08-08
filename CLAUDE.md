@@ -19,7 +19,9 @@ Lucas; no se descarta ni se rebautiza para que encaje.
 
 Mapa de docs (abrí el que la tarea pida, no todos):
 
-- **`WIKI.md`** — entender de cero, sin jerga: qué es, cómo funciona, dónde estamos.
+- **`WIKI.md`** — entender de cero, sin jerga: la máquina WAGER (qué es, cómo funciona, dónde estamos). Es la puerta de
+  la FAMILIA DE WIKIS: **`WIKI-INDAGACION.md`** (marco teórico: indagación, ciclo, perillas) ·
+  **`WIKI-SALTOS.md`** (los 11 saltos y su estado) · **`WIKI-FALLAS.md`** (dónde se rompe el ciclo).
 - **`docs/glosario.md`** — chuleta de una página: todos los nombres de la casa en llano (términos, métricas, operadores, vicios).
 - **`docs/saltos.md`** — EL LIBRO DE LOS SALTOS: cada operador contado en llano con su historia, casos, espejo, estado y biblioteca de recursos (la versión narrada de la taxonomía).
 - **`ARCHITECTURE.md`** — índice de la referencia técnica → **`docs/reference/`** (contratos, operadores, rivales, batería, scoring, harness; abrí el archivo del tema).

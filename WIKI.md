@@ -5,6 +5,13 @@
 > Para el *por qué* filosófico terso está la constitución; para los *contratos técnicos*,
 > la referencia de arquitectura; para las *decisiones*, los ADRs. Acá está el mapa mental.
 >
+> **La familia de wikis** (los cuatro documentos principales, cortos y en llano — 2026-08-08):
+> **[WIKI-INDAGACION.md](WIKI-INDAGACION.md)** — el marco teórico: qué estudiamos (la
+> indagación), su ciclo (abducir·deducir·inducir), las perillas, dónde entran los saltos ·
+> **[WIKI-SALTOS.md](WIKI-SALTOS.md)** — los 11 tipos de salto y su estado de medición ·
+> **[WIKI-FALLAS.md](WIKI-FALLAS.md)** — dónde se rompe el ciclo (los failure modes) ·
+> **este WIKI** — la máquina WAGER: mundos, gemelos, puntaje, estado.
+>
 > **Marcadores de estado** (esto es investigación en desarrollo, así que somos honestos
 > sobre qué es piso firme y qué es andamio):
 > **✅ hecho y verificado** · **🔨 en construcción** · **❓ sin decidir / pregunta abierta**
