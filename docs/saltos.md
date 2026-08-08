@@ -375,8 +375,13 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
   [Extracción](research/2026-08-07-lecturas-programa-saltos.md).
 - **Boden, *The Creative Mind*** (2ª ed. 2004) — la distinción combinacional / exploratoria /
   **transformacional** (cambiar el espacio mismo: nuestros saltos).
-- **Ohlsson**, teoría del cambio representacional (*Deep Learning: How the Mind Overrides
-  Experience*, 2011) — el insight como re-representación.
+- **Ohlsson** — teoría del cambio representacional; su operacionalización experimental
+  (Knoblich, Ohlsson et al. 1999, JEP:LMC) `[LEÍDO completo 2026-08-07]`: el insight =
+  resolver un IMPASSE relajando restricciones auto-impuestas o descomponiendo chunks; la
+  dificultad ordena por el alcance de lo que hay que revisar (95/78/45%); **sin impasse no
+  hay reestructuración** — la explicación teórica de nuestro 0/9 (la familia default nunca
+  falla visiblemente) y la palanca de diseño #1: ingeniar el impasse desde el mundo. El
+  libro de 2011 sigue [POR-LEER]. [Extracción](research/2026-08-07-lecturas-programa-saltos.md).
 - **Klahr & Dunbar**, "Dual Space Search During Scientific Reasoning" (*Cognitive Science*
   1988) `[LEÍDO completo 2026-08-07]` — descubrir = buscar en dos espacios (hipótesis ×
   experimentos); el insight = instanciar un FRAME nuevo; y tres regalos: la evidencia

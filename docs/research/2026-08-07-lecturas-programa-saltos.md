@@ -510,3 +510,71 @@ post-hoc (explica ciencia, arte, humor y consciencia — falsabilidad discutible
 
 **Estado: LEÍDO completo** (draft del autor de 18 pp. que él mismo enlaza como el paper
 canónico; §I–VIII con ecuaciones y las 120 referencias).
+
+---
+
+## 11. Knoblich, Ohlsson, Haider & Rhenius (1999) — la teoría experimental del insight
+
+**Qué es.** LA operacionalización experimental del insight (teoría del cambio representacional
+de Ohlsson): el insight NO es magia — es la resolución de un IMPASSE mediante un cambio de
+representación. Dos mecanismos: **relajar restricciones auto-impuestas** (heredadas de la
+experiencia previa, no de la tarea) y **descomponer chunks** (patrones perceptuales
+automáticos). Paradigma: aritmética de fósforos con numerales romanos donde respetar la
+aritmética escolar hace el problema INSOLUBLE. Predicciones cuantitativas confirmadas en 4
+experimentos (N=170): la dificultad ordena por el ALCANCE de la restricción a relajar (ajustar
+un valor < cambiar el operador < admitir una forma "prohibida" de ecuación — 95% vs 78% vs 45%
+de solución) y por la APRETADEZ del chunk; el orden predicho no se violó NUNCA; lo difícil
+transfiere más; la similitud superficial no importa (p=.79).
+
+**EL HALLAZGO CENTRAL PARA NOSOTROS — sin impasse no hay reestructuración, y es inequívoco:**
+el gatillo de ambos mecanismos es el **fracaso persistente** ("one of the mind's responses to
+persistent failure" — no es deliberado ni voluntario). Su paradigma garantiza el fracaso: (i)
+el estado es VISIBLEMENTE falso (la ecuación no cierra — detector de verdad barato e
+inequívoco); (ii) el espacio inicial NO contiene solución (éxito espurio imposible). **Nuestros
+mundos violan las dos**: un modelo mal especificado puede ajustar bien — la "ecuación falsa"
+del agente nunca se ve falsa. La teoría predice entonces EXACTAMENTE nuestro fenómeno:
+**fluidez sin reestructuración** — el agente no salta no porque no pueda, sino porque nada
+dispara el salto.
+
+**Implicaciones de diseño (las más accionables de toda la campaña):**
+1. **El impasse se ingenia desde el mundo**: hacer que la familia default falle de forma
+   persistente, VISIBLE y barata de verificar (colapso en held-out comprable, intervenciones
+   que contradicen el modelo ajustado, estructura residual que reaparece) — el análogo de "la
+   ecuación sigue siendo falsa". Palanca #1 para la versión escondida del mundo 2 y para todo
+   mundo de creatividad futuro.
+2. **La reestructuración NO obedece instrucciones** — "promptear creatividad" no es el
+   mecanismo (¡coincide con nuestro nivel4b-teatro!); crear condiciones de fracaso sí. Y el
+   curriculum del Exp 3 explica nuestro nivel3: mostrar UNA VEZ que la forma "prohibida" es
+   admisible relaja la restricción de una vez y para siempre — selectivamente (cura la
+   restricción, no el chunk).
+3. **Dos perillas ortogonales de mundo**: alcance del supuesto a abandonar (parámetro <
+   likelihood < qué-cuenta-como-modelo — ordenamiento pre-registrable de dificultad entre
+   operadores) × granularidad de los observables (agregados = chunks apretados; series crudas
+   = sueltos).
+4. **Predicción falsable para el programa**: si un agente reestructura SIN señal de fracaso, o
+   no reestructura CON fracaso persistente y visible, el gatillo de la teoría está mal para
+   este sustrato — ambas salidas informan.
+
+**Estándar metodológico**: su vara para que "insight" no sea etiqueta post hoc — ordenamiento
+de dificultad pre-registrado por tipo + firma de transfer diferencial — es medible sin LLM
+(tasas y tiempos por tipo y bloque). El estándar que nuestra matriz saltos×realismo necesita.
+
+**Límites.** Micro-dominio único (un movimiento, solución única, señal binaria de verdad);
+claims solo ordinales; sin modelo computacional; el impasse se infiere de tiempos (la evidencia
+ocular es del companion 2001, POR-LEER); erratas direccionales en p. 1546 del impreso
+(resueltas contra tablas).
+
+**Estado: LEÍDO completo** (22/22 pp., PDF de uni-koeln.de, con las 13 tablas y 9 figuras).
+
+## Addendum al Nivel arriba de la campaña (cerrada con 11 fuentes)
+
+**La tensión productiva que ordena todo el programa:** Ohlsson dice "sin impasse no hay
+reestructuración" (explica nuestro 0/9: la familia default nunca falla VISIBLEMENTE) y
+prescribe ingeniar el impasse; can't-jump/Schmidhuber muestran que los saltos supremos ocurren
+SIN señal de error (el techo impuntuable). No se contradicen: **definen los dos extremos de
+nuestra escalera** — "cuánta señal de fracaso hace falta para que el agente compre el salto"
+es LA variable del programa, con Ohlsson explicando por qué el peldaño de señal-cero es casi
+imposible (para humanos también) y Dunbar agregando el gate intermedio (la señal tiene que ser
+CREÍDA — réplica comprable). La doctrina de diseño consolidada: ingeniar el impasse + medir la
+cadena (Nersessian) + réplica comprable (Dunbar) + vara de compresión de dos partes
+(Schmidhuber) + transfer diferencial como estándar (Knoblich/Ohlsson).
