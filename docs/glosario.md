@@ -32,8 +32,9 @@ para medir — sin jueces LLM — dónde exactamente se les rompe el proceso de 
   dicta (= creatividad, la vara del programa) ≠ ACEPTARLO cuando la evidencia lo grita (= 
   revisión de creencias, vicio 1).** Un mundo mide creatividad solo si el candidato tiene que
   NACER del agente.
-- **Operador (de salto)**: cada TIPO de cambio de forma. La lista 10+1
-  ([justificación](research/2026-08-05-fundamentos-taxonomia-de-saltos.md)): 1 entidad oculta ·
+- **Operador (de salto)**: cada TIPO de cambio de forma. La lista 10+1 — **contada con
+  historia y fuentes en [el libro de los saltos](saltos.md)**;
+  [justificación formal](research/2026-08-05-fundamentos-taxonomia-de-saltos.md): 1 entidad oculta ·
   2 grupos escondidos (count_mix) · 3 régimen/fase oculto (dos leyes con umbral) · 4 geometría ·
   5 unificación · 6 invariante promovido (simetría) · 7 proceso del observador · 8 realimentación
   oculta · 9 conservación/cuantización · 10 memoria oculta · 11 transferencia estructural
