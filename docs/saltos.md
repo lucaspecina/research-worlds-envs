@@ -94,6 +94,24 @@ gusto.
    cambio conceptual con casos) `[POR-LEER]`; Boden (3 tipos; la transformacional = cambiar el
    espacio) `[POR-LEER]`; y en era-LLM la taxonomía de operaciones de Chen `[LEÍDO]` —
    **validada con anotadores independientes**, el estándar que copiamos como receta.
+
+**Chen vs nuestra lista — la comparación fina (pregunta de Lucas, 2026-08-08).** Clasifican
+OBJETOS distintos: Chen etiqueta qué le hace una IDEA DE PAPER a la literatura previa (2 ejes
+de 7: por qué vale — puzzle, hueco de explicación, oportunidad-puente… × cómo se vuelve
+contribución — síntesis/unificación, extender alcance, derivación formal, artefacto…);
+nosotros etiquetamos qué le hace una EXPLICACIÓN al modelo del sistema investigado. El mapeo
+donde se cruzan: su *síntesis/unificación* y *oportunidad-puente* ↔ nuestros 5/11 — y son
+las que los LLMs SOBRE-usan (¡el lado del gemelo!); su *derivación formal* ↔ nuestros 4/9
+(sub-usada); su *desacoplar* ↔ nuestra familia partir-en-dos 2/3 (10× menos que humanos). La
+asimetría clave: la mayoría de sus etiquetas NO son saltos (robustificar, mapear, optimizar —
+ciencia normal) y la mayoría de nuestros saltos no tienen etiqueta ahí (régimen, memoria,
+observador, feedback, conservación — la idea-de-paper no descompone la estructura del
+sistema). **Veredicto: referencia principal para el MÉTODO de validación (su receta 7×7:
+fuentes autoritativas → refinar en 150 papers held-out → κ 0.81-0.93 con anotadores) y para
+la EVIDENCIA del sesgo LLM; NO como taxonomía madre — mide otro nivel del mismo fenómeno.**
+Importación candidata: su *reemplazar* (swap de mecanismo entero — flogisto→oxígeno,
+calórico→cinética, éter→campo) no tiene operador nuestro limpio → candidato a la matriz, con
+casos históricos fuertes. Extracción completa del método: [como-medimos §1](como-medimos.md).
 **Los cinco pilares, operador por operador** (pregunta de Lucas: "¿cómo sabemos que no son
 invención nuestra?"). El pilar más fuerte es el ③: **cada operador nombra una estructura tan
 real que la estadística tuvo que inventar una FAMILIA DE MÉTODOS para detectarla** — nadie
