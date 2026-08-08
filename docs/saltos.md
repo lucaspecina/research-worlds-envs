@@ -405,9 +405,12 @@ trabajo es descubrir y que documentó métodos Y fallas con casos reales:
   cero) nos da una métrica cero-LLM del gasto experimental; y el nulo empírico de ACH
   (Dhami 2019: 50 analistas reales, no mejoró) es nuestro "teatro de nivel4b" en humanos —
   nuestros mundos son el banco de pruebas que esa literatura declara faltante.
-- **Medicina**: la literatura de **error diagnóstico** (Graber; Croskerry) `[EN LECTURA]` —
-  falla #1 documentada: cierre prematuro (nuestro vicio 2); anclaje; search satisficing. Tasas
-  base HUMANAS de nuestros vicios, con casos.
+- **Medicina**: la literatura de **error diagnóstico** (Graber 2005; Croskerry 2003)
+  `[LEÍDOS completos 2026-08-08]` — 100 casos reales con 33 muertes: la falla dominante NO
+  es conocimiento (~3%) ni datos (~14%) sino SÍNTESIS (~82%), con el **cierre prematuro
+  como falla #1**; lo fuera-de-menú se clasifica como no-fault (la medicina no culpa el
+  polo creativo — el hueco que nosotros medimos); y el careo de mixes
+  agente-vs-internista queda como experimento barato y publicable.
 - **Derecho**: **visión de túnel** en condenas erróneas (Findley & Scott 2006) `[LEÍDO
   completo 2026-08-08, 107 pp.]` — la forma canónica de nuestro hallazgo estrella en
   profesionales: la contra-evidencia se examina INTENSAMENTE y se "redefine en una

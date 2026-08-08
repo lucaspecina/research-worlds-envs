@@ -760,3 +760,65 @@ analogía.
 
 **Estado: LEÍDO completo** (107/107 pp., repositorio oficial UW Law; doctrina jurídica hojeada
 al nivel pedido).
+
+---
+
+## 15. Graber 2005 + Croskerry 2003 — el error diagnóstico en medicina (AMBOS completos)
+
+**Qué son.** El par fundacional del error diagnóstico: Graber/Franklin/Gordon (Arch Intern Med
+2005) = 100 casos REALES confirmados de error diagnóstico en 5 centros académicos durante 5
+años (33 muertes; verdad revelada por autopsia/biopsia/test definitivo — literalmente nuestro
+episodio con verdad diferida), analizados por panel de internista + 2 psicólogas cognitivas.
+Croskerry (Acad Med 2003) = el catálogo canónico de ~32 sesgos del diagnóstico ("cognitive
+dispositions to respond") + su menú de contramedidas.
+
+**EL RESULTADO QUE CIERRA LA CAMPAÑA — la profesión que más estudió el juicio bajo verdad
+oculta llegó a NUESTRA jerarquía, con cadáveres:** de las 320 instancias de falla cognitiva,
+**conocimiento defectuoso ~3%** (¡solo 4 casos, todos enfermedades raras!) · recolección de
+datos ~14% · **SÍNTESIS defectuosa ~82%** — y dentro de síntesis, la sub-categoría más cargada
+es VERIFICACIÓN defectuosa, con **cierre prematuro como falla #1 de todo el catálogo** (39
+instancias): *"the failure to continue considering reasonable alternatives after an initial
+diagnosis was reached"*. La cita de hace 50 años que ellos rescatan: *"mistakes were due not so
+much to lack of knowledge of factual data as to certain deficiencies of approach and
+judgment"*. → Predicción portable: agentes LLM (conocimiento enorme, juicio dudoso) deberían
+dar un mix AÚN MÁS cargado a síntesis/verificación — **careo agente-vs-internista = experimento
+barato y publicable** ("¿fallan donde fallan los médicos?").
+
+**El borde que delimita el gemelo profesional:** la presentación atípica (fuera del menú de
+enfermedades) la clasifican como **NO-FAULT** — la medicina institucionalmente no culpa el
+fuera-de-menú. Su muestra cubre los vicios de juicio SELECTIVO; nuestro polo creativo (inventar
+la hipótesis que no está en la nosología) queda fuera de su alcance por construcción — el hueco
+que nosotros medimos.
+
+**Regalos operativos:** (1) DOS operacionalizaciones de cierre prematuro portables a trazas
+cero-LLM: Graber (¿generó/testeó alternativas después de declarar su primera hipótesis?) y
+Croskerry (¿aceptó el diagnóstico con verificación discriminante disponible y no ejecutada?);
+(2) su sub-catálogo de verificación defectuosa es casi isomorfo a nuestros vicios (no re-revisar
+≈ vicio 1 · no considerar alternativas ≈ nuestro menú · tests que no discriminan ≈ vicio 9 ·
+sunk costs/momentum ≈ no soltar · **feedback sanction** ≈ por qué el mundo debe COBRAR la
+consecuencia — nuestra regla dura, confirmada desde medicina); (3) las **tríadas de
+co-ocurrencia** (recolección pobre → candidato nunca evocado → cierre) = firmas de CADENA
+verificables en trazas; (4) el menú de debiasing de Croskerry como brazos de intervención
+("What else might this be?", forcing strategies, feedback rápido) — con la advertencia #4 de la
+campaña: la conciencia sola NO alcanza.
+
+**Límites.** Composición condicional al error (sin denominador); una especialidad; panel
+retrospectivo CON hindsight (mismo estatuto que nuestras autopsias — usar como prior
+cualitativo, no como vara); Croskerry sin frecuencias propias; off-by-one interno en las tablas
+de Graber (documentado por el lector).
+
+**Estado: AMBOS LEÍDOS completos** (Graber vía fulltext JAMA + Wayback; Croskerry con las
+imágenes originales del catálogo y la tabla de estrategias).
+
+## Cierre de la CUARTA TRADICIÓN (las profesiones de investigar — 3 lecturas, 2026-08-08)
+
+Heuer (inteligencia) + Findley & Scott (derecho) + Graber/Croskerry (medicina) convergen en un
+cuadro único: **nuestros hallazgos con agentes son la forma canónica del fenómeno humano
+profesional** — la tríada del satisficing (una hipótesis / menú truncado / anomalía re-etiquetada),
+el cierre prematuro como falla #1 con verdad oculta y muertos, el escrutinio activo al servicio
+del descarte, y los epiciclos ante la contra-evidencia. Cuatro fuentes independientes coinciden
+en que la CONCIENCIA del sesgo no funciona y solo el PROCEDIMIENTO/estructura ayuda (ciegos:
+validado; fresh-look sin propiedad de la teoría; accountability) — y el mejor test del
+procedimiento (ACH, Dhami 2019) dio nulo en humanos, igual que nuestro nivel4b en agentes.
+Instrumentos nuevos ganados: diagnosticity del gasto experimental · confianza-sin-precisión ·
+firma del epiciclo · el switch interview→interrogation · el careo de mixes agente-vs-internista.
