@@ -247,3 +247,62 @@ ni feedback ni observador; teoriza la operación exitosa, no las fallas (salvo l
 
 **Estado: LEÍDO completo** (34/34 pp., PDF oficial enlazado por el propio Schurz desde su
 página de HHU Düsseldorf).
+
+---
+
+## 6. Dunbar (1995), "How Scientists Really Reason" (+ Dunbar 1997) — el estudio in vivo
+
+**Qué es.** El primer estudio cognitivo de científicos reales trabajando: Dunbar pasó UN AÑO
+dentro de 4 laboratorios de élite de biología molecular (estudió biología 5 años para poder
+hacerlo), grabando las reuniones de lab y entrevistando antes/después, siguiendo proyectos
+desde su inicio — capturó descubrimientos EN VIVO ("I have the moment of discovery on tape").
+Leídos completos el capítulo 1995 (manuscrito del autor, 19 pp.) y el paper hermano 1997 (que
+consolida los números preliminares).
+
+**Hallazgos que nos reordenan:**
+
+1. **El mito de la analogía lejana MUERE con datos**: 99 analogías en 16 reuniones — solo 2
+   fueron de dominio lejano, y **CERO produjeron descubrimientos** ("we did not find one
+   instance of a case where a long-distance analogy led to any conceptual changes"). Las que
+   descubren son LOCALES y REGIONALES (dominios hermanos), hechas por expertos, y las
+   regionales solo aparecen DESPUÉS de que el científico construyó su modelo del dominio.
+2. **El cambio conceptual real del corpus fue… nuestra operación 2**: partir un mecanismo
+   unitario en dos (entrada al órgano ≠ inicio de la enfermedad), empujado por una anomalía
+   creída-real + desafío grupal. "Conceptual change, like evolutionary change, is the result
+   of tinkering" — cirugía estructural local, no salto romántico.
+3. **El individuo solo = nuestros agentes**: "individual scientists out of a group context
+   usually attributed inconsistent evidence to error of some sort, and hoped that the finding
+   would go away". El comportamiento de nuestros agentes ("es un outlier", "es ruido") ES el
+   default humano individual documentado; el mecanismo corrector real es SOCIAL (el meeting
+   que diseca la anomalía, las preguntas que cambian de nivel).
+4. **El gate absoluto es la creencia sobre error**: si el investigador cree que la anomalía es
+   error, NINGÚN desafío produce cambio ("no amount of challenging… will result in conceptual
+   change"). → Diseño: la RÉPLICA debe ser comprable; la firma fina cero-LLM es
+   descartar-sin-replicar vs replicar-persiste-y-descartar-igual (peor) vs replicar-y-perseguir.
+5. **El borde triage/vicio que necesitábamos**: anomalía TEMPRANA sobre supuesto AUXILIAR se
+   ignora — y es triage sano (los de élite lo hacen); tardía o nuclear se atiende siempre. El
+   vicio es descartar la tardía/replicada/nuclear. (Cruce momento × centralidad = knob de mundo.)
+6. **La serendipia está diseñada**: los descubrimientos del corpus nacieron de CONTROLES que
+   dieron raro — los controles se diseñan también "to expose novel mechanisms, should they be
+   there". → Mundos fieles: la firma oculta asoma en el canal de chequeo, no donde el agente
+   mira; y "¿compró controles? ¿qué hizo cuando dieron raro?" es puntuable de traza.
+7. **El polo espejo existe en expertos**: "falsification bias" — los muy experimentados
+   descartan datos BUENOS que confirman su hipótesis. Bipolar, como nuestra doctrina de pares.
+8. **Jamás medir del autorrelato**: el postdoc del descubrimiento, re-entrevistado a la semana
+   y a los meses, NUNCA recordó las analogías ni el razonamiento distribuido de su propio
+   descubrimiento — solo la cinta lo preservó. (= nuestra doctrina de leer trazas, no resúmenes.)
+9. Dato de tasa base: en 70 condiciones experimentales de un lab, 18 inesperadas + 30
+   exploratorias vs 22 esperadas — lo inesperado es lo NORMAL; y los buenos labs le dedican
+   176 interacciones vs 23 a lo esperado.
+
+**Citas clave.** "when (i) surprising findings occur, (ii) the researcher believes that these
+findings are not due to error, and (iii) other members of the group challenge the researcher's
+interpretation…, significant conceptual change will occur" · "The so-called serendipitous
+findings are the result of careful experimentation and planning that are designed to expose
+novel mechanisms."
+
+**Límites.** n=4 laboratorios de élite, un campo, un año, un observador; números 1995
+preliminares (el 1997 consolida); heurísticas extraídas, no causalidad probada.
+
+**Estado: LEÍDO completo** (manuscrito 1995 del autor vía Wayback del Dunbar Lab + 1997 completo;
+citas del manuscrito, pueden diferir en detalle menor de la versión impresa MIT Press).

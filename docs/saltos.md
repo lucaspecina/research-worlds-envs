@@ -333,8 +333,14 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
   Experience*, 2011) — el insight como re-representación.
 - **Klahr & Dunbar**, "Dual Space Search During Scientific Reasoning" (*Cognitive Science*
   1988) — descubrir = buscar en dos espacios (hipótesis × experimentos); nuestro juego es eso.
-- **Dunbar**, "How scientists really reason" (1995, los laboratorios in vivo) — de dónde salen
-  los hallazgos reales: analogías cercanas, atención a anomalías.
+- **Dunbar**, "How scientists really reason" (1995, los laboratorios in vivo)
+  `[LEÍDO completo 2026-08-07, + el paper 1997]` — un año DENTRO de 4 labs de élite: las
+  analogías que descubren son CERCANAS (2/99 lejanas, cero descubrimientos); el individuo
+  solo atribuye la anomalía a error y espera que desaparezca (= nuestros agentes); el
+  corrector es el GRUPO; la serendipia vive en los CONTROLES; y el cambio conceptual real
+  del corpus fue partir-un-mecanismo-en-dos (nuestra operación 2). La lectura más
+  importante para diseñar mundos fieles.
+  [Extracción](research/2026-08-07-lecturas-programa-saltos.md).
 
 ### Filosofía e historia de la ciencia
 - **Nersessian, *Creating Scientific Concepts*** (2008) — razonamiento basado en modelos:
