@@ -10,6 +10,10 @@ Una frase para presentar el proyecto: *WAGER estudia la indagación — el razon
 explicativo sobre sistemas con estructura oculta — midiendo dónde se rompe y si aparecen los
 saltos creativos.*
 
+**Para profundizar**: [WIKI-SALTOS](WIKI-SALTOS.md) (los tipos de salto) ·
+[WIKI-FALLAS](WIKI-FALLAS.md) (dónde se rompe el ciclo) · [WIKI](WIKI.md) (la máquina que
+lo mide) · [docs/saltos.md](docs/saltos.md) (el fondo con fuentes).
+
 ## 1. No toda tarea es lo mismo: las tres familias de "resolver"
 
 | Familia | Qué es | Ejemplos | ¿Verdad oculta? |

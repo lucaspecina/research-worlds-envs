@@ -7,7 +7,28 @@ tiene una pieza que antes no existía. El salto es el momento creativo de la ind
 **abducción creativa**: fabricar un candidato de explicación que tu repertorio no contenía
 (ver [WIKI-INDAGACION.md](WIKI-INDAGACION.md)).
 
-Hay 11 tipos conocidos. Cada uno es una manera distinta de cambiar la forma:
+**Para profundizar**: [docs/saltos.md](docs/saltos.md) (el libro: historias completas, fuentes
+y estado de lectura) · [fundamentos formales](docs/research/2026-08-05-fundamentos-taxonomia-de-saltos.md)
+(la matriz componente×edición) · [WIKI-INDAGACION](WIKI-INDAGACION.md) (dónde encaja el salto
+en el ciclo de indagar) · [WIKI-FALLAS](WIKI-FALLAS.md) (por qué no aparece).
+
+## La lista, de un vistazo
+
+| # | Salto | La idea que hay que parir | Ancla histórica |
+|---|---|---|---|
+| 1 | Entidad oculta | "hay un actor invisible" | Neptuno; el neutrino |
+| 2 | Grupos escondidos | "no es una población: son dos" | Mendel; Pearson 1894 |
+| 3 | Régimen oculto | "no es una ley: son dos, con un umbral" | Reynolds; Onnes |
+| 4 | Geometría | "la relación simple vive en otro espacio" | Kepler |
+| 5 | Unificación | "estas dos cosas son la misma" | Newton; Maxwell |
+| 6 | Invariante promovido | "eso que siempre da igual ES la regla" | Einstein; Noether |
+| 7 | Proceso del observador | "el patrón está en cómo mirás" | Wald |
+| 8 | Realimentación oculta | "la causa es el bucle" | Lotka-Volterra |
+| 9 | Conservación / cuantos | "hay una cantidad fija (o en paquetes)" | Lavoisier; Planck |
+| 10 | Memoria oculta | "el sistema arrastra su historia" | Ewing; Hurst |
+| +1 | Transferencia estructural | "este sistema es AQUEL, con otra piel" | Darwin × Malthus |
+
+Ahora sí, uno por uno:
 
 ---
 
@@ -236,7 +257,7 @@ grabadas en laboratorios de élite, solo 2 fueron lejanas y ninguna descubrió n
 - **Candidatos a la lista** (del careo con la literatura, en evaluación): **borrar estructura**
   (todos los nuestros agregan piezas; "sobra una pieza" no está — de Darden) y **reemplazar
   mecanismo** (flogisto→oxígeno — de Chen).
-- **La distinción que manda** (Lucas, 2026-08-07): medimos **GENERAR** el candidato cuando
+- **La distinción que manda**: medimos **GENERAR** el candidato cuando
   nada lo dicta (creatividad) — no aceptarlo cuando la evidencia lo grita (eso es revisión de
   creencias y se registra aparte).
 - **Para profundizar**: las historias completas con fuentes y estado de lectura:

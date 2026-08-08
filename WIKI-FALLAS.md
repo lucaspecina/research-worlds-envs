@@ -9,6 +9,11 @@ profesiones que investigan por oficio (espías, jueces, médicos).
 
 ---
 
+**Para profundizar**: [docs/vicios/](docs/vicios/README.md) (el catálogo canónico con
+evidencia por vicio) · [índice de hallazgos](docs/research/README.md) (nuestros números) ·
+[extracciones de lecturas](docs/research/2026-08-07-lecturas-programa-saltos.md) (las 17
+fuentes) · [WIKI-INDAGACION](WIKI-INDAGACION.md) (el ciclo sano).
+
 ## ① Al generar candidatos — el menú que no crece (la falla madre)
 
 **Qué es**: la explicación correcta exige un candidato que el repertorio no trae — y no nace.
@@ -107,7 +112,7 @@ y la entrega lo ignora.
 **NO funciona:**
 - **La conciencia del sesgo** — cuatro fuentes independientes (CIA, derecho, medicina, teoría
   del insight): saber que el sesgo existe no lo reduce; resiste la instrucción explícita.
-- **Ordenar el método** — nuestro nivel4b (0/3), el nulo de ACH en analistas reales: el
+- **Ordenar el método** — nuestra prueba de la "comparación mandada" (0/3), el nulo de ACH en analistas reales: el
   procedimiento impuesto se ejecuta sobre el mismo menú capturado.
 
 **SÍ funciona (con evidencia):**
