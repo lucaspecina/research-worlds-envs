@@ -190,3 +190,60 @@ referencias del PDF está truncada, no el cuerpo).
   solo la generación — "novelty is cheap".
 - **Deuda que sigue viva:** los clásicos-libro (Boden, Ohlsson, Nersessian, Darden, Klahr &
   Dunbar) no son accesibles online — siguen como biblioteca curada sin fichar.
+
+---
+
+## 5. Schurz, "Patterns of Abduction" — Synthese 164 (2008), 201–234
+
+**Qué es.** LA taxonomía sistemática de la abducción: no una regla general (IBE) sino
+**patrones específicos** cuya estructura determina la conjetura prometedora; su función
+esencial es ESTRATÉGICA (búsqueda en un espacio exponencial). Clasifica por tres dimensiones:
+qué se abduce (hecho / ley / modelo teórico / concepto nuevo), qué evidencia lo pide, y qué
+mecanismo lo impulsa (leyes conocidas / extrapolación / analogía / unificación pura).
+
+**La taxonomía**: factual (con sub-formas: hecho observable · **existencial de primer orden**
+[postular individuos nuevos: la huella en la playa] · hecho histórico inobservable) ·
+**law-abduction** (el "middle term" de Aristóteles) · **theoretical-model** (ciencia normal:
+derivar el fenómeno desde una teoría dada) · **existencial de segundo orden** (concepto NUEVO:
+micro-partes · **analógica** [mapping à la Gentner + abstracción conceptual] · **causa común
+hipotética**). La divisoria normativa: postular UNA entidad para UN fenómeno = **abducción
+especulativa** (ad hoc, virtus dormitiva — su ANTI-PATRÓN); solo la causa común que unifica
+MUCHOS fenómenos intercorrelacionados independientes es legítima — criterio **(CU)**, con
+reducción contable **n·m leyes empíricas → n+m teóricas**.
+
+**Selectiva vs creativa (Magnani, la distinción organizadora):** *"abductions which introduce
+new concepts or models [are] creative, in contrast to selective abductions whose task is to
+choose the best candidate among a given multitude"*. Y la asimetría de dificultad (Result 3):
+*"In selective abductions, the difficulty usually lies in the fact that the search space… is
+astronomically large. In creative abductions, however, the difficulty often consists in finding
+just ONE conjecture which meets the required constraints."* — nuestro hallazgo (menú que no
+crece) en idioma filosófico.
+
+**LA TABLA DE ALINEACIÓN (operador nuestro ↔ tipo de Schurz):**
+
+| Operador | Schurz | Ajuste |
+|---|---|---|
+| 1 entidad oculta | existencial de 1er orden (+ theoretical-model al cuantificar) | alto |
+| 2 grupos escondidos | causa común estricta / factor analysis discreto | medio |
+| 3 régimen · 4 geometría · 6 invariante · 7 observador · 8 feedback · 9 conservación · 10 memoria | **SIN correlato** (los agrupa indistintos bajo theoretical-model / 2º orden) | — |
+| 5 unificación | **causa común — correlato EXACTO** (Newton es SU ejemplo) | exacto |
+| 11 transferencia | **abducción analógica — correlato EXACTO** | exacto |
+
+**Lectura de la tabla:** las taxonomías son mayormente ORTOGONALES — Schurz clasifica el tipo
+EPISTÉMICO de lo abducido; nosotros la EDICIÓN ESTRUCTURAL al programa. Donde se cruzan,
+coincidimos exacto (5, 11); en 7 de 11 operadores nuestro grano es más fino que el suyo. La
+lista nuestra queda: anclada donde hay ancla, más fina donde no la hay — no huérfana.
+
+**Regalos operativos:** (a) tipos de Schurz sin operador nuestro = candidatos a la matriz
+(evento pasado oculto · mediador conocido interpuesto · descomposición en micro-nivel · latente
+continuo); (b) la **abducción especulativa** como anti-patrón con demarcación (CU) contable
+**cero-LLM** (¿cuántos fenómenos independientes unifica la entidad postulada?) — candidata a
+certificado/vara del gemelo; (c) su paper posterior "Abductive Belief Revision in Science"
+(2011, PDF accesible) conecta NUESTRAS DOS LÍNEAS — próxima lectura natural.
+
+**Límites.** Sin patrón general para theoretical-model (donde viven la mayoría de nuestros
+operadores); (R) falla en cuántica (él lo admite); esquemas cualitativos sin dinámica temporal
+ni feedback ni observador; teoriza la operación exitosa, no las fallas (salvo la especulativa).
+
+**Estado: LEÍDO completo** (34/34 pp., PDF oficial enlazado por el propio Schurz desde su
+página de HHU Düsseldorf).

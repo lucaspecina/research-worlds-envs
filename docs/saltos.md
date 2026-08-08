@@ -29,10 +29,10 @@ conocidas) vs **abducción creativa** = la explicación exige una hipótesis que
 contiene — hay que agrandarlo. Nuestro hallazgo empírico dicho en ese idioma: los LLMs hacen
 abducción SELECTIVA bien (eligen, ajustan y comparan dentro del menú) y la CREATIVA no arranca
 (el menú no crece — 0/9 en count_mix). Y sí hay teoría de TIPOS: **Schurz, "Patterns of
-Abduction" (Synthese 2008)** `[EN LECTURA 2026-08-07]` — taxonomía sistemática (abducción de
+Abduction" (Synthese 2008)** `[LEÍDO completo 2026-08-07]` — taxonomía sistemática (abducción de
 hechos / de leyes / de modelos teóricos / **existencial** [postular entidades: Neptuno] / de
 **causa común** [unificación] / **analógica** [Darwin]) que mapea directo a operadores
-nuestros — la tabla de alineación se arma con la lectura. Alrededor: Thagard (4 tipos
+nuestros. **La tabla de alineación (leída) dio:** correlato EXACTO en unificación (su causa común — Newton es su ejemplo) y transferencia (su abducción analógica); parcial en entidad oculta y grupos; y en 7 de 11 operadores NUESTRO grano es más fino que el suyo (taxonomías ortogonales: él clasifica el tipo epistémico, nosotros la edición al programa). Bonus: su 'abducción ESPECULATIVA' (una entidad por fenómeno, ad hoc) es el anti-patrón de nuestros gemelos, con criterio de demarcación contable sin LLM (¿cuántos fenómenos independientes unifica lo postulado?). [Detalle](research/2026-08-07-lecturas-programa-saltos.md). Alrededor: Thagard (4 tipos
 computacionales, 1988), Aliseda (*Abductive Reasoning* 2006 — abducción COMO revisión de
 creencias: nuestras dos líneas en un marco), Gabbay & Woods, Hintikka `[POR-LEER todos]`.
 
