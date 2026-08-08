@@ -51,6 +51,40 @@
   discontinuous**"* — entrega un polinomio suave. La evidencia se re-etiqueta para no abrir
   estructura.
 
+## Addendum — autopsia fina (pedido de Lucas: "¿qué es lo que pasa?")
+
+**El dato de partida: acá NADIE puede no-ver el escalón.** Todos compran velocidades a ambos
+lados y el promedio pasa de ~5.5 a ~11.5 entre 1.0 y 1.1 — está en sus tablas siempre. La
+diferencia entera del mundo está en la RESPUESTA al escalón visto. Hay tres, y las tres están
+en las trazas:
+
+1. **Postular dos leyes** (gpt 99503/99505): conjetura el corte, zoomea, entrega piecewise.
+   Descomposición del error sobre la grilla de examen: **clavan TODO** (±0.2 en zona baja, ±0.2
+   en 1.18, corte a 0.009 del real) **menos el nivel de la ley alta justo después del corte**
+   (+1.0/+1.3), porque lo anclaron en su medición ruidosa de 1.08 (compraron muchas velocidades
+   con pocas filas cada una: localizaron el corte a costa de precisión por punto). El S≈0.65 es
+   **concepto completo + calibración limitada** — no medio-concepto.
+2. **Explicarlo como ruido** (gpt técnico: *"the historical sample at 1.0 was noisy… not that
+   the process is discontinuous"*; DeepSeek 99502: *"outlier"*): la evidencia se re-etiqueta
+   para no abrir estructura. Entregan suave. S=0.
+3. **Esquivar el compromiso: unir los puntos** (DeepSeek 99500) — la sorpresa de la autopsia:
+   NO postuló el quiebre (mi primera lectura del 0.479 era errada). Consideró piecewise por
+   escrito (*"Or a piecewise linear with a breakpoint"*) y eligió interpolación lineal entre
+   sus 5 puntos medidos (*"which will be monotonic and match the observed means exactly.
+   That's easy to implement"*) — **cero ley postulada, ajuste local máximo**. Su 0.479 es el
+   abrazo a los puntos comprados; la vara lo caza donde no compró (error +2.7 en 1.05, el hueco
+   entre 1.0 y 1.1). Tercer refugio del menú: ni la ley vieja ni la nueva — ninguna ley.
+
+**La censura que duele (gpt 99504):** su último razonamiento tenía el MEJOR diagnóstico de toda
+la tanda — *"salto abrupto entre 1.05 y 1.08… un umbral en ~1.065"* (verdad: 1.0711) — y murió
+sin emitir la celda de código (no_cell). La censura esconde el que probablemente era el mejor
+salto. (Anécdota: ese razonamiento final salió en castellano.)
+
+**Implicación para la vara** (para Codex): la interpolación pura obtiene crédito parcial sin
+postular nada; la grilla de examen ya la castiga en los huecos entre compras (por eso 0.479 y
+no 0.9), pero conviene reportar la sub-métrica "error en huecos" por separado en la versión
+benchmark.
+
 ## Nivel arriba
 
 - **Aprendizaje real:** la juntura rota (el candidato estructural no entra — o entra y lo
