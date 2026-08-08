@@ -299,16 +299,26 @@
 > pre-registro). [Pre-registro](research/2026-08-07-preregistro-canales-vs-wording.md) ·
 > [resultado](research/2026-08-07-resultado-preregistro-canales-vs-wording.md).
 >
+> **RESULTADO 2026-08-07 — MUNDO 2 CONSTRUIDO, CERTIFICADO Y MEDIDO (count_regime, GO de
+> Lucas):** ficha congelada → certificación VERDE (4 compuertas + 8 robots; **R premia el salto
+> por construcción**: oracle 1.0 vs rival suave 0.0 — A2 resuelta) → técnico + tanda 12
+> episodios (~USD 3). **La juntura rota generaliza al segundo operador con TASA distinta**:
+> salto espontáneo 2/5 válidas (parcial ~0.65, gpt con zoom adaptativo al umbral) vs 0/9 en
+> count_mix — la "distancia-al-menú por operador" existe y es medible. Gemelo 0/6 espurio.
+> Especímenes nuevos: DeepSeek nombra "piecewise… two segments?" y entrega la suave llamando
+> "outlier" al punto que confirmó real; gpt re-etiqueta la discontinuidad como "muestra
+> ruidosa". [Ficha](research/2026-08-07-ficha-mundo-count-regime-v0.md) ·
+> [resultado](research/2026-08-07-resultado-smoke-count-regime-v0.md) ·
+> plan/matriz: [mundo 2](research/2026-08-07-plan-mundo-2-regimen-borrador.md) ·
+> chuleta: [`docs/glosario.md`](glosario.md).
+>
 > **PRÓXIMO PASO (2026-08-07):** consulta a Codex (sesión persistente, contrapunto ADR 0172) con
-> el dossier completo — que ahora incluye un pre-registro corrido con refutación propia — para
-> MANTENER/MODIFICAR/PIVOTEAR. Decisiones en mesa: cómo testear "candidato-en-menú" sin regalar
-> el candidato (diseño abierto), tercera familia de modelos en Foundry, y versión confirmatoria
-> del mundo (necesidad DOBLE + estructura que pague en extrapolación, ADR 0150). Codex bloqueado
-> por cuota hasta 2026-08-08 00:35; receta en `scratch/codex-supervisor-session.json`.
-> **Preparado para esa revisión:** borrador del mundo 2 — operador régimen oculto, con matriz
-> saltos×realismo y 4 preguntas abiertas —
-> [plan](research/2026-08-07-plan-mundo-2-regimen-borrador.md); y chuleta de términos de la casa
-> en [`docs/glosario.md`](glosario.md).
+> el dossier completo — refutación pre-registrada de canales + mundo 2 medido — para
+> MANTENER/MODIFICAR/PIVOTEAR. Decisiones en mesa: tercer operador (invariante/conservación) vs
+> escalera de ayudas en count_regime vs tercera familia de modelos sobre los dos mundos
+> congelados; cómo testear "candidato-en-menú" sin regalar el candidato; firma de la taxonomía
+> (lecturas) antes o en paralelo. Codex bloqueado por cuota hasta 2026-08-08 00:35; receta en
+> `scratch/codex-supervisor-session.json`.
 >
 > **REEVALUACIÓN Y SIGUIENTE ACCIÓN (histórica 2026-08-02; superseded por el bloque de arriba):** todavía no se congela la pregunta final del paper. Sigue
 > viva la señal de **cierre/autoridad del diagnóstico**; la apertura latente persiste solo en SCM;

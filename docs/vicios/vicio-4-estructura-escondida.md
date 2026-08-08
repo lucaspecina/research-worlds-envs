@@ -35,6 +35,19 @@ parámetros, promedia.
   [Resultado](../research/2026-08-07-resultado-smoke-count-mix-v0.md) ·
   [auditoría](../research/2026-08-07-auditoria-critica-slice-count-mix.md) ·
   [autopsia de canales](../research/2026-08-07-autopsia-canales-de-ayuda.md).
+- **count_regime_v0 + gemelo (mundo 2, 2026-08-07)** `[VERIFICADO propio][AGÉNTICO]` — segundo
+  operador medido (régimen/quiebre oculto): **el vicio generaliza pero con TASA distinta** —
+  salto espontáneo 2/5 válidas (parcial, ~0.65) vs 0/9 en count_mix; la distancia-al-menú
+  depende del operador. Espécimen nuevo de la juntura: DeepSeek 99502 ve la anomalía, compra
+  MÁS datos del punto anómalo, confirma, escribe *"Perhaps a piecewise linear… two segments?
+  But given the limited data, I'll go back to the exponential form"* y entrega la suave
+  llamando "outlier" al punto que sabe real — el candidato entró al menú por sus propios medios
+  y lo mató el filtro sin test (cruza con vicio-1 rigidez y vicio-9). gpt técnico: *"I suspect
+  the historical sample was noisy… not that the process is discontinuous"* — la discontinuidad
+  re-etiquetada como ruido. Gemelo 0/6 espurio; los que saltan hacen zoom adaptativo de compra
+  (conjetura ANTES del zoom en traza).
+  [Resultado](../research/2026-08-07-resultado-smoke-count-regime-v0.md) ·
+  [ficha](../research/2026-08-07-ficha-mundo-count-regime-v0.md).
 - **Es la celda del catálogo donde la evidencia externa ya nos esperaba** — y donde el par
   Neptuno/Vulcano (postular-entidad ↔ parchar) tiene además el respaldo del position paper
   "LLMs can't jump" `[VERIFICADO]` (usa literalmente el ejemplo Vulcano).
@@ -63,4 +76,8 @@ parámetros, promedia.
 - **count_mix_v0/twin (2026-08-07)**: segunda familia MEDIDA del vicio — certificada 19/19,
   28 episodios v0.2, fenómeno replicado con el encargo justo (0/9); la escalera de ayudas
   además LOCALIZA dónde muere la hipótesis regalada por modelo (canales, no dosis).
+- **count_regime_v0/twin (2026-08-07)**: tercera familia MEDIDA (operador régimen) —
+  certificación verde con R direccional (+1.0: primera familia donde R premia el salto, A2 por
+  construcción); 13 episodios v0; el vicio generaliza con tasa menor (2/5 parcial vs 0/9) →
+  la matriz saltos×realismo tiene su segunda celda y la variable distancia-al-menú.
 - Pendientes de familia: partir-en-dos, solución-cebada, par Vulcano (specs en cantera).

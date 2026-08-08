@@ -239,8 +239,11 @@ El robot revisor-de-a-pasitos DEBE fallar (certifica que hay salto, no rampa).
 MEDIDO (programa de saltos, 2026-08-07)**: 0/9 espontáneo con encargo justo; la escalera de ayudas
 mostró que la pista rescata según CANAL×modelo, no fuerza (evidencia canónica en
 `docs/vicios/vicio-4` y `vicio-9`; autopsia en
-[canales de ayuda](research/2026-08-07-autopsia-canales-de-ayuda.md)). Partir-en-dos y solución-cebada:
-sin mundo. Gemelo Vulcano: par bandera decidido → **ESTACIONADO en cantera (ADR 0117: es par de AHA,
+[canales de ayuda](research/2026-08-07-autopsia-canales-de-ayuda.md)).
+**count_regime_v0+twin HECHO y MEDIDO (mundo 2, mismo día)**: certificación verde, R premia el
+salto por construcción; salto espontáneo 2/5 parcial → el vicio generaliza entre operadores con
+tasa distinta ([resultado](research/2026-08-07-resultado-smoke-count-regime-v0.md)).
+Partir-en-dos y solución-cebada: sin mundo. Gemelo Vulcano: par bandera decidido → **ESTACIONADO en cantera (ADR 0117: es par de AHA,
 y los gemelos son agregado, no eje)**; su test de viabilidad (gratis) queda listo para rato ocioso.
 **Validado por afuera**: el position paper "LLMs can't jump" (2026) usa el ejemplo Vulcano exacto
 —parchar-con-Vulcano vs reestructurar-la-teoría— y propone mundos con intervención contrafáctica como
