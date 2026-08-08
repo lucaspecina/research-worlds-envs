@@ -61,14 +61,17 @@ aceptarlo cuando la evidencia lo grita (eso es revisión de creencias — se ano
 **Confesión primero: la lista EXACTA de 11 es síntesis nuestra** — ningún paper publicó "estos
 son los 11 saltos". Lo que NO es intuición suelta:
 
-1. **El marco tiene linaje formal.** "Una teoría es un programa; aprender teorías = buscar
-   EDICIONES de programa" es una línea establecida de la ciencia cognitiva computacional:
-   Ullman, Goodman & Tenenbaum, *"Theory learning as stochastic search in a language of
-   thought"* (2012) `[POR-LEER]`; y Kemp & Tenenbaum, *"The discovery of structural form"*
-   (PNAS 2008) `[POR-LEER]` publicaron un ESPACIO FORMAL de formas estructurales (árboles,
-   anillos, cadenas, grillas) descubribles desde datos. Nuestra matriz componente×edición es
-   esa idea aplicada a programas generativos de mundos. DreamCoder/LILO (en cola) son la
-   versión moderna ("inventar conceptos = agregar primitivas al lenguaje").
+1. **El marco tiene linaje formal — VERIFICADO A TEXTO COMPLETO** (2026-08-07): Ullman,
+   Goodman & Tenenbaum 2012 `[LEÍDO]` formaliza EXACTAMENTE "teoría = programa; aprender =
+   ediciones estructurales" (MCMC sobre agregar/borrar/cambiar leyes y predicados, con los
+   conceptos nuevos naciendo EN BLANCO y ganando significado por su rol); Kemp & Tenenbaum
+   2008 `[LEÍDO]` da el espacio formal de FORMAS (gramáticas de grafos: árbol/anillo/cadena/
+   grilla) descubribles desde datos. **El veredicto de la alineación**: cubren sólido 2 de
+   nuestros 11 operadores y parcial 3; los 6 dinámicos (régimen, feedback, memoria, observador,
+   reparametrizar, cuantizar) NO existen en sus espacios — Ullman mismo nombra la extensión
+   necesaria ("a functional language… much more expressive"). Nuestra taxonomía = la lista de
+   ediciones que ese lenguaje necesita: ni huérfana ni ya-hecha. DreamCoder/LILO (en cola) son
+   la versión moderna. [Detalle](research/2026-08-07-lecturas-programa-saltos.md).
 2. **Existen taxonomías con análisis de casos, y una es casi hermana:** **Darden, *Theory
    Change in Science* (1991)** `[POR-LEER — PRIORIDAD 1 de la firma]` extrajo de 26 años de
    genética real una lista explícita de ESTRATEGIAS de cambio de teoría ("agregar una

@@ -406,3 +406,67 @@ controlada con camino de vuelta.
 **Estado: LEÍDO completo** (42/42 pp., PDF escaneado del sitio de la autora en Georgia Tech,
 leído como imagen — citas transcriptas a mano). El capítulo de 1999 (candidato original) está
 paywalled; el de 1992 es más rico para nuestro uso.
+
+---
+
+## 9. Kemp & Tenenbaum (PNAS 2008) + Ullman, Goodman & Tenenbaum (2012) — el fundamento formal
+
+**Qué son.** El par formal de la ciencia cognitiva computacional. **Kemp 2008**: descubrir la
+FORMA de un dominio (¿árbol? ¿anillo? ¿cadena? ¿grilla?) como inferencia bayesiana sobre
+gramáticas de grafos — recupera el árbol de Linneo, el círculo cromático de Newton, la cadena
+liberal-conservador de la Corte, y reproduce el shift infantil partition→tree como efecto puro
+de cantidad de datos. **Ullman 2012**: las teorías SON programas (cláusulas de Horn) y aprender
+es **búsqueda estocástica (MCMC) sobre EDICIONES del programa** — agregar/borrar/cambiar
+predicado, instanciar template, agregar/borrar ley — con el problema huevo-gallina de los
+conceptos nuevos RESUELTO: la ley nueva introduce un predicado EN BLANCO y el loop interno le
+busca significado ("the novel concepts that began as blank symbols f and g… have now
+effectively become what we call 'magnets'").
+
+**El veredicto de formalidad para nuestra taxonomía (la tabla completa está arriba en el
+informe del lector; resumen):**
+- Nuestra premisa ("descubrir = editar la estructura del programa generativo") tiene acá su
+  fundamento formal EXACTO, publicado — incluida la legitimidad de "agregar variable latente"
+  (el predicado en blanco + grounding).
+- De nuestros 11 operadores, sus espacios cubren sólido **2** (latente, partir-en-tipos) y
+  parcial **3** (invariante, unificar, transferir). **Los 6 dinámicos/mecanísticos nuestros
+  (régimen, feedback, memoria, observador, reparametrizar, cuantizar) NO EXISTEN en ninguno de
+  los dos espacios** — y Ullman nombra la extensión necesaria: "a functional language, in which
+  the laws are more similar to mathematical equations… much more expressive". **Nuestra
+  taxonomía es la lista de clases de edición que ese lenguaje funcional necesita** — no está
+  "ya publicada": está un nivel de expresividad más allá, con linaje nombrado.
+- Rival de diseño a discutir: que nuestros operadores sean COMPOSICIONES de sus primitivas en
+  un lenguaje más rico ("agregar régimen" = latente + ley condicional) — derivados, no
+  primitivos. Discusión de diseño, no de lectura.
+
+**Dos regalos extra:** (1) la Fig. 8 de Ullman es un **modelo formal de la revisión kuhniana
+por anomalías acumuladas**: la teoría simple absorbe las excepciones **como outliers** hasta
+que el costo las vuelve insostenibles y fuerza el salto — la mecánica exacta de nuestros
+agentes ("es un outlier"), modelada; (2) firma de traza medible: la búsqueda estructural real
+tiene MESETAS + SALTOS DISCRETOS individuales (que se ven suaves en promedio — advertencia
+contra promediar corridas).
+
+**Estado: LEÍDOS completos** (Kemp: paper + SI de 10 pp; Ullman: preprint de autor 47 pp).
+
+---
+
+## Nivel arriba de TODA la campaña (9 fuentes a texto completo en un día)
+
+1. **La formalidad de la taxonomía quedó resuelta con el mejor veredicto posible**: marco con
+   linaje formal exacto (Tenenbaum ×2), alineación fina con la taxonomía filosófica de
+   abducciones (Schurz: exacta donde se cruzan, más fina en 7/11), y "un nivel de expresividad
+   más allá de lo publicado" en los 6 operadores dinámicos. Ni huérfana ni ya-hecha. Falta:
+   Darden/Thagard/Boden/Ohlsson (LIBROS — pedir PDFs).
+2. **Doctrina de diseño nueva que sale de Dunbar + Nersessian + Klahr&Dunbar** (para las
+   próximas fichas): medir la CADENA de modelos, no el veredicto final (híbridos = estado
+   intermedio productivo; el aha = soltar el andamio); scoring que NO cobre la postulación
+   provisoria (solo la adecuación final); réplica comprable (el gate es la creencia-sobre-error);
+   la firma oculta asomando en CONTROLES; cruce momento×centralidad de la anomalía (triage vs
+   vicio); sonda barata de enumeración-en-frío; y el modo sin-hipótesis como vía de escape
+   (que los agentes nunca usan).
+3. **Nuestras dos líneas son UNA en la literatura**: no-generar-la-alternativa causa
+   no-revisar (Einhorn&Hogarth vía K&D), la acumulación de "outliers" fuerza el salto kuhniano
+   (Ullman Fig. 8), y Aliseda (POR-LEER) las une desde la lógica.
+4. **El mito muere**: la analogía lejana romántica NO produce descubrimientos (Dunbar 2/99,
+   cero causales); el cambio real es tinkering local — partir mecanismos, híbridos, controles
+   que dan raro. Nuestros mundos de "cirugía estructural local" miden el fenómeno real, no el
+   mito.
