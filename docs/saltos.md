@@ -380,6 +380,47 @@ construida y certificada en la era anterior.
 
 ---
 
+## El mismo juego con otros trajes (pregunta de Lucas, 2026-08-08)
+
+**¿La investigación detectivesca es lo nuestro? SÍ — y no por analogía: por identidad.** Peirce
+inventó la abducción pensando en detectives (el volumen clásico *The Sign of Three*, Eco &
+Sebeok 1983, lee a Sherlock Holmes como abducción peirceana; y Ginzburg, "Clues", funda el
+"paradigma indiciario": leer el detalle marginal como firma). La estructura es la nuestra:
+verdad oculta + comprar evidencia con costo + entregar la explicación + que la realidad corrija.
+**Ciencia, detective, diagnóstico médico y debugging = el mismo juego con cuatro disfraces.**
+
+**El failure mode del "nombre visto y no conectado"** (el caso que trajo Lucas) ya está en
+nuestro mapa con mecanismo medido: recuperación relacional fallida (Gentner: la memoria
+recupera por superficie, 70/30) + codificación bajo el marco equivocado (Klahr & Dunbar: lo
+anotado bajo otro frame se etiqueta con los atributos que ese frame considera relevantes y se
+vuelve invisible después) + asimilación oportunista que no disparó (Seifert: los problemas
+pendientes se resuelven cuando un encuentro posterior los reactiva — acá no reactivó).
+
+**La CUARTA tradición (la que no habíamos tocado): las profesiones de investigar** — gente cuyo
+trabajo es descubrir y que documentó métodos Y fallas con casos reales:
+- **Inteligencia**: Heuer, *Psychology of Intelligence Analysis* (CIA 1999) `[EN LECTURA
+  2026-08-08]` — el método **ACH** (enumerar TODAS las hipótesis rivales + matriz
+  evidencia×hipótesis + foco en DESCONFIRMAR + "diagnosticity" de la evidencia) es el antídoto
+  formalizado contra nuestro hallazgo central (nadie compara hipótesis).
+- **Medicina**: la literatura de **error diagnóstico** (Graber; Croskerry) `[EN LECTURA]` —
+  falla #1 documentada: cierre prematuro (nuestro vicio 2); anclaje; search satisficing. Tasas
+  base HUMANAS de nuestros vicios, con casos.
+- **Derecho**: **visión de túnel** en condenas erróneas (Findley & Scott) `[EN LECTURA]` — el
+  compromiso temprano con un sospechoso re-lee toda la evidencia posterior (nuestro vicio 1
+  con expedientes).
+- **Insight de campo**: Klein, *Seeing What Others Don't* `[POR-LEER — libro]` — ~120 casos
+  reales de insight (bomberos, militares, detectives) con SU lista de disparadores
+  (conexiones, coincidencias, contradicciones, desesperación creativa).
+
+**¿Es todo "el razonamiento"? No — y el recorte importa.** Hay un núcleo común real:
+*investigar bajo incertidumbre* = el lazo de dos espacios (hipótesis × evidencia; Klahr &
+Dunbar) con la abducción generando candidatos. Ese núcleo es el mismo bajo todos los
+disfraces — por eso nuestros saltos (movidas en el espacio de hipótesis) y nuestros vicios
+(fallas del lazo) DEBERÍAN transferir entre disfraces, **y eso es testeable con nuestra
+máquina** (mismo operador, disfraz detective vs disfraz fábrica → ¿mismas firmas?). Pero
+"razonamiento" a secas incluye más (deducir, planificar, calcular): lo nuestro es una tajada
+específica y honda — **el razonamiento explicativo sobre sistemas con estructura oculta**.
+
 ## Recursos para leer más (la biblioteca del programa)
 
 **El estado de cada uno**: `[LEÍDO]` = leído a texto completo por nosotros, con extracción en
