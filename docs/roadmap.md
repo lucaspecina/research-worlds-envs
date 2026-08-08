@@ -302,12 +302,14 @@
 > **RESULTADO 2026-08-07 — MUNDO 2 CONSTRUIDO, CERTIFICADO Y MEDIDO (count_regime, GO de
 > Lucas):** ficha congelada → certificación VERDE (4 compuertas + 8 robots; **R premia el salto
 > por construcción**: oracle 1.0 vs rival suave 0.0 — A2 resuelta) → técnico + tanda 12
-> episodios (~USD 3). **La juntura rota generaliza al segundo operador con TASA distinta**:
-> salto espontáneo 2/5 válidas (parcial ~0.65, gpt con zoom adaptativo al umbral) vs 0/9 en
-> count_mix — la "distancia-al-menú por operador" existe y es medible. Gemelo 0/6 espurio.
-> Especímenes nuevos: DeepSeek nombra "piecewise… two segments?" y entrega la suave llamando
-> "outlier" al punto que confirmó real; gpt re-etiqueta la discontinuidad como "muestra
-> ruidosa". [Ficha](research/2026-08-07-ficha-mundo-count-regime-v0.md) ·
+> episodios (~USD 3). **Constructo corregido por Lucas la misma noche:** la v0 dicta el
+> candidato (el escalón grita en las tablas) → midió **ACEPTACIÓN, no creatividad** — los que
+> fallan GENERAN el candidato y lo matan ("outlier" / "muestra ruidosa" / interpolar sin ley)
+> = rigidez del **vicio 1** con evidencia dictante (el elicitor accidental más limpio del 1.A;
+> 2/5 acepta — NO comparable con el 0/9 de generación de count_mix). La celda de CREATIVIDAD
+> del operador régimen sigue vacía hasta una versión con quiebre no-flagrante. Gemelo 0/6
+> espurio; zoom adaptativo de compra en los que aceptan.
+> [Ficha](research/2026-08-07-ficha-mundo-count-regime-v0.md) ·
 > [resultado](research/2026-08-07-resultado-smoke-count-regime-v0.md) ·
 > plan/matriz: [mundo 2](research/2026-08-07-plan-mundo-2-regimen-borrador.md) ·
 > chuleta: [`docs/glosario.md`](glosario.md).

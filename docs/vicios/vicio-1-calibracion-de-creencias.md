@@ -109,6 +109,17 @@ cambio de entrega es cortesía, no creencia.
   advertencia — [réplica](../research/2026-07-09-replica-deepseek-adr0098.json)). El polo no
   está muerto: está no-elicitado en compacto-frontier — las sub-formas 1.2 (compromiso público,
   que el verbo register de lab_largo ya habilita) y 1.1-con-evidencia-ambigua quedan vivas.
+- **count_regime_v0 — rigidez con evidencia DICTANTE (nuestra mesa, 2026-08-07)**
+  `[VERIFICADO propio][AGÉNTICO]` — el elicitor accidental más limpio del 1.A hasta ahora
+  (constructo corregido por Lucas: el mundo dicta el candidato → mide aceptación, no
+  creatividad): con el escalón GRITANDO en sus propias tablas (media 5.5→11.5 entre dos
+  velocidades), DeepSeek 99502 lo confirma comprando MÁS datos del punto anómalo, escribe
+  *"perhaps a piecewise linear… two segments?"* y entrega la suave llamando **"outlier"** al
+  punto confirmado; gpt (técnico) re-etiqueta la discontinuidad como *"the historical sample
+  was noisy"*; DeepSeek 99500 la esquiva interpolando puntos sin ley. Es el gemelo doméstico
+  del caso Corral (*"nota la discrepancia del doblete y entrega la misma estructura"*). Tasa:
+  la mitad de las corridas mata el candidato generado (2/5 lo acepta).
+  [Resultado](../research/2026-08-07-resultado-smoke-count-regime-v0.md).
 
 ### 1.B Influenciable, canal SOCIAL — la sycophancy epistémica
 - **Qué es**: abandonar una conclusión que tus datos respaldan porque alguien la contradice con

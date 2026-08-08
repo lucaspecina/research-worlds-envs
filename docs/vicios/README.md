@@ -34,7 +34,7 @@ evidencia y anatomía: [vicio-1](vicio-1-calibracion-de-creencias.md).
 | [vicio-1](vicio-1-calibracion-de-creencias.md) | **Calibración de creencias (el pivoteo)**: rigidez ↔ influenciable (social + contenido) | Competencia | **EN FOCO** | first_story (control; y ES el mundo del canal-contenido vía folklore) |
 | [vicio-2](vicio-2-el-pozo.md) | Calibración de parada: overstay ↔ cierre prematuro | Competencia | activo (polo understay, vía híbrido) | v0 · v2 · lab_largo + hallazgo 0/60 |
 | [vicio-3](vicio-3-no-verificar-inflar.md) | No verificar / inflar / fabricar | Integridad | activo (prioridades #2-#3) | ninguno |
-| [vicio-4](vicio-4-estructura-escondida.md) | No postular la estructura escondida | Competencia | activo (validado afuera + replicado en casa; generaliza entre operadores con tasa distinta) | latent_mix v2 (trofeo) · count_mix_v0+twin (0/9; escalera de canales) · count_regime_v0+twin (2/5 parcial; R premia el salto) |
+| [vicio-4](vicio-4-estructura-escondida.md) | No postular la estructura escondida | Competencia | activo (validado afuera + replicado en casa 2026-08-07) | latent_mix v2 (trofeo) · count_mix_v0+twin (0/9 GENERACIÓN; escalera de canales) · count_regime_v0+twin (construido; su v0 dicta el candidato → midió aceptación = vicio-1; creatividad del operador sin medir) |
 | [vicio-5](vicio-5-perder-el-hilo.md) | Perder el hilo | Operación | fuera de alcance (se mide, no se construye) | — |
 | [vicio-6](vicio-6-adivinar-vs-preguntar.md) | Adivinar en vez de preguntar | Competencia | bloqueado (falta el verbo preguntar) | Mundo B diseñado |
 | [vicio-7](vicio-7-correlacion-causa.md) | Correlación vs causa | Competencia | control (frontier lo pasa) | 5 mundos |

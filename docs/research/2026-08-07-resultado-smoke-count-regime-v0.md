@@ -1,5 +1,16 @@
 # Resultado — smoke count_regime_v0 (mundo 2): el salto tiene GRADIENTE por operador
 
+> **⚠️ CORRECCIÓN DE CONSTRUCTO (Lucas, 2026-08-07 noche — manda sobre los titulares de este
+> doc):** el programa evalúa **CREATIVIDAD para dar el salto** = que el candidato NAZCA cuando
+> nada lo dicta. En este mundo v0 la evidencia DICTA el candidato (el escalón grita en las
+> tablas de todos): lo que se midió acá es la **ACEPTACIÓN** del candidato, no su generación —
+> los que fallan lo GENERAN y lo matan ("outlier", "ruido") = **vicio 1 (rigidez/revisión de
+> creencias)**, no vicio 4. Por eso el 2/5 de acá NO es comparable con el 0/9 de count_mix
+> (generación). La creatividad del operador régimen queda SIN medir hasta la versión con
+> quiebre no-flagrante (señal chica vs ruido / firma en forma). El mundo v0 vale como: (a)
+> elicitor fuerte de rigidez con evidencia dictante, (b) piso de la escalera de señal, (c)
+> primera familia con R que premia el descubrimiento.
+
 > **Ficha:** [count-regime-v0](2026-08-07-ficha-mundo-count-regime-v0.md) (congelada antes de
 > construir; microhipótesis H-M1/2/3 pre-registradas). Certificación VERDE (4 compuertas + 8
 > robots; R direccional +1.0). Corridas: técnico gpt 99490 + tanda 12 (2 modelos × 2 polos × 3

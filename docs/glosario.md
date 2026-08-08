@@ -28,7 +28,10 @@ para medir — sin jueces LLM — dónde exactamente se les rompe el proceso de 
 
 - **Refinamiento**: ajustar los NÚMEROS de un modelo sin cambiarle la forma.
 - **Salto**: cambiarle la FORMA al modelo (qué variables existen, cómo se conectan). Lo que
-  medimos.
+  medimos. **Distinción que manda (Lucas, 2026-08-07): GENERAR el candidato cuando nada lo
+  dicta (= creatividad, la vara del programa) ≠ ACEPTARLO cuando la evidencia lo grita (= 
+  revisión de creencias, vicio 1).** Un mundo mide creatividad solo si el candidato tiene que
+  NACER del agente.
 - **Operador (de salto)**: cada TIPO de cambio de forma. La lista 10+1
   ([justificación](research/2026-08-05-fundamentos-taxonomia-de-saltos.md)): 1 entidad oculta ·
   2 grupos escondidos (count_mix) · 3 régimen/fase oculto (dos leyes con umbral) · 4 geometría ·
