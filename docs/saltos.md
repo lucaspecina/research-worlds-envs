@@ -398,10 +398,13 @@ pendientes se resuelven cuando un encuentro posterior los reactiva — acá no r
 
 **La CUARTA tradición (la que no habíamos tocado): las profesiones de investigar** — gente cuyo
 trabajo es descubrir y que documentó métodos Y fallas con casos reales:
-- **Inteligencia**: Heuer, *Psychology of Intelligence Analysis* (CIA 1999) `[EN LECTURA
-  2026-08-08]` — el método **ACH** (enumerar TODAS las hipótesis rivales + matriz
-  evidencia×hipótesis + foco en DESCONFIRMAR + "diagnosticity" de la evidencia) es el antídoto
-  formalizado contra nuestro hallazgo central (nadie compara hipótesis).
+- **Inteligencia**: Heuer, *Psychology of Intelligence Analysis* (CIA 1999) `[LEÍDO
+  completo 2026-08-08, 216 pp.]` — nuestra tríada de hallazgos (una-hipótesis-confirmada /
+  menú truncado / anomalía descartada como "outlier") YA estaba descompuesta como las tres
+  patas del *satisficing*; su **diagnosticity** (la evidencia consistente-con-todo vale
+  cero) nos da una métrica cero-LLM del gasto experimental; y el nulo empírico de ACH
+  (Dhami 2019: 50 analistas reales, no mejoró) es nuestro "teatro de nivel4b" en humanos —
+  nuestros mundos son el banco de pruebas que esa literatura declara faltante.
 - **Medicina**: la literatura de **error diagnóstico** (Graber; Croskerry) `[EN LECTURA]` —
   falla #1 documentada: cierre prematuro (nuestro vicio 2); anclaje; search satisficing. Tasas
   base HUMANAS de nuestros vicios, con casos.

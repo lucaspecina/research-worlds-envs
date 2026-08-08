@@ -632,3 +632,64 @@ convergencia de fenómenos.
 **Estado: LEÍDOS 5 completos** (1987 AI Magazine · Darden & Cook 1994 · 1998 Digital Phoenix ·
 Machamer/Darden/Craver 2000 · 2002 PSA) + Intro del libro 2006. El capítulo 1992 y el libro
 1991 (tablas canónicas 9.1/9.3) siguen POR-LEER — esperan PDF.
+
+---
+
+## 13. Heuer, "Psychology of Intelligence Analysis" (CIA, 1999) — LEÍDO COMPLETO (216 pp.)
+
+**Qué es.** EL texto fundacional del análisis de inteligencia: Heuer (24 años en la CIA)
+traduce la psicología cognitiva experimental al problema del analista. Tesis triple: la mente
+está mal cableada para la incertidumbre; **la conciencia del sesgo NO lo arregla** (demostrado
+experimentalmente — persisten como ilusiones ópticas); lo que ayuda son PROCEDIMIENTOS
+EXTERNOS que fuerzan alternativas. De ahí su método ACH.
+
+**La conexión #1 — nuestra tríada de hallazgos YA ESTABA DESCOMPUESTA (1980) como las tres
+patas del "satisficing":** (a) elegir UNA hipótesis intuitiva y mirar la evidencia según la
+apoye (*"See, I knew it all along!"*) = nuestra 1-comparación-en-28; (b) **falla en generar el
+menú completo** (*"woefully inadequate"* — y el menú lo trunca el HÁBITO de estrategia
+analítica, no una orden) = nuestro candidato-no-entra-al-menú; (c) la evidencia que debilita
+se juzga *"of questionable reliability or an unimportant anomaly"* = nuestro "outlier",
+verbatim con 45 años de anticipación. Más Ben-Zvi: en 5 de 5 ataques sorpresa analizados, los
+supuestos estratégicos LE GANARON a los indicadores tácticos contradictorios, sin reevaluación.
+
+**La conexión #2 — la eficacia de ACH está empíricamente ABIERTA, y nuestro nivel4b lo
+replicó sin saberlo:** dentro del libro no hay evidencia de outcome (el claim honesto de Heuer:
+*"guarantees an appropriate process of analysis"*, no la respuesta); y el mejor test posterior
+([Dhami, Belton & Mandel 2019](https://onlinelibrary.wiley.com/doi/full/10.1002/acp.3550): 50
+analistas reales, asignación aleatoria, verdad conocida) dio que **el grupo ACH NO eligió más
+la hipótesis correcta**. → Nuestro resultado "comparación mandada = teatro (0/3)" es el mismo
+nulo, en LLMs: ordenar el procedimiento no arregla el paso 1 (generar el menú). **Y nuestros
+mundos son exactamente el banco de pruebas que esa literatura declara faltante** (outcome
+medible, n grande, agentes baratos).
+
+**El método ACH en 8 pasos** (lo esencial): enumerar TODAS las hipótesis con juicio diferido
+(distinción clave: refutada ≠ no-probada — las no-probadas se mantienen vivas) → matriz
+evidencia×hipótesis trabajada POR FILAS con la pregunta *"si esta hipótesis fuera cierta, ¿qué
+probabilidad tendría de estar viendo este dato?"* → **diagnosticity**: la evidencia consistente
+con todo vale CERO (la fiebre prueba enfermedad, no discrimina cuál) → refutar, no confirmar
+(*"la hipótesis más probable suele ser la que tiene MENOS evidencia en contra, no la que tiene
+más a favor"*) → análisis de sensibilidad sobre los ítems bisagra → reportar TODAS las
+hipótesis → **milestones pre-declarados** (*"specifying in advance what would cause you to
+change your mind"* = nuestro pre-registro).
+
+**Regalos operativos cero-LLM:** (1) **diagnosticity del gasto**: en nuestros mundos
+P(resultado|H1) vs P(resultado|H2) es computable EXACTO server-side → métrica nueva: fracción
+del presupuesto gastada en experimentos-fiebre (consistentes-con-todo) vs discriminantes;
+(2) la firma **confianza-sube-precisión-no** (handicappers: de 5 a 40 variables la precisión
+no mejoró, la confianza sí) — medible en trazas; (3) el dato mecanístico incómodo: Heuer
+explica el satisficing humano por límites de memoria de trabajo (3-7 hipótesis × N datos no
+entran) — pero nuestros agentes tienen "papel" ilimitado Y FALLAN IGUAL → el cuello es el
+hábito de proceso, no la memoria. Claim afilado para el paper.
+
+**Catálogo de fallas documentado** (extracto): satisficing · mirror-imaging · vividez le gana
+a estadística · ausencia-de-evidencia ignorada (el perro que no ladró) · evidencia
+desacreditada que persiste (*"once information rings a bell, the bell cannot be unrung"*) ·
+anclaje (rangos de confianza: la verdad cae afuera 40-50% de las veces con 98% declarado) ·
+todo-necesita-causa (los psicólogos ante el dato desviado *"always able to come up with a more
+persuasive causal explanation"* antes que varianza muestral) · hindsight que resiste debiasing.
+
+**Límites.** Psicología de los 60s-70s; prevalencia del satisficing = juicio experto sin tabla;
+ACH sin validación de outcome; casi nada sobre REPLICAR como acto (su mundo recibe evidencia,
+no compra experimentos — nuestra extensión es genuina).
+
+**Estado: LEÍDO completo** (PDF oficial de cia.gov, 14 capítulos + front matter).
