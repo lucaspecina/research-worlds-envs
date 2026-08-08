@@ -80,6 +80,29 @@ son los 11 saltos". Lo que NO es intuición suelta:
    cambio conceptual con casos) `[POR-LEER]`; Boden (3 tipos; la transformacional = cambiar el
    espacio) `[POR-LEER]`; y en era-LLM la taxonomía de operaciones de Chen `[LEÍDO]` —
    **validada con anotadores independientes**, el estándar que copiamos como receta.
+**Los cinco pilares, operador por operador** (pregunta de Lucas: "¿cómo sabemos que no son
+invención nuestra?"). El pilar más fuerte es el ③: **cada operador nombra una estructura tan
+real que la estadística tuvo que inventar una FAMILIA DE MÉTODOS para detectarla** — nadie
+funda una industria de métodos alrededor de una estructura sin sentido:
+
+| Operador | ① Casos históricos | ② Filosofía (Schurz) | ③ El método que la estadística tuvo que inventar | ④ Modelo computacional corrido | ⑤ Evidencia LLM |
+|---|---|---|---|---|---|
+| 1 entidad oculta | Neptuno · neutrino · materia oscura | existencial 1er orden (parcial) | variables latentes, factor analysis | parcial (Ullman: predicado en blanco) | DiscoverPhysics ✓ |
+| 2 grupos escondidos | Mendel · Pearson 1894 | causa común estricta (parcial) | **modelos de mezcla + algoritmo EM** | ✓ (Kemp partition; Ullman tipos) | nuestro 0/9 ✓ · Chen ✓ |
+| 3 régimen oculto | Reynolds · Onnes · Curie | — | **changepoint detection: Shewhart, CUSUM (Page 1954), Markov-switching (Hamilton)** | — | nuestro mundo 2 ✓ |
+| 4 geometría | Kepler · Minkowski | — | transformaciones, manifold learning | — | — |
+| 5 unificación | Newton · Maxwell | **causa común (EXACTO)** | principio de Reichenbach, causa común | — | Chen (espejo: sobre-conectar) ✓ |
+| 6 invariante | Einstein · Noether | — (Footsteps: "symmetry abduction") | teorema de Noether; invariance en ML | — | Footsteps ✓ |
+| 7 observador | Wald | — | **corrección de Heckman (Nobel), censura, datos faltantes (Rubin)** | — | — |
+| 8 realimentación | Lotka-Volterra · Watt | — | teoría de control, cibernética (Wiener) | — | — |
+| 9 conservación | Lavoisier · Planck · Millikan | — | leyes de conservación; physics-informed ML | — | — |
+| 10 memoria | Ewing · Hurst | — | **exponente de Hurst**, HMM, memoria larga | — | — |
+| 11 transferencia | Darwin · Shannon | **analógica (EXACTO)** | transfer learning; Structure-Mapping Engine | parcial (templates de Ullman) | Gentner + Lewis & Mitchell ✓ |
+
+Lectura honesta de la tabla: **① y ③ están llenos para los 11** (pendiente: fichar las fuentes
+de ① — eso es "firmar"); ② cubre 4; ④ es la vara más exigente (2 sólidos) y su vacío es
+NUESTRA contribución, no nuestra debilidad; ⑤ crece con cada mundo que medimos.
+
 3. **Qué le falta a la nuestra para estar FIRMADA** (el trabajo declarado en fundamentos §8):
    (a) leer Darden/Thagard/Boden/Ohlsson a texto completo y hacer la **tabla de alineación**
    operador-por-operador (cobertura, sobras, faltantes contra lo que ellos hallaron en casos
