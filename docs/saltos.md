@@ -431,6 +431,22 @@ máquina** (mismo operador, disfraz detective vs disfraz fábrica → ¿mismas f
 "razonamiento" a secas incluye más (deducir, planificar, calcular): lo nuestro es una tajada
 específica y honda — **el razonamiento explicativo sobre sistemas con estructura oculta**.
 
+**La jerarquía completa (pregunta de Lucas, 2026-08-08: "¿toda tarea es la misma cosa?").**
+NO — tres familias de "resolver": **ejecutar/buscar** en espacio conocido (Rubik, ajedrez —
+sin verdad oculta, pura combinatoria) · **diseñar/construir** (la respuesta no existe hasta
+que la hacés) · **INDAGAR** (hay una verdad oculta que ya existe y se infiere comprando
+evidencia — nuestra familia; debuggear es indagar metido dentro de construir). Dentro de
+indagar, juez/médico/detective/científico comparten EL MISMO esqueleto (el ciclo de Peirce:
+abducir → deducir qué se vería → testear → volver, con economía de evidencia) pero difieren en
+**cuatro perillas**: menú cerrado/abierto · ¿podés experimentar o solo evaluar lo traído (el
+juez no experimenta)? · ¿la fuente puede mentir? · vara de decisión. **Nuestra máquina de
+mundos ES ese espacio de perillas; cada profesión es un punto en él.** Los nombres, de general
+a específico: RAZONAMIENTO (caja de herramientas) ⊃ **INDAGACIÓN** (el lazo común — el nombre
+de lo que comparten) ⊃ ABDUCCIÓN (la fase generativa) ⊃ **SALTO** (abducción creativa: el
+candidato no está en ningún menú — nuestra tajada). Y ni la indagación es puro razonamiento:
+también es memoria (el nombre no conectado del detective), percepción y saber gastar el
+presupuesto.
+
 ## Recursos para leer más (la biblioteca del programa)
 
 **El estado de cada uno**: `[LEÍDO]` = leído a texto completo por nosotros, con extracción en
