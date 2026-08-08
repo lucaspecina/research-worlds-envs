@@ -470,3 +470,43 @@ contra promediar corridas).
    cero causales); el cambio real es tinkering local — partir mecanismos, híbridos, controles
    que dan raro. Nuestros mundos de "cirugía estructural local" miden el fenómeno real, no el
    mito.
+
+---
+
+## 10. Schmidhuber (2010), "Formal Theory of Creativity, Fun, and Intrinsic Motivation" — IEEE TAMD
+
+**Qué es.** LA teoría matemática de la creatividad: la recompensa intrínseca (el "fun", la
+curiosidad, el interés) = **el PROGRESO DE COMPRESIÓN** — la derivada de cuántos bits necesita
+tu modelo para codificar la historia completa, cuando el modelo mejora. Ni lo ya-comprimido
+(aburre) ni el ruido incompresible (aburre): lo interesante es la franja aprendible. Un
+**descubrimiento** = "an unusually large compression breakthrough" (Newton: un programa corto
+que comprime milenios de manzanas cayendo — SIN anomalía; las manzanas caían predeciblemente).
+
+**Los tres veredictos para nosotros:**
+
+1. **La crítica de can't-jump queda partida en dos, con precisión**: NO refuta la VARA (bajo
+   MDL de dos partes, el salto es rentable sin señal de error — el ejemplo de π: cero anomalía
+   estadística, ningún residuo explotable, y sin embargo existe el programa corto); SÍ aplica
+   al MECANISMO — Schmidhuber mismo concede casi textual que un aprendedor limitado "will get
+   discouraged from spending too much effort" en patrones fuera de su clase (sin gradiente
+   hacia el salto). **Nuestra arquitectura usa exactamente la mitad que sobrevive: MDL para
+   PUNTUAR, no para entrenar.**
+2. **Nuestro escenario canónico cae del lado correcto de su distinción**: bajo error cuadrático
+   (la medida ingenua que él descarta), el unimodal-que-ajusta-bien NO es castigado; bajo su
+   medida oficial (C_l, código sin pérdida de la historia completa) SÍ — la densidad unimodal
+   sobre datos bimodales gasta bits de más, la mezcla los ahorra tras pagar su descripción.
+   Descubrir la mezcla ES un evento de progreso de compresión, en bits, computable, cero-LLM.
+3. **Tres disciplinas para importar a la vara**: (a) ambos modelos evaluados sobre la MISMA
+   historia completa; (b) código de DOS partes — los bits del modelo se cobran siempre
+   (anti-parche estructural: el Vulcano paga sus polígonos); (c) el umbral "unusually large"
+   para separar descubrimiento de micro-mejora — sin fórmula en el paper, lo fijamos nosotros
+   contra la distribución de progresos. Bonus: EURISKO se estancó por "interesante" hardcodeado
+   → refuerza nuestra regla de cero jueces de interés en el reward.
+
+**Límites.** Teoría + implementaciones de juguete pre-2010; define QUÉ recompensar, no CÓMO
+encontrar el salto (las instancias óptimas son incomputables); neutralidad de contenido (un bit
+de empapelado = un bit de física — la relevancia entra solo por reward externo); amplitud
+post-hoc (explica ciencia, arte, humor y consciencia — falsabilidad discutible).
+
+**Estado: LEÍDO completo** (draft del autor de 18 pp. que él mismo enlaza como el paper
+canónico; §I–VIII con ecuaciones y las 120 referencias).

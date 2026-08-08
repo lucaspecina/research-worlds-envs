@@ -367,6 +367,12 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
   ("novelty is cheap"); endosa los mundos con leyes ocultas.
 
 ### Creatividad e insight (ciencia cognitiva)
+- **Schmidhuber**, "Formal Theory of Creativity" (IEEE TAMD 2010) `[LEÍDO completo
+  2026-08-07]` — la teoría matemática: creatividad = progreso de COMPRESIÓN; el
+  descubrimiento no necesita anomalía (Newton comprime manzanas predecibles); su MDL de
+  dos partes castiga al modelo que ajusta sin comprimir y cobra los bits del parche —
+  respaldo formal directo de nuestra vara (puntuar, no entrenar).
+  [Extracción](research/2026-08-07-lecturas-programa-saltos.md).
 - **Boden, *The Creative Mind*** (2ª ed. 2004) — la distinción combinacional / exploratoria /
   **transformacional** (cambiar el espacio mismo: nuestros saltos).
 - **Ohlsson**, teoría del cambio representacional (*Deep Learning: How the Mind Overrides
