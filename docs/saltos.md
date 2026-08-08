@@ -64,7 +64,7 @@ son los 11 saltos". Lo que NO es intuición suelta:
 **¿Y no existe YA una lista curada de tipos de saltos/insights/abducciones?** (segunda pregunta
 de Lucas, misma noche). **NO — y el propio campo lo declara.** El estado del arte, verificado
 por lectura: Schurz `[LEÍDO]` clasifica QUÉ se abduce, no la movida, y es grueso donde importa
-("no hay patrón general" para la abducción de modelos teóricos); Darden `[POR-LEER]` es lo más
+("no hay patrón general" para la abducción de modelos teóricos); Darden `[5 artículos LEÍDOS 2026-08-08; libro POR-LEER]` es lo más
 cercano pero un solo dominio y sin validación; Thagard = escala de severidad, no tipología;
 Boden = 3 baldes; Ohlsson = mecanismos de proceso mental (en acertijos, no en ciencia); Kemp &
 Tenenbaum `[LEÍDO]` = formas estáticas, y ELLOS piden la "Universal Structure Grammar" que no
