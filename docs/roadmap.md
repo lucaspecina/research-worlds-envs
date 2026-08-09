@@ -329,11 +329,24 @@
 > (test causal del disparador), con generación/aceptación separadas server-side por timing.
 > NO-GO por ahora: mundo invariante, tercera familia, careo internista.
 >
-> **PRÓXIMO PASO (2026-08-09): ejecutar el paquete — esperando GO de Lucas.** Orden: saneo de
-> claims → ADR 0174 → ficha v1 → UNA corrida decisiva. El mismo día quedó guardado el marco
-> refinado (vara de dos bolsillos · disparador-vs-criterio · dos canales de impasse
-> datos/coherencia · continuo de invención): [WIKI-INDAGACION](../WIKI-INDAGACION.md) §6,
-> glosario, y el careo a can't-jump en [el libro de saltos](saltos.md).
+> **PAQUETE EJECUTADO (2026-08-09, GO de Lucas "todo sí"):** saneo de claims ✓ (titular del
+> resultado mundo 2 retitulado; H-M1 y Nivel-arriba marcados; A2 acotada; glosario
+> "candidato-en-menú" rebajado a interpretación post-hoc) · ADR 0174 ✓ (el catálogo no fija
+> foco; guardia anti-foco con autotest en `tests/test_vicios_consistency.py`) · **ficha
+> count_regime_v1 CONGELADA ✓** con las 7 compuertas del impasse, brazos RAW/VISIBLE,
+> generación/aceptación server-side por timing y condición de salida:
+> [ficha v1](research/2026-08-09-ficha-mundo-count-regime-v1-impasse.md). El mismo día quedó
+> guardado el marco refinado (vara de dos bolsillos · disparador-vs-criterio · dos canales de
+> impasse datos/coherencia · continuo de invención · formulación con Bayes):
+> [WIKI-INDAGACION](../WIKI-INDAGACION.md) §3/§6, glosario, careo en [el libro](saltos.md).
+>
+> **PRÓXIMO PASO (2026-08-09): construir la v1 contra su ficha.** Orden: generador con firma
+> no-flagrante + scan de instancia (seeds 99450–99459/99468–99489) → certificados (los 4 +
+> no-flagrancia/no-dictación/necesidad teleológica — si la 7 no certifica, se abandona el
+> host SIN correr agentes) → harness del episodio (M0/calificación rutinaria/brazos) → técnico
+> 99520 → tanda 16 (99521–99544, ≈USD 5–8) → dossier a Codex/Lucas. En paralelo, sin
+> bloquear: codebook de taxonomía (unidad = edición-dentro-de-cadena). Libros esperando PDFs
+> (Darden 1991 prioritario).
 >
 > **REEVALUACIÓN Y SIGUIENTE ACCIÓN (histórica 2026-08-02; superseded por el bloque de arriba):** todavía no se congela la pregunta final del paper. Sigue
 > viva la señal de **cierre/autoridad del diagnóstico**; la apertura latente persiste solo en SCM;
