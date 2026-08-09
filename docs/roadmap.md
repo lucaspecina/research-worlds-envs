@@ -314,13 +314,25 @@
 > plan/matriz: [mundo 2](research/2026-08-07-plan-mundo-2-regimen-borrador.md) ·
 > chuleta: [`docs/glosario.md`](glosario.md).
 >
-> **PRÓXIMO PASO (2026-08-07):** consulta a Codex (sesión persistente, contrapunto ADR 0172) con
-> el dossier completo — refutación pre-registrada de canales + mundo 2 medido — para
-> MANTENER/MODIFICAR/PIVOTEAR. Decisiones en mesa: tercer operador (invariante/conservación) vs
-> escalera de ayudas en count_regime vs tercera familia de modelos sobre los dos mundos
-> congelados; cómo testear "candidato-en-menú" sin regalar el candidato; firma de la taxonomía
-> (lecturas) antes o en paralelo. Codex bloqueado por cuota hasta 2026-08-08 00:35; receta en
-> `scratch/codex-supervisor-session.json`.
+> **RESULTADO 2026-08-09 — VEREDICTO DE CODEX: MODIFICAR** (consulta hecha en la sesión
+> persistente, contrapunto ADR 0172; crudos en `scratch/codex-respuesta-2026-08-09.txt`).
+> Reencuadre del claim: en nuestros peldaños lo medible es la **ACTIVACIÓN del candidato tras
+> el fallo del modelo propio**, no la "invención de axiomas" (el techo del paper can't-jump);
+> la taxonomía sobrevive como catálogo de ediciones. Paquete ordenado: **(1) saneo de claims**
+> (retitular el resultado del mundo 2 — el titular "gradiente por operador" está muerto;
+> A2-aún-abierta donde corresponda), **(2) ADR 0174** que supersede PARCIALMENTE el foco de
+> ADR 0161 (el tablero de vicios deja de declarar foco), **(3) ficha congelada
+> `count_regime_v1`** con episodio de impasse (modelo propio registrado → firma no-flagrante →
+> fallo visible en la rutina → persistencia → réplica barata comprable → sin dictado, ≥3
+> rivales vivos → necesidad teleológica) y **brazos gemelos fallo-VISIBLE vs fallo-OCULTO**
+> (test causal del disparador), con generación/aceptación separadas server-side por timing.
+> NO-GO por ahora: mundo invariante, tercera familia, careo internista.
+>
+> **PRÓXIMO PASO (2026-08-09): ejecutar el paquete — esperando GO de Lucas.** Orden: saneo de
+> claims → ADR 0174 → ficha v1 → UNA corrida decisiva. El mismo día quedó guardado el marco
+> refinado (vara de dos bolsillos · disparador-vs-criterio · dos canales de impasse
+> datos/coherencia · continuo de invención): [WIKI-INDAGACION](../WIKI-INDAGACION.md) §6,
+> glosario, y el careo a can't-jump en [el libro de saltos](saltos.md).
 >
 > **REEVALUACIÓN Y SIGUIENTE ACCIÓN (histórica 2026-08-02; superseded por el bloque de arriba):** todavía no se congela la pregunta final del paper. Sigue
 > viva la señal de **cierre/autoridad del diagnóstico**; la apertura latente persiste solo en SCM;
