@@ -45,7 +45,7 @@
 > candidata de pivote. Abrir/cerrar una familia o completar tres ciclos obliga a releer sus casos
 > reales y los trabajos comparables más cercanos.
 
-> ## ★ ALINEACIÓN OFICIAL ACTUAL (2026-07-31 — ADR 0161)
+> ## ★ ALINEACIÓN DE LA LÍNEA SECUNDARIA (ADR 0161; foco supersedido parcialmente por ADR 0174)
 >
 > La guía conceptual canónica es
 > **[`docs/nota-direccion-revision-de-creencias.md`](nota-direccion-revision-de-creencias.md)**.
@@ -301,7 +301,8 @@
 >
 > **RESULTADO 2026-08-07 — MUNDO 2 CONSTRUIDO, CERTIFICADO Y MEDIDO (count_regime, GO de
 > Lucas):** ficha congelada → certificación VERDE (4 compuertas + 8 robots; **R premia el salto
-> por construcción**: oracle 1.0 vs rival suave 0.0 — A2 resuelta) → técnico + tanda 12
+> por construcción**: oracle 1.0 vs rival suave 0.0 — A2 resuelta EN ESTA FAMILIA; en count_mix
+> **A2 sigue abierta** — su v0.2 corrigió A1 parcial y A3, no las tres) → técnico + tanda 12
 > episodios (~USD 3). **Constructo corregido por Lucas la misma noche:** la v0 dicta el
 > candidato (el escalón grita en las tablas) → midió **ACEPTACIÓN, no creatividad** — los que
 > fallan GENERAN el candidato y lo matan ("outlier" / "muestra ruidosa" / interpolar sin ley)

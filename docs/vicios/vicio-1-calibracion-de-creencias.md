@@ -1,6 +1,7 @@
 # Vicio 1 — La calibración de la revisión de creencias (EL PIVOTEO)
 
-> **FOCO vigente (ADR 0161):** este dossier conserva la evidencia y anatomía detallada del vicio.
+> **Paraguas secundario vigente (ADR 0161; foco supersedido parcialmente por ADR 0174):** este
+> dossier conserva la evidencia y anatomía detallada del vicio.
 > La dirección conceptual actual vive en
 > [`docs/nota-direccion-revision-de-creencias.md`](../nota-direccion-revision-de-creencias.md) y el
 > próximo paso en [`docs/roadmap.md`](../roadmap.md); las decisiones ADR 0142–0149 son historia

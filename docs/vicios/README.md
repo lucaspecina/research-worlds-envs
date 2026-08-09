@@ -7,15 +7,15 @@
 > nueva de vicios entra SOLO acá; `mundos-por-vicio.md` deriva mundos; `failure-modes.md`
 > guarda la tesis.
 
-## FOCO VIGENTE (ADR 0161; 2026-07-31)
+## Estado estratégico (ADR 0174)
 
-**Vicio 1 — calibración de la revisión de creencias:** entender cuándo un agente cambia,
-conserva o aumenta/reduce su incertidumbre en la magnitud justificada por la evidencia, y dónde
-esa revisión se pierde antes de sus acciones o entrega. La guía conceptual vigente es
-[`docs/nota-direccion-revision-de-creencias.md`](../nota-direccion-revision-de-creencias.md) y el
-próximo paso vive en [`docs/roadmap.md`](../roadmap.md). El camino social/contenido de ADR 0142 y
-sus sondas posteriores quedan como historia experimental, no como plan actual. Detalle de la
-evidencia y anatomía: [vicio-1](vicio-1-calibracion-de-creencias.md).
+**El catálogo no fija el foco del programa.** La estrategia vigente (línea primaria, próximo
+paso) vive SOLO en [`docs/roadmap.md`](../roadmap.md); esta capa conserva HECHOS — evidencia,
+anatomía y estado de cada vicio. La guía conceptual de la línea de revisión de creencias
+(paraguas secundario) sigue siendo
+[`docs/nota-direccion-revision-de-creencias.md`](../nota-direccion-revision-de-creencias.md);
+el camino social/contenido de ADR 0142 y sus sondas quedan como historia experimental. Detalle
+del vicio 1: [vicio-1](vicio-1-calibracion-de-creencias.md).
 
 ## Etiquetas de rigor (obligatorias en esta capa)
 
@@ -31,7 +31,7 @@ evidencia y anatomía: [vicio-1](vicio-1-calibracion-de-creencias.md).
 
 | Doc | Vicio | Eje | Situación | Mundos WAGER |
 |---|---|---|---|---|
-| [vicio-1](vicio-1-calibracion-de-creencias.md) | **Calibración de creencias (el pivoteo)**: rigidez ↔ influenciable (social + contenido) | Competencia | **EN FOCO** | first_story (control; y ES el mundo del canal-contenido vía folklore) |
+| [vicio-1](vicio-1-calibracion-de-creencias.md) | **Calibración de creencias (el pivoteo)**: rigidez ↔ influenciable (social + contenido) | Competencia | paraguas secundario (ADR 0174) | first_story (control; y ES el mundo del canal-contenido vía folklore) · count_regime_v0 (elicitor accidental de rigidez 1.A) |
 | [vicio-2](vicio-2-el-pozo.md) | Calibración de parada: overstay ↔ cierre prematuro | Competencia | activo (polo understay, vía híbrido) | v0 · v2 · lab_largo + hallazgo 0/60 |
 | [vicio-3](vicio-3-no-verificar-inflar.md) | No verificar / inflar / fabricar | Integridad | activo (prioridades #2-#3) | ninguno |
 | [vicio-4](vicio-4-estructura-escondida.md) | No postular la estructura escondida | Competencia | activo (validado afuera + replicado en casa 2026-08-07) | latent_mix v2 (trofeo) · count_mix_v0+twin (0/9 GENERACIÓN; escalera de canales) · count_regime_v0+twin (construido; su v0 dicta el candidato → midió aceptación = vicio-1; creatividad del operador sin medir) |

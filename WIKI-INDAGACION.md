@@ -75,6 +75,28 @@ Con eso, "crear un modelo a partir de datos" se descompone sin misterio:
 (ajustan, estiman, hasta comparan si se lo ordenás) **sobre un espacio que jamás agrandan**.
 El déficit no está en Bayes — está en quién escribe la lista sobre la que Bayes corre.
 
+**La misma idea, dicha con la fórmula de Bayes** (la formulación de la casa, útil para gente
+de ML). P(hipótesis | evidencia) admite dos lecturas, y las dos son inducción:
+
+1. **hipótesis = los parámetros de un modelo de forma fija** → estimar los números (nivel 1);
+2. **hipótesis = una lista de modelos distintos ya definidos** → comparar formas de un menú
+   cerrado (nivel 2). Bien hecho, este nivel ya trae el costo adentro: el modelo recargado
+   tiene que repartir su apuesta entre muchísimas configuraciones y pierde densidad en cada
+   una — la "navaja de Occam bayesiana", que es la misma vara de dos bolsillos de §6.
+
+En los dos niveles la mesa está puesta de antemano: **el teorema solo REPARTE probabilidad
+entre los candidatos que le diste; ninguna operación de la teoría de probabilidad AGREGA un
+candidato.** El paso que falta — modificar la estructura de los candidatos, o meter en la
+lista uno que no estaba, empujado por la evidencia — **ese paso ES la abducción.**
+
+**La trampa formal (y por qué no salva)**: se puede declarar la lista infinita ("mi espacio
+es el de todos los programas posibles") y entonces "todo es inducción"… sobre una lista que
+nadie puede recorrer. En la práctica solo se pueden ESCRIBIR y puntuar un puñado de
+candidatos, y elegir cuáles escribís es de vuelta el problema original: la abducción no
+desaparece con la lista infinita — se esconde en el paso de proponer. Por eso el programa
+mide al PROPONEDOR, no al puntuador: los agentes ejecutan los niveles 1 y 2 muy bien, y
+jamás escriben una entrada nueva en el menú (el 0/9 de count_mix).
+
 ## 4. Las cuatro perillas (por qué el juez, el médico y el detective no son idénticos)
 
 Mismo ciclo, distinto punto del espacio de configuraciones:

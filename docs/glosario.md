@@ -39,9 +39,12 @@ para medir — sin jueces LLM — dónde exactamente se les rompe el proceso de 
   5 unificación · 6 invariante promovido (simetría) · 7 proceso del observador · 8 realimentación
   oculta · 9 conservación/cuantización · 10 memoria oculta · 11 transferencia estructural
   (analogía tipo Darwin).
-- **Menú de hipótesis**: las familias de modelos que el agente considera de entrada. **El
-  hallazgo central hasta ahora: la juntura rota es que el candidato correcto no ENTRA al menú**
-  — todo lo demás (comprar datos, ajustar, chequear) lo hacen bien.
+- **Menú de hipótesis**: las familias de modelos que el agente considera de entrada. **Lo
+  observado en trazas: el candidato correcto no llega a compararse ni implementarse** — todo lo
+  demás (comprar datos, ajustar, chequear) lo hacen bien. ⚠️ "No ENTRÓ al menú" es
+  interpretación post-hoc, no variable observada (Codex 2026-08-09); se vuelve observable con
+  la cadena registrada de la ficha v1 (candidata registrada ANTES del punto de discriminación
+  = expansión generativa).
 - **Juntura**: eslabón específico de la cadena de investigar (comprar → mirar → postular →
   testear → entregar). Medimos cuál se rompe, no "si es bueno o malo".
 

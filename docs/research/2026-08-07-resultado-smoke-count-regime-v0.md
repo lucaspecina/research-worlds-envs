@@ -1,4 +1,9 @@
-# Resultado — smoke count_regime_v0 (mundo 2): el salto tiene GRADIENTE por operador
+# Resultado — smoke count_regime_v0 (mundo 2): midió ACEPTACIÓN del candidato dictado, no generación
+
+> **Titular original ("el salto tiene GRADIENTE por operador") — MUERTO.** Supersedido por la
+> corrección de constructo de abajo y por el veredicto de Codex (2026-08-09): H-M1 quedó
+> inválida como lectura de creatividad; este mundo v0 es una celda de aceptación/revisión.
+> Ninguna cita a este doc puede usar el titular viejo.
 
 > **⚠️ CORRECCIÓN DE CONSTRUCTO (Lucas, 2026-08-07 noche — manda sobre los titulares de este
 > doc):** el programa evalúa **CREATIVIDAD para dar el salto** = que el candidato NAZCA cuando
@@ -33,11 +38,13 @@
 
 ## Microhipótesis vs realidad
 
-- **H-M1 (más salto espontáneo que en count_mix): CONFIRMADA.** 2/5 válidas postulan el
-  quiebre (gpt 2/2 de tanda) vs **0/9** en count_mix. La distancia-al-menú difiere por
-  operador: el modelo de quiebre es alcanzable de manual; la mezcla no lo era. Y el salto que
-  aparece es **PARCIAL** (~0.65): postulan las dos leyes pero ubican el corte en 1.08 (verdad
-  1.071) con pendientes gruesas.
+- **H-M1 (más salto espontáneo que en count_mix): ⚠️ INVÁLIDA como lectura de creatividad**
+  (corrección de constructo + Codex 2026-08-09). El dato crudo queda: 2/5 válidas postulan el
+  quiebre (gpt 2/2 de tanda) — pero acá la evidencia DICTA el candidato (el escalón grita en
+  las tablas de todos), así que esto mide **aceptación**, y la comparación con el 0/9 de
+  count_mix (generación) NO corresponde. La lectura "distancia-al-menú por operador" queda
+  sin sostén hasta la v1. Lo que sí queda: el salto aceptado es **PARCIAL** (~0.65) — postulan
+  las dos leyes pero ubican el corte en 1.08 (verdad 1.071) con pendientes gruesas.
 - **H-M2 (gemelo limpio): PASA.** Espurio 0/6 — nadie inventa quiebres donde no hay.
 - **H-M3 (shopping): CONFIRMADA y más rica.** Los que saltan hacen **zoom adaptativo** — gpt
   99503 t3: *"there seems to be a sharp jump around 1.05–1.1... A few targeted experiments near
@@ -98,11 +105,12 @@ benchmark.
 
 ## Nivel arriba
 
-- **Aprendizaje real:** la juntura rota (el candidato estructural no entra — o entra y lo
-  matan sin test) **generaliza al segundo operador, pero con tasa distinta**: mezcla 0/9,
-  quiebre 2/5 parcial. La matriz saltos×realismo ya tiene su segunda celda medida y la
-  variable "distancia-al-menú por operador" existe y es medible. El zoom adaptativo de compra
-  es un fenómeno positivo nuevo (no existía en count_mix).
+- **Aprendizaje real** (reescrito tras la corrección de constructo): el mundo elicitó con
+  citas limpias la **rigidez ante evidencia dictante** (generan el candidato y lo matan:
+  "outlier", "ruido", interpolar-sin-ley) — vicio 1, no vicio 4. ⚠️ La frase original de este
+  bullet ("la juntura generaliza con tasa distinta; distancia-al-menú existe y es medible")
+  está MUERTA: comparaba generación (0/9) con aceptación (2/5). El zoom adaptativo de compra
+  sí queda como fenómeno positivo nuevo (no existía en count_mix).
 - **Límite del claim:** n=3 por celda, sin ayuda, v0 sin escalera; los saltos son parciales
   (~0.65) — capturan el corte, no la forma fina; 1 censura.
 - **Explicación rival viva:** para el 2/5, "gpt zoomea por estilo de shopping, no por

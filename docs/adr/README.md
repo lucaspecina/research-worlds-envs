@@ -184,3 +184,4 @@
 | 0171 | v1.71 | 2026-08-01 | [Mixed no atenúa; siguiente evidencia propia dentro de overgen](0171-v1.71-mixed-no-atenua-y-siguiente-evidencia-propia.md) | Vigente — probe de campañas elegidas por el agente |
 | 0172 | v1.72 | 2026-08-02 | [Codex supervisor científico + Claude worker persistente; roles siempre en contexto, sesión exclusiva Fable/Opus max y salida dura anti-optimización local](0172-v1.72-codex-supervisor-claude-worker-persistente.md) | Vigente |
 | 0173 | v1.73 | 2026-08-02 | [Separar minería de fallas y confirmación; la pregunta del paper se congela después de hallar una regularidad reproducible](0173-v1.73-descubrimiento-estructurado-antes-de-confirmacion.md) | Vigente |
+| 0174 | v1.74 | 2026-08-09 | [Supersesión parcial de 0161: solo el foco; el catálogo no fija foco — hechos en canon, estrategia solo en roadmap](0174-v1.74-supersesion-parcial-del-foco-de-0161-el-catalogo-no-fija-foco.md) | Vigente — guardia anti-foco instalada |

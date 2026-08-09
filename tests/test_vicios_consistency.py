@@ -32,6 +32,25 @@ def test_derivation_doc_points_to_the_layer():
     assert "docs/vicios/" in t2, "failure-modes.md perdió el puntero a docs/vicios/"
 
 
+def test_no_foco_declarations_outside_roadmap():
+    """ADR 0174: strategy (the standing 'FOCO VIGENTE') lives ONLY in
+    docs/roadmap.md. Canon layers keep facts; any other living doc declaring a
+    focus re-mixes the two. Records (adr/, research/, archived/) are exempt."""
+    pattern = re.compile(r"FOCO\s+VIGENTE", re.IGNORECASE)
+    offenders = []
+    candidates = list((ROOT / "docs").rglob("*.md")) + list(ROOT.glob("*.md"))
+    for p in candidates:
+        rel = p.relative_to(ROOT)
+        parts = set(rel.parts)
+        if p.name == "roadmap.md" or {"adr", "research", "archived"} & parts:
+            continue
+        if pattern.search(p.read_text(encoding="utf-8")):
+            offenders.append(str(rel))
+    assert not offenders, (
+        f"declaración de 'FOCO VIGENTE' fuera de docs/roadmap.md (ADR 0174): {offenders}"
+    )
+
+
 def test_vicio_docs_carry_their_required_sections():
     """Every per-vice doc keeps its skeleton: sub-formas + estado. A bulk edit
     that drops a section fails before entering history."""
