@@ -49,6 +49,26 @@ lo medible es la escalera de abajo: *cuánta evidencia hace falta para que compr
 (2) Proponen como laboratorio los mundos interactivos con intervención — que es exactamente lo
 que construimos.
 
+**El careo que le hicimos al paper (2026-08-09, con lecturas detrás).** Dos correcciones.
+(a) La historia real debilita su "cero señal": Einstein 1905 SÍ respondía a un fallo visible —
+no en los datos sino ENTRE teorías (la mecánica decía "las velocidades se suman", Maxwell
+decía "la luz va igual para todos"; y el caso del imán y el conductor: un solo fenómeno con
+dos explicaciones según el marco). Señal de COHERENCIA, no de predicción; y la relatividad
+general nace de que su propia teoría contradecía la gravedad instantánea de Newton. El "sin
+señal" del paper es sin-señal-EMPÍRICA; la deuda de coherencia interna estaba a la vista de
+quien auditara el modelo en vez de los datos — un canal de disparador distinto, fabricable
+([WIKI-INDAGACION §6](../WIKI-INDAGACION.md)). (b) **Schmidhuber 2010 `[LEÍDO completo]`
+desarma la mitad "objetivo" del argumento**: bajo la vara de dos partes (bits del modelo +
+bits de los residuos), la reestructuración SÍ paga aun sin anomalía (Newton comprime manzanas
+perfectamente predecibles; π no tiene anomalía estadística y tiene programa corto) y el
+parche tipo Vulcano NO gana (paga su propia complejidad). Lo que Schmidhuber concede: el
+premio se cobra solo si el buscador ENCUENTRA el compresor mejor — un buscador limitado "se
+desalienta". **Veredicto de la casa: la VARA sobrevive (y es la nuestra: BIC/R); la BÚSQUEDA
+es la incógnita — exactamente la pregunta empírica del programa.** Y la "invención absoluta"
+no es otra especie de acto mental: Planck aplicó el conteo de Boltzmann donde no correspondía;
+Einstein usó geometría publicada 60 años antes. Ediciones a distancia máxima con señal
+solo-de-coherencia: el extremo del mismo continuo que nuestra escalera mide desde abajo.
+
 **Nuestra definición operativa** (la que permite puntuar sin poesía): un mundo es un programa
 que genera datos. **Refinar** = cambiarle los números. **Saltar** = cambiarle la FORMA: qué
 variables existen, cómo se conectan, bajo qué restricciones, cómo se convierte en datos. Cada

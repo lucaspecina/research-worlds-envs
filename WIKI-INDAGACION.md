@@ -107,6 +107,56 @@ indagación usa más músculos — y las fallas reales viven también ahí:
   (fracaso persistente y visible), no porque la invoques. "Sé creativo" no funciona; fabricar
   la pared sí ([WIKI-FALLAS](WIKI-FALLAS.md)).
 
+## 6. El fondo del marco: editar modelos — y la vara que decide si la edición vale
+
+Todo investigador carga un **modelo** de cómo funciona su pedazo del mundo (a veces escrito,
+casi siempre mental). Indagar es mejorar ese modelo comprando evidencia; **refinar** es
+ajustarle los números; **el salto** es editarle la FORMA. Hasta la "invención absoluta" se
+descompone así cuando se la mira de cerca: Planck aplicó una técnica de conteo que ya existía
+(la de Boltzmann) donde "no correspondía"; Einstein combinó un hecho conocido desde Galileo
+con una geometría publicada 60 años antes (que le tuvo que enseñar un amigo). **No hay magia:
+hay ediciones a distintas DISTANCIAS** — de qué tan lejos traés la pieza, cuánto del marco
+vigente hay que romper para encajarla, y cuánta señal te empujaba. "Salto supremo" = distancia
+enorme + mucha rotura + cero señal empírica. Es un continuo — y un continuo se puede medir
+con una escalera de mundos; una magia no.
+
+**¿Cuándo una edición es MEJORA y no un parche?** La vara de dos bolsillos (la teoría formal
+de la creatividad de Schmidhuber; en estadística, MDL):
+
+> bolsillo 1: costo de DESCRIBIR el modelo (su simplicidad, hecha número)
+> bolsillo 2: costo de describir lo que el modelo NO explica (los residuos)
+> **mejora = la SUMA baja.**
+
+"Ajusta mejor", solo, no alcanza: el epiciclo y el planeta Vulcano siempre ajustan mejor —
+mejoran el bolsillo 2 pagando el bolsillo 1 a escondidas. La vara de dos bolsillos cobra las
+dos cosas en la misma moneda, y el parche deja de ganar. **Nuestra vara ya es una versión
+operativa de esto**: el BIC de los testigos es literalmente ajuste-menos-castigo-por-
+parámetros, y R premia capturar la forma. Consecuencia elegante: el descubrimiento SIN
+anomalía queda bien definido (Newton comprimió milenios de manzanas perfectamente
+predecibles; los dígitos de π no tienen ninguna anomalía estadística y sin embargo existe el
+programa corto que los genera todos).
+
+**Disparador ≠ criterio.** El criterio (comparar candidatos y que gane el que comprime) se
+computa recién DESPUÉS de tener el candidato en la mano — la ganancia de compresión de
+reemplazar a Newton estuvo disponible 200 años sin que nada en los datos la gritara. El
+problema del salto es el DISPARADOR: qué te pone a buscar cuando lo de siempre anda bien.
+Dos canales, y nuestros agentes auditan solo uno:
+
+- **Impasse por datos**: el modelo de siempre falla a la vista, persistente y barato de
+  verificar. El que sabemos fabricar ([WIKI-FALLAS](WIKI-FALLAS.md): sin impasse no hay
+  reestructuración).
+- **Impasse por coherencia**: nada predice mal, pero las piezas del propio modelo se
+  contradicen ENTRE SÍ — el canal Einstein (mecánica y electromagnetismo no podían ser
+  ciertos a la vez; el mismo fenómeno con dos explicaciones según el marco). Los agentes
+  auditan ajuste-a-datos y JAMÁS la coherencia y economía interna de su propio modelo —
+  observable nuevo, fabricable en mundos futuros.
+
+**Predicción ≠ intervención.** Dos modelos pueden empatar prediciendo lo ya visto y separarse
+recién cuando MOVÉS una perilla del mundo (un régimen no visitado, una extrapolación). Por
+eso el examen se toma en regímenes que el agente no visitó: el modelo que solo ajusta muere
+ahí; el que capturó la estructura sobrevive. Es, además, el remedio que el propio paper
+can't-jump receta — mundos interactivos con intervención — o sea, esta máquina.
+
 ---
 
 ## Comentarios (el meta)

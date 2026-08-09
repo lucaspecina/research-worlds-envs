@@ -45,6 +45,20 @@ para medir — sin jueces LLM — dónde exactamente se les rompe el proceso de 
 - **Juntura**: eslabón específico de la cadena de investigar (comprar → mirar → postular →
   testear → entregar). Medimos cuál se rompe, no "si es bueno o malo".
 
+## La vara y las señales (el fondo del marco — [WIKI-INDAGACION §6](../WIKI-INDAGACION.md))
+
+- **Vara de dos bolsillos (compresión / MDL)**: una edición al modelo es MEJORA si baja la
+  suma "costo de describir el modelo" (simplicidad) + "costo de lo que no explica" (residuos).
+  El parche (epiciclo, Vulcano) mejora el ajuste pagando complejidad escondida — esta vara lo
+  cobra. Nuestro BIC de testigos y R son la versión operativa, cero-LLM.
+- **Disparador vs criterio**: el criterio de mejora se computa DESPUÉS de tener el candidato;
+  el disparador es lo que te pone a buscarlo ANTES (con lo de siempre andando bien). Dos
+  canales: **impasse por datos** (el modelo falla visible y persistente) e **impasse por
+  coherencia** (las piezas del propio modelo no cierran entre sí — el canal Einstein; los
+  agentes jamás lo auditan).
+- **Predicción vs intervención**: modelos que empatan sobre lo ya visto se separan al mover
+  una perilla; por eso el examen incluye regímenes que el agente no visitó.
+
 ## La escalera de ayudas (etiquetas del Explorer)
 
 - **no**: solo el encargo. — **poca**: pista vaga vieja ("puede haber subpoblaciones").
