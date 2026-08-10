@@ -420,22 +420,26 @@
 > al artefacto), reaparece en count_mix + North heterogéneo + D1; estado: candidata de
 > confirmación. [Dossier](research/2026-08-10-resultado-tanda-d1-calibracion.md).
 >
-> **EN CURSO (2026-08-10): RONDA 2 D1 — wording NEUTRAL de Lucas** ("reproducir el proceso
-> generador lo más fiel posible; se evalúa de distintas maneras" — SIN pistas; rechazada la
-> frase con pista de Codex/Claude: nombrar dimensiones contamina la medición del juicio).
-> Mismas 15 seeds apareadas, reglas de interpretación CONGELADAS en addendum 2 de la ficha
-> (≥8/15 escribe estructura + espurio ≤2 → era especificación; ≤4/15 → fenómeno robusto →
-> confirmar fuera de D1; regla apareada por seed de Codex). GO de Lucas ("ok dale mandalo"),
-> ~USD 12-15, salida `tanda2_*`. Evidencia archivada en `docs/vicios/` (vicio 4 + 8.6 ✓).
+> **RESULTADO RONDA 2 D1 (2026-08-10) — wording neutral de Lucas: el rival del incentivo
+> REFUTADO, FENÓMENO ROBUSTO (regla congelada 2).** Escriben estructura 1/15 (r1: 2/15);
+> espurio en el espejo 1/15 (la frase no empujó estructura falsa); apareo por seed: rescata
+> 1 / perjudica 2 → NO rescate. Conducta de nuevo 30/30. **Disociación post-hoc**: la frase
+> duplicó la COMPRA de evidencia (D_pre mediana 1.04 vs 0.41) y no movió la ESCRITURA — "sé
+> más fiel" los hace chequear más, no comprometerse más. Codex: cerrar D1, confirmar fuera.
+> Evidencia archivada en `docs/vicios/` (vicio 4 + 8.6 ✓); wikis al día (FALLAS ④⑤, SALTOS
+> tabla, WIKI §9). [Dossier + addendum ronda 2](research/2026-08-10-resultado-tanda-d1-calibracion.md).
 >
-> **HIPÓTESIS DE LUCAS REGISTRADA (2026-08-10, candidata de ronda 3 — diseño nuevo, espera
-> su GO tras la ronda 2)**: *"quizás si los hiciéramos fallar, ahí se darían cuenta del
-> salto — al no penalizarlos por ser lazy, lo son"*. Es exactamente el ingrediente del rung 0
-> (0/9 sin fallo → 30/30 con fallo propio visible; Ohlsson: sin impasse no hay
-> reestructuración) trasplantado a D1: la planta REBOTA el modelo provisional con reporte
-> mecánico de desajuste (el fallo del unimodal a la vista) → ¿aparece la escritura de
-> estructura? Cruza los dos hallazgos de la era en un solo esqueleto. El polo
-> compuesto/escalera de distancia sigue EN PAUSA.
+> **PRÓXIMO PASO (2026-08-10): DECISIÓN DE LUCAS — el orden que fijó Codex al cierre:**
+> **(1) CONFIRMACIÓN fuera de D1** (primero): instancia FRESCA del mismo backbone (otra seed
+> del scan, brief idéntico — no dominio nuevo, para no mezclar generalización con cambio de
+> dominio), **gpt-5.4 + DeepSeek-V3.2** (conecta con count_mix), 2 modelos × 2 polos × 15 ≈
+> 60 episodios ≈ **USD 25-35** — espera GO. El dominio trasplantado después, solo si ambos
+> reproducen. **(2) RONDA 3 — HIPÓTESIS DE LUCAS** (*"quizás si los hiciéramos fallar, ahí se
+> darían cuenta — al no penalizarlos por ser lazy, lo son"*): la planta REBOTA el modelo
+> provisional con reporte mecánico de desajuste (el ingrediente del rung 0: 0/9 sin fallo →
+> 30/30 con fallo visible, trasplantado a D1) — intervención mecanística, va DESPUÉS de la
+> confirmación; diseño nuevo, espera GO. El polo compuesto/escalera de distancia sigue EN
+> PAUSA. Pendiente sin gasto: anotación fina de trazas (reglas congeladas) de ambas rondas.
 >
 > **[SUPERSEDIDO POR EL GO] (2026-08-10): la ficha D1 (Onnes — firma ambigua), a Lucas ANTES de codear.**
 > Diseño ordenado por Codex: proceso físico + modelo de medición reales; prefijo compatible con

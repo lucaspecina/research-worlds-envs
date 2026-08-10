@@ -155,3 +155,34 @@ que el agente REALMENTE vio (experimentos + monitoreo, detrend en T) → ΔBIC +
   lecturas NO deciden la entrega (rutina byte-idéntica); la horquilla decide. Con horquilla
   además favoreciendo material: 5/15.
 
+
+---
+
+# ADDENDUM RONDA 2 (2026-08-10) — wording neutral: el rival del incentivo REFUTADO
+
+Frase de Lucas (sin pistas: "tu mejor reconstrucción del proceso generador... los compara de
+distintas maneras"), mismas 15 seeds, reglas congeladas ANTES (addendum 2 de la ficha).
+
+**Resultado contra las reglas congeladas → REGLA 2: FENÓMENO ROBUSTO.**
+
+| | ronda 1 | ronda 2 (neutral) |
+|---|---|---|
+| proceso escribe estructura | 2/15 | **1/15** |
+| proceso Y | 1/15 | 0/15 |
+| instrumento espurio | 0/15 | 1/15 (≤2 ✓ — la frase no empujó estructura indiscriminada) |
+| instrumento Y | 9/15 | 6/15 |
+| conducta (compra ≥ τ) | 30/30 | **30/30** |
+| apareo (regla Codex) | — | rescata-solo 1 · perjudica-solo 2 → **NO rescate** |
+
+**Post-hoc notable (sin bandera)**: la frase SÍ movió la ADQUISICIÓN — D_pre mediana de
+proceso se duplicó (1.04 vs 0.41 bits; revial 31 vs 15, lab 4 vs 0) — y CERO la escritura.
+**Disociación esfuerzo-de-compra vs compromiso-de-entrega**: "sé más fiel" los hace comprar
+más chequeos, no escribir lo que los chequeos muestran. Instrumento S̄ bajó (0.36 vs 0.47) —
+posible costo del wording en el polo limpio, post-hoc.
+
+**Codex (cierre, crudo en `scratch/codex-respuesta-2026-08-10-cierre-d1-ronda2.txt`)**:
+cerrar D1 y **confirmar fuera**: instancia FRESCA del mismo backbone (no dominio nuevo — no
+mezclar generalización con cambio de dominio), **gpt-5.4 + DeepSeek-V3.2** (conecta con
+count_mix); dominio trasplantado después, solo si ambos reproducen. **La ronda 3 de Lucas
+(la planta rebota el modelo — fallo propio a la vista) va DESPUÉS de la confirmación**: es
+intervención mecanística, no confirmación. Ambos pasos esperan GO de Lucas.

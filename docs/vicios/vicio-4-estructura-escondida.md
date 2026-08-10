@@ -98,6 +98,9 @@ parámetros, promedia.
   "no lo ven" (sus datos lo gritan): es la retirada a lo familiar EN LA ENTREGA — convergencia
   con 8.6. Titular defendible (Codex): "tras comprar evidencia que favorece causa material,
   gpt-5.4 comprime sistemáticamente la subpoblación en una entrega unimodal". Estado: VIVO;
-  candidata de pivote elevada a Lucas (confirmación pendiente: ronda 2 wording neutral
-  corriendo + fuera de D1). [Dossier](../research/2026-08-10-resultado-tanda-d1-calibracion.md).
+  candidata de pivote elevada a Lucas. Ronda 2 (wording neutral de Lucas, mismas seeds,
+  reglas congeladas): escriben 1/15, espurio 1/15, apareo sin rescate — el rival "no les
+  avisaron" REFUTADO; y la frase DUPLICÓ la compra de evidencia sin mover la escritura
+  (disociación esfuerzo-de-compra vs compromiso-de-entrega). Confirmación fuera de D1
+  pendiente (instancia fresca, gpt-5.4 + DeepSeek-V3.2, espera GO). [Dossier](../research/2026-08-10-resultado-tanda-d1-calibracion.md).
 - Pendientes de familia: partir-en-dos, solución-cebada, par Vulcano (specs en cantera).
