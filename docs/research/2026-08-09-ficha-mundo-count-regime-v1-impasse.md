@@ -312,3 +312,67 @@ una laguna permitiría estudiar **expansión sin contracción** — el mejor con
 3. Construir. **No esperar** a Klein/Thagard/Magnani (deben cerrar antes del codebook definitivo,
    no antes de v1).
 4. Una sola corrida decisiva → dossier → MANTENER / MODIFICAR / PIVOTEAR / ABANDONAR el host.
+
+---
+
+# ADDENDUM 2 — 2026-08-10: potencia y validación de la vara (ANTES de correr; nada se ha corrido)
+
+> Dos bloqueantes que las lecturas de Klein y Thagard pusieron sobre la mesa, resueltos con
+> cómputo, sin gastar API. Se declaran ANTES de la corrida porque uno de ellos **cambia la regla
+> de decisión pre-registrada** — que es exactamente para lo que existe el pre-registro. Esto NO es
+> la "v1.1 tras un nulo" que Codex prohibió: no hay nulo todavía porque no hay corrida.
+
+## A. La regla de decisión pre-registrada NO tiene potencia (Klein)
+
+Klein documenta que nuestro episodio cae en la intersección **contradicción × desesperación**, la
+celda menos poblada de su corpus de 120 casos ("only a few cases") → **predice tasa base baja**.
+Calculado sobre la regla congelada (*señal si #expansiones VISIBLE − #RAW ≥ 2*, n=6 por brazo):
+
+| n por brazo | p(RAW) | p(VISIBLE) | **potencia** | falso positivo |
+|---|---|---|---|---|
+| **6** (lo pre-registrado) | 0.05 | 0.35 | **58,6%** | 2,5% |
+| **6** | 0.10 | 0.40 | **58,7%** | 6,6% |
+| **6** | 0.15 | 0.30 | **33,4%** | 10,4% |
+| 10 | 0.05 | 0.35 | 81,9% | 5,5% |
+| 15 | 0.05 | 0.35 | 93,4% | 9,3% |
+
+**Consecuencia dura: con n=6 un nulo NO es informativo** — entre 41% y 67% de probabilidad de
+perder un efecto real. La condición de salida tal como está firmada ("si el impasse visible no
+aumenta la expansión, muere esta operacionalización") **no es sostenible con esta n**, ni siquiera
+en la versión ya acotada por Codex.
+
+**Dos correcciones, ambas necesarias:**
+
+1. **Outcome GRADUADO en vez de binario** (gratis, y además obligado por constructo): Klein
+   documenta que el **44% de los insights son graduales** — un outcome binario "expandió sí/no"
+   mide el "aha", que es el cargo que él le hace al laboratorio. Se adopta la **escalera ordinal de
+   Darden** ya ratificada (monster-bar → tweak → specialize → split → delete → add) como outcome
+   primario, con el binario como sub-métrica. Un ordinal de 6 niveles tiene mucha más potencia por
+   episodio que un binario.
+2. **Subir n, con decisión de costo para Lucas** (es un cambio de gasto → se eleva, no se ejecuta):
+   - *Como está*: 3 brazos × 2 modelos × 3 seeds = 18 + gemelo ≈ **USD 8-12**, potencia 33-59%.
+   - *Opción A*: 3 brazos × 2 modelos × 6 seeds = 36 + gemelo ≈ **USD 18-22**, potencia ~80%.
+   - *Opción B* (recomendada): **un solo modelo** en el contraste principal × 3 brazos × 10 seeds
+     = 30 + gemelo ≈ **USD 15**, potencia ~82%, y el segundo modelo queda para réplica si la señal
+     aparece. Cambia el alcance del titular (un modelo) pero compra un resultado interpretable en
+     vez de tres celdas ruidosas.
+
+## B. Nuestra vara SOBREVIVE la Objeción 2 de Thagard (verificado, no supuesto)
+
+Thagard levanta cinco tests contra el conteo "evidencia − hipótesis", que es la compresión de dos
+partes en crudo. Los dos que nos podían morder, corridos contra la vara real:
+
+| Test | Resultado |
+|---|---|
+| **"Being explained"** (una hipótesis explicada por otra debe GANAR, no perder): mismo modelo escrito como fórmula plana vs como pila de 4 hipótesis encadenadas | S = 0.9379 vs 0.9379 — **diferencia 0.000000** |
+| **Unificación** (a igual conteo de parámetros, compartir una auxiliar debe ganarle a no compartir) | comparte S = 0.9379 vs separado S = 0.6748 — **+0.263 a favor del que comparte** |
+
+**Por qué**: nuestra S es distancia de CURVA sobre la grilla de examen — **puntúa predicciones, no
+estructura de hipótesis**. Es constitutivamente inmune a la penalización por profundidad (el
+riesgo de "penalizar la forma del argumento de Darwin" **no aplica**), y premia el compartir por la
+razón correcta: el modelo que reusa la auxiliar **predice mejor** en la banda de decisión.
+
+El riesgo residual vive solo en el **testigo BIC** (que sí cuenta parámetros) usado para las
+compuertas y el punto de discriminación — pero ahí los candidatos son familias planas, no pilas de
+hipótesis, así que la penalización por profundidad no se instancia. Queda registrado como límite
+conocido si alguna vez comparamos modelos en capas.
