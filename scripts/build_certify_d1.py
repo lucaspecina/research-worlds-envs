@@ -236,6 +236,86 @@ def gates_for(params: dict) -> dict:
     return g
 
 
+NULL_PY = '''"""Anchor nulo: media plana del archivo, sin T ni estructura."""
+import numpy as np
+import pandas as pd
+
+MU, SD = {mu!r}, 1.6
+
+
+def model(regime, n, seed):
+    rng = np.random.default_rng(np.random.SeedSequence([int(seed), 0xD1F]))
+    return pd.DataFrame({{"unit_id": np.arange(int(n), dtype=float),
+                          "y": MU + rng.normal(0, SD, int(n))}})
+'''
+
+
+def meta_json(case_id: str, pole: str, params: dict) -> dict:
+    op = ({"name": "lot_subpopulation_mixture", "layer": "mechanism",
+           "knobs": {k: params[k] for k in ("mu0", "beta", "d_shift", "pi")},
+           "ablation": {}} if pole == "proceso" else
+          {"name": "clean_process_vial_fault_channel", "layer": "channel",
+           "knobs": {k: params[k] for k in ("mu0", "beta", "d_shift", "pi")},
+           "ablation": {}})
+    return {
+        "case_id": case_id,
+        "suite": "d1_calibracion",
+        "columns": [
+            {"name": "unit_id", "dtype": "float", "unit": None,
+             "description": "lot identifier within the returned batch (sequential)"},
+            {"name": "y", "dtype": "float", "unit": "% purity",
+             "description": "purity of the lot"},
+        ],
+        "operators": [op],
+        "stakes": {
+            "narrative": ("Management will use this generative model of lot purity to "
+                          "steer the process across its operating range; it must reflect "
+                          "the REAL process, at temperatures possibly not seen."),
+            "decision_variables": [], "context_relevance": {},
+            "decision_relevance": {}, "functionals": [],
+        },
+        "scoring": {"lambda_mdl": 0.0, "lambda_provisional": True,
+                    "n_samples": 400, "m_reps": 2, "model_call_timeout_s": 10.0},
+        "episode": {
+            "budget": BUDGET,
+            "observe_sources": {"archivo": {"cost_per_row": 0.5, "config": {},
+                                            "context": {}, "max_rows": 300}},
+            "experiment": {"cost_fixed": 40.0, "cost_per_row": 1.0, "cost_per_horizon": 0.0},
+            "experiment_meter": None, "events": [], "submit_requires_all_events": False,
+            "register": None,
+            "smoke_regimes": [
+                {"config": {}, "context": {}, "horizon": None},
+                {"config": {"T": 1.2}, "context": {}, "horizon": None},
+                {"config": {"T": 0.8}, "context": {}, "horizon": None},
+            ],
+            "control_surface": {
+                "settable": {"T": {"low": 0.6, "high": 1.4,
+                                   "description": "reactor temperature of the runs you launch; the evaluation may use any value in the declared range."}},
+                "context": {}, "instruments": {},
+                "experiment_note": ("each experiment call produces n LOTS at your chosen T, measured by the "
+                                    "in-line spectrometer; cost = fixed + per measurement. Other verbs (see "
+                                    "brief): env.measure(material, reps) re-measures existing lots, new vials "
+                                    "('revial:<lot_id>') or catalog items ('estandar','solvente','blanco'); "
+                                    "env.lab_extern([lot_ids]) sends ALREADY-measured lots to the external "
+                                    "lab (<=6, result next turn); env.register_model(code) files your "
+                                    "provisional model (free)."),
+                "deliverable_note": ("model(regime, n, seed) -> DataFrame with columns exactly [unit_id, y]; "
+                                     "n counts LOTS (one purity per lot, unit_id sequential); honor "
+                                     "regime.config T. Model the PROCESS."),
+            },
+        },
+        "prior_reliability": None,
+    }
+
+
+def battery_json(params: dict) -> dict:
+    grid = (0.8, 1.0, 1.2)
+    w = round(1.0 / len(grid), 6)
+    return {"items": [{"weight": w,
+                       "regime": {"config": {"T": t}, "context": {}, "horizon": None},
+                       "seed_world": 861000 + i} for i, t in enumerate(grid)]}
+
+
 def write_artifacts(params: dict) -> None:
     for case_dir, pole, title, desc in (
         (PROC_DIR, "proceso", "PROCESO (A)",
@@ -249,6 +329,19 @@ def write_artifacts(params: dict) -> None:
         (case_dir / "truth_code.py").write_text(TRUTH_PY.format(
             mu0=params["mu0"], beta=params["beta"], sex=C.S_EXTRA,
             d_shift=params["d_shift"], pi=params["pi"], pole=pole))
+        (case_dir / "meta.json").write_text(json.dumps(
+            meta_json(case_dir.name, pole, params), indent=2, ensure_ascii=False))
+        (case_dir / "battery.json").write_text(json.dumps(battery_json(params), indent=2))
+        ladder = case_dir / "ladder"
+        ladder.mkdir(exist_ok=True)
+        # naive (anteúltimo) = el reflejo del polo: en A entregar limpio, en B hornear
+        # la mezcla — exactamente las anclas bilaterales de s_metric. null = plano.
+        reflex_pole = "instrumento" if pole == "proceso" else "proceso"
+        (ladder / "rung_3_reflejo.py").write_text(TRUTH_PY.format(
+            mu0=params["mu0"], beta=params["beta"], sex=C.S_EXTRA,
+            d_shift=params["d_shift"], pi=params["pi"], pole=reflex_pole))
+        (ladder / "rung_4_null.py").write_text(NULL_PY.format(
+            mu=params["mu0"] - params["pi"] * params["d_shift"]))
         (case_dir / "metrics.json").write_text(json.dumps({
             "metricas": [
                 {"key": "S", "nombre": "Estructura del proceso capturada",
@@ -265,11 +358,16 @@ def write_artifacts(params: dict) -> None:
             "ficha": "docs/research/2026-08-10-ficha-mundo-d1-calibracion.md",
             "budget": BUDGET,
             "costos": {"archivo_por_fila": 0.5, "experiment_fijo": 40, "experiment_por_medicion": 1,
-                       "measure_fijo": 15, "measure_por_rep": 1,
-                       "lab_fijo": 60, "lab_por_lote": 25, "lab_latencia_turnos": 1},
+                       "measure_fijo": 15, "measure_por_medicion": 1, "revial_prep_por_lote": 12,
+                       "lab_fijo": 60, "lab_por_lote": 25, "lab_max_lotes": 6,
+                       "lab_latencia_turnos": 1,
+                       "nota": "identicos a la tabla A2 del diseno: estandar 8x2=31, revial 2x4=47, lab 2=110"},
             "calendario": {"aviso_calendario_turno": 2,
                            "monitoreo_rutina_turno": 5,
                            "monitoreo_n_lotes": 40,
+                           "max_turnos": 13,
+                           "token_budget": 200000,
+                           "submit_gate": "entregas finales aceptadas desde que corre el monitoreo (turno 5)",
                            "nota": "el monitoreo trae lotes NUEVOS (post-anomalia) medidos por el espectrometro; reporta contra el ultimo modelo registrado; canales diagnosticos disponibles desde el turno 1"},
             "outcome": {"D_pre": "informacion esperada acumulada sobre la horquilla desplegada, posterior por historia",
                         "tau_bits": C.TAU,

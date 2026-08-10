@@ -82,6 +82,12 @@ def _make_env_proxy(conn):
         def register_model(self, code):
             return verb("register_model", {"code": code})
 
+        def measure(self, material, reps=2):
+            return verb("measure", {"material": material, "reps": int(reps)})
+
+        def lab_extern(self, lot_ids):
+            return verb("lab_extern", {"lot_ids": list(lot_ids)})
+
         def commit_plan(self, action):
             return verb("commit_plan", {"action": float(action)})
 
@@ -221,6 +227,12 @@ class KernelClient:
                 return {"type": "verb_result", "kind": "json", "data": data}
             if name == "register_model":
                 data = self.server.register_model(args["code"])
+                return {"type": "verb_result", "kind": "json", "data": data}
+            if name == "measure":
+                df = self.server.measure(args["material"], args["reps"])
+                return {"type": "verb_result", "kind": "dataframe", "data": df.to_dict("list")}
+            if name == "lab_extern":
+                data = self.server.lab_extern(args["lot_ids"])
                 return {"type": "verb_result", "kind": "json", "data": data}
             if name == "commit_plan":
                 data = self.server.commit_plan(args["action"])

@@ -24,6 +24,7 @@ from __future__ import annotations
 import json
 from math import log2
 from pathlib import Path
+from types import SimpleNamespace
 
 import numpy as np
 import pandas as pd
@@ -71,8 +72,10 @@ class LotState:
     def __init__(self, params: dict):
         self.p = params
 
+    KIND_TAG = {"archive": 1, "new": 2}   # jamás hash(): salteado por proceso
+
     def lot(self, kind: str, index: int) -> dict:
-        seed = np.random.SeedSequence([self.p["world_seed"], hash(kind) & 0xFFFF, index])
+        seed = np.random.SeedSequence([self.p["world_seed"], self.KIND_TAG[kind], index])
         rng = np.random.default_rng(seed)
         q = rng.normal(0.0, SQ)
         affected = (kind == "new") and (rng.random() < self.p["pi"])
@@ -230,9 +233,14 @@ def pole_truth_program(pole: str, params: dict):
     return prog
 
 
+def _regime(T: float):
+    """Regime con atributo .config (el contrato del entregable del agente);
+    los truth programs aceptan ambos via _speed_T."""
+    return SimpleNamespace(config={"T": T}, context={}, horizon=None)
+
+
 def program_curve_stats(program, T: float, n: int = 3000, seed: int = 424242) -> dict:
-    df = program(type("R", (), {"config": {"T": T}, "context": {}})(), n, seed) \
-        if False else program({"config": {"T": T}}, n, seed)
+    df = program(_regime(T), n, seed)
     y = np.asarray(df["y"], float)
     lo = np.mean(y < np.mean(y) - 1.8)
     return {"mean": float(np.mean(y)), "sd": float(np.std(y)),
@@ -263,7 +271,7 @@ def s_metric(program, pole: str, params: dict) -> dict:
 def structural_flag(program, params: dict) -> dict:
     """¿La entrega contiene estructura de mezcla? (dip/bimodalidad en lotes
     generados a T=1.0). Mecánico: gap entre modas > 1.5 con masa baja >= 8%."""
-    df = program({"config": {"T": 1.0}}, 4000, 99)
+    df = program(_regime(1.0), 4000, 99)
     y = np.sort(np.asarray(df["y"], float))
     med = np.median(y)
     low = y[y < med - 1.5]
