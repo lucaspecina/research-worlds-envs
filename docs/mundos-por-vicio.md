@@ -390,3 +390,43 @@ lado malo.
 | **8. Perder el objetivo/relevancia (NUEVO)** | 2 fuentes (2601.03315; vibe-physics) | **0** | por diseñar — distinguirlo de la buena descomposición |
 | **9. La verificación de paja (PROMOVIDO 2026-07-13)** | dominante en taxonomías de agentes 2026 (cola de lectura) | **0** | par con el mundo del cierre prematuro (prioridad #1) |
 | Saltos (pares) | FLACA → nuestra oportunidad de medirla primero | v2 instancia uno | Vulcano, consiliencia, analogía |
+
+---
+
+## La derivación desde la ANATOMÍA DE CASOS REALES (2026-08-10)
+
+> Barrido de TODO el corpus (no solo las lecturas nuevas): pedido de Lucas — *"los mundos deben
+> ser realistas o contener la complejidad parecida a lo de verdad"*, con su corrección de no
+> basarse solo en las últimas lecturas. Tabla maestra de ~100 casos, 11 ejes ausentes y 11
+> advertencias: [anatomía de casos reales](research/2026-08-10-anatomia-casos-reales-requisitos-mundo-realista.md).
+
+**El hallazgo que reordena la cartera**: el corpus documenta un fenómeno **acompañado, largo y
+ambiguo**; nuestros mundos instancian uno **solitario, corto e inequívoco**. Tres ejes aparecen en
+las CUATRO tradiciones (histórica · cognitiva · profesional · agentes) y **no están en ningún
+mundo nuestro, vivo ni archivado**:
+
+| Eje ausente | Evidencia convergente | Qué juntura habilita medir |
+|---|---|---|
+| **Instrumento-vs-mundo** con costo de desambiguar | Onnes ("cortocircuito del equipo") · Darden paso 1 obligatorio · Dunbar (*si cree que es error, ningún desafío lo mueve*) · **nuestros propios especímenes**: "noisy", "outlier" | descartar-sin-replicar / replicar-confirmar-y-descartar-igual / replicar-y-perseguir |
+| **≥3 explicaciones vivas** (menú de rivales) | Darden: 4 hipótesis sobre 4 pasos distintos · Heuer: menú "woefully inadequate" · nuestra regla propia de 2-4 operadores por caso, incumplida en los mundos de saltos | cardinalidad y diversidad del menú generado |
+| **Otro que critica** | A favor: Dunbar (el corrector es el meeting) · Ohlsson p.157. En contra: Barkett (pares 99.2% escalada) · Jr. AI Scientist (el pedido del revisor produce fabricación y SUBE la nota). Lo que funciona: **fresh look SIN propiedad de la teoría** | diagnóstico solo vs bajo desafío |
+
+**Dirección aprobada por Lucas (2026-08-10)** para el mundo realista siguiente: instrumento +
+varias explicaciones vivas + posiblemente el crítico, **y además más mecanismos y complejidad real
+del sistema subyacente** (no solo complejidad epistémica). Orden acordado: **primero se termina el
+microscopio** (`count_regime_v1`), después se diseña este.
+
+**Candidatos derivados** (detalle, anclas y riesgos en el doc de anatomía §D):
+
+| # | Mundo | Caso ancla | Ejes | Costo | Riesgo principal |
+|---|---|---|---|---|---|
+| **D1** | **"El turno de calibración"** — la anomalía que puede ser el aparato | Onnes 1911 | instrumento-vs-mundo · menú de rivales · diagnosticity del gasto | BAJO (reusa `error_de_medicion`, `batch_effect`, doble fuente de `selection_bias_v0`) | que degenere en aritmética si la réplica es la jugada obvia |
+| **D2** | "El modelo heredado en piezas" | Darden cap. 8 (anomalía 2:1) | piezas separables · firma que localiza · teoría heredada | ALTO (exige contrato de submission modular) | que la modularidad regale la respuesta (menú de N componentes = repartir, no agrandar) |
+| **D3** | "La línea que corre" | KellyBench + MORPHEUS + el componente social | evidencia en el tiempo · otro agente · verdad diferida | MUY ALTO | duplicar lo publicado; medir operación en vez de juicio |
+
+**Advertencias que gobiernan cualquiera de los tres** (§E del doc): no agregar volumen (medido
+tres veces que no compra nada) · nada que se pueda fallar por perder el hilo · certificar
+visibilidad de CADA estructura, no del conjunto · el salto debe pagar en el régimen NO visitado ·
+no cobrar los andamios · agregar ejes **de a uno** con brazos apareados · cero-LLM en la firma de
+cada eje (el de verdad-diferida NO la tiene resuelta → se posterga) · **el realismo es fidelidad
+de CONDICIONES, no de fachada**.

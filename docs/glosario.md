@@ -89,6 +89,22 @@ para medir — sin jueces LLM — dónde exactamente se les rompe el proceso de 
 - **Censura**: corrida inválida (se quedó sin tokens, no entregó código) — se reporta, no cuenta
   ni a favor ni en contra.
 
+## Microscopio vs mundo realista ([anatomía de casos reales](research/2026-08-10-anatomia-casos-reales-requisitos-mundo-realista.md))
+
+- **Mundo microscopio**: chico a propósito — una perilla, una estructura escondida, sin colegas
+  ni instrumentos. Si el agente falla, no hay dónde esconderse (por eso el 0/9 vale). Su límite:
+  el claim no viaja más allá de lo que el episodio instancia.
+- **Mundo realista**: instancia las CONDICIONES de los casos reales, no su fachada. Los tres ejes
+  que el corpus entero pide y ningún mundo nuestro tiene: **instrumento-vs-mundo** (¿es el aparato
+  o el fenómeno?, con costo de averiguarlo) · **menú de rivales** (≥3 explicaciones vivas) ·
+  **otro que critica** (con la advertencia de que los pares simétricos ESCALAN el compromiso; lo
+  que funciona es el revisor sin propiedad de la teoría).
+- **Diagnosticity** (Heuer): cuánto DISCRIMINA una compra entre las hipótesis vivas. La evidencia
+  consistente con todas vale cero ("la fiebre prueba enfermedad, no cuál"). Computable exacto
+  server-side → métrica de economía de la investigación.
+- **Fidelidad de condiciones, no de fachada** (regla dura): más piel industrial con las mismas
+  junturas no es más realista.
+
 ## Reglas de juego de la investigación
 
 - **Certificados**: pruebas automáticas que un mundo pasa antes de usarse — necesidad (el salto

@@ -352,7 +352,25 @@
 > [addendum ratificado](research/2026-08-09-ficha-mundo-count-regime-v1-impasse.md), aplicados
 > en wikis/glosario/libro). El reward TERMINAL no cambia; frontera cero-LLM intacta.
 >
-> **PRÓXIMO PASO (2026-08-09): construir la v1 contra ficha + addendum ratificado.** Orden:
+> **CARTERA DE MUNDOS REORDENADA (2026-08-10) — barrido del CORPUS COMPLETO.** A pedido de Lucas
+> (*"los mundos deben ser realistas o contener la complejidad parecida a lo de verdad"*, con su
+> corrección de no basarse solo en las lecturas nuevas): tabla maestra de ~100 casos reales, 11
+> ejes de complejidad ausentes, 3 candidatos de mundo y 11 advertencias en
+> [anatomía de casos reales](research/2026-08-10-anatomia-casos-reales-requisitos-mundo-realista.md).
+> **Hallazgo**: el corpus documenta un fenómeno acompañado, largo y ambiguo; nuestros mundos
+> instancian uno solitario, corto e inequívoco. Los 3 ejes presentes en las CUATRO tradiciones —
+> **instrumento-vs-mundo · menú de ≥3 rivales vivos · otro que critica** — no están en ningún
+> mundo nuestro, vivo ni archivado.
+>
+> **DECISIÓN DE LUCAS (2026-08-10):** (a) **primero se termina el microscopio** `count_regime_v1`;
+> (b) el mundo siguiente incorpora instrumento + varias explicaciones vivas + posiblemente el
+> crítico, **y además más mecanismos y complejidad real del sistema subyacente** (no solo
+> complejidad epistémica); (c) **regla dura nueva: ningún mundo se construye sin confirmación
+> explícita de Lucas — el GO de Codex no la reemplaza.** Derivación y candidatos registrados en
+> [mundos-por-vicio](mundos-por-vicio.md) §anatomía; canal "es el aparato" agregado a
+> [WIKI-FALLAS](../WIKI-FALLAS.md) ④; términos en [glosario](glosario.md).
+>
+> **PRÓXIMO PASO (2026-08-09→10): construir la v1 contra ficha + addendum ratificado.** Orden:
 > generador con firma no-flagrante + scan de instancia (seeds 99450–99459/99468–99489) →
 > recertificación completa (los 4 de siempre + no-flagrancia · no-dictación sobre el mensaje
 > RENDERIZADO · necesidad teleológica · biblioteca de parches de la compuerta B · elegibilidad

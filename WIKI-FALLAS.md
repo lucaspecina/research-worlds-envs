@@ -95,6 +95,18 @@ no soltar la actual** — nadie reemplaza algo con nada. Las fallas ① y ④ so
 dos lados. (Y el gate: si el investigador cree que la anomalía es ERROR, ningún desafío lo
 mueve — por eso la réplica del dato raro tiene que ser comprable y barata.)
 
+**La excusa que usa TODO el mundo: "es el aparato, no el mundo".** Es la salida más
+documentada del corpus entero, y aparece en las cuatro tradiciones a la vez: el equipo de
+Onnes descartó la superconductividad como *cortocircuito del equipo*; Darden pone "confirmar
+que la anomalía existe (¿es problema de datos?)" como **paso 1 obligatorio** de todo cambio de
+teoría; Dunbar midió el gate más duro que tenemos (*si el investigador cree que es error,
+ningún desafío produce cambio conceptual*); y nuestros propios agentes la usan literalmente
+("la muestra histórica era ruidosa", "quizás ese punto es un outlier"). **El descarte por
+instrumento es legítimo** — lo ilegítimo es descartar sin replicar, o replicar, confirmar y
+descartar igual. Hoy nuestros mundos no tienen instrumento: el ruido es solo de muestreo, así
+que la excusa más usada del mundo real ni siquiera es jugable acá
+([anatomía de casos reales](docs/research/2026-08-10-anatomia-casos-reales-requisitos-mundo-realista.md) §B3).
+
 ## ⑤ Al entregar — el knowledge-action gap
 
 **Qué es**: diagnosticar correctamente la propia falla… y no corregir nada. El saber no
@@ -129,6 +141,14 @@ y la entrega lo ignora.
 - **La reforma con outcome**: el modelo británico de interrogatorio (entrevistar para
   AVERIGUAR, no para confirmar) desarmó el túnel institucional **sin perder rendimiento** (las
   confesiones no bajaron).
+
+**Ojo con "poner a otro a criticar": la evidencia va para los dos lados.** A favor: en los
+laboratorios reales el corrector de la anomalía descartada es **la reunión de equipo**, no el
+individuo. En contra: dos pares simétricos deliberando dan **99% de escalada de compromiso**
+(vs casi cero decidiendo solos), y a un agente al que un revisor le pide más, **le sale
+fabricar** — y encima le sube la nota. Lo único con evidencia a favor es un revisor que **no
+sea dueño de la teoría** (el *fresh look*). Traducción de diseño: agregar "colegas" no es
+automáticamente agregar corrección.
 
 ---
 
