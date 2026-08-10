@@ -152,9 +152,9 @@ def meta_json(case_id: str, pole: str, params: dict) -> dict:
             ],
             "control_surface": {
                 "settable": {"speed": {"low": 0.8, "high": 1.4,
-                                       "description": "line speed of the runs you launch; the evaluation may use any value in range"}},
+                                       "description": "line speed of the runs you launch. The line is CERTIFIED up to 1.2: your own runs may not exceed it unless plant engineering authorizes it during the evaluation (premium per-row cost). The evaluation itself may use any value in the declared range."}},
                 "context": {}, "instruments": {},
-                "experiment_note": "each experiment call produces n LOTS at your chosen speed; cost = fixed + per ROW",
+                "experiment_note": "each experiment call produces n LOTS at your chosen speed; cost = fixed + per ROW. Runs above the certified limit 1.2 are unavailable until plant engineering authorizes them (then premium per-row).",
                 "deliverable_note": "model(regime, n, seed) -> DataFrame with columns exactly [unit_id, y]; n counts LOTS (one measurement per lot, unit_id sequential); honor regime.config speed. Model the PROCESS.",
             },
         },

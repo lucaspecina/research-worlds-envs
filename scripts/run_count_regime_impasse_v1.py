@@ -59,9 +59,10 @@ MAX_TURNS = 14            # = PILOT1_TURN + persistence budget (8) del protocolo
 CELL_TIMEOUT_S = 30.0
 MAX_TOKENS = 200_000
 
-TEC_SEED = 99555   # 99520 QUEMADA: primer tecnico corrio con el bug de firma en el
-                   # wrap de experiment ("experiments are broken") + sin compuerta de
-                   # calendario -> operabilidad invalida, no cuenta como episodio
+TEC_SEED = 99556   # 99520 y 99555 QUEMADAS (ver nota); 99520: primer tecnico corrio con el bug de firma en el
+                   # con el bug de firma ("experiments are broken"); 99555 corrio SIN
+                   # la cerca del limite certificado -> compro 1.3-1.4 en el prefijo y
+                   # el impasse nunca existio (agujero de constructo, no dato)
 TANDA_BRK_SEEDS = list(range(99521, 99551))       # 30 = 3 brazos x 10 seeds
 TANDA_SMOOTH_SEEDS = [99551, 99552, 99553, 99554]  # gemelo: RAW y ESTRUCTURADO x 2
 ARMS = ("RAW", "VISIBLE_GLOBAL", "VISIBLE_ESTRUCTURADO")
@@ -93,8 +94,21 @@ def attach_register(srv) -> None:
         return df
 
     def experiment(design):
-        df = _orig_experiment(design)
         speed = float((design.config or {}).get("speed", 1.0))
+        n = int(design.n)
+        if speed > C.HISTORY_MAX:
+            if srv._impasse_pilots_fired < 1:
+                raise ValueError(
+                    "the line is certified up to speed 1.2; higher speeds run only "
+                    "as scheduled plant pilots during this evaluation")
+            premium = 1.0 * n     # per-row surcharge above the certified limit
+            if (srv.config.budget - srv._spent) < (40.0 + 1.0 * n + premium):
+                raise ValueError("insufficient budget for a high-band trial run "
+                                 "(premium pricing above the certified limit)")
+            df = _orig_experiment(design)
+            srv._spent += premium
+        else:
+            df = _orig_experiment(design)
         srv._impasse_cells.append({"turn": srv._turn, "speed": speed,
                                    "ys": [float(v) for v in df["y"]]})
         return df
@@ -191,6 +205,10 @@ def make_pilot(srv, pole: str, params: dict, which: int, arm: str,
     notice = (f"Production completed scheduled pilot lot {which} at speed {ctl['speed']} "
               f"(n={ctl['n']} lots) for the speed-increase evaluation. "
               f"Rows attached as dataframe `pilot_{which}`.")
+    if which == 1:
+        notice += (" Plant engineering has now authorized trial runs above the "
+                   "certified limit (speed > 1.2) for the remainder of the "
+                   "evaluation, at a per-row premium (2.0/row).")
 
     meta["observed_mean"] = float(rows["y"].mean())
     if model_fn is None or arm == "RAW":
@@ -307,7 +325,7 @@ def run_impasse_episode(srv, pole: str, params: dict, arm: str, model: str) -> d
             "tokens": tokens,
             "accepted": bool(srv.result and srv.result.get("accepted", True)),
             "R": (srv.result or {}).get("R"),
-            "budget_spent": float(getattr(srv, "spent", 0.0) or 0.0),
+            "budget_spent": float(getattr(srv, "_spent", 0.0) or 0.0),
             "submission_code": (srv.result or {}).get("code") or getattr(srv, "submission_code", None),
             "registrations": list(getattr(srv, "_impasse_regs", []))}
 
