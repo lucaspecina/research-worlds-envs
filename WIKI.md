@@ -269,6 +269,11 @@ juicio entero. Crecen, y nunca lo cubren del todo.
 - El dossier visual para inspeccionar partidas.
 - Varios mundos: unos de control (la vara) y los primeros de dificultad real (el trofeo de
   composición oculta y el de presupuesto escaso).
+- **Los mundos gemelos y sus primeros hallazgos (era de saltos, agosto 2026)**: el mismo
+  agente que nunca propone la idea nueva por su cuenta (0/9) la escribe siempre cuando su
+  propio modelo falla delante suyo (30/30); y en la planta química, todos compran los chequeos
+  correctos, sus datos muestran la estructura… y casi nadie la escribe en la entrega (2/15).
+  El detalle en llano: WIKI-FALLAS ⑤ y WIKI-SALTOS (tabla de estado).
 
 **Lo que todavía no:**
 - No entrenamos nada aún (la fase de RL — la apuesta grande, no un hecho).

@@ -234,8 +234,8 @@ grabadas en laboratorios de élite, solo 2 fueron lejanas y ninguna descubrió n
 
 | Salto | Mundo | Creatividad medida |
 |---|---|---|
-| 2 grupos escondidos | ✅ count_mix | **0/9 espontáneo** |
-| 3 régimen oculto | ✅ count_regime v0 | todavía no (v0 midió aceptación; versión escondida diseñada) |
+| 2 grupos escondidos | ✅ count_mix · ✅ par planta química (d1) | **0/9 espontáneo** · con la disyuntiva servida y la evidencia comprada por ellos: **escriben los dos grupos 2/15** (el cuello no es que no se les ocurra — es que no lo escriben; ronda 2 corriendo) |
+| 3 régimen oculto | ✅ count_regime v0 → v1 | v0 midió aceptación; **v1: sin fallo 0/9 → con el fallo del propio modelo a la vista 30/30** (el gatillo es el fallo, no el detalle del reporte) |
 | +1 transferencia | ✅ overgen (era anterior) | par medido en su era |
 | 1, 4–10 | sin mundo | — |
 

@@ -79,6 +79,12 @@ ignorar: es escrutinio activo al servicio del descarte.
 verificarlo**, confirma que es real, escribe *"¿y si son dos tramos?"*… y entrega la curva de
 siempre llamando **"outlier"** al punto que él mismo confirmó.
 
+**Actualización 2026-08-10 (buena noticia parcial)**: en la planta química, la parte de
+"chequear antes de descartar" los agentes la hacen SOLOS y siempre (30/30 verificaron el
+instrumento sin que nadie lo sugiriera) — el reflejo humano de culpar al aparato sin pagar el
+chequeo no apareció. Donde sí se caen es un paso después: en escribir lo que el chequeo
+mostró (ver ⑤).
+
 **Las profesiones lo tienen fotografiado**: en condenas erróneas, la contra-evidencia se
 examina con lupa y *"se redefine en una categoría menos dañina"* ("el testigo es pariente",
 "el ticket no prueba nada") — y ante contra-evidencia fuerte aparece **el epiciclo**: la
@@ -116,6 +122,16 @@ gobierna la acción.
 de autocrítica identificando la causa raíz de sus pérdidas — y no cambió una línea de su
 modelo. Nuestro "outlier" es lo mismo en chico: el diagnóstico está escrito en su propia traza
 y la entrega lo ignora.
+
+**Nuestro espécimen más fuerte (2026-08-10, la planta química)**: 30 de 30 agentes compraron
+los chequeos correctos sin que nadie se los pidiera, sus propios datos mostraban clarísimo
+"hay dos tipos de lotes" (verificado con matemática pura sobre lo que cada uno vio) — y 13 de
+15 entregaron igual el modelo simple de un solo grupo, escondiendo los lotes malos en "más
+ruido". Uno escribió "voy a agregar un componente de contaminación"… y entregó el simple.
+**La síntesis de la era (Lucas)**: hacen todo el trabajo barato — mirar, comprar, concluir —
+y esquivan el único paso caro: comprometerse por escrito con la idea nueva. Solo lo hacen si
+algo los obliga (cuando su propio modelo falló delante suyo: 30/30; sin ese golpe: 0/9). Un
+científico real no espera el golpe — esa diferencia es medible y es nuestra.
 
 ---
 
