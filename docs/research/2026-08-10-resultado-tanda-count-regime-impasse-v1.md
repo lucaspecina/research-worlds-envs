@@ -122,3 +122,67 @@ mismo modelo y misma estructura); (2) la inversión del reporte; (3) la maquinar
 (predicción de Ohlsson, Principle of Scope: la tasa cae con el alcance). Escalera: disparador
 fijo, distancia creciente — firma ambigua (Onnes) · operadores compuestos (2-4) · candidato
 fuera del menú nombrable · el salto que NO agrega (borrar/re-anclar, Thagard).
+
+---
+
+## ADDENDUM 2 — FALLO DE CODEX (2026-08-10): PIVOTEAR el anfitrión, MANTENER el programa
+
+Crudos: `scratch/codex-respuesta-2026-08-10-tanda.txt`. Lo decidido, por punto:
+
+1. **count_regime_v1 CERRADO** — "no v1.1, no más agentes en este mundo". Queda como **rung 0**
+   del programa: *"un candidato familiar, después de un fallo visible y evidencia servida"*.
+   Control positivo de alcance mínimo.
+2. **Réplica DeepSeek: NO-GO.** Codex corrió su propio análisis apareado sobre nuestros tríos:
+   entre pares discordantes RAW le gana a GLOBAL solo 3:1 y a ESTRUCTURADO 4:2 (tests exactos
+   p≈.63/.69). **La inversión cruzó la regla firmada pero NO es una regularidad sólida**:
+   alcanza para rechazar la predicción de aceleración en este ciclo, no para afirmar
+   inhibición. Hallazgo secundario, específico de gpt-5.4.
+3. **Próximo peldaño: D1/Onnes (firma ambigua)** → después operadores compuestos SOBRE EL MISMO
+   backbone → borrar/re-anclar como rama ortogonal → fuera-de-menú último. ⚠️ Advertencia
+   estructural: los cuatro peldaños **no forman una sola "distancia"** — manipulan cosas
+   distintas (ambigüedad/costo de búsqueda · radio de edición · dirección de edición ·
+   distancia al espacio efectivo). **D1 no se vende como test del Principle of Scope**; para
+   una curva causal: mismo backbone, polo de una edición vs polo compuesto, todo lo demás
+   idéntico. D1 sin crítico en la primera versión. Y eliminar el confound de v1: **ningún canal
+   de acción se abre junto con el fallo** (las compras diagnósticas existen desde el arranque;
+   el piloto solo trae evidencia).
+4. **La compuerta de alcanzabilidad NO se debilita: SE DIVIDE en cuatro** — identificabilidad
+   (con la hipótesis correcta existe evidencia legal que separa cada rival) · alcanzabilidad
+   condicionada (un oráculo DADO el candidato lo valida en presupuesto) · **no-trivialidad de
+   búsqueda** (ninguna compra obvia ni evidencia programada resuelve; una ruta dirigida entra
+   en presupuesto, enumerar todas no) · headroom (el mejor parche y el robot de menú cerrado
+   pierden materialmente). Dos robots: oráculo-condicionado (justicia) + buscador ciego acotado
+   (no-checklist). *No exigir que un robot genérico descubra espontáneamente: eso vuelve el
+   salto enumerable por construcción.*
+5. **Anotación conjetura→compra: hecha** (reglas congeladas antes de leer; abajo).
+6. **Ocho claims bajados** — aplicados: "reestructuración universal" → *30/30 en una instancia,
+   un modelo y un protocolo que impidió cerrar antes del piloto 2*; "el impasse explica
+   0/9→30/30" → solo **consistente** (cambian mundo, operador, calendario, cerca, zoom y gate;
+   no hubo brazo sin fallo DENTRO de v1); "el reporte invierte" → *el estimado cruzó la regla
+   con signo negativo; sin efecto negativo generalizable*; "sin persistencia" → solo sobró el
+   segundo piloto PROGRAMADO (muchos compraron zoom = evidencia repetida antes de postular);
+   "30/30 postularon dos leyes" → el scorer confirma GEOMETRÍA; la representación explícita
+   está auditada en 24/30; gemelo 0/4 = control de sanidad, no tasa; S no premia explicación;
+   los 7 cierres tempranos = dato de INTENCIÓN (el harness impidió que fueran entregas).
+
+### La anotación de trazas (reglas congeladas: t_mention lexical FLAGGED · t_buy >1.2 · t_register regime · orden observable)
+
+| Orden observable | RAW | GLOBAL | ESTRUCTURADO |
+|---|---|---|---|
+| mención antes de compra ("conjetura primero") | 4 | 1 | 5 |
+| compra antes de mención ("verifica primero") | 2 | 3 | 2 |
+| mismo turno (inseparable) | 4 | 4 | 3 |
+| mención sin compra premium | 0 | 2 | 0 |
+
+**Lo que decide**: (a) mi lectura post-hoc ("el reporte induce verificar-primero") **NO se
+sostiene** — el orden es heterogéneo dentro de cada brazo; (b) los de reporte actúan MÁS RÁPIDO
+en términos absolutos (compran el zoom el mismo turno de la autorización y registran en turnos
+6-8 vs 8-9 de RAW) — la "inversión" del outcome refleja que registran con más evidencia propia
+acumulada, no que postulen más tarde; (c) **hallazgo colateral genuino**: varios agentes
+MENCIONAN la idea del umbral en los turnos 1-5, ANTES de todo fallo — el encargo mismo
+("evaluar velocidades sobre el envolvente") planta la sospecha; el candidato estaba en el
+conjunto activo de varios antes del piloto. Consistente con la advertencia de Codex: *register
+no representa el nacimiento mental del candidato* — y con el mindset suspicaz de Klein.
+
+**Estado final del anfitrión: CERRADO.** El próximo dólar va a la ficha D1 (Onnes), que se
+presenta a Lucas con contexto completo ANTES de codear (regla dura 2026-08-10).
