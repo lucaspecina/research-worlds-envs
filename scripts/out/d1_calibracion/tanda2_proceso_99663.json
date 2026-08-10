@@ -1,0 +1,2069 @@
+{
+ "tag": "tanda2",
+ "pole": "proceso",
+ "case": "d1_proceso",
+ "seed": 99663,
+ "model": "gpt-5.4",
+ "started": "2026-08-10T15:56:35",
+ "wall_s": 49.5,
+ "trace": [
+  {
+   "turn": 1,
+   "reply_text": "Necesitamos separar variaci\u00f3n del proceso real de posible sesgo/ruido del espectr\u00f3metro, porque el entregable pide pureza real de lotes pero casi todas las observaciones son lecturas del instrumento. Lo m\u00e1s barato para arrancar es explotar el archivo hist\u00f3rico en T=1.0 para estimar forma b\u00e1sica de la distribuci\u00f3n y revisar si parece unimodal/normal o algo m\u00e1s raro; luego decidiremos si hace falta gastar en est\u00e1ndares/re-mediciones o en unos pocos experimentos a distintas T para mapear el efecto causal de temperatura.\n```python\nimport pandas as pd, numpy as np\n\nprint(\"DESCRIBE\")\nprint(env.describe())\n\ndf = env.observe(\"archivo\", 200)\nprint(\"\\nARCHIVO head\")\nprint(df.head())\nprint(\"\\nARCHIVO shape\")\nprint(df.shape)\n\ny = df[\"y\"].astype(float)\nsummary = {\n    \"mean\": float(y.mean()),\n    \"std\": float(y.std(ddof=1)),\n    \"min\": float(y.min()),\n    \"q05\": float(y.quantile(0.05)),\n    \"q25\": float(y.quantile(0.25)),\n    \"median\": float(y.median()),\n    \"q75\": float(y.quantile(0.75)),\n    \"q95\": float(y.quantile(0.95)),\n    \"max\": float(y.max()),\n    \"skew\": float(y.skew()),\n}\nprint(\"\\nARCHIVO y summary\")\nprint(summary)\n```",
+   "cell": "import pandas as pd, numpy as np\n\nprint(\"DESCRIBE\")\nprint(env.describe())\n\ndf = env.observe(\"archivo\", 200)\nprint(\"\\nARCHIVO head\")\nprint(df.head())\nprint(\"\\nARCHIVO shape\")\nprint(df.shape)\n\ny = df[\"y\"].astype(float)\nsummary = {\n    \"mean\": float(y.mean()),\n    \"std\": float(y.std(ddof=1)),\n    \"min\": float(y.min()),\n    \"q05\": float(y.quantile(0.05)),\n    \"q25\": float(y.quantile(0.25)),\n    \"median\": float(y.median()),\n    \"q75\": float(y.quantile(0.75)),\n    \"q95\": float(y.quantile(0.95)),\n    \"max\": float(y.max()),\n    \"skew\": float(y.skew()),\n}\nprint(\"\\nARCHIVO y summary\")\nprint(summary)",
+   "verbs": [
+    {
+     "verb": "observe",
+     "args": {
+      "source": "archivo",
+      "n": 200
+     }
+    }
+   ],
+   "stdout": "DESCRIBE\n{'brief': '# Encargo \u2014 analista de proceso, planta de s\u00edntesis\\n\\nLa planta produce LOTES de un compuesto; lo que importa es la PUREZA (`y`, % en\\nescala 0-100). La pureza de cada lote se mide con el espectr\u00f3metro de l\u00ednea. La\\ngerencia necesita un modelo generativo del PROCESO: dado un r\u00e9gimen de operaci\u00f3n,\\ntu modelo debe generar la pureza real de los lotes que el proceso producir\u00eda.\\n\\n## Qu\u00e9 entreg\u00e1s\\n\\n`model(regime, n, seed) -> DataFrame` con columnas exactas `[unit_id, y]`:\\n`n` cuenta LOTES (una pureza por lote; `unit_id` correlativo desde 0). Honr\u00e1\\n`regime.config[\"T\"]` (temperatura del reactor, en [0.6, 1.4]). Se evaluar\u00e1 en\\ncondiciones que pod\u00e9s no haber visto.\\n\\n## Acciones y costos (presupuesto finito, sin reembolso)\\n\\n- `observe(\"archivo\", n)`: lecturas hist\u00f3ricas del espectr\u00f3metro (operaci\u00f3n\\n  normal, T=1.0), baratas.\\n- `experiment(T=..., n_lotes=..., reps=...)`: produce lotes NUEVOS a la\\n  temperatura que elijas y los mide (costo fijo + por medici\u00f3n).\\n- `measure(material, reps)`: mide con el espectr\u00f3metro cualquier material que\\n  indiques: un lote ya existente (por `lot_id`, mismo vial), un lote\\n  re-preparado en vial nuevo (`revial:<lot_id>`), o un insumo del cat\u00e1logo \u2014\\n  incluye solventes, blancos y un est\u00e1ndar de referencia certificado (pureza\\n  nominal en la etiqueta del cat\u00e1logo).\\n- `lab_extern([lot_ids])`: re-an\u00e1lisis del MISMO material por un laboratorio\\n  externo certificado (hasta 6 lotes por pedido; el resultado llega al turno\\n  siguiente). Caro.\\n- `register(code)`: dej\u00e1s asentado tu modelo provisional; el monitoreo de\\n  rutina de la planta corre en calendario fijo y te reporta contra tu \u00faltimo\\n  modelo registrado.\\n- `submit(code)`: entrega final.\\n\\n## C\u00f3mo se eval\u00faa\\n\\nTu entrega es el modelo ejecutable: tu mejor reconstrucci\u00f3n del proceso\\ngenerador, lo m\u00e1s fiel posible. El servidor genera lotes con tu modelo y\\ncon el proceso real bajo las mismas condiciones \u2014 incluidas algunas que pod\u00e9s\\nno haber visto \u2014 y los compara de distintas maneras. El objetivo es un\\nsustituto fiel del PROCESO.\\n', 'schema': ['unit_id', 'y'], 'sources': {'archivo': {'cost_per_row': 0.5, 'columns': ['unit_id', 'y']}}, 'experiment_cost': {'cost_fixed': 40.0, 'cost_per_row': 1.0, 'cost_per_horizon': 0.0}, 'control_surface': {'settable': {'T': {'low': 0.6, 'high': 1.4, 'description': 'reactor temperature of the runs you launch; the evaluation may use any value in the declared range.'}}, 'context': {}, 'instruments': {}, 'experiment_note': \"each experiment call produces n LOTS at your chosen T, measured by the in-line spectrometer; cost = fixed + per measurement. Other verbs (see brief): env.measure(material, reps) re-measures existing lots, new vials ('revial:<lot_id>') or catalog items ('estandar','solvente','blanco'); env.lab_extern([lot_ids]) sends ALREADY-measured lots to the external lab (<=6, result next turn); env.register_model(code) files your provisional model (free).\", 'deliverable_note': 'model(regime, n, s\n... [output truncated: 3681 chars total]"
+  },
+  {
+   "turn": 2,
+   "reply_text": "El archivo en T=1.0 ya nos dio la l\u00ednea base, pero antes de gastar mucho en experimentos conviene calibrar el instrumento: si hay un offset o ruido importante, el modelo del proceso no debe confundirlo con variaci\u00f3n real. Adem\u00e1s nos avisaron del monitoreo en turno 5, as\u00ed que ya conviene dejar un modelo provisional sencillo registrado ahora; luego lo refinamos tras medir est\u00e1ndar/blanco/solvente y algunos lotes re-medidos.\n```python\nimport numpy as np, pandas as pd\n\n# provisional model: simple baseline from historical T=1.0, flat in T for now\nprovisional_code = \"\"\"\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    rng = np.random.default_rng(seed)\n    T = float(regime.config.get(\"T\", 1.0))\n    mu = 95.0\n    sigma = 1.5\n    y = rng.normal(mu, sigma, size=n)\n    y = np.clip(y, 0, 100)\n    return pd.DataFrame({\"unit_id\": np.arange(n, dtype=int), \"y\": y})\n\"\"\"\nenv.register_model(provisional_code)\nprint(\"Registered provisional model.\")\n\n# instrument checks\nm_std = env.measure(\"estandar:4\", reps=3)\nm_blank = env.measure(\"blanco\", reps=4)\nm_solv = env.measure(\"solvente\", reps=4)\n\nprint(\"\\nESTANDAR head/shape\")\nprint(m_std.head())\nprint(m_std.shape)\nprint(\"\\nESTANDAR grouped by vial\")\nprint(m_std.groupby(\"vial\")[[\"y\",\"nominal\"]].agg([\"mean\",\"std\",\"count\"]))\n\nprint(\"\\nBLANCO\")\nprint(m_blank)\nprint(\"\\nSOLVENTE\")\nprint(m_solv)\n```",
+   "cell": "import numpy as np, pandas as pd\n\n# provisional model: simple baseline from historical T=1.0, flat in T for now\nprovisional_code = \"\"\"\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    rng = np.random.default_rng(seed)\n    T = float(regime.config.get(\"T\", 1.0))\n    mu = 95.0\n    sigma = 1.5\n    y = rng.normal(mu, sigma, size=n)\n    y = np.clip(y, 0, 100)\n    return pd.DataFrame({\"unit_id\": np.arange(n, dtype=int), \"y\": y})\n\"\"\"\nenv.register_model(provisional_code)\nprint(\"Registered provisional model.\")\n\n# instrument checks\nm_std = env.measure(\"estandar:4\", reps=3)\nm_blank = env.measure(\"blanco\", reps=4)\nm_solv = env.measure(\"solvente\", reps=4)\n\nprint(\"\\nESTANDAR head/shape\")\nprint(m_std.head())\nprint(m_std.shape)\nprint(\"\\nESTANDAR grouped by vial\")\nprint(m_std.groupby(\"vial\")[[\"y\",\"nominal\"]].agg([\"mean\",\"std\",\"count\"]))\n\nprint(\"\\nBLANCO\")\nprint(m_blank)\nprint(\"\\nSOLVENTE\")\nprint(m_solv)",
+   "verbs": [
+    {
+     "verb": "register_model",
+     "args": {
+      "version": 1
+     }
+    },
+    {
+     "verb": "measure",
+     "args": {
+      "material": "estandar:4",
+      "reps": 3
+     }
+    },
+    {
+     "verb": "measure",
+     "args": {
+      "material": "blanco",
+      "reps": 4
+     }
+    },
+    {
+     "verb": "measure",
+     "args": {
+      "material": "solvente",
+      "reps": 4
+     }
+    }
+   ],
+   "stdout": "Registered provisional model.\n\nESTANDAR head/shape\n   material    vial  rep          y    nominal\n0  estandar  STD000    0  95.265209  95.234843\n1  estandar  STD000    1  95.468599  95.234843\n2  estandar  STD000    2  94.973896  95.234843\n3  estandar  STD001    0  95.361099  95.234843\n4  estandar  STD001    1  95.532026  95.234843\n(12, 5)\n\nESTANDAR grouped by vial\n                y                    nominal           \n             mean       std count       mean  std count\nvial                                                   \nSTD000  95.235902  0.248650     3  95.234843  0.0     3\nSTD001  95.405547  0.111134     3  95.234843  0.0     3\nSTD002  95.068213  0.766212     3  95.234843  0.0     3\nSTD003  95.184407  0.211067     3  95.234843  0.0     3\n\nBLANCO\n  material vial  rep         y  nominal\n0   blanco  BLA    0 -0.220674      0.0\n1   blanco  BLA    1 -0.012736      0.0\n2   blanco  BLA    2 -0.251346      0.0\n3   blanco  BLA    3  0.317549      0.0\n\nSOLVENTE\n   material vial  rep          y  nominal\n0  solvente  SOL    0  99.521222     99.9\n1  solvente  SOL    1  99.830203     99.9\n2  solvente  SOL    2  99.972198     99.9\n3  solvente  SOL    3  99.897821     99.9\n"
+  },
+  {
+   "turn": 3,
+   "reply_text": "Las mediciones de cat\u00e1logo sugieren que el espectr\u00f3metro est\u00e1 bastante bien calibrado: el est\u00e1ndar certificado cae casi exacto en promedio, el blanco cerca de 0 con algo de ruido, y el solvente apenas un poco bajo. Eso reduce la probabilidad de un gran sesgo instrumental; por tanto el principal desconocido pasa a ser c\u00f3mo cambia la distribuci\u00f3n de pureza con T. Como los experimentos tienen costo fijo, conviene usar pocos llamados pero cubrir el rango con varios T y suficientes lotes para estimar media y dispersi\u00f3n.\n```python\n# Probe the process-vs-temperature relationship with a small design across the range\nTs = [0.6, 0.8, 1.0, 1.2, 1.4]\nexp_results = {}\nframes = []\n\nfor T in Ts:\n    df = env.experiment(config={\"T\": T}, n=12)\n    df = df.copy()\n    df[\"T\"] = T\n    exp_results[T] = df\n    frames.append(df)\n\nexp_df = pd.concat(frames, ignore_index=True)\n\nprint(\"EXPERIMENTS head\")\nprint(exp_df.head())\nprint(\"\\nEXPERIMENTS shape\")\nprint(exp_df.shape)\n\nsummary = exp_df.groupby(\"T\")[\"y\"].agg([\"mean\",\"std\",\"min\",\"median\",\"max\",\"count\"])\nprint(\"\\nBy T summary\")\nprint(summary)\n\n# crude quadratic fit for the mean just to inspect shape\ncoef = np.polyfit(exp_df[\"T\"].astype(float), exp_df[\"y\"].astype(float), 2)\nprint(\"\\nQuadratic mean fit coefficients [a,b,c] for a*T^2 + b*T + c:\")\nprint(coef)\n```",
+   "cell": "# Probe the process-vs-temperature relationship with a small design across the range\nTs = [0.6, 0.8, 1.0, 1.2, 1.4]\nexp_results = {}\nframes = []\n\nfor T in Ts:\n    df = env.experiment(config={\"T\": T}, n=12)\n    df = df.copy()\n    df[\"T\"] = T\n    exp_results[T] = df\n    frames.append(df)\n\nexp_df = pd.concat(frames, ignore_index=True)\n\nprint(\"EXPERIMENTS head\")\nprint(exp_df.head())\nprint(\"\\nEXPERIMENTS shape\")\nprint(exp_df.shape)\n\nsummary = exp_df.groupby(\"T\")[\"y\"].agg([\"mean\",\"std\",\"min\",\"median\",\"max\",\"count\"])\nprint(\"\\nBy T summary\")\nprint(summary)\n\n# crude quadratic fit for the mean just to inspect shape\ncoef = np.polyfit(exp_df[\"T\"].astype(float), exp_df[\"y\"].astype(float), 2)\nprint(\"\\nQuadratic mean fit coefficients [a,b,c] for a*T^2 + b*T + c:\")\nprint(coef)",
+   "verbs": [
+    {
+     "verb": "experiment",
+     "args": {
+      "T": 0.6,
+      "n": 12,
+      "reps": 1
+     }
+    },
+    {
+     "verb": "experiment",
+     "args": {
+      "T": 0.8,
+      "n": 12,
+      "reps": 1
+     }
+    },
+    {
+     "verb": "experiment",
+     "args": {
+      "T": 1.0,
+      "n": 12,
+      "reps": 1
+     }
+    },
+    {
+     "verb": "experiment",
+     "args": {
+      "T": 1.2,
+      "n": 12,
+      "reps": 1
+     }
+    },
+    {
+     "verb": "experiment",
+     "args": {
+      "T": 1.4,
+      "n": 12,
+      "reps": 1
+     }
+    }
+   ],
+   "stdout": "EXPERIMENTS head\n  lot_id    T  rep          y\n0  N0000  0.6    0  92.821831\n1  N0001  0.6    0  92.770289\n2  N0002  0.6    0  89.022974\n3  N0003  0.6    0  94.112726\n4  N0004  0.6    0  87.596745\n\nEXPERIMENTS shape\n(60, 4)\n\nBy T summary\n          mean       std        min     median        max  count\nT                                                               \n0.6  91.650767  2.716119  86.421562  92.796060  95.657485     12\n0.8  91.405694  2.087250  87.002433  91.864562  93.346699     12\n1.0  90.786402  2.361169  86.506257  90.957942  94.147049     12\n1.2  91.987928  1.551051  87.953601  92.447714  93.482427     12\n1.4  91.610483  1.397784  88.706026  91.712698  93.738924     12\n\nQuadratic mean fit coefficients [a,b,c] for a*T^2 + b*T + c:\n[ 2.77869972 -5.30656603 93.7938251 ]\n"
+  },
+  {
+   "turn": 4,
+   "reply_text": "El efecto de T en la media parece d\u00e9bil y no mon\u00f3tono, con una curvatura suave y diferencias del orden de 1 unidad frente a una desviaci\u00f3n entre ~1.4 y 2.7. Tambi\u00e9n veo que el hist\u00f3rico/experimentos rondan ~91, muy por debajo del est\u00e1ndar de 95, lo cual refuerza que el proceso realmente produce lotes en ese rango y no es mero sesgo del equipo. Para entregar pureza real conviene ahora estimar si la lectura de l\u00ednea es suficientemente cercana a la pureza real de lote; la forma m\u00e1s informativa es mandar unos lotes al laboratorio externo y comparar contra la l\u00ednea. Adem\u00e1s, como el reporte llega al turno siguiente, este es el momento.\n```python\n# Send a diverse subset of measured lots to the external lab for truth-vs-line comparison next turn\n# Choose across T range and y values.\nchosen = []\nfor T in [0.6, 1.0, 1.4]:\n    dft = exp_results[T].sort_values(\"y\")\n    chosen.extend([dft.iloc[0][\"lot_id\"], dft.iloc[len(dft)//2][\"lot_id\"]])\n\nchosen = list(dict.fromkeys(chosen))[:6]  # unique, max 6\nreceipt = env.lab_extern(chosen)\n\nprint(\"Chosen lot_ids for external lab:\", chosen)\nprint(\"Receipt:\")\nprint(receipt)\n```",
+   "cell": "# Send a diverse subset of measured lots to the external lab for truth-vs-line comparison next turn\n# Choose across T range and y values.\nchosen = []\nfor T in [0.6, 1.0, 1.4]:\n    dft = exp_results[T].sort_values(\"y\")\n    chosen.extend([dft.iloc[0][\"lot_id\"], dft.iloc[len(dft)//2][\"lot_id\"]])\n\nchosen = list(dict.fromkeys(chosen))[:6]  # unique, max 6\nreceipt = env.lab_extern(chosen)\n\nprint(\"Chosen lot_ids for external lab:\", chosen)\nprint(\"Receipt:\")\nprint(receipt)",
+   "verbs": [
+    {
+     "verb": "lab_extern",
+     "args": {
+      "lot_ids": [
+       "N0008",
+       "N0000",
+       "N0026",
+       "N0032",
+       "N0059",
+       "N0050"
+      ]
+     }
+    }
+   ],
+   "stdout": "Chosen lot_ids for external lab: ['N0008', 'N0000', 'N0026', 'N0032', 'N0059', 'N0050']\nReceipt:\n{'ordered': ['N0008', 'N0000', 'N0026', 'N0032', 'N0059', 'N0050'], 'results_turn': 5, 'note': 'external lab re-analyzes the same material; results arrive next turn'}\n"
+  },
+  {
+   "turn": 5,
+   "reply_text": "El monitoreo confirma que mi modelo provisional estaba mal centrado, pero \u00fatilmente tambi\u00e9n nos da 40 lotes extra a T=1.0. Ahora lo clave es comparar l\u00ednea vs laboratorio externo: si coinciden bien, podemos modelar directamente la distribuci\u00f3n del proceso usando las lecturas de l\u00ednea; si no, tendremos que corregir un sesgo/calibraci\u00f3n. Tambi\u00e9n voy a incorporar el monitoreo para afinar la distribuci\u00f3n en T=1.0 y la heterocedasticidad observada con T.\n```python\nprint(\"MONITOREO head/shape\")\nprint(monitoreo.head())\nprint(monitoreo.shape)\nprint(\"\\nMONITOREO summary\")\nprint(monitoreo[\"y\"].agg([\"mean\",\"std\",\"min\",\"median\",\"max\"]))\n\nprint(\"\\nLAB RESULTS head/shape\")\nprint(lab_results_1.head())\nprint(lab_results_1.shape)\n\n# Merge external lab results with line measurements from experiments\nline_df = pd.concat(frames, ignore_index=True)\nmerged = pd.merge(\n    line_df[[\"lot_id\", \"T\", \"y\"]].rename(columns={\"y\": \"y_line\"}),\n    lab_results_1,\n    on=\"lot_id\",\n    how=\"inner\"\n)\n\nprint(\"\\nMERGED line vs external lab\")\nprint(merged)\n\nif len(merged) > 0:\n    merged[\"diff_lab_minus_line\"] = merged[\"y\"] - merged[\"y_line\"]\n    print(\"\\nComparison summary\")\n    print(merged[[\"y_line\", \"y\", \"diff_lab_minus_line\"]].agg([\"mean\", \"std\", \"min\", \"median\", \"max\"]))\n    corr = np.corrcoef(merged[\"y_line\"], merged[\"y\"])[0,1] if len(merged) > 1 else np.nan\n    print(\"\\nCorrelation line vs lab:\", corr)\n\n# Combine T=1.0 sources for better baseline estimate\nhist1 = df.copy()\nhist1[\"source\"] = \"archivo\"\nhist1[\"T\"] = 1.0\nhist1 = hist1.rename(columns={\"unit_id\":\"id\"})\nmon1 = monitoreo.copy()\nmon1[\"source\"] = \"monitoreo\"\nmon1[\"T\"] = 1.0\nmon1 = mon1.rename(columns={\"unit_id\":\"id\"})\n\nt1_all = pd.concat([\n    hist1[[\"source\",\"T\",\"y\"]],\n    mon1[[\"source\",\"T\",\"y\"]],\n    exp_results[1.0][[\"T\",\"y\"]].assign(source=\"experimento\")\n], ignore_index=True)\n\nprint(\"\\nCombined T=1.0 summary by source\")\nprint(t1_all.groupby(\"source\")[\"y\"].agg([\"mean\",\"std\",\"count\"]))\nprint(\"\\nCombined T=1.0 overall\")\nprint(t1_all[\"y\"].agg([\"mean\",\"std\",\"min\",\"median\",\"max\",\"count\"]))\n```",
+   "cell": "print(\"MONITOREO head/shape\")\nprint(monitoreo.head())\nprint(monitoreo.shape)\nprint(\"\\nMONITOREO summary\")\nprint(monitoreo[\"y\"].agg([\"mean\",\"std\",\"min\",\"median\",\"max\"]))\n\nprint(\"\\nLAB RESULTS head/shape\")\nprint(lab_results_1.head())\nprint(lab_results_1.shape)\n\n# Merge external lab results with line measurements from experiments\nline_df = pd.concat(frames, ignore_index=True)\nmerged = pd.merge(\n    line_df[[\"lot_id\", \"T\", \"y\"]].rename(columns={\"y\": \"y_line\"}),\n    lab_results_1,\n    on=\"lot_id\",\n    how=\"inner\"\n)\n\nprint(\"\\nMERGED line vs external lab\")\nprint(merged)\n\nif len(merged) > 0:\n    merged[\"diff_lab_minus_line\"] = merged[\"y\"] - merged[\"y_line\"]\n    print(\"\\nComparison summary\")\n    print(merged[[\"y_line\", \"y\", \"diff_lab_minus_line\"]].agg([\"mean\", \"std\", \"min\", \"median\", \"max\"]))\n    corr = np.corrcoef(merged[\"y_line\"], merged[\"y\"])[0,1] if len(merged) > 1 else np.nan\n    print(\"\\nCorrelation line vs lab:\", corr)\n\n# Combine T=1.0 sources for better baseline estimate\nhist1 = df.copy()\nhist1[\"source\"] = \"archivo\"\nhist1[\"T\"] = 1.0\nhist1 = hist1.rename(columns={\"unit_id\":\"id\"})\nmon1 = monitoreo.copy()\nmon1[\"source\"] = \"monitoreo\"\nmon1[\"T\"] = 1.0\nmon1 = mon1.rename(columns={\"unit_id\":\"id\"})\n\nt1_all = pd.concat([\n    hist1[[\"source\",\"T\",\"y\"]],\n    mon1[[\"source\",\"T\",\"y\"]],\n    exp_results[1.0][[\"T\",\"y\"]].assign(source=\"experimento\")\n], ignore_index=True)\n\nprint(\"\\nCombined T=1.0 summary by source\")\nprint(t1_all.groupby(\"source\")[\"y\"].agg([\"mean\",\"std\",\"count\"]))\nprint(\"\\nCombined T=1.0 overall\")\nprint(t1_all[\"y\"].agg([\"mean\",\"std\",\"min\",\"median\",\"max\",\"count\"]))",
+   "verbs": [],
+   "stdout": "MONITOREO head/shape\n    lot_id    T          y\n0  N100000  1.0  92.451054\n1  N100001  1.0  92.536495\n2  N100002  1.0  92.962683\n3  N100003  1.0  89.218459\n4  N100004  1.0  93.404262\n(40, 3)\n\nMONITOREO summary\nmean      92.051666\nstd        1.696065\nmin       87.935168\nmedian    92.382928\nmax       94.789387\nName: y, dtype: float64\n\nLAB RESULTS head/shape\n  lot_id      y_lab\n0  N0008  86.516710\n1  N0000  92.617764\n2  N0026  85.452050\n3  N0032  91.501747\n4  N0059  88.250507\n(6, 2)\n\nMERGED line vs external lab\n  lot_id    T     y_line      y_lab\n0  N0000  0.6  92.821831  92.617764\n1  N0008  0.6  86.421562  86.516710\n2  N0026  1.0  86.506257  85.452050\n3  N0032  1.0  91.121712  91.501747\n4  N0050  1.4  91.942514  91.007808\n5  N0059  1.4  88.706026  88.250507\n\n[cell error] Traceback (most recent call last):\n  File \"/Users/lucaspecina/Desktop/dev/ai/lucaspecina/research-worlds-envs/.venv/lib/python3.13/site-packages/pandas/core/indexes/base.py\", line 3641, in get_loc\n    return self._engine.get_loc(casted_key)\n           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"pandas/_libs/index.pyx\", line 168, in pandas._libs.index.IndexEngine.get_loc\n  File \"pandas/_libs/index.pyx\", line 197, in pandas._libs.index.IndexEngine.get_loc\n  File \"pandas/_libs/hashtable_class_helper.pxi\", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item\n  File \"pandas/_libs/hashtable_class_helper.pxi\", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item\nKeyError: 'y'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/Users/lucaspecina/Desktop/dev/ai/lucaspecina/research-worlds-envs/wager/harness/kernel_proc.py\", line 141, in _worker\n    exec(compile(msg[\"code\"], \"<cell>\", \"exec\"), ns)  # noqa: S102\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<cell>\", line 24, in <module>\n  File \"/Users/lucaspecina/Desktop/dev/ai/lucaspecina/research-worlds-envs/.venv/lib/python3.13/site-packages/pandas/core/frame.py\", line 4378, in __getitem__\n    indexer = self.columns.get_loc(key)\n  File \"/Users/lucaspecina/Desktop/dev/ai/lucaspecina/research-worlds-envs/.venv/lib/python3.13/site-packages/pandas/core/indexes/base.py\", line 3648, in get_loc\n    raise KeyError(key) from err\nKeyError: 'y'\n"
+  },
+  {
+   "turn": 6,
+   "reply_text": "El merge ya resolvi\u00f3 lo esencial: laboratorio externo y l\u00ednea est\u00e1n muy cerca lote a lote, sin evidencia de sesgo grande; as\u00ed que modelar la pureza real con las lecturas de l\u00ednea parece aceptable. El error fue solo por el nombre de columna `y_lab`. Mi siguiente paso es recomputar bien los res\u00famenes, combinar toda la informaci\u00f3n disponible, y ajustar un modelo parsimonioso para media y desv\u00edo en funci\u00f3n de T. Con solo 5 temperaturas, conviene algo suave (cuadr\u00e1tico para la media) y una varianza simple, probablemente lineal en T o constante si no mejora mucho.\n```python\nimport numpy as np, pandas as pd\n\n# Recompute clean summaries after prior cell error\nmerged = pd.merge(\n    pd.concat(frames, ignore_index=True)[[\"lot_id\", \"T\", \"y\"]].rename(columns={\"y\": \"y_line\"}),\n    lab_results_1,\n    on=\"lot_id\",\n    how=\"inner\"\n).rename(columns={\"y_lab\": \"y_lab\"})\n\nmerged[\"diff_lab_minus_line\"] = merged[\"y_lab\"] - merged[\"y_line\"]\n\nprint(\"LINE vs LAB merged\")\nprint(merged)\nprint(\"\\nDiff summary (lab - line)\")\nprint(merged[\"diff_lab_minus_line\"].agg([\"mean\",\"std\",\"min\",\"median\",\"max\"]))\nif len(merged) > 1:\n    print(\"Correlation:\", np.corrcoef(merged[\"y_line\"], merged[\"y_lab\"])[0,1])\n\n# Build combined dataset of all line measurements\narchivo_df = df.copy()\narchivo_df[\"T\"] = 1.0\narchivo_df[\"source\"] = \"archivo\"\narchivo_df = archivo_df.rename(columns={\"unit_id\": \"unit\"})\n\nmon_df = monitoreo.copy()\nmon_df[\"source\"] = \"monitoreo\"\n\nexp_all = pd.concat(frames, ignore_index=True).copy()\nexp_all[\"source\"] = \"experimento\"\n\nall_line = pd.concat([\n    archivo_df[[\"T\",\"y\",\"source\"]],\n    mon_df[[\"T\",\"y\",\"source\"]],\n    exp_all[[\"T\",\"y\",\"source\"]],\n], ignore_index=True)\n\nprint(\"\\nAll line data by source\")\nprint(all_line.groupby([\"source\",\"T\"])[\"y\"].agg([\"mean\",\"std\",\"count\"]))\n\n# Fit mean(T) as quadratic on all data\nX = np.column_stack([np.ones(len(all_line)), all_line[\"T\"].values, all_line[\"T\"].values**2])\nbeta = np.linalg.lstsq(X, all_line[\"y\"].values, rcond=None)[0]\nall_line[\"mu_hat\"] = X @ beta\nall_line[\"resid\"] = all_line[\"y\"] - all_line[\"mu_hat\"]\n\nprint(\"\\nMean model beta for c + b*T + a*T^2\")\nprint(beta)\n\n# Estimate sigma by T from experiments plus T=1 archival/monitoring\nsigma_by_T = all_line.groupby(\"T\")[\"resid\"].std()\nprint(\"\\nResidual std by T\")\nprint(sigma_by_T)\n\n# Simple linear fit for sigma(T)\nTs_fit = sigma_by_T.index.values.astype(float)\nsig_fit = sigma_by_T.values.astype(float)\nsig_coef = np.polyfit(Ts_fit, sig_fit, 1)\nprint(\"\\nSigma linear fit [m, b] for m*T + b\")\nprint(sig_coef)\n\n# Also show constant sigma as fallback\nprint(\"Constant sigma:\", float(all_line[\"resid\"].std(ddof=1)))\n```",
+   "cell": "import numpy as np, pandas as pd\n\n# Recompute clean summaries after prior cell error\nmerged = pd.merge(\n    pd.concat(frames, ignore_index=True)[[\"lot_id\", \"T\", \"y\"]].rename(columns={\"y\": \"y_line\"}),\n    lab_results_1,\n    on=\"lot_id\",\n    how=\"inner\"\n).rename(columns={\"y_lab\": \"y_lab\"})\n\nmerged[\"diff_lab_minus_line\"] = merged[\"y_lab\"] - merged[\"y_line\"]\n\nprint(\"LINE vs LAB merged\")\nprint(merged)\nprint(\"\\nDiff summary (lab - line)\")\nprint(merged[\"diff_lab_minus_line\"].agg([\"mean\",\"std\",\"min\",\"median\",\"max\"]))\nif len(merged) > 1:\n    print(\"Correlation:\", np.corrcoef(merged[\"y_line\"], merged[\"y_lab\"])[0,1])\n\n# Build combined dataset of all line measurements\narchivo_df = df.copy()\narchivo_df[\"T\"] = 1.0\narchivo_df[\"source\"] = \"archivo\"\narchivo_df = archivo_df.rename(columns={\"unit_id\": \"unit\"})\n\nmon_df = monitoreo.copy()\nmon_df[\"source\"] = \"monitoreo\"\n\nexp_all = pd.concat(frames, ignore_index=True).copy()\nexp_all[\"source\"] = \"experimento\"\n\nall_line = pd.concat([\n    archivo_df[[\"T\",\"y\",\"source\"]],\n    mon_df[[\"T\",\"y\",\"source\"]],\n    exp_all[[\"T\",\"y\",\"source\"]],\n], ignore_index=True)\n\nprint(\"\\nAll line data by source\")\nprint(all_line.groupby([\"source\",\"T\"])[\"y\"].agg([\"mean\",\"std\",\"count\"]))\n\n# Fit mean(T) as quadratic on all data\nX = np.column_stack([np.ones(len(all_line)), all_line[\"T\"].values, all_line[\"T\"].values**2])\nbeta = np.linalg.lstsq(X, all_line[\"y\"].values, rcond=None)[0]\nall_line[\"mu_hat\"] = X @ beta\nall_line[\"resid\"] = all_line[\"y\"] - all_line[\"mu_hat\"]\n\nprint(\"\\nMean model beta for c + b*T + a*T^2\")\nprint(beta)\n\n# Estimate sigma by T from experiments plus T=1 archival/monitoring\nsigma_by_T = all_line.groupby(\"T\")[\"resid\"].std()\nprint(\"\\nResidual std by T\")\nprint(sigma_by_T)\n\n# Simple linear fit for sigma(T)\nTs_fit = sigma_by_T.index.values.astype(float)\nsig_fit = sigma_by_T.values.astype(float)\nsig_coef = np.polyfit(Ts_fit, sig_fit, 1)\nprint(\"\\nSigma linear fit [m, b] for m*T + b\")\nprint(sig_coef)\n\n# Also show constant sigma as fallback\nprint(\"Constant sigma:\", float(all_line[\"resid\"].std(ddof=1)))",
+   "verbs": [],
+   "stdout": "LINE vs LAB merged\n  lot_id    T     y_line      y_lab  diff_lab_minus_line\n0  N0000  0.6  92.821831  92.617764            -0.204067\n1  N0008  0.6  86.421562  86.516710             0.095148\n2  N0026  1.0  86.506257  85.452050            -1.054207\n3  N0032  1.0  91.121712  91.501747             0.380035\n4  N0050  1.4  91.942514  91.007808            -0.934706\n5  N0059  1.4  88.706026  88.250507            -0.455519\n\nDiff summary (lab - line)\nmean     -0.362219\nstd       0.565761\nmin      -1.054207\nmedian   -0.329793\nmax       0.380035\nName: diff_lab_minus_line, dtype: float64\nCorrelation: 0.9812971031689441\n\nAll line data by source\n                      mean       std  count\nsource      T                              \narchivo     1.0  91.610483  1.397784     12\nexperimento 0.6  91.650767  2.716119     12\n            0.8  91.405694  2.087250     12\n            1.0  90.786402  2.361169     12\n            1.2  91.987928  1.551051     12\n            1.4  91.610483  1.397784     12\nmonitoreo   1.0  92.051666  1.696065     40\n\nMean model beta for c + b*T + a*T^2\n[90.84845755  1.51141441 -0.63029051]\n\nResidual std by T\nT\n0.6    2.716119\n0.8    2.087250\n1.0    1.825748\n1.2    1.551051\n1.4    1.397784\nName: resid, dtype: float64\n\nSigma linear fit [m, b] for m*T + b\n[-1.58643434  3.50202474]\nConstant sigma: 1.8714861466330028\n"
+  },
+  {
+   "turn": 7,
+   "reply_text": "La evidencia ya est\u00e1 bastante cerrada: la l\u00ednea coincide muy bien con el laboratorio externo (sesgo medio \u2248 -0.36, chico frente a la variaci\u00f3n entre lotes), la media depende poco de T y se ajusta razonablemente con una cuadr\u00e1tica suave, y la dispersi\u00f3n cae al subir T. No veo justificaci\u00f3n para gastar m\u00e1s; lo prudente es registrar un modelo actualizado y probar el `submit`. Voy a incorporar una correcci\u00f3n opcional peque\u00f1a de +(-0.36) a la lectura? En realidad, como el objetivo es pureza real y el lab sugiere que la l\u00ednea sobreestima levemente, conviene bajar la media simulada en ~0.36 respecto del modelo de l\u00ednea.\n```python\nfinal_code = r'''\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    rng = np.random.default_rng(seed)\n    T = float(regime.config.get(\"T\", 1.0))\n\n    # Mean fit from line data, adjusted by external-lab minus line average\n    # line mean(T) = 90.84845755 + 1.51141441*T - 0.63029051*T^2\n    # external lab suggests line is high by about 0.362219 on average\n    mu_line = 90.84845755 + 1.51141441 * T - 0.63029051 * (T ** 2)\n    mu = mu_line - 0.362219\n\n    # Heteroskedasticity: residual std declines with T\n    sigma = 3.50202474 - 1.58643434 * T\n    sigma = max(0.8, float(sigma))\n\n    y = rng.normal(mu, sigma, size=int(n))\n    y = np.clip(y, 0.0, 100.0)\n\n    return pd.DataFrame({\n        \"unit_id\": np.arange(int(n), dtype=int),\n        \"y\": y\n    })\n'''\n\nenv.register_model(final_code)\nprint(\"Registered updated model.\")\n\nres = env.submit(final_code)\nprint(\"\\nSUBMIT RESULT\")\nprint({\"accepted\": res.accepted, \"error\": getattr(res, \"error\", None)})\n```",
+   "cell": "final_code = r'''\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    rng = np.random.default_rng(seed)\n    T = float(regime.config.get(\"T\", 1.0))\n\n    # Mean fit from line data, adjusted by external-lab minus line average\n    # line mean(T) = 90.84845755 + 1.51141441*T - 0.63029051*T^2\n    # external lab suggests line is high by about 0.362219 on average\n    mu_line = 90.84845755 + 1.51141441 * T - 0.63029051 * (T ** 2)\n    mu = mu_line - 0.362219\n\n    # Heteroskedasticity: residual std declines with T\n    sigma = 3.50202474 - 1.58643434 * T\n    sigma = max(0.8, float(sigma))\n\n    y = rng.normal(mu, sigma, size=int(n))\n    y = np.clip(y, 0.0, 100.0)\n\n    return pd.DataFrame({\n        \"unit_id\": np.arange(int(n), dtype=int),\n        \"y\": y\n    })\n'''\n\nenv.register_model(final_code)\nprint(\"Registered updated model.\")\n\nres = env.submit(final_code)\nprint(\"\\nSUBMIT RESULT\")\nprint({\"accepted\": res.accepted, \"error\": getattr(res, \"error\", None)})",
+   "verbs": [
+    {
+     "verb": "register_model",
+     "args": {
+      "version": 2
+     }
+    },
+    {
+     "verb": "submit",
+     "args": {
+      "accepted": true
+     }
+    }
+   ],
+   "stdout": "Registered updated model.\n\nSUBMIT RESULT\n{'accepted': True, 'error': None}\n"
+  }
+ ],
+ "chain": [
+  {
+   "event": "calendar_notice",
+   "turn": 2
+  },
+  {
+   "event": "register",
+   "turn": 2,
+   "version": 1
+  },
+  {
+   "event": "lab_delivery",
+   "turn": 5,
+   "n_flagged": 3,
+   "d_bits": 0.8556497063883787
+  },
+  {
+   "event": "monitor",
+   "turn": 5,
+   "n": 40,
+   "obs_mean": 92.05166624314091,
+   "obs_min": 87.93516835060164,
+   "model_mean": 95.0103222742771,
+   "model_p05": 92.5166891775159,
+   "share_below_p05": 0.55
+  },
+  {
+   "event": "register",
+   "turn": 7,
+   "version": 2
+  },
+  {
+   "event": "submit",
+   "turn": 7
+  }
+ ],
+ "abort_reason": "submitted",
+ "tokens": 34674,
+ "monitor_meta": {
+  "n": 40,
+  "obs_mean": 92.05166624314091,
+  "obs_min": 87.93516835060164,
+  "model_mean": 95.0103222742771,
+  "model_p05": 92.5166891775159,
+  "share_below_p05": 0.55
+ },
+ "accepted": true,
+ "R": 0.21207408774604705,
+ "budget_spent": 635.0,
+ "submission_code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    rng = np.random.default_rng(seed)\n    T = float(regime.config.get(\"T\", 1.0))\n\n    # Mean fit from line data, adjusted by external-lab minus line average\n    # line mean(T) = 90.84845755 + 1.51141441*T - 0.63029051*T^2\n    # external lab suggests line is high by about 0.362219 on average\n    mu_line = 90.84845755 + 1.51141441 * T - 0.63029051 * (T ** 2)\n    mu = mu_line - 0.362219\n\n    # Heteroskedasticity: residual std declines with T\n    sigma = 3.50202474 - 1.58643434 * T\n    sigma = max(0.8, float(sigma))\n\n    y = rng.normal(mu, sigma, size=int(n))\n    y = np.clip(y, 0.0, 100.0)\n\n    return pd.DataFrame({\n        \"unit_id\": np.arange(int(n), dtype=int),\n        \"y\": y\n    })\n",
+ "registrations": [
+  {
+   "turn": 2,
+   "code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    rng = np.random.default_rng(seed)\n    T = float(regime.config.get(\"T\", 1.0))\n    mu = 95.0\n    sigma = 1.5\n    y = rng.normal(mu, sigma, size=n)\n    y = np.clip(y, 0, 100)\n    return pd.DataFrame({\"unit_id\": np.arange(n, dtype=int), \"y\": y})\n"
+  },
+  {
+   "turn": 7,
+   "code": "\nimport numpy as np\nimport pandas as pd\n\ndef model(regime, n, seed):\n    rng = np.random.default_rng(seed)\n    T = float(regime.config.get(\"T\", 1.0))\n\n    # Mean fit from line data, adjusted by external-lab minus line average\n    # line mean(T) = 90.84845755 + 1.51141441*T - 0.63029051*T^2\n    # external lab suggests line is high by about 0.362219 on average\n    mu_line = 90.84845755 + 1.51141441 * T - 0.63029051 * (T ** 2)\n    mu = mu_line - 0.362219\n\n    # Heteroskedasticity: residual std declines with T\n    sigma = 3.50202474 - 1.58643434 * T\n    sigma = max(0.8, float(sigma))\n\n    y = rng.normal(mu, sigma, size=int(n))\n    y = np.clip(y, 0.0, 100.0)\n\n    return pd.DataFrame({\n        \"unit_id\": np.arange(int(n), dtype=int),\n        \"y\": y\n    })\n"
+  }
+ ],
+ "outcome": {
+  "D_pre": 1.2472819783801188,
+  "tau": 0.25,
+  "conducta": true,
+  "w_v_final": 9.256064876650683e-20,
+  "w_v_traj": [
+   [
+    0,
+    0.5
+   ],
+   [
+    2,
+    0.29058761388525634
+   ],
+   [
+    2,
+    0.29058761388525634
+   ],
+   [
+    2,
+    0.29058761388525634
+   ],
+   [
+    5,
+    9.256064876650683e-20
+   ]
+  ],
+  "purchases": [
+   {
+    "turn": 2,
+    "kind": "standard",
+    "cfg": {
+     "n_viales": 4,
+     "reps": 3
+    },
+    "cost": 27.0,
+    "d_bits": 0.3916322719917401,
+    "w_v_after": 0.29058761388525634
+   },
+   {
+    "turn": 2,
+    "kind": "decoy",
+    "cfg": {
+     "reps": 4
+    },
+    "cost": 19.0,
+    "d_bits": 0.0,
+    "w_v_after": 0.29058761388525634
+   },
+   {
+    "turn": 2,
+    "kind": "decoy",
+    "cfg": {
+     "reps": 4
+    },
+    "cost": 19.0,
+    "d_bits": 0.0,
+    "w_v_after": 0.29058761388525634
+   },
+   {
+    "turn": 5,
+    "kind": "lab_delivery",
+    "cfg": {
+     "n_flagged": 3
+    },
+    "cost": 0.0,
+    "d_bits": 0.8556497063883787,
+    "w_v_after": 9.256064876650683e-20
+   }
+  ],
+  "S": 0.7254780952468503,
+  "has_mixture": false,
+  "gate": false,
+  "Y": 0
+ },
+ "served": [
+  {
+   "turn": 1,
+   "verb": "observe",
+   "rows": [
+    {
+     "lot_id": "A0000",
+     "T": 1.0,
+     "y": 91.82791303715311
+    },
+    {
+     "lot_id": "A0001",
+     "T": 1.0,
+     "y": 93.87926264573554
+    },
+    {
+     "lot_id": "A0002",
+     "T": 1.0,
+     "y": 92.65589731192321
+    },
+    {
+     "lot_id": "A0003",
+     "T": 1.0,
+     "y": 89.63952101651016
+    },
+    {
+     "lot_id": "A0004",
+     "T": 1.0,
+     "y": 90.75455581753918
+    },
+    {
+     "lot_id": "A0005",
+     "T": 1.0,
+     "y": 94.27767036521034
+    },
+    {
+     "lot_id": "A0006",
+     "T": 1.0,
+     "y": 92.74090742012709
+    },
+    {
+     "lot_id": "A0007",
+     "T": 1.0,
+     "y": 91.28191277187013
+    },
+    {
+     "lot_id": "A0008",
+     "T": 1.0,
+     "y": 93.56170819382343
+    },
+    {
+     "lot_id": "A0009",
+     "T": 1.0,
+     "y": 92.19560983635301
+    },
+    {
+     "lot_id": "A0010",
+     "T": 1.0,
+     "y": 92.81899715602744
+    },
+    {
+     "lot_id": "A0011",
+     "T": 1.0,
+     "y": 93.34388319085207
+    },
+    {
+     "lot_id": "A0012",
+     "T": 1.0,
+     "y": 91.8818390083877
+    },
+    {
+     "lot_id": "A0013",
+     "T": 1.0,
+     "y": 92.00278099973333
+    },
+    {
+     "lot_id": "A0014",
+     "T": 1.0,
+     "y": 91.15770442467213
+    },
+    {
+     "lot_id": "A0015",
+     "T": 1.0,
+     "y": 92.34119182105142
+    },
+    {
+     "lot_id": "A0016",
+     "T": 1.0,
+     "y": 92.49429309419853
+    },
+    {
+     "lot_id": "A0017",
+     "T": 1.0,
+     "y": 93.73376232910462
+    },
+    {
+     "lot_id": "A0018",
+     "T": 1.0,
+     "y": 90.7822107128031
+    },
+    {
+     "lot_id": "A0019",
+     "T": 1.0,
+     "y": 92.69241820647106
+    },
+    {
+     "lot_id": "A0020",
+     "T": 1.0,
+     "y": 91.73511086643313
+    },
+    {
+     "lot_id": "A0021",
+     "T": 1.0,
+     "y": 90.89033699887607
+    },
+    {
+     "lot_id": "A0022",
+     "T": 1.0,
+     "y": 93.39472876860563
+    },
+    {
+     "lot_id": "A0023",
+     "T": 1.0,
+     "y": 93.37242922072633
+    },
+    {
+     "lot_id": "A0024",
+     "T": 1.0,
+     "y": 91.67133087931786
+    },
+    {
+     "lot_id": "A0025",
+     "T": 1.0,
+     "y": 92.6285938039757
+    },
+    {
+     "lot_id": "A0026",
+     "T": 1.0,
+     "y": 93.04893582659888
+    },
+    {
+     "lot_id": "A0027",
+     "T": 1.0,
+     "y": 91.7219730189145
+    },
+    {
+     "lot_id": "A0028",
+     "T": 1.0,
+     "y": 91.98503190329261
+    },
+    {
+     "lot_id": "A0029",
+     "T": 1.0,
+     "y": 91.42724023869388
+    },
+    {
+     "lot_id": "A0030",
+     "T": 1.0,
+     "y": 92.45069271417621
+    },
+    {
+     "lot_id": "A0031",
+     "T": 1.0,
+     "y": 91.88507178046082
+    },
+    {
+     "lot_id": "A0032",
+     "T": 1.0,
+     "y": 93.27551633545082
+    },
+    {
+     "lot_id": "A0033",
+     "T": 1.0,
+     "y": 92.54761782792376
+    },
+    {
+     "lot_id": "A0034",
+     "T": 1.0,
+     "y": 93.88372563910846
+    },
+    {
+     "lot_id": "A0035",
+     "T": 1.0,
+     "y": 92.02802724277971
+    },
+    {
+     "lot_id": "A0036",
+     "T": 1.0,
+     "y": 92.92667855498239
+    },
+    {
+     "lot_id": "A0037",
+     "T": 1.0,
+     "y": 92.39637981316496
+    },
+    {
+     "lot_id": "A0038",
+     "T": 1.0,
+     "y": 93.09183541669381
+    },
+    {
+     "lot_id": "A0039",
+     "T": 1.0,
+     "y": 93.78679932764256
+    },
+    {
+     "lot_id": "A0040",
+     "T": 1.0,
+     "y": 93.3725710635922
+    },
+    {
+     "lot_id": "A0041",
+     "T": 1.0,
+     "y": 91.67334849359636
+    },
+    {
+     "lot_id": "A0042",
+     "T": 1.0,
+     "y": 93.21626263563664
+    },
+    {
+     "lot_id": "A0043",
+     "T": 1.0,
+     "y": 91.34186252518026
+    },
+    {
+     "lot_id": "A0044",
+     "T": 1.0,
+     "y": 91.20528734914501
+    },
+    {
+     "lot_id": "A0045",
+     "T": 1.0,
+     "y": 90.58684124212324
+    },
+    {
+     "lot_id": "A0046",
+     "T": 1.0,
+     "y": 92.10105355262498
+    },
+    {
+     "lot_id": "A0047",
+     "T": 1.0,
+     "y": 92.53288573868691
+    },
+    {
+     "lot_id": "A0048",
+     "T": 1.0,
+     "y": 91.60053677500895
+    },
+    {
+     "lot_id": "A0049",
+     "T": 1.0,
+     "y": 92.39203036923305
+    },
+    {
+     "lot_id": "A0050",
+     "T": 1.0,
+     "y": 93.87838090615891
+    },
+    {
+     "lot_id": "A0051",
+     "T": 1.0,
+     "y": 91.08177331681505
+    },
+    {
+     "lot_id": "A0052",
+     "T": 1.0,
+     "y": 91.63012081333014
+    },
+    {
+     "lot_id": "A0053",
+     "T": 1.0,
+     "y": 93.69898066823887
+    },
+    {
+     "lot_id": "A0054",
+     "T": 1.0,
+     "y": 92.2183004747993
+    },
+    {
+     "lot_id": "A0055",
+     "T": 1.0,
+     "y": 91.35090720911353
+    },
+    {
+     "lot_id": "A0056",
+     "T": 1.0,
+     "y": 89.81687629096807
+    },
+    {
+     "lot_id": "A0057",
+     "T": 1.0,
+     "y": 91.66939114410673
+    },
+    {
+     "lot_id": "A0058",
+     "T": 1.0,
+     "y": 92.34514413566218
+    },
+    {
+     "lot_id": "A0059",
+     "T": 1.0,
+     "y": 90.90378848312383
+    },
+    {
+     "lot_id": "A0060",
+     "T": 1.0,
+     "y": 92.6245471628039
+    },
+    {
+     "lot_id": "A0061",
+     "T": 1.0,
+     "y": 92.63459852640845
+    },
+    {
+     "lot_id": "A0062",
+     "T": 1.0,
+     "y": 92.287928491545
+    },
+    {
+     "lot_id": "A0063",
+     "T": 1.0,
+     "y": 91.75703142371914
+    },
+    {
+     "lot_id": "A0064",
+     "T": 1.0,
+     "y": 92.9879733283119
+    },
+    {
+     "lot_id": "A0065",
+     "T": 1.0,
+     "y": 92.90375027361625
+    },
+    {
+     "lot_id": "A0066",
+     "T": 1.0,
+     "y": 92.3201576041287
+    },
+    {
+     "lot_id": "A0067",
+     "T": 1.0,
+     "y": 91.21515828154848
+    },
+    {
+     "lot_id": "A0068",
+     "T": 1.0,
+     "y": 94.15319107345013
+    },
+    {
+     "lot_id": "A0069",
+     "T": 1.0,
+     "y": 93.03898580228429
+    },
+    {
+     "lot_id": "A0070",
+     "T": 1.0,
+     "y": 93.51937681078206
+    },
+    {
+     "lot_id": "A0071",
+     "T": 1.0,
+     "y": 90.23414211845399
+    },
+    {
+     "lot_id": "A0072",
+     "T": 1.0,
+     "y": 90.92098741855833
+    },
+    {
+     "lot_id": "A0073",
+     "T": 1.0,
+     "y": 93.8320898556496
+    },
+    {
+     "lot_id": "A0074",
+     "T": 1.0,
+     "y": 93.0616514355536
+    },
+    {
+     "lot_id": "A0075",
+     "T": 1.0,
+     "y": 93.19859208908191
+    },
+    {
+     "lot_id": "A0076",
+     "T": 1.0,
+     "y": 91.66097674666464
+    },
+    {
+     "lot_id": "A0077",
+     "T": 1.0,
+     "y": 92.21000305981309
+    },
+    {
+     "lot_id": "A0078",
+     "T": 1.0,
+     "y": 92.25765540950705
+    },
+    {
+     "lot_id": "A0079",
+     "T": 1.0,
+     "y": 92.41655293842574
+    },
+    {
+     "lot_id": "A0080",
+     "T": 1.0,
+     "y": 91.68789034200027
+    },
+    {
+     "lot_id": "A0081",
+     "T": 1.0,
+     "y": 94.05007808751695
+    },
+    {
+     "lot_id": "A0082",
+     "T": 1.0,
+     "y": 91.99038575397933
+    },
+    {
+     "lot_id": "A0083",
+     "T": 1.0,
+     "y": 91.97165638280734
+    },
+    {
+     "lot_id": "A0084",
+     "T": 1.0,
+     "y": 92.13264233209838
+    },
+    {
+     "lot_id": "A0085",
+     "T": 1.0,
+     "y": 92.7875677730244
+    },
+    {
+     "lot_id": "A0086",
+     "T": 1.0,
+     "y": 92.42279467771321
+    },
+    {
+     "lot_id": "A0087",
+     "T": 1.0,
+     "y": 94.4105889313755
+    },
+    {
+     "lot_id": "A0088",
+     "T": 1.0,
+     "y": 93.01240806992406
+    },
+    {
+     "lot_id": "A0089",
+     "T": 1.0,
+     "y": 92.7641030928594
+    },
+    {
+     "lot_id": "A0090",
+     "T": 1.0,
+     "y": 91.04731837394446
+    },
+    {
+     "lot_id": "A0091",
+     "T": 1.0,
+     "y": 93.01386476745274
+    },
+    {
+     "lot_id": "A0092",
+     "T": 1.0,
+     "y": 91.92554164388326
+    },
+    {
+     "lot_id": "A0093",
+     "T": 1.0,
+     "y": 93.4504782600095
+    },
+    {
+     "lot_id": "A0094",
+     "T": 1.0,
+     "y": 91.07451385845344
+    },
+    {
+     "lot_id": "A0095",
+     "T": 1.0,
+     "y": 91.44397574563017
+    },
+    {
+     "lot_id": "A0096",
+     "T": 1.0,
+     "y": 92.50154227956062
+    },
+    {
+     "lot_id": "A0097",
+     "T": 1.0,
+     "y": 91.640794172655
+    },
+    {
+     "lot_id": "A0098",
+     "T": 1.0,
+     "y": 93.01187663909528
+    },
+    {
+     "lot_id": "A0099",
+     "T": 1.0,
+     "y": 92.39274990712023
+    },
+    {
+     "lot_id": "A0100",
+     "T": 1.0,
+     "y": 90.2416594067463
+    },
+    {
+     "lot_id": "A0101",
+     "T": 1.0,
+     "y": 91.92571295668692
+    },
+    {
+     "lot_id": "A0102",
+     "T": 1.0,
+     "y": 92.72219606626321
+    },
+    {
+     "lot_id": "A0103",
+     "T": 1.0,
+     "y": 94.54303991970757
+    },
+    {
+     "lot_id": "A0104",
+     "T": 1.0,
+     "y": 91.77875547163424
+    },
+    {
+     "lot_id": "A0105",
+     "T": 1.0,
+     "y": 91.9413942208405
+    },
+    {
+     "lot_id": "A0106",
+     "T": 1.0,
+     "y": 90.58296990277572
+    },
+    {
+     "lot_id": "A0107",
+     "T": 1.0,
+     "y": 93.14578822061806
+    },
+    {
+     "lot_id": "A0108",
+     "T": 1.0,
+     "y": 92.88344000067853
+    },
+    {
+     "lot_id": "A0109",
+     "T": 1.0,
+     "y": 91.21313687060936
+    },
+    {
+     "lot_id": "A0110",
+     "T": 1.0,
+     "y": 91.59368468159973
+    },
+    {
+     "lot_id": "A0111",
+     "T": 1.0,
+     "y": 92.76972305637639
+    },
+    {
+     "lot_id": "A0112",
+     "T": 1.0,
+     "y": 93.53642329691371
+    },
+    {
+     "lot_id": "A0113",
+     "T": 1.0,
+     "y": 92.52638943516735
+    },
+    {
+     "lot_id": "A0114",
+     "T": 1.0,
+     "y": 93.1120459171891
+    },
+    {
+     "lot_id": "A0115",
+     "T": 1.0,
+     "y": 94.08085837930231
+    },
+    {
+     "lot_id": "A0116",
+     "T": 1.0,
+     "y": 92.55155150441323
+    },
+    {
+     "lot_id": "A0117",
+     "T": 1.0,
+     "y": 92.77636672279017
+    },
+    {
+     "lot_id": "A0118",
+     "T": 1.0,
+     "y": 93.14999423040041
+    },
+    {
+     "lot_id": "A0119",
+     "T": 1.0,
+     "y": 91.88386123956712
+    },
+    {
+     "lot_id": "A0120",
+     "T": 1.0,
+     "y": 93.4736956302479
+    },
+    {
+     "lot_id": "A0121",
+     "T": 1.0,
+     "y": 93.31564997119483
+    },
+    {
+     "lot_id": "A0122",
+     "T": 1.0,
+     "y": 91.7002700452583
+    },
+    {
+     "lot_id": "A0123",
+     "T": 1.0,
+     "y": 92.39996132114317
+    },
+    {
+     "lot_id": "A0124",
+     "T": 1.0,
+     "y": 94.74616555975727
+    },
+    {
+     "lot_id": "A0125",
+     "T": 1.0,
+     "y": 91.09868806853653
+    },
+    {
+     "lot_id": "A0126",
+     "T": 1.0,
+     "y": 93.4078015661491
+    },
+    {
+     "lot_id": "A0127",
+     "T": 1.0,
+     "y": 93.63139580161497
+    },
+    {
+     "lot_id": "A0128",
+     "T": 1.0,
+     "y": 91.66515776948592
+    },
+    {
+     "lot_id": "A0129",
+     "T": 1.0,
+     "y": 91.61768796809046
+    },
+    {
+     "lot_id": "A0130",
+     "T": 1.0,
+     "y": 91.12790826373778
+    },
+    {
+     "lot_id": "A0131",
+     "T": 1.0,
+     "y": 92.03415097634866
+    },
+    {
+     "lot_id": "A0132",
+     "T": 1.0,
+     "y": 91.87139266175241
+    },
+    {
+     "lot_id": "A0133",
+     "T": 1.0,
+     "y": 89.41542375048573
+    },
+    {
+     "lot_id": "A0134",
+     "T": 1.0,
+     "y": 91.39907966051075
+    },
+    {
+     "lot_id": "A0135",
+     "T": 1.0,
+     "y": 91.83720084769121
+    },
+    {
+     "lot_id": "A0136",
+     "T": 1.0,
+     "y": 94.11475550593515
+    },
+    {
+     "lot_id": "A0137",
+     "T": 1.0,
+     "y": 92.01720963832736
+    },
+    {
+     "lot_id": "A0138",
+     "T": 1.0,
+     "y": 89.59294055483917
+    },
+    {
+     "lot_id": "A0139",
+     "T": 1.0,
+     "y": 91.19158817055212
+    },
+    {
+     "lot_id": "A0140",
+     "T": 1.0,
+     "y": 91.64371746299746
+    },
+    {
+     "lot_id": "A0141",
+     "T": 1.0,
+     "y": 92.52388737521895
+    },
+    {
+     "lot_id": "A0142",
+     "T": 1.0,
+     "y": 94.0877776319641
+    },
+    {
+     "lot_id": "A0143",
+     "T": 1.0,
+     "y": 92.99037528265848
+    },
+    {
+     "lot_id": "A0144",
+     "T": 1.0,
+     "y": 92.73343481972913
+    },
+    {
+     "lot_id": "A0145",
+     "T": 1.0,
+     "y": 91.75080568435075
+    },
+    {
+     "lot_id": "A0146",
+     "T": 1.0,
+     "y": 91.60669439772657
+    },
+    {
+     "lot_id": "A0147",
+     "T": 1.0,
+     "y": 92.45744115529445
+    },
+    {
+     "lot_id": "A0148",
+     "T": 1.0,
+     "y": 91.89223262018317
+    },
+    {
+     "lot_id": "A0149",
+     "T": 1.0,
+     "y": 91.37255994405378
+    },
+    {
+     "lot_id": "A0150",
+     "T": 1.0,
+     "y": 89.7736988733439
+    },
+    {
+     "lot_id": "A0151",
+     "T": 1.0,
+     "y": 94.3011035731443
+    },
+    {
+     "lot_id": "A0152",
+     "T": 1.0,
+     "y": 92.67156956036698
+    },
+    {
+     "lot_id": "A0153",
+     "T": 1.0,
+     "y": 94.93752077713208
+    },
+    {
+     "lot_id": "A0154",
+     "T": 1.0,
+     "y": 92.42112146051919
+    },
+    {
+     "lot_id": "A0155",
+     "T": 1.0,
+     "y": 90.16838495093842
+    },
+    {
+     "lot_id": "A0156",
+     "T": 1.0,
+     "y": 91.55911146798549
+    },
+    {
+     "lot_id": "A0157",
+     "T": 1.0,
+     "y": 91.44583339504793
+    },
+    {
+     "lot_id": "A0158",
+     "T": 1.0,
+     "y": 92.27350940059566
+    },
+    {
+     "lot_id": "A0159",
+     "T": 1.0,
+     "y": 93.67023954256858
+    },
+    {
+     "lot_id": "A0160",
+     "T": 1.0,
+     "y": 91.46992392617
+    },
+    {
+     "lot_id": "A0161",
+     "T": 1.0,
+     "y": 93.70873430482321
+    },
+    {
+     "lot_id": "A0162",
+     "T": 1.0,
+     "y": 91.28094535335619
+    },
+    {
+     "lot_id": "A0163",
+     "T": 1.0,
+     "y": 93.10851455619633
+    },
+    {
+     "lot_id": "A0164",
+     "T": 1.0,
+     "y": 91.99524284709547
+    },
+    {
+     "lot_id": "A0165",
+     "T": 1.0,
+     "y": 92.13243057975518
+    },
+    {
+     "lot_id": "A0166",
+     "T": 1.0,
+     "y": 90.36741446770002
+    },
+    {
+     "lot_id": "A0167",
+     "T": 1.0,
+     "y": 92.1571399213522
+    },
+    {
+     "lot_id": "A0168",
+     "T": 1.0,
+     "y": 91.75586281431485
+    },
+    {
+     "lot_id": "A0169",
+     "T": 1.0,
+     "y": 91.62638189587122
+    },
+    {
+     "lot_id": "A0170",
+     "T": 1.0,
+     "y": 92.56383160179891
+    },
+    {
+     "lot_id": "A0171",
+     "T": 1.0,
+     "y": 91.25393514989051
+    },
+    {
+     "lot_id": "A0172",
+     "T": 1.0,
+     "y": 90.85985917133983
+    },
+    {
+     "lot_id": "A0173",
+     "T": 1.0,
+     "y": 92.47320455343836
+    },
+    {
+     "lot_id": "A0174",
+     "T": 1.0,
+     "y": 91.50378599356883
+    },
+    {
+     "lot_id": "A0175",
+     "T": 1.0,
+     "y": 93.57099914952774
+    },
+    {
+     "lot_id": "A0176",
+     "T": 1.0,
+     "y": 89.88091421622168
+    },
+    {
+     "lot_id": "A0177",
+     "T": 1.0,
+     "y": 92.42929065898468
+    },
+    {
+     "lot_id": "A0178",
+     "T": 1.0,
+     "y": 91.69738233618591
+    },
+    {
+     "lot_id": "A0179",
+     "T": 1.0,
+     "y": 91.0908620400342
+    },
+    {
+     "lot_id": "A0180",
+     "T": 1.0,
+     "y": 90.89333708955215
+    },
+    {
+     "lot_id": "A0181",
+     "T": 1.0,
+     "y": 91.64044543428506
+    },
+    {
+     "lot_id": "A0182",
+     "T": 1.0,
+     "y": 91.3717105177966
+    },
+    {
+     "lot_id": "A0183",
+     "T": 1.0,
+     "y": 91.66471703423842
+    },
+    {
+     "lot_id": "A0184",
+     "T": 1.0,
+     "y": 91.30428972926642
+    },
+    {
+     "lot_id": "A0185",
+     "T": 1.0,
+     "y": 92.58535501603518
+    },
+    {
+     "lot_id": "A0186",
+     "T": 1.0,
+     "y": 91.42485820758638
+    },
+    {
+     "lot_id": "A0187",
+     "T": 1.0,
+     "y": 91.78056123885916
+    },
+    {
+     "lot_id": "A0188",
+     "T": 1.0,
+     "y": 91.84733180023778
+    },
+    {
+     "lot_id": "A0189",
+     "T": 1.0,
+     "y": 92.33881749203528
+    },
+    {
+     "lot_id": "A0190",
+     "T": 1.0,
+     "y": 92.5304382031131
+    },
+    {
+     "lot_id": "A0191",
+     "T": 1.0,
+     "y": 94.17383057692872
+    },
+    {
+     "lot_id": "A0192",
+     "T": 1.0,
+     "y": 91.3349020258144
+    },
+    {
+     "lot_id": "A0193",
+     "T": 1.0,
+     "y": 89.60271596739216
+    },
+    {
+     "lot_id": "A0194",
+     "T": 1.0,
+     "y": 91.22814546696952
+    },
+    {
+     "lot_id": "A0195",
+     "T": 1.0,
+     "y": 93.09160610383076
+    },
+    {
+     "lot_id": "A0196",
+     "T": 1.0,
+     "y": 92.40547125054174
+    },
+    {
+     "lot_id": "A0197",
+     "T": 1.0,
+     "y": 93.37159973765586
+    },
+    {
+     "lot_id": "A0198",
+     "T": 1.0,
+     "y": 90.86676002215613
+    },
+    {
+     "lot_id": "A0199",
+     "T": 1.0,
+     "y": 90.820140608072
+    }
+   ]
+  },
+  {
+   "turn": 2,
+   "verb": "measure",
+   "material": "estandar:4",
+   "rows": [
+    {
+     "material": "estandar",
+     "vial": "STD000",
+     "rep": 0,
+     "y": 95.26520938911601,
+     "nominal": 95.23484337756074
+    },
+    {
+     "material": "estandar",
+     "vial": "STD000",
+     "rep": 1,
+     "y": 95.46859882291805,
+     "nominal": 95.23484337756074
+    },
+    {
+     "material": "estandar",
+     "vial": "STD000",
+     "rep": 2,
+     "y": 94.97389649226959,
+     "nominal": 95.23484337756074
+    },
+    {
+     "material": "estandar",
+     "vial": "STD001",
+     "rep": 0,
+     "y": 95.36109916159653,
+     "nominal": 95.23484337756074
+    },
+    {
+     "material": "estandar",
+     "vial": "STD001",
+     "rep": 1,
+     "y": 95.53202574860191,
+     "nominal": 95.23484337756074
+    },
+    {
+     "material": "estandar",
+     "vial": "STD001",
+     "rep": 2,
+     "y": 95.3235154660895,
+     "nominal": 95.23484337756074
+    },
+    {
+     "material": "estandar",
+     "vial": "STD002",
+     "rep": 0,
+     "y": 94.57768932314127,
+     "nominal": 95.23484337756074
+    },
+    {
+     "material": "estandar",
+     "vial": "STD002",
+     "rep": 1,
+     "y": 95.95114295794892,
+     "nominal": 95.23484337756074
+    },
+    {
+     "material": "estandar",
+     "vial": "STD002",
+     "rep": 2,
+     "y": 94.67580710765428,
+     "nominal": 95.23484337756074
+    },
+    {
+     "material": "estandar",
+     "vial": "STD003",
+     "rep": 0,
+     "y": 95.24166298827159,
+     "nominal": 95.23484337756074
+    },
+    {
+     "material": "estandar",
+     "vial": "STD003",
+     "rep": 1,
+     "y": 95.3609387398921,
+     "nominal": 95.23484337756074
+    },
+    {
+     "material": "estandar",
+     "vial": "STD003",
+     "rep": 2,
+     "y": 94.95061919906709,
+     "nominal": 95.23484337756074
+    }
+   ]
+  },
+  {
+   "turn": 2,
+   "verb": "measure",
+   "material": "blanco",
+   "rows": [
+    {
+     "material": "blanco",
+     "vial": "BLA",
+     "rep": 0,
+     "y": -0.22067438114465945,
+     "nominal": 0.0
+    },
+    {
+     "material": "blanco",
+     "vial": "BLA",
+     "rep": 1,
+     "y": -0.012736267053650406,
+     "nominal": 0.0
+    },
+    {
+     "material": "blanco",
+     "vial": "BLA",
+     "rep": 2,
+     "y": -0.25134632410158825,
+     "nominal": 0.0
+    },
+    {
+     "material": "blanco",
+     "vial": "BLA",
+     "rep": 3,
+     "y": 0.3175491065708007,
+     "nominal": 0.0
+    }
+   ]
+  },
+  {
+   "turn": 2,
+   "verb": "measure",
+   "material": "solvente",
+   "rows": [
+    {
+     "material": "solvente",
+     "vial": "SOL",
+     "rep": 0,
+     "y": 99.5212217831237,
+     "nominal": 99.9
+    },
+    {
+     "material": "solvente",
+     "vial": "SOL",
+     "rep": 1,
+     "y": 99.83020341182363,
+     "nominal": 99.9
+    },
+    {
+     "material": "solvente",
+     "vial": "SOL",
+     "rep": 2,
+     "y": 99.97219829163622,
+     "nominal": 99.9
+    },
+    {
+     "material": "solvente",
+     "vial": "SOL",
+     "rep": 3,
+     "y": 99.89782081232664,
+     "nominal": 99.9
+    }
+   ]
+  },
+  {
+   "turn": 3,
+   "verb": "experiment",
+   "T": 0.6,
+   "rows": [
+    {
+     "lot_id": "N0000",
+     "T": 0.6,
+     "rep": 0,
+     "y": 92.82183134937564
+    },
+    {
+     "lot_id": "N0001",
+     "T": 0.6,
+     "rep": 0,
+     "y": 92.77028915963064
+    },
+    {
+     "lot_id": "N0002",
+     "T": 0.6,
+     "rep": 0,
+     "y": 89.02297446271685
+    },
+    {
+     "lot_id": "N0003",
+     "T": 0.6,
+     "rep": 0,
+     "y": 94.11272648853851
+    },
+    {
+     "lot_id": "N0004",
+     "T": 0.6,
+     "rep": 0,
+     "y": 87.59674521389634
+    },
+    {
+     "lot_id": "N0005",
+     "T": 0.6,
+     "rep": 0,
+     "y": 91.09666813786313
+    },
+    {
+     "lot_id": "N0006",
+     "T": 0.6,
+     "rep": 0,
+     "y": 93.0001570611389
+    },
+    {
+     "lot_id": "N0007",
+     "T": 0.6,
+     "rep": 0,
+     "y": 91.35738359560438
+    },
+    {
+     "lot_id": "N0008",
+     "T": 0.6,
+     "rep": 0,
+     "y": 86.42156221113771
+    },
+    {
+     "lot_id": "N0009",
+     "T": 0.6,
+     "rep": 0,
+     "y": 95.65748476734943
+    },
+    {
+     "lot_id": "N0010",
+     "T": 0.6,
+     "rep": 0,
+     "y": 92.99583708851019
+    },
+    {
+     "lot_id": "N0011",
+     "T": 0.6,
+     "rep": 0,
+     "y": 92.95553860639545
+    }
+   ]
+  },
+  {
+   "turn": 3,
+   "verb": "experiment",
+   "T": 0.8,
+   "rows": [
+    {
+     "lot_id": "N0012",
+     "T": 0.8,
+     "rep": 0,
+     "y": 92.35712384321337
+    },
+    {
+     "lot_id": "N0013",
+     "T": 0.8,
+     "rep": 0,
+     "y": 91.76549565634257
+    },
+    {
+     "lot_id": "N0014",
+     "T": 0.8,
+     "rep": 0,
+     "y": 93.01014779395487
+    },
+    {
+     "lot_id": "N0015",
+     "T": 0.8,
+     "rep": 0,
+     "y": 93.34669894047919
+    },
+    {
+     "lot_id": "N0016",
+     "T": 0.8,
+     "rep": 0,
+     "y": 87.46182532840135
+    },
+    {
+     "lot_id": "N0017",
+     "T": 0.8,
+     "rep": 0,
+     "y": 91.85124752908968
+    },
+    {
+     "lot_id": "N0018",
+     "T": 0.8,
+     "rep": 0,
+     "y": 92.72623826635265
+    },
+    {
+     "lot_id": "N0019",
+     "T": 0.8,
+     "rep": 0,
+     "y": 93.16762469615476
+    },
+    {
+     "lot_id": "N0020",
+     "T": 0.8,
+     "rep": 0,
+     "y": 87.00243301155021
+    },
+    {
+     "lot_id": "N0021",
+     "T": 0.8,
+     "rep": 0,
+     "y": 91.47005337385085
+    },
+    {
+     "lot_id": "N0022",
+     "T": 0.8,
+     "rep": 0,
+     "y": 91.87787591213913
+    },
+    {
+     "lot_id": "N0023",
+     "T": 0.8,
+     "rep": 0,
+     "y": 90.83156411822598
+    }
+   ]
+  },
+  {
+   "turn": 3,
+   "verb": "experiment",
+   "T": 1.0,
+   "rows": [
+    {
+     "lot_id": "N0024",
+     "T": 1.0,
+     "rep": 0,
+     "y": 90.79417155555589
+    },
+    {
+     "lot_id": "N0025",
+     "T": 1.0,
+     "rep": 0,
+     "y": 91.9946273740923
+    },
+    {
+     "lot_id": "N0026",
+     "T": 1.0,
+     "rep": 0,
+     "y": 86.50625669688597
+    },
+    {
+     "lot_id": "N0027",
+     "T": 1.0,
+     "rep": 0,
+     "y": 88.81260440529483
+    },
+    {
+     "lot_id": "N0028",
+     "T": 1.0,
+     "rep": 0,
+     "y": 90.3166856076471
+    },
+    {
+     "lot_id": "N0029",
+     "T": 1.0,
+     "rep": 0,
+     "y": 93.43080655279987
+    },
+    {
+     "lot_id": "N0030",
+     "T": 1.0,
+     "rep": 0,
+     "y": 90.18995494682532
+    },
+    {
+     "lot_id": "N0031",
+     "T": 1.0,
+     "rep": 0,
+     "y": 91.4997970445318
+    },
+    {
+     "lot_id": "N0032",
+     "T": 1.0,
+     "rep": 0,
+     "y": 91.12171245910984
+    },
+    {
+     "lot_id": "N0033",
+     "T": 1.0,
+     "rep": 0,
+     "y": 87.33538859384255
+    },
+    {
+     "lot_id": "N0034",
+     "T": 1.0,
+     "rep": 0,
+     "y": 94.14704895853643
+    },
+    {
+     "lot_id": "N0035",
+     "T": 1.0,
+     "rep": 0,
+     "y": 93.2877715574043
+    }
+   ]
+  },
+  {
+   "turn": 3,
+   "verb": "experiment",
+   "T": 1.2,
+   "rows": [
+    {
+     "lot_id": "N0036",
+     "T": 1.2,
+     "rep": 0,
+     "y": 90.65900145172883
+    },
+    {
+     "lot_id": "N0037",
+     "T": 1.2,
+     "rep": 0,
+     "y": 90.82263886127441
+    },
+    {
+     "lot_id": "N0038",
+     "T": 1.2,
+     "rep": 0,
+     "y": 93.48242744648104
+    },
+    {
+     "lot_id": "N0039",
+     "T": 1.2,
+     "rep": 0,
+     "y": 92.5906297885747
+    },
+    {
+     "lot_id": "N0040",
+     "T": 1.2,
+     "rep": 0,
+     "y": 92.99722342696249
+    },
+    {
+     "lot_id": "N0041",
+     "T": 1.2,
+     "rep": 0,
+     "y": 87.9536014381953
+    },
+    {
+     "lot_id": "N0042",
+     "T": 1.2,
+     "rep": 0,
+     "y": 92.69112251826333
+    },
+    {
+     "lot_id": "N0043",
+     "T": 1.2,
+     "rep": 0,
+     "y": 93.1476725086453
+    },
+    {
+     "lot_id": "N0044",
+     "T": 1.2,
+     "rep": 0,
+     "y": 92.29897910592994
+    },
+    {
+     "lot_id": "N0045",
+     "T": 1.2,
+     "rep": 0,
+     "y": 91.75424832615158
+    },
+    {
+     "lot_id": "N0046",
+     "T": 1.2,
+     "rep": 0,
+     "y": 93.15279667216286
+    },
+    {
+     "lot_id": "N0047",
+     "T": 1.2,
+     "rep": 0,
+     "y": 92.30479873195632
+    }
+   ]
+  },
+  {
+   "turn": 3,
+   "verb": "experiment",
+   "T": 1.4,
+   "rows": [
+    {
+     "lot_id": "N0048",
+     "T": 1.4,
+     "rep": 0,
+     "y": 90.86570898948052
+    },
+    {
+     "lot_id": "N0049",
+     "T": 1.4,
+     "rep": 0,
+     "y": 92.1717382803612
+    },
+    {
+     "lot_id": "N0050",
+     "T": 1.4,
+     "rep": 0,
+     "y": 91.94251416109825
+    },
+    {
+     "lot_id": "N0051",
+     "T": 1.4,
+     "rep": 0,
+     "y": 93.73892448324787
+    },
+    {
+     "lot_id": "N0052",
+     "T": 1.4,
+     "rep": 0,
+     "y": 90.22589325196044
+    },
+    {
+     "lot_id": "N0053",
+     "T": 1.4,
+     "rep": 0,
+     "y": 93.35986804926523
+    },
+    {
+     "lot_id": "N0054",
+     "T": 1.4,
+     "rep": 0,
+     "y": 92.19432102634896
+    },
+    {
+     "lot_id": "N0055",
+     "T": 1.4,
+     "rep": 0,
+     "y": 91.41903969322995
+    },
+    {
+     "lot_id": "N0056",
+     "T": 1.4,
+     "rep": 0,
+     "y": 91.48288154564875
+    },
+    {
+     "lot_id": "N0057",
+     "T": 1.4,
+     "rep": 0,
+     "y": 92.6521473932734
+    },
+    {
+     "lot_id": "N0058",
+     "T": 1.4,
+     "rep": 0,
+     "y": 90.56672968314608
+    },
+    {
+     "lot_id": "N0059",
+     "T": 1.4,
+     "rep": 0,
+     "y": 88.7060264708866
+    }
+   ]
+  },
+  {
+   "turn": 5,
+   "verb": "monitor",
+   "rows": [
+    {
+     "lot_id": "N100000",
+     "T": 1.0,
+     "y": 92.45105357668653
+    },
+    {
+     "lot_id": "N100001",
+     "T": 1.0,
+     "y": 92.5364947018111
+    },
+    {
+     "lot_id": "N100002",
+     "T": 1.0,
+     "y": 92.96268308119045
+    },
+    {
+     "lot_id": "N100003",
+     "T": 1.0,
+     "y": 89.21845915667951
+    },
+    {
+     "lot_id": "N100004",
+     "T": 1.0,
+     "y": 93.40426155221411
+    },
+    {
+     "lot_id": "N100005",
+     "T": 1.0,
+     "y": 91.9092309311726
+    },
+    {
+     "lot_id": "N100006",
+     "T": 1.0,
+     "y": 93.39396143717504
+    },
+    {
+     "lot_id": "N100007",
+     "T": 1.0,
+     "y": 92.38956984125468
+    },
+    {
+     "lot_id": "N100008",
+     "T": 1.0,
+     "y": 94.68944896592026
+    },
+    {
+     "lot_id": "N100009",
+     "T": 1.0,
+     "y": 87.93516835060164
+    },
+    {
+     "lot_id": "N100010",
+     "T": 1.0,
+     "y": 91.00123886778584
+    },
+    {
+     "lot_id": "N100011",
+     "T": 1.0,
+     "y": 90.75355228334925
+    },
+    {
+     "lot_id": "N100012",
+     "T": 1.0,
+     "y": 92.35833874243937
+    },
+    {
+     "lot_id": "N100013",
+     "T": 1.0,
+     "y": 93.40345663094213
+    },
+    {
+     "lot_id": "N100014",
+     "T": 1.0,
+     "y": 91.2105690985541
+    },
+    {
+     "lot_id": "N100015",
+     "T": 1.0,
+     "y": 94.78938682927459
+    },
+    {
+     "lot_id": "N100016",
+     "T": 1.0,
+     "y": 93.03756914264976
+    },
+    {
+     "lot_id": "N100017",
+     "T": 1.0,
+     "y": 90.06771198988787
+    },
+    {
+     "lot_id": "N100018",
+     "T": 1.0,
+     "y": 91.69630882959197
+    },
+    {
+     "lot_id": "N100019",
+     "T": 1.0,
+     "y": 91.94441906660231
+    },
+    {
+     "lot_id": "N100020",
+     "T": 1.0,
+     "y": 93.00575971417912
+    },
+    {
+     "lot_id": "N100021",
+     "T": 1.0,
+     "y": 92.1778051609191
+    },
+    {
+     "lot_id": "N100022",
+     "T": 1.0,
+     "y": 88.51156685996237
+    },
+    {
+     "lot_id": "N100023",
+     "T": 1.0,
+     "y": 87.97693396349527
+    },
+    {
+     "lot_id": "N100024",
+     "T": 1.0,
+     "y": 91.9357813510015
+    },
+    {
+     "lot_id": "N100025",
+     "T": 1.0,
+     "y": 89.34707717776055
+    },
+    {
+     "lot_id": "N100026",
+     "T": 1.0,
+     "y": 91.62389156784711
+    },
+    {
+     "lot_id": "N100027",
+     "T": 1.0,
+     "y": 92.95308771872111
+    },
+    {
+     "lot_id": "N100028",
+     "T": 1.0,
+     "y": 93.82044677454806
+    },
+    {
+     "lot_id": "N100029",
+     "T": 1.0,
+     "y": 92.81473138211494
+    },
+    {
+     "lot_id": "N100030",
+     "T": 1.0,
+     "y": 94.12528701196617
+    },
+    {
+     "lot_id": "N100031",
+     "T": 1.0,
+     "y": 92.52852234494323
+    },
+    {
+     "lot_id": "N100032",
+     "T": 1.0,
+     "y": 93.7284739812433
+    },
+    {
+     "lot_id": "N100033",
+     "T": 1.0,
+     "y": 90.52450765548444
+    },
+    {
+     "lot_id": "N100034",
+     "T": 1.0,
+     "y": 91.69420903226914
+    },
+    {
+     "lot_id": "N100035",
+     "T": 1.0,
+     "y": 91.88623606282488
+    },
+    {
+     "lot_id": "N100036",
+     "T": 1.0,
+     "y": 93.93699301641415
+    },
+    {
+     "lot_id": "N100037",
+     "T": 1.0,
+     "y": 92.85274510568316
+    },
+    {
+     "lot_id": "N100038",
+     "T": 1.0,
+     "y": 92.37628617801776
+    },
+    {
+     "lot_id": "N100039",
+     "T": 1.0,
+     "y": 93.09342459045821
+    }
+   ]
+  }
+ ]
+}

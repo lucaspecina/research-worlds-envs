@@ -81,4 +81,23 @@ parámetros, promedia.
   construcción); 13 episodios v0. Constructo corregido: la v0 dicta el candidato → midió
   ACEPTACIÓN (evidencia en vicio-1 §1.A), no generación; la celda de CREATIVIDAD del operador
   régimen en la matriz sigue vacía hasta la versión con quiebre no-flagrante.
+- **count_regime_v1 rung 0 (2026-08-10)** `[VERIFICADO propio][AGÉNTICO]`: la CONDICIÓN que
+  enciende la postulación — el mismo gpt-5.4 que da 0/9 sin fallo entrega la familia de dos
+  leyes **30/30 con el fallo del propio modelo a la vista** (impasse operativo: M0 → piloto →
+  parche); más detalle de reporte NO ayuda (H-V1 invertida: RAW 5/10 > estructurado 3/10).
+  Consistente con Ohlsson (sin impasse no hay reestructuración); confound declarado: el
+  encargo planta la sospecha (menciones en turnos 1-5). Estado: VIVO/CONDICIONAL (condicional
+  al gatillo de fallo). [Resultado](../research/2026-08-10-resultado-tanda-count-regime-impasse-v1.md).
+- **Par D1 calibración (2026-08-10)** `[VERIFICADO propio][AGÉNTICO]` — **la versión más
+  incriminante de 4.3 hasta ahora, y aísla el eslabón**: con la horquilla desplegada (K=2),
+  30/30 compran evidencia discriminante (el "no pagan el test" de Dunbar NO se reproduce) y
+  la auditoría cero-LLM muestra que en 14/15 la mezcla ganaba claro (ΔBIC≥10+CV) **sobre los
+  datos que el propio agente compró** — y aun así 13/15 entregan gaussiana unimodal con la
+  subpoblación horneada en la varianza (skew −0.04 vs −0.97 de la verdad). Y=1/15 donde la
+  verdad exige AGREGAR estructura vs 9/15 donde el default es la verdad (McNemar 8:0). No es
+  "no lo ven" (sus datos lo gritan): es la retirada a lo familiar EN LA ENTREGA — convergencia
+  con 8.6. Titular defendible (Codex): "tras comprar evidencia que favorece causa material,
+  gpt-5.4 comprime sistemáticamente la subpoblación en una entrega unimodal". Estado: VIVO;
+  candidata de pivote elevada a Lucas (confirmación pendiente: ronda 2 wording neutral
+  corriendo + fuera de D1). [Dossier](../research/2026-08-10-resultado-tanda-d1-calibracion.md).
 - Pendientes de familia: partir-en-dos, solución-cebada, par Vulcano (specs en cantera).

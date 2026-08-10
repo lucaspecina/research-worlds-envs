@@ -40,6 +40,13 @@
   importante que el pozo para el sistema actual"* — constructo más preciso que "terminación".
 - Borde: si la creencia no PUEDE traducirse por formato, es operación; si la traducción fiel
   funciona y el agente elige otra estructura, es juicio/integración (probado: canal sano).
+- **Par D1 calibración (2026-08-10)** `[VERIFICADO propio][AGÉNTICO]` — **primer mundo que
+  cobra 8.6 con vara cero-LLM**: 13/15 compran y ven la evidencia (mezcla gana ΔBIC≥10 en sus
+  propios datos, 14/15) y la entrega la traiciona (unimodal, varianza horneada); un agente
+  ANUNCIA "a small low-purity contamination component to capture" y entrega unimodal igual
+  (la disociación verbal inequívoca — el resto es regex cruda, anotación fina pendiente).
+  Convergencia con vicio 4.3 (así lo clasificó Codex: no vicio nuevo). Estado: VIVO;
+  candidata de pivote. [Dossier](../research/2026-08-10-resultado-tanda-d1-calibracion.md).
 
 ## Estado en WAGER y diseño
 - CERO mundos dedicados; la batería nueva (endurecida post-0137) ya cobra 8.6 parcialmente.

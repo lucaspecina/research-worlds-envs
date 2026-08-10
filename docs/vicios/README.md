@@ -34,11 +34,11 @@ del vicio 1: [vicio-1](vicio-1-calibracion-de-creencias.md).
 | [vicio-1](vicio-1-calibracion-de-creencias.md) | **Calibración de creencias (el pivoteo)**: rigidez ↔ influenciable (social + contenido) | Competencia | paraguas secundario (ADR 0174) | first_story (control; y ES el mundo del canal-contenido vía folklore) · count_regime_v0 (elicitor accidental de rigidez 1.A) |
 | [vicio-2](vicio-2-el-pozo.md) | Calibración de parada: overstay ↔ cierre prematuro | Competencia | activo (polo understay, vía híbrido) | v0 · v2 · lab_largo + hallazgo 0/60 |
 | [vicio-3](vicio-3-no-verificar-inflar.md) | No verificar / inflar / fabricar | Integridad | activo (prioridades #2-#3) | ninguno |
-| [vicio-4](vicio-4-estructura-escondida.md) | No postular la estructura escondida | Competencia | activo (validado afuera + replicado en casa 2026-08-07) | latent_mix v2 (trofeo) · count_mix_v0+twin (0/9 GENERACIÓN; escalera de canales) · count_regime_v0+twin (construido; su v0 dicta el candidato → midió aceptación = vicio-1; creatividad del operador sin medir) |
+| [vicio-4](vicio-4-estructura-escondida.md) | No postular la estructura escondida | Competencia | activo — **candidata de pivote elevada (2026-08-10): la compresión sobrevive a evidencia comprada propia (convergencia con 8.6)** | latent_mix v2 (trofeo) · count_mix_v0+twin (0/9 GENERACIÓN; escalera de canales) · count_regime_v0+twin (midió aceptación = vicio-1) · count_regime_v1 rung 0 (0/9→30/30 con fallo propio visible) · **par d1_calibracion (compran el test 30/30, escriben la estructura 2/15; ronda 2 wording neutral corriendo)** |
 | [vicio-5](vicio-5-perder-el-hilo.md) | Perder el hilo | Operación | fuera de alcance (se mide, no se construye) | — |
 | [vicio-6](vicio-6-adivinar-vs-preguntar.md) | Adivinar en vez de preguntar | Competencia | bloqueado (falta el verbo preguntar) | Mundo B diseñado |
 | [vicio-7](vicio-7-correlacion-causa.md) | Correlación vs causa | Competencia | control (frontier lo pasa) | 5 mundos |
-| [vicio-8](vicio-8-perder-el-objetivo.md) | Perder el objetivo / la relevancia | Competencia | activo (sub-forma integración) | ninguno |
+| [vicio-8](vicio-8-perder-el-objetivo.md) | Perder el objetivo / la relevancia | Competencia | activo (sub-forma integración; 8.6 con primer mundo que la cobra) | **par d1_calibracion (8.6, vara cero-LLM: la entrega traiciona la evidencia comprada)** |
 | [vicio-9](vicio-9-overtrust-verificacion.md) | La verificación de paja | Integridad | activo (primer espécimen propio 2026-08-07) | count_mix_v0 (de facto, brazo receta) |
 | [ahas](ahas.md) | Las operaciones espejo | — | transversal (pares obligatorios) | pares en v2/lab_largo |
 
