@@ -52,13 +52,16 @@ OUT = ROOT / "scripts/out/count_regime_impasse_v1"
 POLES = {"brk": "count_regime_v1", "smooth": "count_regime_twin_v1"}
 MODEL = "gpt-5.4"
 
+CALENDAR_TURN = 2
 PILOT1_TURN = 6
 PILOT2_TURN = 10
 MAX_TURNS = 14            # = PILOT1_TURN + persistence budget (8) del protocolo
 CELL_TIMEOUT_S = 30.0
 MAX_TOKENS = 200_000
 
-TEC_SEED = 99520
+TEC_SEED = 99555   # 99520 QUEMADA: primer tecnico corrio con el bug de firma en el
+                   # wrap de experiment ("experiments are broken") + sin compuerta de
+                   # calendario -> operabilidad invalida, no cuenta como episodio
 TANDA_BRK_SEEDS = list(range(99521, 99551))       # 30 = 3 brazos x 10 seeds
 TANDA_SMOOTH_SEEDS = [99551, 99552, 99553, 99554]  # gemelo: RAW y ESTRUCTURADO x 2
 ARMS = ("RAW", "VISIBLE_GLOBAL", "VISIBLE_ESTRUCTURADO")
@@ -89,14 +92,32 @@ def attach_register(srv) -> None:
                                        "ys": [float(v) for v in df["y"]]})
         return df
 
-    def experiment(config=None, context=None, n=500, horizon=None):
-        df = _orig_experiment(config=config, context=context, n=n, horizon=horizon)
-        speed = float((config or {}).get("speed", 1.0))
+    def experiment(design):
+        df = _orig_experiment(design)
+        speed = float((design.config or {}).get("speed", 1.0))
         srv._impasse_cells.append({"turn": srv._turn, "speed": speed,
                                    "ys": [float(v) for v in df["y"]]})
         return df
 
     srv.observe, srv.experiment = observe, experiment
+    srv._impasse_pilots_fired = 0
+    srv._impasse_early_submits = []
+
+    _orig_submit = srv.submit
+
+    def submit(code: str):
+        if srv._impasse_pilots_fired < 2:
+            from wager.contracts.episode import SubmitResult
+            error = ("the plant's evaluation calendar has scheduled pilot lot(s) "
+                     "pending; final models are accepted once the calendar "
+                     "completes. You may keep working and register updated "
+                     "models with production meanwhile.")
+            srv._impasse_early_submits.append({"turn": srv._turn})
+            srv._log("submit", {"accepted": False}, 0.0, note="early submit deferred")
+            return SubmitResult(accepted=False, error=error)
+        return _orig_submit(code)
+
+    srv.submit = submit
 
     def register_model(self, code: str):
         self._guard_open()
@@ -227,6 +248,16 @@ def run_impasse_episode(srv, pole: str, params: dict, arm: str, model: str) -> d
         for turn_idx in range(1, MAX_TURNS + 1):
             srv.begin_turn(turn_idx)
 
+            if turn_idx == CALENDAR_TURN:
+                prompt = ("[NOTICE] Plant schedule for the speed-increase evaluation: "
+                          "production will run two scheduled pilot lots during your "
+                          f"session (your turns {PILOT1_TURN} and {PILOT2_TURN}). "
+                          "Production asks that a provisional model be on file "
+                          "(env.register_model) before then; pilot reports reference "
+                          "your latest registered model. Final submissions are "
+                          "accepted once the calendar completes.\n\n") + prompt
+                chain.append({"event": "calendar_notice", "turn": turn_idx})
+
             for which, pturn in ((1, PILOT1_TURN), (2, PILOT2_TURN)):
                 if turn_idx == pturn:
                     made = make_pilot(srv, pole, params, which, arm, pilots_done)
@@ -237,6 +268,7 @@ def run_impasse_episode(srv, pole: str, params: dict, arm: str, model: str) -> d
                     prompt = f"[NOTICE] {notice}\n\n" + prompt
                     pilots_done.append({"speed": meta["speed"], "rows": rows,
                                         "turn": turn_idx})
+                    srv._impasse_pilots_fired = which
                     chain.append({"event": f"pilot_{which}", "turn": turn_idx, **{
                         k: v for k, v in meta.items() if k != "report_table"}})
 
@@ -268,6 +300,9 @@ def run_impasse_episode(srv, pole: str, params: dict, arm: str, model: str) -> d
             prompt = ("Kernel output:\n" + (rec["stdout"] or "(no output)")
                       + "\n\nContinue: reasoning first, then ONE cell.")
 
+    for att in getattr(srv, "_impasse_early_submits", []):
+        chain.append({"event": "early_submit_attempt", "turn": att["turn"]})
+    chain.sort(key=lambda c: c["turn"])
     return {"trace": trace, "chain": chain, "abort_reason": abort_reason,
             "tokens": tokens,
             "accepted": bool(srv.result and srv.result.get("accepted", True)),
