@@ -420,14 +420,22 @@
 > al artefacto), reaparece en count_mix + North heterogéneo + D1; estado: candidata de
 > confirmación. [Dossier](research/2026-08-10-resultado-tanda-d1-calibracion.md).
 >
-> **PRÓXIMO PASO (2026-08-10): DECISIÓN DE LUCAS** — dos opciones sobre la mesa (orden de
-> Codex): (a) el único control que cierra el rival de incentivo EN D1: re-tanda con wording
-> que declare que se puntúa la distribución completa (sin nombrar mezcla, mismas 15 seeds,
-> ambos polos, ~USD 12-15 — GASTO NUEVO, espera GO); (b) promover el hallazgo y confirmarlo
-> fuera de D1 (otro modelo + instancia fresca) — también gasto, espera GO. Mientras: filar la
-> evidencia en `docs/vicios/` (vicio 4 × 8.6, careo con tabla de casos reales primero) NO
-> requiere gasto y es el pendiente vivo inmediato. El polo compuesto/escalera de distancia
-> queda EN PAUSA por el veredicto.
+> **EN CURSO (2026-08-10): RONDA 2 D1 — wording NEUTRAL de Lucas** ("reproducir el proceso
+> generador lo más fiel posible; se evalúa de distintas maneras" — SIN pistas; rechazada la
+> frase con pista de Codex/Claude: nombrar dimensiones contamina la medición del juicio).
+> Mismas 15 seeds apareadas, reglas de interpretación CONGELADAS en addendum 2 de la ficha
+> (≥8/15 escribe estructura + espurio ≤2 → era especificación; ≤4/15 → fenómeno robusto →
+> confirmar fuera de D1; regla apareada por seed de Codex). GO de Lucas ("ok dale mandalo"),
+> ~USD 12-15, salida `tanda2_*`. Evidencia archivada en `docs/vicios/` (vicio 4 + 8.6 ✓).
+>
+> **HIPÓTESIS DE LUCAS REGISTRADA (2026-08-10, candidata de ronda 3 — diseño nuevo, espera
+> su GO tras la ronda 2)**: *"quizás si los hiciéramos fallar, ahí se darían cuenta del
+> salto — al no penalizarlos por ser lazy, lo son"*. Es exactamente el ingrediente del rung 0
+> (0/9 sin fallo → 30/30 con fallo propio visible; Ohlsson: sin impasse no hay
+> reestructuración) trasplantado a D1: la planta REBOTA el modelo provisional con reporte
+> mecánico de desajuste (el fallo del unimodal a la vista) → ¿aparece la escritura de
+> estructura? Cruza los dos hallazgos de la era en un solo esqueleto. El polo
+> compuesto/escalera de distancia sigue EN PAUSA.
 >
 > **[SUPERSEDIDO POR EL GO] (2026-08-10): la ficha D1 (Onnes — firma ambigua), a Lucas ANTES de codear.**
 > Diseño ordenado por Codex: proceso físico + modelo de medición reales; prefijo compatible con
