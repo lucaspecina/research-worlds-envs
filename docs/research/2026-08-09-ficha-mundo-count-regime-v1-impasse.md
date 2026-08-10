@@ -158,7 +158,7 @@ bloquear esta prueba.
 
 ---
 
-## ADDENDUM PROPUESTO 2026-08-09 — auditoría de las 7 compuertas por la lectura COMPLETA de Ohlsson 2011 (pendiente de ratificación Codex/Lucas ANTES de construir)
+## ADDENDUM PROPUESTO 2026-08-09 `[SUPERSEDIDO por el ADDENDUM RATIFICADO de abajo]` — auditoría de las 7 compuertas por la lectura COMPLETA de Ohlsson 2011
 
 La lectura del libro entero ([extracción](2026-08-09-lecturas-libros-programa-saltos.md))
 valida la orientación de las 7 compuertas y detecta faltantes. Todo lo de abajo AGREGA
@@ -196,3 +196,119 @@ familia nueva correcta (full-partial) / familia nueva incorrecta (falso insight,
 predicho p. 115) / abandono. (iv) **cita doctrinal**: el trigger se cita por Ohlsson 2011
 pp. 107/109/117/222-228 (no solo Knoblich 1999); portar la honestidad del autor (tests
 débiles, prevalencia 3-41%, progress criterion vivo).
+
+---
+
+# ADDENDUM RATIFICADO 2026-08-09 (fallo de Codex: **MODIFICAR y luego GO**)
+
+> **Estatus de la ficha**: la versión de arriba DEJA DE ESTAR CONGELADA. Este addendum altera el
+> constructo, la supersede formalmente, y obliga a **recertificar y volver a firmar ANTES de
+> construir**. Crudos del fallo: `scratch/codex-respuesta-2026-08-09b-addendum.txt`.
+> **Tripwires declarados** (van a Lucas en el reporte, no se ejecutan en silencio): compuerta A
+> (cambia elegibilidad, reemplaza el certificado de capacidad), **compuerta B (TRIPWIRE MAYOR:
+> cambia harness y feedback path; invalida la compuerta 4 original; obliga a recertificar
+> necesidad teleológica, no-dictación y timing)**, y el tercer brazo (cambia seeds, tamaño,
+> hipótesis y certificados bilaterales). **El reward TERMINAL no cambia** (R/S siguen evaluando
+> el modelo final en held-out); lo que cambia son compuertas/registros intermedios calculados
+> contra M0, que pasan a calcularse contra Mpatch. Frontera cero-LLM intacta.
+
+## 1. El claim, reescrito (ya no se llama "test del disparador del insight")
+
+> **Efecto de la TRANSPARENCIA y la ESTRUCTURA del feedback negativo dentro de episodios de
+> indagación impulsados por anomalías.**
+
+Alcance: una ruta de activación bajo anomalía — NO una teoría universal del insight (Klein
+puede matar la necesidad universal del impasse; no puede matar este contraste local).
+
+## 2. Compuertas A–E, ratificadas con modificación
+
+**A. Compuerta de ELEGIBILIDAD UNWARRANTED** (renombrada: un control en otra sesión prueba
+capacidad del modelo, no el estado cognitivo del episodio). Por modelo, exige: (i) implementación
+correcta cuando se NOMBRA la familia; (ii) reconocimiento en un dominio ISOMORFO, contexto
+fresco, entre ≥3 rivales; (iii) cero exposición al mundo, vocabulario o seeds principales. Si un
+modelo falla, **sus nulos no entran al contraste teórico**.
+
+**B. Cerrar la ruta periférica — OBLIGATORIA.** Secuencia nueva del episodio:
+
+`M0 → lote 1 → registro de Mpatch → lote 2 ejecutado contra Mpatch → candidata / M1`
+
+Condiciones duras: el **segundo lote queda FIJO y apareado entre brazos** (no se elige
+adaptativamente contra cada parche — rompería la igualdad de evidencia); antes de correr agentes
+se certifica contra una **biblioteca congelada de parches periféricos plausibles** (refit ·
+outlier · heteroscedasticidad · spline/polinomio · recalibración); si un parche real SOBREVIVE al
+lote 2, cuenta como **resolución dentro de familia** (no se censura ni se fabrica otro fallo); si
+el agente no registra nada nuevo, `Mpatch = M0`. **Si no se puede implementar conservando un
+segundo lote fijo → NO-GO al host.**
+
+**C. Grano del resumen VISIBLE, congelado con precisión**: residuo **firmado y estandarizado**
+(deviance/Pearson, no crudo); fórmula, redondeo y columnas congeladas; **orden natural por
+velocidad**; mismo formato para M0 y Mpatch; sin ranking, color, etiqueta de patrón ni
+interpretación. La no-dictación se recertifica **sobre el mensaje renderizado exacto**.
+
+**D. Auto-cómputo en RAW — registro DESCRIPTIVO.** Cuenta solo el auto-cómputo *observable*
+(tool-call o artefacto con comparación predicción-resultado/residuos); una mención en prosa no
+alcanza. **No se lo llama "mediador causal"**: `RAW-que-computa ≈ VISIBLE` es selección
+post-tratamiento y puede reflejar competencia general. No condiciona el análisis primario ni el
+reward.
+
+**E. Persistencia.** Se congelan server-side oportunidades, costo, turnos y presupuesto restante,
+**iguales entre brazos**; se registra cuánto usa después del primer fallo. **No** se le pide al
+agente que declare cuánto va a persistir (sería otra intervención). Se separa **abandono
+epistémico explícito** de timeout / error técnico / agotamiento.
+
+**Cinco salidas adoptadas** (perseverar · re-rank dentro de la familia · familia nueva correcta ·
+familia nueva incorrecta = falso insight · abandono), con la **escalera ordinal de Darden**
+(monster-bar → tweak → specialize → split → delete → add → abandonar) **anidada dentro** de
+ellas como rúbrica de respuesta — no como reward escalar universal, y solo cero-LLM donde el diff
+ejecutable identifica la edición.
+
+**Regla de cierre de ciclo**: "dosis insuficiente" queda como rival interpretativo, pero **NO
+autoriza una v1.1 de 1/2/4 lotes después de un nulo**. Este ciclo termina en este host.
+
+## 3. Tercer brazo: VISIBLE-GLOBAL (NO prompt-warning)
+
+| Brazo | Qué recibe |
+|---|---|
+| **RAW** | filas del control + predicciones de su modelo |
+| **VISIBLE-GLOBAL** | lo mismo + estadístico GLOBAL de desajuste y su umbral |
+| **VISIBLE-ESTRUCTURADO** | lo mismo + global + residuos ordenados (grano de la compuerta C) |
+
+Separa causalmente **detectar el fallo** de **recibir la dirección cualitativa** — el contraste
+RAW/VISIBLE original mezclaba las dos cosas. **NO-GO a prompt-warning** (no es falsificador
+limpio: induce cómputo/búsqueda/priming, y aporta poco sobre el pre-registro de "compará" que ya
+dio 0/3). **NO-GO a resubsumption como brazo** (es otro experimento, otro mecanismo, probable
+otro reward path → candidato separado, después de decidir v1).
+
+## 4. Claims corregidos (contabilidad — ADR 0152)
+
+| Claim | Corrección ratificada |
+|---|---|
+| "Si el impasse visible no aumenta la expansión, **Ohlsson muere**" | Insostenible con n=6 y 2 lotes. Muere **esta operacionalización en este sustrato y esta dosis**; y se abandona el host. |
+| Los brazos reciben "**la misma información**" | Falso cognitivamente. Mismas **observaciones**; distinta **representación y trabajo computacional**. |
+| "Candidata registrada antes del punto de discriminación = **expansión generativa**" | El timing prueba **activación/propuesta antes de discriminación**, NO que el candidato estuviera fuera del espacio efectivo. |
+| H-V2 como "**continuación del 0/9**" | Inválido: count_mix no estima RAW en count_regime. Queda **exploratoria**. |
+| Generación y aceptación como **dos fenómenos** | No: son **momentos operacionalmente separables** dentro de contracción-expansión (Aliseda). |
+| "**Darden confirma** la taxonomía de 11" | Demasiado fuerte: confirma **componente×verbo** y demuestra que la lista plana mezcla verbos, objetos y celdas. |
+| "**Boden demuestra** que la activación es el mecanismo **mayoritario**" | "much" ≠ mayoría → "mecanismo **importante y frecuente**". |
+| "**Bayes nunca agranda**" | Correcto solo para **condicionamiento dentro de un espacio fijo**; no como afirmación sobre búsqueda de modelos ni expansión del lenguaje. |
+| Clasificación "**cero-LLM**" de la cadena | Vale **solo si `register` deja familia/estructura en un schema ejecutable**; si depende de interpretar prosa, es anotación humana. |
+
+## 5. Codebook de taxonomía (en paralelo, como CANDIDATOS — sin numerar todavía)
+
+`SPLIT/DELINEATE` y el `p′` de Aliseda son **el mismo verbo sobre componentes distintos** → los
+ops 2 y 3 se releen como `población×split` y `tiempo×split`. `EXPLICITAR-SUPUESTO` es operación
+de cadena/representación (puede no editar todavía el programa). `DELETE` entra como **verbo
+primitivo** con las 4 condiciones de Darden. `REPLACE` queda **provisionalmente** como
+composición `delete+add`, salvo casos que demuestren irreducibilidad. La tríada
+**éxito/fallo/LAGUNA** entra como **eje de disparador y familia futura** (no se construye ahora):
+una laguna permitiría estudiar **expansión sin contracción** — el mejor contrapunto posterior a v1.
+
+## 6. Orden de ejecución ratificado
+
+1. Re-firmar esta ficha con el addendum incorporado (hecho con este bloque).
+2. Recertificar: necesidad teleológica · no-dictación (sobre el mensaje renderizado) · timing de
+   discriminación · gemelo bilateral por brazo · biblioteca congelada de parches (compuerta B) ·
+   elegibilidad unwarranted por modelo (compuerta A).
+3. Construir. **No esperar** a Klein/Thagard/Magnani (deben cerrar antes del codebook definitivo,
+   no antes de v1).
+4. Una sola corrida decisiva → dossier → MANTENER / MODIFICAR / PIVOTEAR / ABANDONAR el host.

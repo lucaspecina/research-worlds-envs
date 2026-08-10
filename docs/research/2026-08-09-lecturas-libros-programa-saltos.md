@@ -151,8 +151,9 @@ Leídas las 244 páginas del PDF en 13 tandas de ≤20: preliminares (i–xvi), 
 (explora/transforma = reparte/agranda, con semántica probabilidad-vs-posibilidad), de la
 novedad relativa (P-creativity; la ayuda = "telescoping", con descuento explícito) y del
 reward cero-LLM (el "evaluation bottleneck" se automatiza SOLO en dominios bien regulados —
-los nuestros). Corrección a favor: activación-de-estructura-conocida es el mecanismo
-MAYORITARIO de la ciencia H-creativa real (p. 222). Corrección en contra: nuestra frase
+los nuestros). Corrección a favor: activación-de-estructura-conocida es un mecanismo
+**importante y frecuente** de la ciencia H-creativa real (p. 222 dice "much" — NO "la
+mayoría"; acotado por Codex 2026-08-09). Corrección en contra: nuestra frase
 "combinación a distancia" sería refutada por su cap. 3 si las piezas no incluyen operadores
 sobre el propio sistema generativo (soltar/negar/re-representar reglas) — las distancias se
 miden sobre EDICIONES DE REGLAS, no solo contenido. Exige 3 upgrades: profundidad del cambio
@@ -427,7 +428,9 @@ Texto principal completo, pp. 3-392 (caps. 1-12, sin saltos; caps. 4, 7, 9, 10, 
 
 ## 4. Darden 1991 — *Theory Change in Science: Strategies from Mendelian Genetics* (Oxford UP) — LEÍDO COMPLETO 2026-08-09 (324/324 pp. del escaneo)
 
-**Titular con alcance**: la fuente primaria más alineada con WAGER — teoría = componentes
+**Titular con alcance**: la fuente primaria más alineada con WAGER — ⚠️ confirma el FORMATO
+componente×verbo, **no nuestra lista de 11** (y muestra que la lista plana mezcla verbos,
+objetos y celdas — Codex 2026-08-09): teoría = componentes
 modulares editables; anomalía = firma que LOCALIZA y restringe el reemplazo; rúbrica ordinal
 completa de respuestas (monster-bar → tweak → specialize → split → delete → add → abandon,
 p. 270) implementable cero-LLM. Confirma las candidatas (BORRAR con 2 casos + 4 condiciones

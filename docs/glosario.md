@@ -31,7 +31,12 @@ para medir — sin jueces LLM — dónde exactamente se les rompe el proceso de 
   medimos. **Distinción que manda (Lucas, 2026-08-07): GENERAR el candidato cuando nada lo
   dicta (= creatividad, la vara del programa) ≠ ACEPTARLO cuando la evidencia lo grita (= 
   revisión de creencias, vicio 1).** Un mundo mide creatividad solo si el candidato tiene que
-  NACER del agente.
+  NACER del agente. ⚠️ **No son dos fenómenos separados** (Aliseda; ratificado Codex
+  2026-08-09): son **momentos operacionalmente separables** de un solo proceso —
+  revisar = soltar (contracción) + incorporar (expansión), y generar el candidato ocurre en
+  las dos. Lo que separamos server-side es el MOMENTO (antes/después de que la evidencia
+  discrimine), y eso prueba activación-antes-de-discriminación, no que el candidato estuviera
+  fuera del espacio efectivo del agente.
 - **Operador (de salto)**: cada TIPO de cambio de forma. La lista 10+1 — **contada con
   historia y fuentes en [el libro de los saltos](saltos.md)**;
   [justificación formal](research/2026-08-05-fundamentos-taxonomia-de-saltos.md): 1 entidad oculta ·

@@ -84,10 +84,18 @@ de ML). P(hipótesis | evidencia) admite dos lecturas, y las dos son inducción:
    tiene que repartir su apuesta entre muchísimas configuraciones y pierde densidad en cada
    una — la "navaja de Occam bayesiana", que es la misma vara de dos bolsillos de §6.
 
-En los dos niveles la mesa está puesta de antemano: **el teorema solo REPARTE probabilidad
-entre los candidatos que le diste; ninguna operación de la teoría de probabilidad AGREGA un
-candidato.** El paso que falta — modificar la estructura de los candidatos, o meter en la
-lista uno que no estaba, empujado por la evidencia — **ese paso ES la abducción.**
+En los dos niveles la mesa está puesta de antemano: **condicionar solo REPARTE probabilidad
+entre los candidatos que ya están; la regla de Bayes por sí sola no AGREGA un candidato.** El
+paso que falta — modificar la estructura de los candidatos, o meter en la lista uno que no
+estaba, empujado por la evidencia — **ese paso ES la abducción.**
+
+⚠️ **Precisión obligatoria** (Codex 2026-08-09): esto vale para el CONDICIONAMIENTO dentro de
+un espacio fijo, y NO es una afirmación sobre la estadística bayesiana en general. Hay
+maquinaria bayesiana que pone masa sobre espacios estructurados infinitos (priors
+no-paramétricos, gramáticas generativas de teorías, búsqueda de modelos tipo MCMC sobre
+programas): ahí el conjunto ACTIVO sí crece durante la corrida. Lo que sigue en pie es que
+alguien tuvo que escribir el generador del espacio — el paso de proponer no desaparece, se
+muda al diseño del prior.
 
 **La trampa formal (y por qué no salva)**: se puede declarar la lista infinita ("mi espacio
 es el de todos los programas posibles") y entonces "todo es inducción"… sobre una lista que

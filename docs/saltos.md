@@ -521,8 +521,9 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
   nuestro reparte/agranda (sorpresa de POSIBILIDAD, no de probabilidad, p. 42); P-creativity =
   nuestra "novedad relativa" y la ayuda tiene nombre (telescoping, p. 195); el reward cero-LLM
   tiene fundamento (el evaluation bottleneck se automatiza solo en dominios regulados — los
-  nuestros, pp. 9/320); y a favor nuestro: activación-de-estructura-conocida es el mecanismo
-  MAYORITARIO de la ciencia H-creativa (p. 222). Exige: profundidad del cambio como variable
+  nuestros, pp. 9/320); y a favor nuestro: activación-de-estructura-conocida es un mecanismo
+  **importante y frecuente** de la ciencia H-creativa (p. 222 dice "much", no "la mayoría" —
+  corregido por Codex 2026-08-09). Exige: profundidad del cambio como variable
   ordinal, medir contra el espacio EFECTIVO del agente (lección geometry-program), y partir
   generación/reconocimiento (Copérnico tachó las elipses).
   [Extracción](research/2026-08-09-lecturas-libros-programa-saltos.md).
@@ -567,7 +568,9 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
   error de los endpoints — medir la cadena. El libro de 2008 sigue [POR-LEER].
   [Extracción](research/2026-08-07-lecturas-programa-saltos.md).
 - **Darden, *Theory Change in Science*** (1991) `[LEÍDO completo 2026-08-09 — libro entero]` —
-  la taxonomía hermana confirmada: teoría = componentes MODULARES editables, cambio registrado
+  ⚠️ confirma **el formato componente×verbo, NO nuestra lista de 11** (Codex 2026-08-09: y de
+  paso muestra que la lista plana mezcla verbos, objetos y celdas): teoría = componentes
+  MODULARES editables, cambio registrado
   como componente×verbo (Tablas 14-1/14-2/15-3), anomalía = firma que LOCALIZA (2:1 vs 1:1
   dictan ediciones distintas) y la escalera ordinal de respuestas (monster-bar → tweak →
   specialize → split → delete → add → abandonar, p. 270) — rúbrica cero-LLM lista. Regalos:

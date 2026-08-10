@@ -340,13 +340,26 @@
 > impasse datos/coherencia · continuo de invención · formulación con Bayes):
 > [WIKI-INDAGACION](../WIKI-INDAGACION.md) §3/§6, glosario, careo en [el libro](saltos.md).
 >
-> **PRÓXIMO PASO (2026-08-09): construir la v1 contra su ficha.** Orden: generador con firma
-> no-flagrante + scan de instancia (seeds 99450–99459/99468–99489) → certificados (los 4 +
-> no-flagrancia/no-dictación/necesidad teleológica — si la 7 no certifica, se abandona el
-> host SIN correr agentes) → harness del episodio (M0/calificación rutinaria/brazos) → técnico
-> 99520 → tanda 16 (99521–99544, ≈USD 5–8) → dossier a Codex/Lucas. En paralelo, sin
-> bloquear: codebook de taxonomía (unidad = edición-dentro-de-cadena). Libros esperando PDFs
-> (Darden 1991 prioritario).
+> **CAMPAÑA DE LIBROS 2026-08-09 (Lucas proveyó los 7 PDFs):** 4 leídos COMPLETOS e integrados
+> (Aliseda · Boden · Ohlsson · Darden — [extracciones](research/2026-08-09-lecturas-libros-programa-saltos.md));
+> 3 en lectura (Klein · Thagard · Magnani). Ohlsson AUDITÓ la ficha v1 → addendum de 5
+> compuertas → **segundo fallo de Codex: MODIFICAR y luego GO**
+> (`scratch/codex-respuesta-2026-08-09b-addendum.txt`): las 5 ratificadas con precisiones, la
+> **B es TRIPWIRE MAYOR** (el 2º lote se evalúa contra el modelo PARCHADO del agente, con lote
+> FIJO apareado y biblioteca congelada de parches; si no se implementa así, **NO-GO al host**),
+> **tercer brazo VISIBLE-GLOBAL** (separa detectar-el-fallo de recibir-la-dirección), claim
+> reescrito, y **9 claims muertos o acotados** (ver el
+> [addendum ratificado](research/2026-08-09-ficha-mundo-count-regime-v1-impasse.md), aplicados
+> en wikis/glosario/libro). El reward TERMINAL no cambia; frontera cero-LLM intacta.
+>
+> **PRÓXIMO PASO (2026-08-09): construir la v1 contra ficha + addendum ratificado.** Orden:
+> generador con firma no-flagrante + scan de instancia (seeds 99450–99459/99468–99489) →
+> recertificación completa (los 4 de siempre + no-flagrancia · no-dictación sobre el mensaje
+> RENDERIZADO · necesidad teleológica · biblioteca de parches de la compuerta B · elegibilidad
+> unwarranted por modelo) → harness del episodio (M0 → lote 1 → Mpatch → lote 2 contra Mpatch)
+> con los TRES brazos → técnico 99520 → tanda (3 brazos × 2 modelos × 3 seeds + gemelo) →
+> dossier. En paralelo, sin bloquear: codebook (candidatos SPLIT/p′/DELETE/REPLACE + escalera
+> de Darden como rúbrica). Tríada éxito/fallo/LAGUNA registrada como familia futura.
 >
 > **REEVALUACIÓN Y SIGUIENTE ACCIÓN (histórica 2026-08-02; superseded por el bloque de arriba):** todavía no se congela la pregunta final del paper. Sigue
 > viva la señal de **cierre/autoridad del diagnóstico**; la apertura latente persiste solo en SCM;
