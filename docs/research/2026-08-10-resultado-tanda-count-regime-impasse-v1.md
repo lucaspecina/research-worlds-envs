@@ -106,3 +106,19 @@ fallas de operabilidad + 1 de constructo, cazadas antes de la tanda) · ✓ geme
 · VIVO: dossier a Codex · VIVO: validación semántica fina de las 30 trazas (los códigos ya
 leídos mecánicamente; falta la lectura de prosa) · VIVO: mundo realista esperando diseño con
 contexto a Lucas.
+
+---
+
+## ADDENDUM — el TECHO (crítica de Lucas, 2026-08-10, misma tarde)
+
+*"¿Entonces el salto es muy fácil, no? No estamos haciendo nada interesante — por lo menos con
+este mundo de juguete."* — Correcto, y queda registrado como lectura oficial del 30/30: **una vez
+disparado, este salto es fácil; un mundo donde todos llegan no discrimina capacidad**. Y no es
+accidente: la compuerta de alcanzabilidad certifica mundos resolubles por construcción, y una
+curva 1D donde los residuos apuntan al arreglo es el peldaño de distancia mínima. El valor de la
+corrida queda acotado a: (1) cerrar la pregunta del DISPARADOR (0/9 sin fallo → 30/30 con fallo,
+mismo modelo y misma estructura); (2) la inversión del reporte; (3) la maquinaria probada.
+**La pregunta del programa pasa a ser: ¿el impasse alcanza cuando el candidato está LEJOS?**
+(predicción de Ohlsson, Principle of Scope: la tasa cae con el alcance). Escalera: disparador
+fijo, distancia creciente — firma ambigua (Onnes) · operadores compuestos (2-4) · candidato
+fuera del menú nombrable · el salto que NO agrega (borrar/re-anclar, Thagard).
