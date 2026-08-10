@@ -1,152 +1,176 @@
-# BORRADOR — Ficha D1 "El turno de calibración" (la anomalía que puede ser el aparato)
+# BORRADOR v2 (ronda 2) — Ficha D1 "El turno de calibración"
 
-> **Estado: BORRADOR EN DISEÑO — no congelado, no construible.** Lo diseña Claude (manda),
-> Codex critica (consultor). Se presenta a Lucas con contexto completo ANTES de codear
-> (regla dura 2026-08-10). Deriva de: [anatomía del corpus](2026-08-10-anatomia-casos-reales-requisitos-mundo-realista.md) §D1
-> + fallo de Codex 2026-08-10 (diseño ordenado + alcanzabilidad dividida en 4).
+> **Estado: BORRADOR EN DISEÑO — no congelado, no construible.** Claude diseña y manda; Codex
+> critica. Ronda 1: crítica completa en `scratch/codex-respuesta-2026-08-10-d1critica.txt`
+> ("no presentable: mide triage instrumental, no salto; los botones nombrados regalan la
+> hipótesis; siempre-calibrar gana bilateral"). Esta v2 la incorpora casi entera y contraataca
+> en dos puntos (marcados ⚔). Se presenta a Lucas ANTES de codear.
 
-## 1. La pregunta (el peldaño de distancia que sube)
+## 0. El claim, reescrito (acepto el ataque al constructo)
 
-En el rung 0 (count_regime_v1, cerrado) el fallo **apuntaba a su arreglo**: residuos crecientes
-con la velocidad ≈ "hay otra ley arriba". Acá el fallo se ve igual de claro pero **NO nombra su
-causa**: la misma firma anómala es compatible con (al menos) cuatro explicaciones estructurales
-vivas, y separarlas **cuesta plata**. La pregunta:
+D1 **NO mide salto distante ni creatividad abductiva**. Mide la juntura B3 del corpus —
+la más citada por las cuatro tradiciones y ausente de todos nuestros mundos:
 
-> Ante una anomalía cuya firma no dicta su explicación, ¿el agente COMPRA la evidencia que
-> DISCRIMINA entre rivales (y llega a la estructura correcta), o descarga la anomalía en la
-> explicación más barata (el instrumento / el ruido) sin pagar el test que la separaría?
+> **Triage de anomalía ambigua + búsqueda diagnóstica multicanal**: ante una anomalía cuya
+> firma no dicta su causa, ¿el agente COMPRA evidencia con poder de discriminación real entre
+> los rivales vivos (y propaga el resultado a su entrega), o resuelve la atribución por
+> reflejo — en cualquiera de las dos direcciones?
 
-**Qué manipula este peldaño respecto del rung 0** (per Codex: los peldaños manipulan cosas
-distintas — este NO es "más distancia de edición"): **ambigüedad del disparador + costo de
-búsqueda diagnóstica**. El radio de edición se mantiene chico a propósito (una edición), para
-que el contraste con el rung 0 sea limpio; el polo compuesto (dos ediciones sobre este MISMO
-backbone) es el peldaño siguiente, no este.
+La distancia de edición NO se manipula acá (radio chico a propósito): el peldaño de distancia
+es el POLO COMPUESTO sobre este mismo esqueleto, después. **Explicación rival declarada para
+Lucas desde ya** (exigencia de Codex): *"lo que mide puede reducirse a affordance/checklist
+profesional"* — las defensas contra eso son §3 (acciones genéricas sin nombre diagnóstico) y
+el ROBOT-CHECKLIST de §7, que debe PERDER para que el mundo certifique.
 
-## 2. Fidelidad a casos reales (regla dura 2026-07-13)
+## 1. Fidelidad (igual que v1 del borrador)
 
-- **Onnes 1911** (ancla primaria): la resistencia del mercurio cae a ~cero en la medición
-  rutinaria; el equipo lo descarta primero como *cortocircuito del equipo*; repite con el
-  montaje bajo sospecha; confirma que es el mundo. La condición reportada: la anomalía llega
-  por el CANAL del instrumento y la primera hipótesis natural es el instrumento.
-- **Dunbar in vivo** (el gate): *"si el investigador cree que la anomalía es error, ningún
-  desafío produce cambio conceptual"* — y el triage real es replicar. Firma de tres estados:
-  descartar-sin-replicar / replicar-confirmar-y-descartar-igual / replicar-y-perseguir.
-- **Darden** (paso 1 obligatorio de toda resolución): "confirmar que la anomalía existe:
-  ¿es problema de datos?" — legítimo; el vicio es hacerlo sin test o contra el test.
-- **Nuestros especímenes**: "the historical sample was noisy" / "maybe the true mean is an
-  outlier" — la salida que hoy nuestros mundos ni siquiera hacen jugable.
+Onnes 1911 (la sospecha del "cortocircuito" = **contacto intermitente** — literal en nuestro
+mecanismo del polo B) · Dunbar (el triage real es replicar; el gate de la creencia-en-error) ·
+Darden paso 1 · nuestros especímenes ("the sample was noisy"). Dominio trasplantado: planta
+química, pureza por lote (nada de superconductividad en la piel).
 
-## 3. El mundo (visto por el agente)
+## 2. El sistema subyacente — DAG y ecuaciones (lo que faltaba: especificación real)
 
-Sos el analista de proceso de una planta química chica. El producto sale en LOTES y lo que
-importa es la **pureza** (variable continua por lote). La pureza se mide con un **espectrómetro
-de línea** (el instrumento). Tenés:
+**Estado persistente**: lotes con identidad. El lote `j` existe, tiene una calidad latente, y
+puede volver a medirse, re-prepararse o mandarse al laboratorio — SIEMPRE el mismo material.
 
-- **archivo histórico** (lecturas de meses, condiciones normales) — barato;
-- **corridas de proceso** a las condiciones que elijas (perilla continua, p.ej. temperatura
-  del reactor) — costo normal; las lecturas SIEMPRE pasan por el espectrómetro de línea;
-- **chequeo de calibración**: mandar un PATRÓN DE REFERENCIA certificado por el espectrómetro
-  (valor verdadero conocido) — **disponible DESDE EL TURNO 1**, costo medio [el canal
-  diagnóstico existe de antemano: nada se abre junto con el fallo — la lección del rung 0];
-- **laboratorio externo**: re-analizar N lotes YA medidos en un laboratorio certificado
-  independiente (lento: resultado con latencia de 1 turno) — caro pero decisivo;
-- **register(model)**: tu modelo provisional del PROCESO; el monitoreo de rutina de la planta
-  corre en calendario fijo y te reporta contra tu último modelo registrado [maquinaria del
-  rung 0, probada].
+```
+temperatura T (perilla) ──────────────┐
+                                      ▼
+calidad latente del lote  q_j ──► pureza real  p_ij = μ0 + β·(T−T0) + q_j + ε_p
+      (persistente)                   │                     ε_p ~ N(0, σ_p)  (medición i, lote j)
+                                      ▼
+                     vial del lote ──► SENSOR ──► lectura_ij = p_ij + δ_j·f + ε_m
+                                                  ε_m ~ N(0, σ_m)
+```
 
-La entrega: `model(regime, n, seed)` que genera **la pureza REAL del proceso** (no la lectura
-del instrumento) bajo las condiciones pedidas. El examen compara contra el proceso verdadero
-medido por un canal limpio — la decisión de la gerencia depende del proceso, no del sensor.
+- **Mecanismo 1 (temperatura)**: μ depende de T linealmente (β<0: más caliente, menos pureza).
+- **Mecanismo 2 (lote persistente)**: q_j ~ N(0, σ_q) compartido por todas las mediciones del
+  lote (ICC alto — como count_mix; el modelo entregado debe reproducirlo).
+- **Mecanismo 3 (la anomalía, por polo, A NIVEL LOTE en ambos — clave del apareo)**:
+  - **Polo A (proceso)**: desde el punto t* del calendario, una fracción π=0.2 de los lotes
+    NUEVOS nace degradada: q_j ~ N(−d, σ_q2). El sensor está sano: δ_j = 0 siempre.
+  - **Polo B (instrumento)**: el proceso sigue idéntico al histórico; el **autosampler del
+    sensor encaja mal ciertos VIALES** (falla mecánica intermitente a nivel vial/lote): para
+    una fracción π=0.2 de los lotes nuevos, TODAS las lecturas de ese vial salen corridas
+    (δ_j = 1, f = −d con ruido extra). La pureza real no cambió.
 
-## 4. La verdad oculta — DOS polos apareados donde ningún reflejo gana ambos
+**Apareo EXACTO por construcción (resuelve la exigencia de igualdad de ley conjunta + CRN)**:
+la distorsión de B es a nivel LOTE (vial), igual que la mezcla de A — por lo tanto la ley
+conjunta de TODAS las lecturas rutinarias (incluidas repeticiones del mismo lote) es idéntica
+entre polos, y con acoplamiento de números aleatorios comunes el stream es **byte-idéntico**
+(verificado numéricamente en ronda 1). Los polos difieren SOLO en: (i) qué pasa cuando el
+sensor mide un material de valor conocido, (ii) qué dice el laboratorio del MISMO material,
+(iii) qué pasa al re-preparar el vial de un lote corrido, y (iv) la verdad del proceso que
+puntúa la entrega.
 
-**La anomalía es LA MISMA en los dos polos** (la firma en el flujo rutinario de lecturas es
-apareada por construcción): a partir de cierto punto del calendario/condiciones, las lecturas
-de una franja de lotes se corren hacia abajo y aumentan su dispersión.
+## 3. Acciones — GENÉRICAS, sin botones que nombren la hipótesis (acepto el defecto 1)
 
-- **Polo A — es el MUNDO** (`d1_proceso`): el proceso desarrolló una **subpoblación real**
-  (p.ej. un reactivo degradado afecta a una fracción de los lotes: mezcla 80/20 con la moda
-  baja). El espectrómetro está sano (el chequeo de calibración lee el patrón PERFECTO; el
-  laboratorio externo CONFIRMA los valores bajos). Jugada ganadora: postular la mezcla y
-  modelarla. Culpar al instrumento acá = entregar el proceso viejo = pierde en el examen.
-- **Polo B — es el APARATO** (`d1_instrumento`): el proceso sigue IDÉNTICO al histórico; el
-  espectrómetro desarrolló una **deriva no lineal** (satura/comprime en la franja alta, con
-  ruido extra) que produce exactamente la misma firma en las lecturas. El chequeo de
-  calibración lee el patrón CORRIDO (delata); el laboratorio externo DESMIENTE las lecturas.
-  Jugada ganadora: diagnosticar el canal y entregar el proceso simple SIN hornear el artefacto.
-  Postular una subpoblación acá = estructura espuria = pierde.
+No existe ningún verbo "chequeo de calibración". Hay UNA acción de medir y UNA de laboratorio,
+sobre materiales que el agente elige:
 
-**Complejidad real del sistema de abajo** (pedido de Lucas; regla de 2-4 operadores): el
-proceso tiene además (i) estructura por lote (persistencia intra-lote, como count_mix) y
-(ii) dependencia suave de la temperatura — DOS mecanismos reales verdaderos en ambos polos,
-que el modelo entregado debe capturar siempre. La anomalía monta el TERCER operador (mezcla
-en A / canal en B). Nada de esto es filler: cada mecanismo entra al examen.
+| Acción (genérica) | Config | Costo | Latencia | Qué la vuelve diagnóstica (o no) |
+|---|---|---|---|---|
+| `experiment(T, n_lotes, reps)` | temperatura, lotes nuevos, repeticiones por lote | fijo 40 + 1/medición | 0 | reps altas separan lote-vs-medición; NO separa aparato-vs-proceso |
+| `measure(material, reps)` | **cualquier material del catálogo de insumos**: lote ya existente (re-medir) · lote re-preparado en vial nuevo · **estándar de pureza conocida** (un insumo más del catálogo, con su valor de etiqueta) | 15 + 1/rep | 0 | medir un material de valor CONOCIDO por el sensor separa aparato-vs-proceso; re-vial separa falla-de-vial; re-medir el mismo vial separa ruido-vs-persistente |
+| `lab_extern(lot_ids)` | re-análisis del MISMO material, solo lotes ya medidos, máx 6 por pedido | 60 + 25/lote | 1 turno | confirma/desmiente lecturas de lotes ELEGIDOS; **no puede correr condiciones nuevas ni identificar estructura por sí solo** (restricción de Codex §2b) |
+| `register(model)` / `submit(model)` | — | 0 / — | — | el monitoreo rutinario corre en calendario fijo DESPUÉS de M0 y reporta contra el último registrado |
 
-**Los ≥4 rivales vivos en el momento de la anomalía** (compuerta de no-dictación, heredada):
-deriva del instrumento · subpoblación/mezcla real · cambio de régimen por temperatura ·
-heteroscedasticidad pura. El prefijo es compatible con todos; ninguno saca ΔBIC ≥ 6 al
-segundo con la evidencia rutinaria.
+El estándar certificado es **un ítem del catálogo de insumos** (junto a solventes, viales,
+material de re-preparación) — está disponible desde el turno 1, no se llama "calibración", y
+usarlo es una COMPOSICIÓN que el agente tiene que concebir: *medir algo cuyo valor ya conozco*.
 
-## 5. Qué se mide (todo cero-LLM)
+⚔ **Contraataque 1 (a "los botones nombran la hipótesis")**: con acciones genéricas y el
+estándar como insumo más del catálogo, la hipótesis instrumental ya no es una affordance — es
+una composición. El residuo de affordance que queda (el catálogo EXISTE) es fidelidad: toda
+planta real tiene estándares en el armario; un mundo sin ellos no sería más puro, sería
+irreal. La no-trivialidad se certifica aparte (§7), no escondiendo las herramientas.
 
-1. **Firma de Dunbar (tres estados, primaria conductual)**: ante la anomalía, ¿replicó/verificó
-   ANTES de descartar o adoptar? — computable de la cadena de compras (¿compró calibración o
-   laboratorio externo tras el fallo? ¿o descartó/adoptó sin discriminar?).
-2. **Diagnosticity del gasto** (Heuer, exacta server-side): fracción del presupuesto
-   post-anomalía en compras que DISCRIMINAN entre los rivales vivos (calibración, laboratorio,
-   diseño cruzado) vs compras-fiebre (más lecturas del mismo canal, que son compatibles con
-   todo).
-3. **Entrega**: S contra el proceso verdadero (por polo) + **espurio bilateral** (hornear el
-   artefacto del canal como estructura del proceso en B; negar la subpoblación en A) + F/ICC
-   de los mecanismos base.
-4. **Cadena**: registro, anomalía servida, compras diagnósticas con timestamps, re-registro,
-   intentos de cierre — la maquinaria del rung 0.
+## 4. La anomalía y el calendario (acepto §2c)
 
-## 6. Certificados — la alcanzabilidad DIVIDIDA (fallo de Codex, primera implementación)
+Los canales diagnósticos existen desde el turno 1. La anomalía llega por el **monitoreo
+rutinario programado post-M0** (misma maquinaria del rung 0: aviso de calendario, reporte
+contra el modelo registrado). Ninguna capacidad nueva se abre con el fallo — nada de
+autorizaciones (la lección del confound del rung 0).
 
-1. **Identificabilidad**: con la hipótesis correcta en mano, existe evidencia comprable LEGAL
-   que separa cada par de rivales (calibración separa canal-vs-proceso; laboratorio separa
-   lectura-vs-realidad; diseño por temperatura separa régimen-vs-mezcla). Se certifica por
-   enumeración de pares.
-2. **Alcanzabilidad CONDICIONADA**: un oráculo al que se le DA el candidato correcto lo valida
-   e implementa dentro del presupuesto (en ambos polos).
-3. **No-trivialidad de búsqueda**: NINGUNA compra única obvia resuelve (la calibración sola no
-   distingue mezcla-vs-régimen; el laboratorio solo no modela; más lecturas no separan nada);
-   una ruta diagnóstica DIRIGIDA entra en presupuesto; enumerar todas las rutas no entra.
-   **Robot buscador ciego acotado**: debe perder o quedarse sin plata.
-4. **Headroom**: el mejor parche (proceso viejo + outlier-clipping) y el robot de menú cerrado
-   pierden materialmente contra el oráculo en AMBOS polos.
+## 5. Outcome primario — la conjunción mecánica de Codex (acepto §5 entero)
 
-Más los heredados: gemelos apareados en la superficie rutinaria · brief byte-idéntico entre
-polos · no-dictación en el momento de la anomalía · réplica comprable < 10% · anti-memorización
-(dominio trasplantado; nada de mercurio ni superconductividad en la piel del mundo).
+```
+Y = 1  sii
+  ∃ compra ANTES de submit con DIAGNOSTICIDAD PRECOMPUTADA ≥ τ
+  Y
+  la entrega pasa el gate estructural y de score de SU polo
+```
 
-## 7. Presupuesto y alcance
+- **Diagnosticidad precomputada, por acción concreta**: para cada compra ejecutada (con su
+  config, N, reps e historia), el server computa la separación esperada que esa acción produce
+  entre los rivales congelados vivos en ese momento (distribuciones bajo cada rival →
+  discriminación esperada). **Nada de etiquetas** ("calibración = diagnóstica"): una medición
+  del estándar con 2 reps puede no llegar a τ; un diseño cruzado de re-viales puede llegarle.
+  τ se congela en la ficha final con el análisis de potencia.
+- **Gate de entrega por polo**: polo A = estructura de mezcla presente + S ≥ umbral; polo B =
+  proceso simple SIN estructura horneada (espurio=0) + S ≥ umbral.
+- Los dos ejes (conducta / entrega) se reportan TAMBIÉN por separado.
+- La tabla estilo Dunbar queda como **tabla mecánica 2×2** (compró-diagnóstico × entrega
+  correcta), sin nombres de estados mentales.
 
-- 2 polos × (técnico + n por decidir con análisis de potencia ANTES; outcome primario binario
-  por polo: ¿compró evidencia discriminante antes de comprometerse?) — la potencia se calcula
-  sobre la firma de Dunbar, no sobre la entrega.
-- Seeds: familia nueva 99600-99799 (a asignar en la ficha final).
-- SIN crítico/otro agente en esta versión (Codex: sería otro mecanismo y volvería inatribuible).
-- Modelos: gpt-5.4 primero (continuidad con rung 0), DeepSeek como réplica si hay señal.
+## 6. Matriz de decisión del ciclo (exigida en §4)
 
-## 8. Qué NO afirma
+| Resultado agregado | Lectura | Acción |
+|---|---|---|
+| Todos compran diagnóstico y aciertan ambos polos | el mundo es checklist pese a §3/§7 | ABANDONAR el host (condición de salida) |
+| Nadie compra diagnóstico; atribución por reflejo | la juntura B3 se reproduce en agentes | MANTENER; medir la dirección del reflejo por polo |
+| Compran pero NO propagan (diagnóstico correcto, entrega vieja) | knowledge-action gap en triage | el hallazgo pasa a la línea de creencias |
+| Aciertan el polo B por inercia (entregan lo histórico sin diagnosticar) | defecto 2 de Codex: inercia gana | ver ⚔2; si el gate no lo separa, REDISEÑAR |
+| Asimetría fuerte entre polos (p.ej. nunca culpan al aparato) | dirección del sesgo de atribución | titular con alcance |
 
-No mide "distancia de edición" (eso es el peldaño compuesto, sobre este mismo backbone). No
-mide crítica social. No compara con el rung 0 como "curva de dificultad" (manipulan cosas
-distintas). Mide: **triage de anomalía ambigua + economía de la búsqueda diagnóstica**, con la
-estructura correcta como premio y el reflejo fijo como derrota en un polo u otro.
+⚔ **Contraataque 2 (a "en el polo B la inercia acierta gratis")**: cierto si el gate de B fuera
+solo "proceso simple". Defensa YA en el diseño: (i) la conjunción exige la compra diagnóstica
+≥ τ — la inercia pura da Y=0 aunque la entrega acierte; (ii) el eje de entrega en B exige
+además **rechazar activamente** la estructura: el examen de B incluye la banda post-t* donde
+un modelo que horneó la mezcla falla fuerte (espurio bilateral), y el reporte del monitoreo
+sigue mostrando el corrimiento — entregar lo histórico SIN haber diagnosticado es apostar a
+que el corrimiento es irreal sin evidencia: Y=0 por la pata conductual, y el eje-entrega se
+reporta aparte precisamente para ver cuánta "suerte de inercia" hay. La inercia no queda
+premiada en el outcome primario; queda MEDIDA en el eje secundario.
 
-## 9. Abierto (para la crítica de Codex)
+## 7. Certificados — alcanzabilidad dividida + el robot nuevo
 
-a. ¿La firma apareada entre polos es construible EXACTA (misma distribución de lecturas
-   rutinarias) o alcanza "indistinguible al presupuesto del prefijo"?
-b. ¿El laboratorio externo con latencia hace el mundo demasiado resoluble (compra única casi
-   decisiva) — viola no-trivialidad? ¿Precio/latencia que lo deje como CONFIRMADOR pero no
-   como atajo?
-c. ¿La anomalía debe llegar por el monitoreo de rutina (calendario, como rung 0) o por las
-   compras propias del agente?
-d. ¿El outcome primario correcto es la firma de Dunbar (conducta) o la entrega (estructura)?
-   ¿O el par (diagnóstico correcto × estructura correcta)?
-e. ¿Dos polos alcanzan, o hace falta un tercer polo "mixto" (canal Y proceso a la vez) como
-   trampa para el reflejo "ya diagnostiqué uno, listo"?
+1. **Identificabilidad**: por cada par de rivales, existe una compra legal que los separa
+   (enumerada en la tabla de §3, columna derecha) — certificado por cómputo.
+2. **Alcanzabilidad condicionada**: el oráculo-dado-el-candidato valida e implementa dentro
+   del presupuesto, en ambos polos.
+3. **No-trivialidad de búsqueda**: **tres robots con políticas explícitas** (ya no nombres):
+   - *oráculo condicionado*: recibe el candidato correcto; debe ganar (justicia);
+   - *buscador ciego acotado*: política fija "comprar de todo un poco en orden aleatorio
+     hasta agotar presupuesto, ajustar el mejor menú cerrado" — debe PERDER o quedarse sin
+     plata antes de discriminar;
+   - **robot-CHECKLIST** (la reducción del revisor hostil, hecha política): "medir el estándar
+     siempre en el turno 2, después default histórico + outlier-clipping" — debe PERDER
+     materialmente en el polo A (gastó en diagnóstico que no propagó y no modeló la mezcla) y
+     NO alcanzar Y=1 en B si su compra no llega a τ o su entrega no pasa el gate. **Si el
+     checklist gana en ambos polos, el mundo NO certifica.**
+4. **Headroom**: mejor-parche y robot de menú cerrado pierden contra el oráculo en ambos polos.
+5. Heredados: apareo exacto por CRN (constructivo, §2) · brief byte-idéntico · no-dictación
+   (≥4 rivales vivos al llegar la anomalía, ΔBIC < 6 entre top-2) · anti-memorización ·
+   **ablación por mecanismo** (batería donde cada mecanismo — T, lote, anomalía — aparece
+   separado y quitarlo del modelo pierde: la "complejidad real" demostrada, no declarada).
+
+## 8. Presupuesto, potencia y alcance
+
+- Outcome primario Y (conjunción) por polo; potencia calculada ANTES sobre Y con τ congelado
+  (análisis en la ficha final; n por brazo ~10-12, 2 polos, 1 modelo primero: ~USD 15-20).
+- Seeds: familia 99600-99799. Modelo: gpt-5.4 (continuidad), réplica DeepSeek si hay señal.
+- SIN crítico social. SIN polo mixto (es el peldaño compuesto siguiente — NO-GO de Codex).
+- **Condición de salida**: se abandona el host si una única acción domina la discriminación
+  (checklist gana) o si los mecanismos base resultan separables por ajustes independientes
+  (la complejidad era decorado).
+
+## 9. Qué falta antes de presentar a Lucas (checklist de la ronda 3)
+
+- [ ] Ecuaciones con valores numéricos + demostración de apareo CRN corrida (código, no prosa)
+- [ ] Tabla de diagnosticidad PRECOMPUTADA de ~10 acciones típicas (que muestre que el
+      estándar-con-pocas-reps NO llega a τ y que hay ≥2 rutas distintas que sí)
+- [ ] Los tres robots implementados en pseudocódigo ejecutable
+- [ ] Análisis de potencia sobre Y
+- [ ] El texto del brief (byte-idéntico, sin palabra filtrada)
