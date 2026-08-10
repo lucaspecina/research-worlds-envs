@@ -341,14 +341,26 @@ perder un efecto real. La condición de salida tal como está firmada ("si el im
 aumenta la expansión, muere esta operacionalización") **no es sostenible con esta n**, ni siquiera
 en la versión ya acotada por Codex.
 
+> ⚠️ **Corrección anti-recencia (Lucas, 2026-08-10: "no caigamos en el error de considerar lo
+> último leído como absoluto")**: la primera versión de este addendum decía "Klein PREDICE tasa
+> base baja" y promovía el ordinal a outcome PRIMARIO. Las dos cosas eran recencia. (a) El corpus
+> de Klein NO puede dar tasas base — es de éxitos publicados, y su propio lector lo advirtió
+> ("esa pregunta su método no puede responderla"): Klein MOTIVA la sospecha; **la falta de
+> potencia se sostiene por aritmética sola** (un binario con n=6 está sub-potenciado para casi
+> cualquier tamaño de efecto plausible, lo diga Klein o nadie). (b) **El binario pre-registrado
+> SIGUE siendo el outcome primario** — un pre-registro firmado no se cambia por una lectura; y
+> además hay tensión REAL entre autores que no nos toca arbitrar: Klein cuenta 44% de insights
+> graduales, pero la teoría que este experimento testea (Ohlsson) es precisamente de
+> reestructuración; Nersessian pide medir la cadena. El ordinal entra como outcome SECUNDARIO
+> pre-declarado — cubre la tensión sin arbitrarla, y es consistente con las "cinco salidas +
+> escalera de Darden anidada" que Codex ya ratificó.
+
 **Dos correcciones, ambas necesarias:**
 
-1. **Outcome GRADUADO en vez de binario** (gratis, y además obligado por constructo): Klein
-   documenta que el **44% de los insights son graduales** — un outcome binario "expandió sí/no"
-   mide el "aha", que es el cargo que él le hace al laboratorio. Se adopta la **escalera ordinal de
-   Darden** ya ratificada (monster-bar → tweak → specialize → split → delete → add) como outcome
-   primario, con el binario como sub-métrica. Un ordinal de 6 niveles tiene mucha más potencia por
-   episodio que un binario.
+1. **Outcome ordinal SECUNDARIO pre-declarado** (gratis): la **escalera de Darden** ya ratificada
+   (monster-bar → tweak → specialize → split → delete → add) se registra por episodio junto al
+   binario primario. Aporta potencia descriptiva y cubre el desacuerdo Klein-gradual vs
+   Ohlsson-súbito sin resolverlo por decreto.
 2. **Subir n, con decisión de costo para Lucas** (es un cambio de gasto → se eleva, no se ejecuta):
    - *Como está*: 3 brazos × 2 modelos × 3 seeds = 18 + gemelo ≈ **USD 8-12**, potencia 33-59%.
    - *Opción A*: 3 brazos × 2 modelos × 6 seeds = 36 + gemelo ≈ **USD 18-22**, potencia ~80%.

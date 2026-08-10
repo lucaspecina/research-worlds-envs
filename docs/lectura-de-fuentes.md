@@ -819,3 +819,27 @@ Magnani 2001 · Aliseda 2006. **Extracciones verbatim en un solo doc:**
 **CAMPAÑA DE LIBROS CERRADA 7/7** (2026-08-09→10): Aliseda · Boden · Ohlsson 2011 · Darden 1991 ·
 Magnani 2001 · Klein 2013 · Thagard 1992. Todos a texto completo, todos con extracción y
 correcciones registradas. Los PDFs se borraron tras leerlos (pedido de Lucas).
+
+## Tensiones VIVAS entre fuentes (la tabla anti-recencia)
+
+> **Por qué existe** (Lucas, 2026-08-10): *"tampoco nos creamos que lo que dicen estos autores es
+> la verdad absoluta... incluso entre ellos se pueden contradecir. TENGAMOS EN CUENTA TODO. No
+> caigamos en el error de solo tener en cuenta lo último que vamos leyendo."* Esta tabla registra
+> las contradicciones REALES entre fuentes del corpus para que ninguna se arbitre en silencio a
+> favor de la última leída. Regla: una lectura MOTIVA sospechas (a verificar con cómputo o datos
+> propios); no DICTA diseño, y jamás cambia un pre-registro firmado.
+
+| # | Tensión | Un lado | El otro | Cómo la llevamos (sin arbitrarla) |
+|---|---|---|---|---|
+| 1 | **¿El impasse es necesario?** | Ohlsson 1999/2011: sin fallo persistente y detectado no hay reestructuración (y él mismo declara sus tests "débiles", prevalencia 3-41%) | Klein 2013: impasse en solo 25% de 120 casos reales; el propio Ohlsson concede que sus teorías "son impotentes" ante Darwin/Malthus | El claim del experimento quedó acotado a "una ruta de activación bajo anomalía", NO teoría universal del insight. El brazo de conexión-sin-fallo queda para otro mundo |
+| 2 | **¿Súbito o gradual?** | Ohlsson: reestructuración (evento); el "aha" | Klein: 44% graduales; Nersessian: es una CADENA de modelos, no un acto | Binario pre-registrado sigue primario (es lo firmado); escalera ordinal como secundario declarado; la cadena de eventos con timestamps registra todo — que los datos hablen |
+| 3 | **¿Los que descubren descartan anomalías?** | Klein: en sus 45 contradicciones, 42 exploraron y NINGUNO descartó | Dunbar in vivo: el descarte-como-error es el DEFAULT del científico solo; Heuer/Findley & Scott: los profesionales descartan sistemáticamente; Magnani: descartar a veces es CORRECTO (Copérnico) y monster-barring es paso legítimo | El corpus de Klein es de GANADORES (sesgo de selección declarado por él) — no contradice a Dunbar: lo complementa. Nuestra vara no castiga el descarte per se; castiga descartar SIN test de fecundidad el punto que porta la señal |
+| 4 | **¿Qué tan difícil es "entidad oculta"?** | Thagard: su escalón estructural MÁS BARATO, "no revolucionario" (genes, quarks) | Nuestro dato propio: 0/9 y 0/10 agentes fallan EXACTAMENTE ahí; Magnani: los descubridores automáticos también fallaban ahí | Ejes ORTOGONALES: él mide severidad de reorganización en la ciencia humana; nosotros dificultad de ACTIVACIÓN en agentes. Que fallen en el escalón "barato" AFILA el hallazgo |
+| 5 | **¿Sirve listar supuestos / mandar método?** | La tradición analítica (ACH de Heuer como método formal) | Klein: "ninguna evidencia de que sirva"; Dhami 2019: ACH dio NULO con 50 analistas reales; nuestro 0/3 del "teatro" | Acá los datos convergen contra el método mandado — pero se registra que ACH-nulo es UN estudio y nuestro 0/3 es n=3: convergencia sugestiva, no ley |
+| 6 | **¿Castigar el residuo inexplicado?** | Nuestro instinto de scoring (el modelo debería explicar todo) | Magnani/Poincaré: Newton convivió con el perihelio de Mercurio; "hasta que el rival compite, no hay razón para eliminar la vieja"; Klein: la mayoría de los puntos desviados SON ruido | El mundo no castiga residuos per se: hace que la anomalía descartada sea CONSECUENTE para el objetivo declarado (necesidad teleológica) — descartar deja de ser gratis solo cuando el mundo lo cobra |
+| 7 | **¿La combinación explica la creatividad?** | Nuestra frase "no hay magia, hay combinación a distancia"; Poincaré/Koestler | Boden cap. 3: la teoría-combinación pura NO distingue lo nuevo de lo imposible-antes; exige operadores sobre las REGLAS | Resuelta por refinamiento (no por recencia): las "piezas" incluyen ediciones de reglas — registrado en el marco |
+| 8 | **¿El grupo corrige o empeora?** | Dunbar: el corrector real es el lab meeting; Ohlsson: crítica mutua "well supported" | Barkett: pares simétricos = 99.2% escalada; Klein garden path: 7/7 equipos peor que sus individuos; Jr. AI Scientist: el revisor induce fabricación | No es contradicción sino CONDICIONAL: lo que funciona es el crítico SIN propiedad de la teoría (Findley & Scott). Diseñable como brazo, no como supuesto |
+
+**Mantenimiento**: tensión nueva que aparezca en una lectura → fila nueva acá, en el momento.
+Una fila solo se cierra cuando NUESTROS datos (no otra lectura) la resuelven — y ahí migra al
+índice de hallazgos con su evidencia.
