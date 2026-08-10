@@ -348,7 +348,7 @@ def write_artifacts(params: dict) -> None:
                  "que_mide": "En A: 1=modelo con la subpoblacion real, 0=mejor modelo unimodal. En B: 1=proceso limpio correcto, 0=mezcla horneada.",
                  "aplica": case_dir.name},
                 {"key": "has_mixture", "nombre": "¿La entrega contiene mezcla?",
-                 "que_mide": "Flag mecanico (dip/bimodalidad en lotes generados).",
+                 "que_mide": "Flag mecanico: subpoblacion baja real (masa baja + gap + asimetria <= -0.4; una gaussiana ancha unimodal NO cuenta — fix del tecnico 99660).",
                  "aplica": case_dir.name},
             ],
             "outcome_primario": "Y = 1[D_pre >= 0.25 bits sobre la horquilla] * 1[gate del polo] (TRIPWIRE aprobado en el GO)",

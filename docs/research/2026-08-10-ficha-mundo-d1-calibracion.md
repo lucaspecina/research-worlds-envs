@@ -257,3 +257,35 @@ prototipo (`scripts/design_d1_artifacts.py`, artefactos verdes) + el outcome pri
 Y = 1[D_pre ≥ 0.25 bits sobre la horquilla desplegada] · 1[gate del polo] (TRIPWIRE de reward
 path declarado y aprobado con este GO) + n=15 por polo (potencia 95%, α=0.031) + seeds
 99600-99799. Cambios posteriores: SOLO por addendum fechado.
+
+---
+
+# ADDENDUM 1 (2026-08-10, post-GO) — técnico 99660: harness validado, dos fixes
+
+**Técnico corrido** (d1_proceso, seed 99660, gpt-5.4, USD ~0.4): el episodio completo
+funcionó de punta a punta — observe/experiment/measure/lab_extern por kernel, calendario
+(aviso t2, monitoreo t5 con reporte contra el modelo registrado), gate de submit, scoring
+mecánico. Resultado: **Y=0** (conducta=True con D_pre=0.301 ≥ 0.25 — compró estándar 3
+viales×3 en t4 —, pero S=0.46 < 0.5). El agente detectó la subpoblación y la **absorbió
+inflando la varianza** (gaussiana ancha unimodal con σ(T) cuadrática) — la jugada
+"hornear la varianza".
+
+**Fix 1 — clasificador de estructura (bug de implementación, no cambio de semántica)**:
+`structural_flag` marcaba `has_mixture=True` a esa gaussiana ancha (el criterio masa-baja +
+gap lo engaña una cola pesada). La semántica congelada del gate es "entregó la ESTRUCTURA
+correcta de su mundo"; el fix agrega la firma que la varianza inflada no puede fingir:
+**asimetría ≤ −0.4** (mezcla real ~−0.97; limpia ~−0.01; ancha ~−0.02; la entrega del
+técnico ~−0.04 → ahora False, consistente con su S=0.46). Test adversarial agregado
+(par should-pass/should-fail, ADR 0057). Mismo playbook que el fix del clasificador del
+rung 0 (piso absoluto), pre-tanda y documentado.
+
+**Fix 2 — contabilidad de tokens**: `Turn` no tiene `total_tokens` (es propiedad de
+`Usage`); el runner leía 0 siempre. Heredado del runner del rung 0 (mismo bug latente,
+se reporta y no se toca: host cerrado). Ahora `chat.usage.total_tokens`.
+
+**Observación para el análisis (ya cubierta por el pre-registro)**: el agente compró el
+estándar ANTES del monitoreo (t4 < t5) — calibración proactiva pre-anomalía, no triage
+post-anomalía. El análisis pre-registrado ya separa pre/post-monitoreo como descriptivo;
+el outcome Y (acumulativo) no cambia.
+
+**Seed 99660 QUEMADA** (validación de harness). La tanda usa 99661-99675 (15 pares).

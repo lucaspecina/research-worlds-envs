@@ -269,13 +269,18 @@ def s_metric(program, pole: str, params: dict) -> dict:
 
 
 def structural_flag(program, params: dict) -> dict:
-    """¿La entrega contiene estructura de mezcla? (dip/bimodalidad en lotes
-    generados a T=1.0). Mecánico: gap entre modas > 1.5 con masa baja >= 8%."""
+    """¿La entrega contiene estructura de mezcla? (subpoblación baja en lotes
+    generados a T=1.0). Mecánico. La asimetría es la firma que una gaussiana
+    ancha NO puede fingir (fix del técnico 99660: el agente absorbió la
+    subpoblación inflando la varianza y el criterio frac+gap solo lo marcaba
+    mezcla; una mezcla 80/20 desplazada da skew ~ -1, la unimodal ~ 0)."""
     df = program(_regime(1.0), 4000, 99)
     y = np.sort(np.asarray(df["y"], float))
     med = np.median(y)
     low = y[y < med - 1.5]
     frac_low = len(low) / len(y)
     gap = float(med - np.mean(low)) if len(low) else 0.0
-    return {"has_mixture": bool(frac_low >= 0.08 and gap >= 2.0),
-            "frac_low": frac_low, "gap": gap}
+    sd = float(np.std(y))
+    skew = float(np.mean(((y - np.mean(y)) / max(sd, 1e-9)) ** 3))
+    return {"has_mixture": bool(frac_low >= 0.08 and gap >= 2.0 and skew <= -0.4),
+            "frac_low": frac_low, "gap": gap, "skew": skew}

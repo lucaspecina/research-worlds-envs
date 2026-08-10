@@ -451,7 +451,8 @@ def run_episode(srv, pole: str, params: dict, model: str) -> dict:
 
             regs_before = len(srv._d1.get("regs") or [])
             reply = chat.ask(prompt)
-            tokens += getattr(reply, "total_tokens", 0) or 0
+            tokens = chat.usage.total_tokens   # Turn no tiene total_tokens (bug
+            # heredado del runner rung 0: getattr(reply,...) daba 0 siempre)
             cell = extract_cell(reply.content)
             traj_before = len(srv.trajectory)
             rec = {"turn": turn_idx, "reply_text": reply.content, "cell": cell,

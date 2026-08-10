@@ -94,6 +94,25 @@ def test_truth_code_espeja_polos():
     assert 0.10 < frac_low < 0.35                  # subpoblacion PI visible solo en A
 
 
+def test_structural_flag_no_confunde_varianza_inflada():
+    """Fix del técnico 99660: una gaussiana ancha unimodal (la jugada 'hornear
+    la varianza') NO es estructura de mezcla; la mezcla real sí."""
+    import pandas as pd
+    from cases import d1_calibracion_common as C
+    params = _params()
+
+    def fat(regime, n, seed):
+        rng = np.random.default_rng(seed)
+        return pd.DataFrame({"unit_id": np.arange(int(n), dtype=float),
+                             "y": params["mu0"] + rng.normal(0, 2.2, int(n))})
+
+    assert C.structural_flag(fat, params)["has_mixture"] is False
+    tA = C.pole_truth_program("proceso", params)
+    tB = C.pole_truth_program("instrumento", params)
+    assert C.structural_flag(tA, params)["has_mixture"] is True
+    assert C.structural_flag(tB, params)["has_mixture"] is False
+
+
 def test_certificados_verdes():
     for d in (PROC, INST):
         cert = json.loads((d / "certificates.json").read_text())
