@@ -33,7 +33,8 @@ condiciones que podés no haber visto.
 
 ## Cómo se evalúa
 
-Tu entrega es el modelo ejecutable. El servidor genera lotes con tu modelo y
+Tu entrega es el modelo ejecutable: tu mejor reconstrucción del proceso
+generador, lo más fiel posible. El servidor genera lotes con tu modelo y
 con el proceso real bajo las mismas condiciones — incluidas algunas que podés
-no haber visto — y mide qué tan parecidos son. El objetivo es un sustituto
-fiel del PROCESO.
+no haber visto — y los compara de distintas maneras. El objetivo es un
+sustituto fiel del PROCESO.

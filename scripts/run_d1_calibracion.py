@@ -545,6 +545,8 @@ def main() -> int:
     ap.add_argument("mode", choices=["tecnico", "tanda"])
     ap.add_argument("--only", type=int, default=None,
                     help="tanda: correr solo la celda N (0-indexed, para paralelizar)")
+    ap.add_argument("--tag", default="tanda",
+                    help="prefijo de salida (ronda 2 wording neutral: tanda2)")
     args = ap.parse_args()
 
     if args.mode == "tecnico":
@@ -555,11 +557,11 @@ def main() -> int:
     for i, (pole, s) in enumerate(cells):
         if args.only is not None and i != args.only:
             continue
-        done = OUT / f"tanda_{pole}_{s}.json"
+        done = OUT / f"{args.tag}_{pole}_{s}.json"
         if done.exists():
             print(f"[skip] {done.name} ya existe")
             continue
-        run_cell_episode(pole, s, "tanda")
+        run_cell_episode(pole, s, args.tag)
     return 0
 
 

@@ -289,3 +289,45 @@ post-anomalía. El análisis pre-registrado ya separa pre/post-monitoreo como de
 el outcome Y (acumulativo) no cambia.
 
 **Seed 99660 QUEMADA** (validación de harness). La tanda usa 99661-99675 (15 pares).
+
+---
+
+# ADDENDUM 2 (2026-08-10, GO de Lucas) — RONDA 2: wording neutral, sin pistas
+
+**Decisión de Lucas (verbatim de la dirección)**: *"NO le demos pistas. Le tenemos que decir
+que tiene que reproducir el proceso generador, lo más fiel posible, porque se va a evaluar de
+distintas maneras."* Rechazada la frase con pista de Codex/Claude ("igualar media/varianza no
+basta" — nombra dimensiones y contamina la medición: el juicio de CUÁNDO pagar complejidad ES
+lo que se mide; "a Einstein nadie le dijo eso").
+
+**Cambio ÚNICO** (brief, sección "Cómo se evalúa", byte-idéntico en ambos polos):
+- ANTES: "Tu entrega es el modelo ejecutable. El servidor ... y mide qué tan parecidos son."
+- AHORA: "Tu entrega es el modelo ejecutable: **tu mejor reconstrucción del proceso generador,
+  lo más fiel posible**. El servidor ... y **los compara de distintas maneras**."
+
+Todo lo demás IDÉNTICO: mundo/instancia 99600, reward, seeds 99661-99675 (comparación apareada
+por seed contra la ronda 1), gpt-5.4, n=15/polo. Salida: `tanda2_*.json`. Costo ~USD 12-15
+(GO explícito de Lucas: "ok dale mandalo").
+
+**REGLAS DE INTERPRETACIÓN — CONGELADAS ANTES DE CORRER** (baseline ronda 1: proceso escribe
+estructura 2/15, instrumento estructura espuria 0/15):
+
+1. **"Era especificación/saliencia"**: proceso escribe estructura (has_mixture=True) en
+   ≥ 8/15 **y** instrumento espurio ≤ 2/15 → la consigna vieja anclaba una vara única
+   imaginada; el fenómeno baja a hallazgo sobre lectura de consigna.
+2. **"Fenómeno robusto"**: proceso escribe estructura ≤ 4/15 → la compresión sobrevive a la
+   consigna neutral; pasa a confirmación fuera de D1 (otro modelo + instancia fresca, con GO).
+3. **Zona intermedia (5-7/15)**: se reporta sin bandera; decide la comparación apareada por
+   seed (McNemar descriptivo ronda 1 vs 2) y el careo con instrumento.
+4. Si instrumento espurio ≥ 3/15: la frase empuja estructura indiscriminada → "de distintas
+   maneras" fue pista direccional de facto; se reporta como fallo del wording, no del agente.
+
+Primario Y, conducta, gate, canales y timing: mismas reglas de la ronda 1
+(`scripts/analyze_d1_calibracion.py --tag tanda2`).
+
+**Adición de Codex (contrapunto pre-lanzamiento, GO técnico)**: la decisión "era
+especificación" se toma TAMBIÉN por discordancias apareadas del `structural_flag` por seed
+(ronda 1 vs ronda 2): congelado — McNemar exacto sobre pares (rescata-solo = flag pasa de
+False→True en proceso; perjudica-solo = True→False), umbral: rescata-solo ≥ 6 pares con
+perjudica-solo ≤ 1 refuerza la lectura 1; `structural_flag` es el endpoint (independiente de
+Y/S), mismo clasificador para el espurio de instrumento.

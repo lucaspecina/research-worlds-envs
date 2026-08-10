@@ -48,9 +48,9 @@ def critical_k(n: int, p0: float, alpha: float = 0.05) -> tuple[int, float]:
     return n + 1, 0.0
 
 
-def load(dir_: Path) -> list[dict]:
+def load(dir_: Path, tag: str = "tanda") -> list[dict]:
     out = []
-    for p in sorted(dir_.glob("tanda_*.json")):
+    for p in sorted(dir_.glob(f"{tag}_*.json")):
         out.append(json.loads(p.read_text()))
     return out
 
@@ -72,10 +72,11 @@ def channel_mix(rec: dict) -> dict:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dir", default=str(DEFAULT_DIR))
+    ap.add_argument("--tag", default="tanda")
     args = ap.parse_args()
-    recs = load(Path(args.dir))
+    recs = load(Path(args.dir), args.tag)
     if not recs:
-        print("sin archivos tanda_*.json — nada que analizar")
+        print(f"sin archivos {args.tag}_*.json — nada que analizar")
         return 1
 
     by_pole: dict[str, list[dict]] = {"proceso": [], "instrumento": []}
