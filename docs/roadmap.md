@@ -381,10 +381,25 @@
 > verificar-antes-de-comprometer. Detalle y rivales vivas:
 > [resultado](research/2026-08-10-resultado-tanda-count-regime-impasse-v1.md).
 >
-> **PRÓXIMO PASO (2026-08-10): dossier a Codex** (MANTENER/MODIFICAR/PIVOTEAR) con los
-> candidatos: réplica DeepSeek de la inversión · firma conjetura-precede-compra en las 30
-> trazas · mundo realista D1 (Onnes) — que se diseña con contexto a Lucas ANTES de codear
-> (regla dura 2026-08-10).
+> **FALLO DE CODEX 2026-08-10 (tercera consulta): PIVOTEAR el anfitrión, MANTENER el programa.**
+> count_regime_v1 CERRADO como **rung 0** ("candidato familiar tras fallo visible con evidencia
+> servida") — no v1.1, no más agentes ahí. Réplica DeepSeek NO-GO (su análisis apareado: pares
+> discordantes 3:1 y 4:2, p≈.63/.69 — la inversión cruzó la regla firmada pero no es regularidad).
+> La anotación de trazas (reglas congeladas) DESARMÓ la lectura post-hoc "el reporte induce
+> verificar-primero" (orden heterogéneo dentro de brazos) y destapó: varios agentes mencionan el
+> umbral en turnos 1-5, ANTES de todo fallo — el encargo planta la sospecha. 8 claims bajados en
+> el resultado. **La compuerta de alcanzabilidad se DIVIDE en 4** (identificabilidad ·
+> alcanzabilidad condicionada · no-trivialidad de búsqueda · headroom) con dos robots
+> (oráculo-condicionado + buscador ciego acotado).
+> [Resultado+addenda](research/2026-08-10-resultado-tanda-count-regime-impasse-v1.md).
+>
+> **PRÓXIMO PASO (2026-08-10): la ficha D1 (Onnes — firma ambigua), a Lucas ANTES de codear.**
+> Diseño ordenado por Codex: proceso físico + modelo de medición reales; prefijo compatible con
+> ≥3 rivales; polos apareados donde gana culpar-al-instrumento o postular-cambio-físico (ningún
+> reflejo fijo gana ambos); SIN crítico en la primera versión; **ningún canal de acción se abre
+> junto con el fallo** (las compras diagnósticas existen desde el arranque); certificados nuevos
+> (los 4 de alcanzabilidad dividida). Después: operadores compuestos sobre el MISMO backbone
+> (la curva causal de distancia) → borrar/re-anclar → fuera-de-menú.
 >
 > **[EJECUTADO] (2026-08-09→10): construir la v1 contra ficha + addendum ratificado.** Orden:
 > generador con firma no-flagrante + scan de instancia (seeds 99450–99459/99468–99489) →
