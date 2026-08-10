@@ -370,7 +370,23 @@
 > [mundos-por-vicio](mundos-por-vicio.md) §anatomía; canal "es el aparato" agregado a
 > [WIKI-FALLAS](../WIKI-FALLAS.md) ④; términos en [glosario](glosario.md).
 >
-> **PRÓXIMO PASO (2026-08-09→10): construir la v1 contra ficha + addendum ratificado.** Orden:
+> **RESULTADO 2026-08-10 — LA TANDA DECISIVA DEL IMPASSE, CORRIDA Y ANALIZADA** (34/34; ~USD 14;
+> ficha + 3 addenda congelados antes; 3 técnicos cazaron 2 fallas de operabilidad y 1 de
+> constructo — cerca del límite certificado — antes de gastar):
+> **la reestructuración es UNIVERSAL con el fallo propio a la vista** (30/30 entregan la familia
+> de dos leyes; S̄ 0.58-0.67; gemelo 0/4 espurio incluso con tabla de residuos) y
+> **H-V1 salió INVERTIDA** (expansión generativa: RAW 5/10 > ESTRUCTURADO 3/10 > GLOBAL 2/10;
+> la regla firmada VISIBLE−RAW≥2 dio −2/−3). H-V2 y H-V3 refutadas (con fallo, el modelo del
+> 0/9 postula; 29/30 antes del segundo piloto). Post-hoc a testear: el reporte induce
+> verificar-antes-de-comprometer. Detalle y rivales vivas:
+> [resultado](research/2026-08-10-resultado-tanda-count-regime-impasse-v1.md).
+>
+> **PRÓXIMO PASO (2026-08-10): dossier a Codex** (MANTENER/MODIFICAR/PIVOTEAR) con los
+> candidatos: réplica DeepSeek de la inversión · firma conjetura-precede-compra en las 30
+> trazas · mundo realista D1 (Onnes) — que se diseña con contexto a Lucas ANTES de codear
+> (regla dura 2026-08-10).
+>
+> **[EJECUTADO] (2026-08-09→10): construir la v1 contra ficha + addendum ratificado.** Orden:
 > generador con firma no-flagrante + scan de instancia (seeds 99450–99459/99468–99489) →
 > recertificación completa (los 4 de siempre + no-flagrancia · no-dictación sobre el mensaje
 > RENDERIZADO · necesidad teleológica · biblioteca de parches de la compuerta B · elegibilidad
