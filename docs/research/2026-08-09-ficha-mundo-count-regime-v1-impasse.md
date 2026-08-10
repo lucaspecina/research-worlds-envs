@@ -155,3 +155,44 @@ Una sola corrida decisiva → dossier a Codex/Lucas → MANTENER (escalar con in
 frescas) / MODIFICAR / PIVOTEAR (si la señal está en otra juntura) / ABANDONAR el host. La
 firma de la taxonomía (codebook, unidad = edición-dentro-de-cadena) corre EN PARALELO sin
 bloquear esta prueba.
+
+---
+
+## ADDENDUM PROPUESTO 2026-08-09 — auditoría de las 7 compuertas por la lectura COMPLETA de Ohlsson 2011 (pendiente de ratificación Codex/Lucas ANTES de construir)
+
+La lectura del libro entero ([extracción](2026-08-09-lecturas-libros-programa-saltos.md))
+valida la orientación de las 7 compuertas y detecta faltantes. Todo lo de abajo AGREGA
+compuertas o registro; no relaja ninguna regla ya congelada.
+
+**Tres compuertas nuevas propuestas:**
+
+- **A. Certificado de impasse "unwarranted"** (pp. 91-92): verificar FUERA del episodio que
+  el agente puede representar/ajustar la familia de régimen si se le presenta (el control de
+  capacidad ya pre-registrado, promovido a compuerta PREVIA con test de reconocimiento). Sin
+  esto, un nulo no distingue "no puede" (sin interés) de "no recupera" (nuestro fenómeno).
+- **B. Cerrar la ruta periférica** (p. 327; Dunbar vía p. 157): el lote de persistencia
+  (compuerta 4) se evalúa contra el modelo PARCHADO del agente (su M0 revisado), no contra el
+  M0 original — si el parche absorbe el primer fallo y el segundo lote no lo castiga, el
+  mundo PREMIA la diferenciación ("outlier") en vez de cazarla.
+- **C. Grano del resumen VISIBLE congelado** (pp. 222-228): la dirección del salto viene de
+  la estructura CUALITATIVA del residuo. Formato fijo: residuos por punto en orden de
+  velocidad (sin ordenar por magnitud, sin marcar patrones, sin lenguaje interpretativo) —
+  suficiente para DETECTAR el fallo, insuficiente para dictar la forma.
+
+**Dos registros nuevos (observar, jamás premiar):** D. firma de auto-cómputo en RAW (¿el
+agente computa residuos por su cuenta? — mediador causal predicho: RAW-que-computa ≈
+VISIBLE); E. presupuesto de persistencia explícito (el abandono es salida legítima, p. 92;
+la tasa depende del presupuesto — fijarlo y reportarlo).
+
+**Avisos de interpretación (no cambian reglas):** (i) **dosis** — con 2 lotes, un nulo
+VISIBLE≈RAW no mata la teoría (feedback insuficiente contra el sesgo push-forward es rival,
+p. 117c); la condición de salida de H-V1 vale PARA ESTE SUSTRATO Y ESTA DOSIS y el dossier lo
+dice con ese alcance; lo que testea la teoría es la curva de dosis (1/2/4 lotes — futuro).
+(ii) **registro de creencias** — si el episodio se lee también para la línea de aceptación,
+la predicción de Ohlsson se INVIERTE (anomalía visible sin rival exitoso → más re-etiquetado,
+no más conversión; resubsumption pp. 348/358): no mezclar los dos claims en un titular.
+(iii) **salidas a registrar: cinco, no dos** — perseverar / re-rank dentro de la familia /
+familia nueva correcta (full-partial) / familia nueva incorrecta (falso insight, outcome
+predicho p. 115) / abandono. (iv) **cita doctrinal**: el trigger se cita por Ohlsson 2011
+pp. 107/109/117/222-228 (no solo Knoblich 1999); portar la honestidad del autor (tests
+débiles, prevalencia 3-41%, progress criterion vivo).

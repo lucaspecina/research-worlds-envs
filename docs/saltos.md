@@ -33,8 +33,15 @@ Abduction" (Synthese 2008)** `[LEÍDO completo 2026-08-07]` — taxonomía siste
 hechos / de leyes / de modelos teóricos / **existencial** [postular entidades: Neptuno] / de
 **causa común** [unificación] / **analógica** [Darwin]) que mapea directo a operadores
 nuestros. **La tabla de alineación (leída) dio:** correlato EXACTO en unificación (su causa común — Newton es su ejemplo) y transferencia (su abducción analógica); parcial en entidad oculta y grupos; y en 7 de 11 operadores NUESTRO grano es más fino que el suyo (taxonomías ortogonales: él clasifica el tipo epistémico, nosotros la edición al programa). Bonus: su 'abducción ESPECULATIVA' (una entidad por fenómeno, ad hoc) es el anti-patrón de nuestros gemelos, con criterio de demarcación contable sin LLM (¿cuántos fenómenos independientes unifica lo postulado?). [Detalle](research/2026-08-07-lecturas-programa-saltos.md). Alrededor: Thagard (4 tipos
-computacionales, 1988), Aliseda (*Abductive Reasoning* 2006 — abducción COMO revisión de
-creencias: nuestras dos líneas en un marco), Gabbay & Woods, Hintikka `[POR-LEER todos]`.
+computacionales, 1988) `[POR-LEER]`; **Aliseda** (*Abductive Reasoning* 2006) `[LEÍDO completo
+2026-08-09]` — el puente formal de nuestras dos líneas, CONFIRMADO Y CORREGIDO: un solo
+proceso abductivo; revisión = contracción + expansión; la GENERACIÓN del candidato es común a
+ambas operaciones (novelty/anomaly tipifican el DISPARADOR, no generar-vs-aceptar); su
+generador mecánico (tableaux) es cerrado por vocabulario → formaliza la FRONTERA del salto,
+no el salto; regalos: el operador p′ ("hacer una distinción" = partir un átomo en dos,
+agrandamiento de vocabulario mecánico) y la tríada éxito/fallo/LAGUNA
+([extracción](research/2026-08-09-lecturas-libros-programa-saltos.md)); Gabbay & Woods,
+Hintikka `[POR-LEER]`.
 
 **El paper "Position: LLMs can't jump"** (OpenReview klU4737opt; LEÍDO completo 2026-07-10)
 sostiene que los LLMs dominan la inducción, mejoran en deducción, y son *"structurally
@@ -84,7 +91,7 @@ son los 11 saltos". Lo que NO es intuición suelta:
 **¿Y no existe YA una lista curada de tipos de saltos/insights/abducciones?** (segunda pregunta
 de Lucas, misma noche). **NO — y el propio campo lo declara.** El estado del arte, verificado
 por lectura: Schurz `[LEÍDO]` clasifica QUÉ se abduce, no la movida, y es grueso donde importa
-("no hay patrón general" para la abducción de modelos teóricos); Darden `[5 artículos LEÍDOS 2026-08-08; libro POR-LEER]` es lo más
+("no hay patrón general" para la abducción de modelos teóricos); Darden `[5 artículos LEÍDOS 2026-08-08; libro LEÍDO completo 2026-08-09]` es lo más
 cercano pero un solo dominio y sin validación; Thagard = escala de severidad, no tipología;
 Boden = 3 baldes; Ohlsson = mecanismos de proceso mental (en acertijos, no en ciencia); Kemp &
 Tenenbaum `[LEÍDO]` = formas estáticas, y ELLOS piden la "Universal Structure Grammar" que no
@@ -106,20 +113,34 @@ gusto.
    necesaria ("a functional language… much more expressive"). Nuestra taxonomía = la lista de
    ediciones que ese lenguaje necesita: ni huérfana ni ya-hecha. DreamCoder/LILO (en cola) son
    la versión moderna. [Detalle](research/2026-08-07-lecturas-programa-saltos.md).
-2. **Existen taxonomías con análisis de casos, y una es casi hermana:** **Darden** — sus 5
-   artículos accesibles `[LEÍDOS completos 2026-08-08]` (el libro 1991 sigue POR-LEER, espera
-   PDF): estrategias de cambio de teoría desde casos reales. **El careo dio**: coincidencia
-   fuerte en ops 1/2/7/8/11 — su caso ancla (postular genes letales para la anomalía 2:1) ES
-   literalmente nuestro operador 2; su schema-instantiation es nuestro 11 con mecánica más
-   fina. Sin correlato en ella: nuestros 3/4/6/9/10 (saltos de estructura matemática — su
-   catálogo es de mecanismos biológicos por etapas; el nuestro es más ancho). **Candidatas que
-   ella tiene y nosotros no**: BORRAR estructura (¡todos nuestros operadores agregan!),
-   systematic scan (cobertura anti-fijación), ensamblado modular, y la localización guiada por
-   la FIRMA de la anomalía (2:1 pide una edición distinta que 1:0:1). Más su tipología
-   monster/model/special-case para el lado de los vicios.
+2. **Existen taxonomías con análisis de casos, y una es casi hermana:** **Darden** — 5
+   artículos `[LEÍDOS 2026-08-08]` + **libro 1991 `[LEÍDO completo 2026-08-09]`** (324 pp.;
+   [extracción](research/2026-08-09-lecturas-libros-programa-saltos.md)): estrategias de
+   cambio de teoría desde casos reales, con la teoría como componentes MODULARES editables y
+   el cambio registrado componente×verbo (Tablas 14-1/14-2/15-3 — casi nuestra matriz).
+   **El careo, CORREGIDO por el libro**: coincidencia fuerte en ops **1/2/8/11** (el ancla —
+   genes letales para la anomalía 2:1 — ≈ nuestro op 2; ⚠ pero en SU marco es *monster
+   anomaly*, p. 102: se explicó el fallo SIN editar componentes — nuestro mundo premia
+   DESCUBRIR la subpoblación, no "cambiar la teoría"); **op 7 baja a moderada** (su caso
+   pariente, la contaminación de Castle, fue la hipótesis perdedora); **ops 3 y 4 suben a
+   correlato PARCIAL** (partición de las leyes de Mendel + add-a-condition = la forma lógica
+   de dos regímenes, sin umbral continuo; el debate de linealidad + el mapeo de Sturtevant =
+   disputa de familia geométrica); 6 y 10 confirmados ausentes; 9 gana un puntero (vía
+   Shapere: orden discreto/periódico → buscar teoría composicional, p. 249). **Candidatas
+   CONFIRMADAS con guías operativas**: BORRAR (2 casos + las 4 condiciones de p. 78), scan
+   (en DOS formas: delineate-and-alter instanciada históricamente vs version-space normativa
+   — declarar cuál pedimos), localización-por-firma (2:1 vs 1:1 dictan ediciones distintas,
+   p. 105), monster/model. **NUEVAS del libro (candidatas a la matriz): SPLIT/DELINEATE**
+   (partir un componente aglutinado en dos y alterar solo uno — su aporte reivindicado,
+   p. 278) y **EXPLICITAR-SUPUESTO-IMPLÍCITO** (la jugada que ganó el caso ancla,
+   pp. 101-104). La escalera ordinal de respuestas a la anomalía (p. 270: monster-bar →
+   tweak → specialize → split → delete → add → abandonar) es rúbrica cero-LLM lista para
+   puntuar la respuesta al impasse. Su capítulo final pide literalmente nuestro programa
+   (simulaciones que practiquen resolución de anomalías, pp. 279-281).
    [Extracción](research/2026-08-07-lecturas-programa-saltos.md). También: Thagard (*Conceptual Revolutions*, 9 grados de
    cambio conceptual con casos) `[POR-LEER]`; Boden (3 tipos; la transformacional = cambiar el
-   espacio) `[POR-LEER]`; y en era-LLM la taxonomía de operaciones de Chen `[LEÍDO]` —
+   espacio) `[LEÍDO completo 2026-08-09 — aval directo del corte reparte/agranda; ver
+   biblioteca]`; y en era-LLM la taxonomía de operaciones de Chen `[LEÍDO]` —
    **validada con anotadores independientes**, el estándar que copiamos como receta.
 
 **Chen vs nuestra lista — la comparación fina (pregunta de Lucas, 2026-08-08).** Clasifican
@@ -495,15 +516,32 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
   dos partes castiga al modelo que ajusta sin comprimir y cobra los bits del parche —
   respaldo formal directo de nuestra vara (puntuar, no entrenar).
   [Extracción](research/2026-08-07-lecturas-programa-saltos.md).
-- **Boden, *The Creative Mind*** (2ª ed. 2004) — la distinción combinacional / exploratoria /
-  **transformacional** (cambiar el espacio mismo: nuestros saltos).
+- **Boden, *The Creative Mind*** (2ª ed. 2004) `[LEÍDO completo 2026-08-09]` — la distinción
+  combinacional / exploratoria / **transformacional**. El careo dio: su explora/transforma ES
+  nuestro reparte/agranda (sorpresa de POSIBILIDAD, no de probabilidad, p. 42); P-creativity =
+  nuestra "novedad relativa" y la ayuda tiene nombre (telescoping, p. 195); el reward cero-LLM
+  tiene fundamento (el evaluation bottleneck se automatiza solo en dominios regulados — los
+  nuestros, pp. 9/320); y a favor nuestro: activación-de-estructura-conocida es el mecanismo
+  MAYORITARIO de la ciencia H-creativa (p. 222). Exige: profundidad del cambio como variable
+  ordinal, medir contra el espacio EFECTIVO del agente (lección geometry-program), y partir
+  generación/reconocimiento (Copérnico tachó las elipses).
+  [Extracción](research/2026-08-09-lecturas-libros-programa-saltos.md).
 - **Ohlsson** — teoría del cambio representacional; su operacionalización experimental
   (Knoblich, Ohlsson et al. 1999, JEP:LMC) `[LEÍDO completo 2026-08-07]`: el insight =
   resolver un IMPASSE relajando restricciones auto-impuestas o descomponiendo chunks; la
   dificultad ordena por el alcance de lo que hay que revisar (95/78/45%); **sin impasse no
   hay reestructuración** — la explicación teórica de nuestro 0/9 (la familia default nunca
-  falla visiblemente) y la palanca de diseño #1: ingeniar el impasse desde el mundo. El
-  libro de 2011 sigue [POR-LEER]. [Extracción](research/2026-08-07-lecturas-programa-saltos.md).
+  falla visiblemente) y la palanca de diseño #1: ingeniar el impasse desde el mundo. **El
+  libro de 2011 `[LEÍDO completo 2026-08-09]`** afina la doctrina: el trigger no es "el
+  impasse" (estado) sino el **feedback negativo del propio intento — persistente, DETECTADO y
+  suficientemente fuerte** (pp. 107/117); la "transparencia del entorno a los efectos de las
+  acciones" es condición textual (= nuestros brazos RAW/VISIBLE); la señal cualitativa del
+  residuo dirige el salto (la binaria no informa, pp. 222-228); y para la línea de creencias
+  INVIERTE el signo: convierte el rival exitoso, no el fallo del residente (resubsumption) —
+  sin contender, más anomalía visible = más "outlier". Honestidades: tests débiles
+  (p. 122-123), prevalencia impasse→insight 3-41%, rival vivo (progress criterion).
+  [Extracción libro](research/2026-08-09-lecturas-libros-programa-saltos.md) ·
+  [extracción 1999](research/2026-08-07-lecturas-programa-saltos.md).
 - **Klahr & Dunbar**, "Dual Space Search During Scientific Reasoning" (*Cognitive Science*
   1988) `[LEÍDO completo 2026-08-07]` — descubrir = buscar en dos espacios (hipótesis ×
   experimentos); el insight = instanciar un FRAME nuevo; y tres regalos: la evidencia
@@ -528,9 +566,14 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
   "aha" es soltar el andamio, no crear. Implicación dura: el binario salta/no-salta es el
   error de los endpoints — medir la cadena. El libro de 2008 sigue [POR-LEER].
   [Extracción](research/2026-08-07-lecturas-programa-saltos.md).
-- **Darden, *Theory Change in Science*** (1991) — estrategias CONCRETAS de cambio de teoría en
-  la genética temprana (agregar variable, dividir, alterar observación) — casi una taxonomía
-  hermana de la nuestra.
+- **Darden, *Theory Change in Science*** (1991) `[LEÍDO completo 2026-08-09 — libro entero]` —
+  la taxonomía hermana confirmada: teoría = componentes MODULARES editables, cambio registrado
+  como componente×verbo (Tablas 14-1/14-2/15-3), anomalía = firma que LOCALIZA (2:1 vs 1:1
+  dictan ediciones distintas) y la escalera ordinal de respuestas (monster-bar → tweak →
+  specialize → split → delete → add → abandonar, p. 270) — rúbrica cero-LLM lista. Regalos:
+  SPLIT/DELINEATE y EXPLICITAR-SUPUESTO-IMPLÍCITO como operadores nuevos; BORRAR con guías
+  operativas (p. 78). Su cap. final pide literalmente nuestro programa (pp. 279-281).
+  [Extracción](research/2026-08-09-lecturas-libros-programa-saltos.md).
 - **Thagard, *Conceptual Revolutions*** (1992) — reclasificaciones (el árbol conceptual que se
   reordena).
 - **Kuhn, *La estructura de las revoluciones científicas*** (1962) — el telón de fondo de todo.

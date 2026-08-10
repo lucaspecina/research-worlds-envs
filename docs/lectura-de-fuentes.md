@@ -704,3 +704,55 @@ Correcciones que estas lecturas destaparon (ADR 0115 manda registrarlas acá):
   vicio-1 §1.A y en el libro de los saltos.
 - **Footsteps**: dice "MANY great leaps" (no todos) y "not JUST producing" (el cuello es la
   selección/taste, no solo la generación). Ajustado en el libro.
+
+## Lecturas de LIBROS del programa de saltos — campaña 2026-08-09 (7 lectores en paralelo; PDFs provistos por Lucas)
+
+Cola completa: Darden 1991 · Ohlsson 2011 · Klein 2013 · Boden 2004 · Thagard 1992 ·
+Magnani 2001 · Aliseda 2006. **Extracciones verbatim en un solo doc:**
+[`2026-08-09-lecturas-libros-programa-saltos.md`](research/2026-08-09-lecturas-libros-programa-saltos.md).
+
+- **Aliseda 2006, *Abductive Reasoning* (Springer, Synthese 330)** — **LEÍDO completo 2026-08-09**
+  (244/244 pp., 13 tandas). Corrección que destapó (ADR 0115 manda registrarla acá):
+  **novelty/anomaly NO formaliza nuestro par generar/aceptar** — tipifica el DISPARADOR; la
+  generación del candidato es común a ambas operaciones y lo distintivo de la anomalía es la
+  CONTRACCIÓN previa (revisión = contracción + expansión, identidad de Levi). Además: su
+  generador mecánico (tableaux) es cerrado por vocabulario → formaliza la FRONTERA del salto,
+  no el salto; con inferencia estadística el tipado disparador→operación se ensucia (caso Jane
+  Jones) — nuestro corte temporal server-side queda como lente primaria. Bonus: operador p′
+  ("hacer una distinción" = partir un átomo en dos) como agrandamiento de vocabulario
+  MECÁNICO, candidato a la librería; y la tríada éxito/fallo/LAGUNA (mundos tipo-laguna:
+  sonda limpia de generación, sin contradicción que resolver).
+- **Boden 2004, *The Creative Mind* (2ª ed., Routledge)** — **LEÍDO completo 2026-08-09**
+  (359/359 pp.). Correcciones: (a) nuestro corte reparte/agranda = su explora/transforma,
+  PERO pide graduar profundidad (posición en el orden generativo) y medir contra el espacio
+  EFECTIVO del agente (lección geometry-program: lo que parece salto puede ser exploración de
+  otra representación — "0/9 no agrandó" exige elicitar el menú previo); (b) "combinación a
+  distancia" debe incluir operadores sobre las REGLAS (soltar/negar/re-representar) o su
+  cap. 3 nos clasifica de combination-theory; (c) a favor: activación-de-estructura-conocida
+  = mecanismo MAYORITARIO de la ciencia H-creativa (p. 222); la ayuda = telescoping (p. 195);
+  reward cero-LLM fundamentado (evaluation bottleneck automatizable solo en dominios
+  regulados, pp. 9/320). Partir generación/reconocimiento como outcomes (Copérnico tachó las
+  elipses, p. 96).
+- **Ohlsson 2011, *Deep Learning* (Cambridge UP)** — **LEÍDO completo 2026-08-09** (texto
+  principal íntegro pp. 3-392 + notas sustantivas). LA fuente del episodio de impasse:
+  trigger = feedback negativo del propio intento, persistente, DETECTADO y fuerte
+  (pp. 107/117 — el impasse es el estado, no el gatillo); "transparencia del entorno a los
+  efectos de las acciones" = nuestro RAW/VISIBLE textual (p. 117a); el resumen mecánico hace
+  de tutor (p. 247); la señal cualitativa del residuo dirige, la binaria no informa
+  (pp. 222-228). Auditó las 7 compuertas de la ficha v1 → 3 FALTANTES (impasse unwarranted ·
+  cerrar ruta periférica: el 2º lote debe evaluar el modelo PARCHADO · grano del resumen
+  declarado) — addendum propuesto en la ficha. Para creencias INVIERTE el signo: convierte el
+  rival exitoso, no el fallo del residente (resubsumption, pp. 348/358) — sin contender, más
+  anomalía visible = más "outlier". Portar: tests débiles (p. 122-123), prevalencia
+  impasse→insight 3-41% (n. 15), progress criterion como rival vivo (p. 125).
+- **Darden 1991, *Theory Change in Science* (Oxford UP)** — **LEÍDO completo 2026-08-09**
+  (324/324 pp. del escaneo; DJVU convertido a PDF). Confirma candidatas con guías operativas
+  (BORRAR: 2 casos + 4 condiciones p. 78; scan en 2 formas; localización-por-firma;
+  monster/model) y aporta DOS operadores nuevos: SPLIT/DELINEATE (p. 278) y
+  EXPLICITAR-SUPUESTO-IMPLÍCITO (pp. 101-104). Correcciones al careo publicado (aplicadas en
+  el libro de saltos): ops 3/4 → correlato PARCIAL; op 7 → moderada (contaminación de Castle
+  = hipótesis perdedora); op 9 con puntero (Shapere p. 249); ⚠ el ancla del op 2 (letales
+  2:1) es MONSTER anomaly en su marco (p. 102) — no citarla como "cambio de teoría". La
+  escalera ordinal de respuestas (p. 270) es rúbrica cero-LLM. REEMPLAZAR-mecanismo: ~6
+  episodios; el operador unificado es aporte nuestro. Su cap. 16 pide nuestro programa
+  (pp. 279-281).
