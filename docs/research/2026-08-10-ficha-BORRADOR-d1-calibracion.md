@@ -174,3 +174,68 @@ premiada en el outcome primario; queda MEDIDA en el eje secundario.
 - [ ] Los tres robots implementados en pseudocódigo ejecutable
 - [ ] Análisis de potencia sobre Y
 - [ ] El texto del brief (byte-idéntico, sin palabra filtrada)
+
+---
+
+# ENMIENDA v2.1 (ronda 2 de Codex: "supera la objeción de constructo; falta cierre formal, no ronda 3")
+
+Crudos: `scratch/codex-respuesta-2026-08-10-d1ronda2.txt`. Contraataques: **ambos aceptados**
+(el catálogo es fidelidad — con la reserva de que "checklist" queda como rival EMPÍRICO a
+vencer; la inercia excluida por la conjunción es correcto — y se elimina "rechazar
+activamente" del gate B: el gate observa geometría ejecutable, no intención).
+
+## 1. Robots de verdad (los míos eran espantapájaros)
+
+- **Robot-checklist CONDICIONAL** (el adversario real): mide el estándar con reps suficientes
+  → si el estándar FALLA, conserva el modelo de proceso simple (culpa al canal); si el
+  estándar PASA, investiga lote/proceso (compra reps por lote y ajusta mezcla si mejora BIC).
+  **Si este checklist condicional gana en AMBOS polos, se abandona el host.**
+- **Robot greedy-EIG**: en cada turno compra la acción legal de mayor ganancia esperada de
+  información (con la fórmula de abajo) hasta agotar presupuesto — el techo de la búsqueda
+  dirigida mecánica.
+- Se mantienen: oráculo-condicionado (justicia) y buscador ciego acotado.
+
+## 2. Diagnosticidad — la definición formal congelada (de Codex, se implementa tal cual)
+
+K rivales congelados al llegar la anomalía, prior uniforme w_k(h0)=1/K; posterior normativo
+w_k(h_t) ∝ w_k(h0)·p_k(h_t). Para la acción concreta a_t (material, IDs, T, lotes, viales,
+reps): **d_t = I(H; Z_t | h_t, a_t)** — la información mutua esperada entre el rival verdadero
+y el resultado de ESA compra, computada ANTES de observar. **La adquisición es ACUMULATIVA**:
+D_pre = Σ d_t hasta el submit (diez compras débiles = una fuerte: misma evidencia, misma
+cuenta). **τ = 0.25·log₂K** (con K=4: **0.5 bits** = reducir un cuarto de la incertidumbre
+inicial); τ se fija por significado epistémico y la potencia se calcula DESPUÉS. Estimación
+por Monte Carlo con seeds/M congelados y criterio conservador LCB₃SE(D̂_pre) ≥ τ.
+
+**Y = 1[D_pre ≥ τ] · 1[G_polo = 1]**. Eficiencia η = D_pre / gasto queda como métrica
+secundaria. Regla anti-tuning explícita de Codex: **si el estándar cruza los 0.5 bits fácil,
+NO se sube τ** — eso demostraría que el checklist es fuerte, y se acepta el resultado o se
+abandona el host.
+
+## 3. Lote ≠ vial (estaban conflados) + los 4 canales de apareo cerrados
+
+IDs separados: `lot_id` (material) y `vial_id` (preparación). Reglas: el stream rutinario usa
+**exactamente un vial por lote**; re-preparar un vial nuevo del mismo lote es SOLO una acción
+diagnóstica; la API separa `reps_sensor` (mismo vial) de `n_viales` (preparaciones). Cierres:
+
+1. **ICC apareado**: la varianza extra del polo B se inyecta A NIVEL VIAL (compartida por
+   todas las lecturas del vial), con Var(q_j + u_vial) = σ_q2² — jamás ruido independiente
+   por medición (delataría la covarianza entre reps).
+2. **Un vial por lote en rutina** (arriba).
+3. **Asignación del indicador degradado/mal-vial**: misma probabilidad condicional a (T, t)
+   en ambos polos, mismo CRN — nada de tandas/posiciones/temperaturas correlacionadas.
+4. **Bordes**: trabajar lejos de los límites de pureza (sin clipping) o certificar la igualdad
+   DESPUÉS de todas las transformaciones.
+
+## 4. El nulo no se sobreinterpreta
+
+"Nadie compra diagnóstico → B3 reproducida" SOLO tras el control de capacidad: demostrar en
+sesión aparte que el modelo puede componer `material-conocido + measure`, usar IDs y operar el
+presupuesto. Sin eso, un nulo es fallo de interfaz (regla ADR 0173).
+
+## Estado: falta el checklist §9 (artefactos reproducibles) → PRESENTACIÓN A LUCAS
+
+(1) apareo CRN corrido en código con los 4 cierres; (2) tabla de diagnosticidad d_t de ~10
+acciones típicas (el estándar-con-pocas-reps NO debe llegar a τ; ≥2 rutas sí); (3) los 4
+robots ejecutables; (4) potencia sobre Y con τ=0.5 bits; (5) brief byte-idéntico sin
+filtraciones. Después: **la ficha se presenta a Lucas con contexto completo; nada se
+construye sin su GO explícito.**
