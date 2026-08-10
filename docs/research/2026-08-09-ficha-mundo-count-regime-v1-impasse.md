@@ -388,3 +388,33 @@ El riesgo residual vive solo en el **testigo BIC** (que sí cuenta parámetros) 
 compuertas y el punto de discriminación — pero ahí los candidatos son familias planas, no pilas de
 hipótesis, así que la penalización por profundidad no se instancia. Queda registrado como límite
 conocido si alguna vez comparamos modelos en capas.
+
+---
+
+# ADDENDUM 3 — 2026-08-10: la cerca del límite certificado (fix de constructo, ANTES de la tanda)
+
+**Qué destapó el técnico 2 (seed 99555, quemada)**: con la ventana de compra abierta hasta 1.4
+desde el turno 1, el agente compró velocidades altas en el prefijo, vio el cambio de ley con sus
+propios experimentos y registró el régimen en el turno 4 con ΔBIC=12.6 — **el impasse nunca llegó
+a existir**. El mundo regalaba el descubrimiento por otra puerta.
+
+**La corrección (server-side y procedural, brief intacto byte-idéntico)**: la línea está
+**certificada hasta velocidad 1.2** — las corridas propias no pueden excederla; las velocidades
+altas corren SOLO como pilotos programados. Tras el piloto 1, ingeniería **autoriza** corridas
+altas con premium (2/fila), avisado en la notice del piloto (idéntica entre brazos y polos).
+
+**Los números que cierran el constructo** (recomputados, certificación VERDE):
+gap tras piloto 1 = **0.7** (nada dicta — ventana de generación abierta) · tras pilotos 1+2 =
+**6.4** (la evidencia discrimina SOLA: alcanzabilidad servida por el calendario) · con zoom
+premium = **9.1** · réplica n=20 = 80 < 100 (compuerta 5 OK).
+
+**Protocolo agregado en el camino** (técnicos 1-2): aviso de calendario en turno 2 (pide modelo
+registrado antes de los pilotos) · la entrega final se acepta tras el piloto 2 (intentos
+tempranos rebotan con mensaje procedural y quedan en la cadena como observable) · captura exacta
+de los lotes que el agente vio (la tabla de calibración jamás re-muestrea).
+
+**Técnico 3 (seed 99556): el protocolo entero funciona y produjo una instancia POSITIVA** —
+M0 suave registrado (T3) → piloto 1 lo falla a la vista (T6) → compra el zoom autorizado →
+**postula las dos leyes en T8 con ΔBIC=4.0 (< 6: expansión GENERATIVA)** → re-registra → piloto 2
+valida el remiendo (T10) → entrega S=0.696, umbral estimado 1.22 (verdad 1.237). Seeds quemadas
+acumuladas: 99520 (bug de compras) · 99555 (sin cerca). La tanda usa 99521-99554 como estaba.
