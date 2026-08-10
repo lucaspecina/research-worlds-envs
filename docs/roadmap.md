@@ -400,12 +400,34 @@
 > [Ficha congelada](research/2026-08-10-ficha-mundo-d1-calibracion.md) ·
 > [presentación](research/2026-08-10-presentacion-d1-para-lucas.md).
 >
-> **PRÓXIMO PASO (2026-08-10): CONSTRUIR D1** — portar la física del prototipo a
-> `cases/d1_proceso` + `cases/d1_instrumento` (brief byte-idéntico, canales measure/lab_extern,
-> apareo CRN) → certificados nuevos (identificabilidad · alcanzabilidad condicionada ·
-> no-trivialidad con los 4 robots · headroom) → harness (reusa registro/calendario del rung 0)
-> → técnico (~USD 0.4) → tanda 2 polos × 15 (~USD 15-18) → autopsia contra reglas firmadas →
-> dossier.
+> **[CERRADO 2026-08-10] CONSTRUIR D1** — construido, certificado VERDE (instancia 99600,
+> 4 compuertas + 5 robots A3), harness E2E, técnico 99660 (quemada; fix flag asimetría + fix
+> tokens) y **TANDA COMPLETA 30/30** (gpt-5.4, seeds 99661-99675, ~USD 12-15).
+>
+> **RESULTADO TANDA D1 (2026-08-10)**: proceso Y=1/15 (7%) vs instrumento Y=9/15 (60%,
+> rechaza H0 p=.0042); McNemar apareado 8:0 (p=.008). **Conducta 30/30** — todos compran
+> evidencia discriminante (29/30 ANTES de la anomalía: control metrológico proactivo, la
+> hipótesis "no pagan el test" NO se reproduce acá). La falla vive en la ENTREGA: 13/15 de
+> proceso comprimen la subpoblación en una gaussiana unimodal (varianza horneada); solo 2/15
+> escriben mezcla. Auditoría cero-LLM post-tanda (regla fijada por Codex antes de correrla):
+> **14/15 de proceso — la mezcla ganaba claro (ΔBIC≥10 + CV) sobre los datos que el propio
+> agente compró → la evidencia exigía estructura, el claim conductual queda en pie** en su
+> forma bajada: *"tras comprar evidencia que favorece causa material, gpt-5.4 comprime
+> sistemáticamente la subpoblación en una entrega unimodal"*.
+> **Veredicto Codex: PIVOTEAR** (D1 cerrado como host de triage-provocado; midió chequeo
+> proactivo inducido por interfaz). Hallazgo elevado como **candidata de pivote** —
+> convergencia vicio 4 (aplanamiento de estructura latente) × vicio 8.6 (análisis que no llega
+> al artefacto), reaparece en count_mix + North heterogéneo + D1; estado: candidata de
+> confirmación. [Dossier](research/2026-08-10-resultado-tanda-d1-calibracion.md).
+>
+> **PRÓXIMO PASO (2026-08-10): DECISIÓN DE LUCAS** — dos opciones sobre la mesa (orden de
+> Codex): (a) el único control que cierra el rival de incentivo EN D1: re-tanda con wording
+> que declare que se puntúa la distribución completa (sin nombrar mezcla, mismas 15 seeds,
+> ambos polos, ~USD 12-15 — GASTO NUEVO, espera GO); (b) promover el hallazgo y confirmarlo
+> fuera de D1 (otro modelo + instancia fresca) — también gasto, espera GO. Mientras: filar la
+> evidencia en `docs/vicios/` (vicio 4 × 8.6, careo con tabla de casos reales primero) NO
+> requiere gasto y es el pendiente vivo inmediato. El polo compuesto/escalera de distancia
+> queda EN PAUSA por el veredicto.
 >
 > **[SUPERSEDIDO POR EL GO] (2026-08-10): la ficha D1 (Onnes — firma ambigua), a Lucas ANTES de codear.**
 > Diseño ordenado por Codex: proceso físico + modelo de medición reales; prefijo compatible con
