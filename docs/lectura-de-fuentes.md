@@ -756,3 +756,66 @@ Magnani 2001 · Aliseda 2006. **Extracciones verbatim en un solo doc:**
   escalera ordinal de respuestas (p. 270) es rúbrica cero-LLM. REEMPLAZAR-mecanismo: ~6
   episodios; el operador unificado es aporte nuestro. Su cap. 16 pide nuestro programa
   (pp. 279-281).
+- **Magnani 2001, *Abduction, Reason and Science* (Kluwer)** — **LEÍDO completo 2026-08-10**
+  (texto plano extraído; caps. 1-7 íntegros, citas verificadas con página impresa).
+  [Extracción](research/2026-08-10-lectura-magnani-2001.md). **De acá sale nuestra distinción
+  madre** (selectiva vs creativa), citada de segunda mano hasta hoy. La lectura la CONFIRMA
+  textualmente (pp. 19-20, 25) y la CORRIGE en cinco puntos que tocan titulares:
+  (1) lo que medimos es **abducción EXISTENCIAL** (Thagard/PI, p. 49), una especie dentro de la
+  creativa — y es la misma en la que fallaban BACON y GLAUBER (p. 50): el claim es más fuerte, no
+  más débil; (2) la creatividad es **relativa al repertorio del agente** (p. 48) → el test de
+  contaminación pasa de higiene a **constitutivo del claim**; (3) "lo genera y lo mata: es un
+  outlier" es **monster-barring** (paso 2 de Darden, p. 132) — paso LEGÍTIMO del protocolo, no
+  vicio; lo que separa vicio de virtud es la **ausencia del test de fecundidad** (Poincaré p. 160,
+  Lakatos p. 162) — explica por qué no lográbamos castigarlo; (4) el zoom adaptativo NO es
+  abducción manipulativa fuerte (la conjetura precede a la compra; p. 65); (5) el fallo que
+  documentamos es el del "caso de los patos" (p. 109: detectar la anomalía sin poder explicarla es
+  el comportamiento ESPERADO de una máquina selectiva) — para reclamar déficit creativo hay que
+  mostrar que el agente TENÍA los ingredientes. Regalos de diseño: la creativa es **segunda línea**
+  (se activa cuando la localización dentro del repertorio fracasa, p. 132) → compuerta verificable
+  de "instancia creativa"; los **abducibles** como perilla del menú (p. 123: el menú ES el
+  criterio); el certificado de **ambigüedad** (p. 22: sin ambigüedad no hay abducción, hay lookup);
+  y la amenaza de Koslowski (p. 143: con solo covariación y sin mecanismos causales medimos la
+  pobreza del mundo) — la explicación rival más fuerte contra el 0/9.
+- **Klein 2013, *Seeing What Others Don't* (PublicAffairs)** — **LEÍDO completo 2026-08-10**.
+  [Extracción](research/2026-08-10-lectura-klein-2013.md). **El contrapeso del programa**: 120
+  casos de campo con doble codificación (78%→98% de acuerdo). Conteos: conexiones **82%** ·
+  contradicciones **38%** · **impasse solo 25%** · coincidencias 10% · curiosidades 7,5%; súbito
+  56% / **gradual 44%**; incubación 5/120. Corrige nuestro mapeo: **contradicción ≠ impasse** (van
+  en direcciones OPUESTAS: desesperación TIRA el ancla débil, contradicción CONSTRUYE sobre ella;
+  y sus protagonistas de contradicción NO estaban atascados) → **nuestro experimento construye un
+  impasse, no una contradicción, y cae en la celda MENOS poblada de su corpus (contradicción ×
+  desesperación: "only a few cases") → predice TASA BASE BAJA: problema de potencia a presupuestar
+  ANTES**. Corrobora el acotamiento a "episodios impulsados por anomalías" con la concesión del
+  propio **Ohlsson** (*"Our current theories are powerless to explain this type of insight"*).
+  Regalos: el **catálogo Chinn & Brewer** de 4 maneras de descartar anomalías (nuestros agentes lo
+  reproducen; y en sus 45 casos de contradicción, **42 exploraron la anomalía y NINGUNO la explicó
+  y descartó** → nuestros agentes se comportan como los **gemelos fallidos**); el **garden path**
+  con **canal privado instrumentado** (7/7 equipos fallaron, pero los diarios individuales
+  mostraron que la señal SÍ se detectaba y no se subía → separar rastro privado de reporte público
+  convierte el 0/9 en diagnóstico); y el precedente humano de **meta obsolescente** (Sengupta,
+  HBR 2008). Advertencia dura: **varias de sus nueve reglas anti-diseño describen WAGER** (tarea
+  asignada, episodios cortos, saberse evaluado, tarea deliberadamente nueva, y puro impasse).
+- **Thagard 1992, *Conceptual Revolutions* (Princeton UP)** — **LEÍDO completo 2026-08-10**.
+  [Extracción](research/2026-08-10-lectura-thagard-1992.md). Su escalera de 9 grados **ES** una
+  matriz componente×verbo aplastada por severidad (*"conceptual change consists of adding or
+  deleting nodes and links"*) → **ratifica la relectura del supervisor**. Golpes: (a) **nuestros 11
+  operadores son TODOS adiciones**, mientras el movimiento revolucionario más frecuente de su
+  corpus es el **re-anclaje** (branch jumping, 8 casos, **cero** operadores nuestros) y el
+  **colapso/borrar distinción**; (b) **`entidad oculta` es su escalón MÁS BARATO y declarado NO
+  revolucionario** (quarks, genes, el electrón); (c) `transferencia/analogía` es **error de
+  categoría** (mecanismo de generación y criterio de evaluación, no tipo de cambio);
+  (d) `unificación` **conflaciona** coalescence (monótona) con collapse (revisionaria); (e) falta
+  el eje **monótono/revisionario**, y el escalón intermedio `agregar-regla` — **casi seguramente lo
+  que un LLM hace cuando cree que salta**. REPLACE sigue siendo delete+add (no demuestra
+  irreducibilidad) pero **RE-ANCLAR y RETIPAR sí son irreducibles**. Y ⚠️ **riesgo directo sobre
+  nuestra vara**: su Objeción 2 es una batería de 5 tests contra la compresión de dos partes —
+  sobre todo **"being explained"** (una hipótesis explicada por otra GANA aceptabilidad, y el
+  conteo `#E − #H` la penaliza: **penalizaríamos la forma del argumento de Darwin**) y
+  **unificación** (insensibilidad al compartir auxiliares). **Verificables sin gastar API.**
+  Bonus: **ECHO es una vara alternativa enteramente cero-LLM** si el grafo de explicación se deriva
+  por simulación; y da la **dosificación del vuelco** (1-2 fenómenos no voltean, 3 sí).
+
+**CAMPAÑA DE LIBROS CERRADA 7/7** (2026-08-09→10): Aliseda · Boden · Ohlsson 2011 · Darden 1991 ·
+Magnani 2001 · Klein 2013 · Thagard 1992. Todos a texto completo, todos con extracción y
+correcciones registradas. Los PDFs se borraron tras leerlos (pedido de Lucas).

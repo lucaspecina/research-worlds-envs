@@ -23,10 +23,19 @@ de las tres que CREA — las otras dos ordenan lo que ya está.
 
 **Precisión que importa (pregunta de Lucas): salto ≠ toda abducción — salto = abducción
 CREATIVA.** La filosofía tiene EXACTAMENTE nuestra distinción, con nombres (Magnani,
-*Abduction, Reason and Science* 2001 `[POR-LEER]`): **abducción selectiva** = elegir la
-hipótesis de un repertorio que ya tenés (el médico que diagnostica elige entre enfermedades
-conocidas) vs **abducción creativa** = la explicación exige una hipótesis que el repertorio NO
-contiene — hay que agrandarlo. Nuestro hallazgo empírico dicho en ese idioma: los LLMs hacen
+*Abduction, Reason and Science* 2001 `[LEÍDO completo 2026-08-10]`, pp. 19-20 y 25):
+**abducción selectiva** = elegir la hipótesis de un repertorio que ya tenés (el médico que
+diagnostica elige entre enfermedades conocidas) vs **abducción creativa** = la explicación exige
+una hipótesis que el repertorio NO contiene — hay que agrandarlo. ⚠️ **Tres precisiones de la
+lectura de primera mano** ([extracción](research/2026-08-10-lectura-magnani-2001.md)):
+(a) es un **GRADIENTE, no un binario** — "both inferences [son] ampliative" y la selectiva visual
+tiene creatividad "much weaker", no nula; (b) **no es el único eje**: el aporte propio del libro es
+teórica vs **manipulativa** (pensar HACIENDO), y dentro de la teórica, sentencial vs
+**model-based** (visual, diagramática, analógica, thought-experiment, temporal, emocional); (c) lo
+que nosotros medimos es una ESPECIE de la creativa — la **abducción EXISTENCIAL** (postular
+objetos antes desconocidos, p. 49), la misma en la que fallaban BACON y GLAUBER (p. 50). Y la
+creatividad es **relativa al repertorio del agente** (p. 48): sin test de contaminación no
+podemos distinguir fallo de generación de fallo de recuperación. Nuestro hallazgo empírico dicho en ese idioma: los LLMs hacen
 abducción SELECTIVA bien (eligen, ajustan y comparan dentro del menú) y la CREATIVA no arranca
 (el menú no crece — 0/9 en count_mix). Y sí hay teoría de TIPOS: **Schurz, "Patterns of
 Abduction" (Synthese 2008)** `[LEÍDO completo 2026-08-07]` — taxonomía sistemática (abducción de
