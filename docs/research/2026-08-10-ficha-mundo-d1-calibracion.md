@@ -239,3 +239,21 @@ acciones típicas (el estándar-con-pocas-reps NO debe llegar a τ; ≥2 rutas s
 robots ejecutables; (4) potencia sobre Y con τ=0.5 bits; (5) brief byte-idéntico sin
 filtraciones. Después: **la ficha se presenta a Lucas con contexto completo; nada se
 construye sin su GO explícito.**
+
+---
+
+# ★ FICHA CONGELADA — GO DE LUCAS (2026-08-10)
+
+**Decisión de Lucas**: *"ok, sigue siendo bastante simple igual no? un modelo medio de juguete,
+no es algo realista. Igual probemoslo! Dale avancemos."* — **GO de construcción**, con la
+salvedad registrada como parte del alcance: **este es el mundo MÍNIMO que hace jugable la
+horquilla instrumento-vs-mundo** (un escalón de realismo sobre el rung 0: estado persistente
+por lote, canal de medición, múltiples rutas diagnósticas con costo — pero lejos todavía de
+"realista"). La escalera de realismo continúa después: polo compuesto sobre este esqueleto →
+más mecanismos → el crítico. El titular de cualquier resultado carga esta salvedad.
+
+**Queda congelado**: el diseño v2.3 completo (3 rondas con Codex) + los parámetros del
+prototipo (`scripts/design_d1_artifacts.py`, artefactos verdes) + el outcome primario
+Y = 1[D_pre ≥ 0.25 bits sobre la horquilla desplegada] · 1[gate del polo] (TRIPWIRE de reward
+path declarado y aprobado con este GO) + n=15 por polo (potencia 95%, α=0.031) + seeds
+99600-99799. Cambios posteriores: SOLO por addendum fechado.

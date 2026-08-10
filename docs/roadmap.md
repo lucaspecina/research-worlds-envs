@@ -393,7 +393,21 @@
 > (oráculo-condicionado + buscador ciego acotado).
 > [Resultado+addenda](research/2026-08-10-resultado-tanda-count-regime-impasse-v1.md).
 >
-> **PRÓXIMO PASO (2026-08-10): la ficha D1 (Onnes — firma ambigua), a Lucas ANTES de codear.**
+> **GO DE LUCAS A D1 (2026-08-10)**: diseño cerrado en 3 rondas con Codex (artefactos verdes:
+> apareo byte-exacto, rutina=0 bits, sin dominancia de acción única, potencia válida), paquete
+> presentado y aprobado con la salvedad registrada ("sigue siendo simple — el mundo MÍNIMO que
+> hace jugable la horquilla; la escalera de realismo sigue después").
+> [Ficha congelada](research/2026-08-10-ficha-mundo-d1-calibracion.md) ·
+> [presentación](research/2026-08-10-presentacion-d1-para-lucas.md).
+>
+> **PRÓXIMO PASO (2026-08-10): CONSTRUIR D1** — portar la física del prototipo a
+> `cases/d1_proceso` + `cases/d1_instrumento` (brief byte-idéntico, canales measure/lab_extern,
+> apareo CRN) → certificados nuevos (identificabilidad · alcanzabilidad condicionada ·
+> no-trivialidad con los 4 robots · headroom) → harness (reusa registro/calendario del rung 0)
+> → técnico (~USD 0.4) → tanda 2 polos × 15 (~USD 15-18) → autopsia contra reglas firmadas →
+> dossier.
+>
+> **[SUPERSEDIDO POR EL GO] (2026-08-10): la ficha D1 (Onnes — firma ambigua), a Lucas ANTES de codear.**
 > Diseño ordenado por Codex: proceso físico + modelo de medición reales; prefijo compatible con
 > ≥3 rivales; polos apareados donde gana culpar-al-instrumento o postular-cambio-físico (ningún
 > reflejo fijo gana ambos); SIN crítico en la primera versión; **ningún canal de acción se abre
