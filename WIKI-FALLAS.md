@@ -128,10 +128,14 @@ los chequeos correctos sin que nadie se los pidiera, sus propios datos mostraban
 "hay dos tipos de lotes" (verificado con matemática pura sobre lo que cada uno vio) — y 13 de
 15 entregaron igual el modelo simple de un solo grupo, escondiendo los lotes malos en "más
 ruido". Uno escribió "voy a agregar un componente de contaminación"… y entregó el simple.
-**La síntesis de la era (Lucas)**: hacen todo el trabajo barato — mirar, comprar, concluir —
-y esquivan el único paso caro: comprometerse por escrito con la idea nueva. Solo lo hacen si
-algo los obliga (cuando su propio modelo falló delante suyo: 30/30; sin ese golpe: 0/9). Un
-científico real no espera el golpe — esa diferencia es medible y es nuestra.
+**⚠️ Y el remate lo puso Lucas contra NOSOTROS (mismo día)**: ¿seguros de que hacerlo bien
+mejoraba mucho, según lo que el agente puede ver? NO — verificado con números: nuestra propia
+regla de puntaje le daba 0.986 sobre 1.0 a la mejor campana simple (el salto pagaba casi
+cero) y la partida no mostraba ninguna consecuencia de entregar simple. La lectura "son
+vagos" CAE; queda el hecho: *eligieron el sustituto simple cuando la estructura apenas pagaba
+y sin consecuencias visibles*. De acá nace el programa nuevo: **cuánto paga el salto** (y si
+esa paga se VE) como perilla de diseño de cada mundo — con la pista de que cuando la paga fue
+visible y real (su modelo falló delante suyo), saltaron 30/30.
 
 ---
 

@@ -186,3 +186,45 @@ mezclar generalización con cambio de dominio), **gpt-5.4 + DeepSeek-V3.2** (con
 count_mix); dominio trasplantado después, solo si ambos reproducen. **La ronda 3 de Lucas
 (la planta rebota el modelo — fallo propio a la vista) va DESPUÉS de la confirmación**: es
 intervención mecanística, no confirmación. Ambos pasos esperan GO de Lucas.
+
+---
+
+# ADDENDUM 3 (2026-08-10) — LA OBJECIÓN DE LUCAS, CONFIRMADA CON NÚMEROS: la vara paga el salto ~0
+
+Lucas: *"¿Estamos seguros de que hacerlo bien mejora MUCHO, según lo que pueden ver los
+modelos? Quizás no es que son lazy sino que es prácticamente lo mismo, a los fines
+prácticos, hacerlo bien de hacerlo mal."* Verificado (gratis, `scripts/` inline):
+
+1. **Vara continua**: la mejor gaussiana SIN estructura (σ=sd_verdad, μ clavando p10) saca
+   **S=0.986** — el salto paga 0.014 en nuestro propio puntaje continuo. Solo lo paga el
+   flag discreto (que el agente no ve). **El argumento "dejaron S 0.65→1.0 sobre la mesa"
+   del §2 QUEDA INVÁLIDO**: esos puntos se ganaban afinando la campana, no saltando.
+2. **Episodio**: cero consecuencia visible de entregar simple (sin feedback de entrega).
+3. **Mundo latente**: la brecha REAL existe (fuera-de-espec 34.1% vs 19.6% — error ×1.7;
+   verosimilitud 0.07-0.16 nats/lote) pero ni la vara ni el episodio la cobran.
+4. **Compuerta C4 (headroom) mal medida**: se midió contra el default limpio (S=0.0), no
+   contra el MEJOR RIVAL SIN ESTRUCTURA (S=0.986) — el rival que importaba.
+
+**Claims que bajan**: la lectura "supresión de estructura como vicio" queda CONFUNDIDA con
+"indiferencia racional bajo paga ~cero e invisible". Sobreviven como HECHOS: los conteos de
+flag (2/15, 1/15), la asimetría 8:0, la disociación compra×2-vs-escritura, y que la
+evidencia comprada mostraba la estructura (ΔBIC). Cae la palabra "lazy" como atribución.
+**La confirmación fuera de D1 queda EN PAUSA**: confirmar antes de arreglar la paga sería
+confirmar un artefacto de vara.
+
+**El programa que nace (de Lucas)**: "cuánto paga el salto" pasa a ser VARIABLE DE DISEÑO
+certificada y ajustable — (i) paga en la vara (vara de distribución completa que una campana
+no pueda fingir: multi-cuantil/CRPS; headroom re-medido contra el mejor rival sin estructura),
+(ii) paga en el mundo (consecuencias de decisión), (iii) VISIBILidad de la paga en el episodio
+(nada / a-pedido / confrontación=rebote — el eje que une esto con el rung 0: 0/9→30/30 cuando
+la brecha se hizo visible). Dosis-respuesta: brecha ↗ → ¿tasa de salto ↗? La "elasticidad del
+salto respecto de su paga" como pregunta medible.
+
+**Codex (crudo en `scratch/codex-respuesta-2026-08-10-freno-lucas-vara.txt`)**: (1) PAUSAR
+confirmación — la atribución al agente quedó confundida con indiferencia racional; próxima
+tanda varía paga × consecuencia × visibilidad, tras re-certificar headroom contra el mejor
+rival sin estructura. (2) Vara primaria: **CRPS** (regla propia, continua, cero-LLM, cobra la
+CDF completa); cuantiles solo como descomposición diagnóstica. (3) **Titular que queda en
+pie**: *"gpt-5.4 compró diagnóstico 60/60, pero eligió casi siempre un sustituto unimodal
+cuando la estructura apenas pagaba y no tenía consecuencias visibles"*. Sobreviven asimetría
+y compra-vs-escritura; caen "lazy", "lo cree pero no lo escribe" y "falla de propagación".

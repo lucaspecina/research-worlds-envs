@@ -97,8 +97,12 @@ parámetros, promedia.
   verdad exige AGREGAR estructura vs 9/15 donde el default es la verdad (McNemar 8:0). No es
   "no lo ven" (sus datos lo gritan): es la retirada a lo familiar EN LA ENTREGA — convergencia
   con 8.6. Titular defendible (Codex): "tras comprar evidencia que favorece causa material,
-  gpt-5.4 comprime sistemáticamente la subpoblación en una entrega unimodal". Estado: VIVO;
-  candidata de pivote elevada a Lucas. Ronda 2 (wording neutral de Lucas, mismas seeds,
+  gpt-5.4 comprime sistemáticamente la subpoblación en una entrega unimodal". Estado: VIVO como HECHO conductual; ⚠️ ATRIBUCIÓN BAJADA (2026-08-10, freno de Lucas
+  confirmado con números): la vara continua pagaba el salto 0.014 (mejor campana sin
+  estructura S=0.986) y el episodio no cobraba nada → "vicio" confundido con indiferencia
+  racional; titular vigente: "eligió sustituto unimodal cuando la estructura apenas pagaba y
+  sin consecuencias visibles". Programa nuevo: la paga del salto como dial certificado
+  (CRPS + headroom vs mejor-rival-sin-estructura + visibilidad). Ronda 2 (wording neutral de Lucas, mismas seeds,
   reglas congeladas): escriben 1/15, espurio 1/15, apareo sin rescate — el rival "no les
   avisaron" REFUTADO; y la frase DUPLICÓ la compra de evidencia sin mover la escritura
   (disociación esfuerzo-de-compra vs compromiso-de-entrega). Confirmación fuera de D1

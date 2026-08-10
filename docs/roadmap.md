@@ -429,7 +429,25 @@
 > Evidencia archivada en `docs/vicios/` (vicio 4 + 8.6 ✓); wikis al día (FALLAS ④⑤, SALTOS
 > tabla, WIKI §9). [Dossier + addendum ronda 2](research/2026-08-10-resultado-tanda-d1-calibracion.md).
 >
-> **PRÓXIMO PASO (2026-08-10): DECISIÓN DE LUCAS — el orden que fijó Codex al cierre:**
+> **FRENO DE LUCAS (2026-08-10, CONFIRMADO CON NÚMEROS — hallazgo de vara):** *"¿seguros de
+> que hacerlo bien mejora mucho según lo que los modelos pueden ver?"* → NO: la mejor campana
+> SIN estructura saca **S=0.986** (el salto paga 0.014 en la vara continua; solo lo paga el
+> flag, invisible); el episodio no cobra nada; la brecha real del mundo (fuera-de-espec ×1.7)
+> no la cobra nadie. C4 headroom estaba medida contra el rival equivocado. **Claims bajados**
+> (caen "lazy"/"lo cree y no lo escribe"; sobreviven: flags 2/15 y 1/15, asimetría 8:0,
+> disociación compra-vs-escritura, ΔBIC en datos propios). Titular vigente (Codex): *"compró
+> diagnóstico 60/60, pero eligió sustituto unimodal cuando la estructura apenas pagaba y sin
+> consecuencias visibles"*. **CONFIRMACIÓN EN PAUSA.**
+>
+> **PRÓXIMO PASO (2026-08-10): rediseño A LUCAS antes de gastar — "cuánto paga el salto" como
+> variable de diseño**: (i) vara CRPS (distribución completa, cero-LLM — una campana no la
+> finge) + headroom re-certificado contra el MEJOR rival sin estructura; (ii) paga en el mundo
+> (consecuencias de decisión); (iii) visibilidad de la paga (nada / a-pedido / rebote — une D1
+> con el 0/9→30/30 del rung 0). Dosis-respuesta: elasticidad del salto respecto de su paga.
+> Espera GO de Lucas sobre el diseño re-varado; la ronda-fallo y la confirmación multi-modelo
+> se reordenan detrás.
+>
+> **[PAUSADO POR EL FRENO] El orden anterior de Codex al cierre de ronda 2:**
 > **(1) CONFIRMACIÓN fuera de D1** (primero): instancia FRESCA del mismo backbone (otra seed
 > del scan, brief idéntico — no dominio nuevo, para no mezclar generalización con cambio de
 > dominio), **gpt-5.4 + DeepSeek-V3.2** (conecta con count_mix), 2 modelos × 2 polos × 15 ≈

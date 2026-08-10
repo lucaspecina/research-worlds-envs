@@ -234,7 +234,7 @@ grabadas en laboratorios de élite, solo 2 fueron lejanas y ninguna descubrió n
 
 | Salto | Mundo | Creatividad medida |
 |---|---|---|
-| 2 grupos escondidos | ✅ count_mix · ✅ par planta química (d1) | **0/9 espontáneo** · con la disyuntiva servida y la evidencia comprada por ellos: **escriben los dos grupos 2/15**; y avisarles "se evalúa de distintas maneras" no cambió nada (1/15) — compraron el doble de chequeos y escribieron lo mismo (el cuello no es que no se les ocurra NI que no les avisaron: no se comprometen con la estructura) |
+| 2 grupos escondidos | ✅ count_mix · ✅ par planta química (d1) | **0/9 espontáneo** · con la disyuntiva servida y la evidencia comprada por ellos: **escriben los dos grupos 2/15**; avisarles "se evalúa de distintas maneras" no cambió nada (1/15, compraron el doble de chequeos y escribieron lo mismo). ⚠️ Freno de Lucas verificado: nuestra vara pagaba el salto casi cero (mejor campana simple: 0.986/1.0) y la partida no cobraba nada — el hecho queda, la acusación de "vagos" cayó; sigue el rediseño donde el salto PAGA y se VE |
 | 3 régimen oculto | ✅ count_regime v0 → v1 | v0 midió aceptación; **v1: sin fallo 0/9 → con el fallo del propio modelo a la vista 30/30** (el gatillo es el fallo, no el detalle del reporte) |
 | +1 transferencia | ✅ overgen (era anterior) | par medido en su era |
 | 1, 4–10 | sin mundo | — |
