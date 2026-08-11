@@ -100,3 +100,18 @@ vía 1+3: el rebote es un rival-mundo que ejecuta).
 4. **Orden del diseño**: (i) fabricar la diferencia real (no-saltar ⇒ modelo peor en cosas
    que el mundo cobra); (ii) la perilla de cuán fuerte se muestra (silencio → rebote);
    (iii) el crítico como eje aparte y posterior; (iv) techo: brecha solo de coherencia.
+
+## E. Contrapunto de Codex (2026-08-10; decidimos nosotros) — ACEPTADO en las tres
+
+1. **Descomponer "paga" en tres variables** (la corrección al ordenamiento): **ΔQ** = brecha
+   de calidad predictiva · **ΔU** = consecuencia práctica (operación/presupuesto/decisión) ·
+   **V** = visibilidad del fallo. El rebote del monitoreo mueve V; solo es COBRO si además
+   produce pérdida real (ΔU). "Paga" no puede nombrar las tres.
+2. **El experimento principal fabrica ΔU** (consecuencia de decisión: la planta decide con tu
+   modelo y el fuera-de-espec real difiere ×1.7 → pérdida). El rebote queda como perilla
+   silencio→visible (V) con ΔQ y ΔU FIJAS. Sin consecuencia mediríamos elasticidad al
+   feedback, no al costo de no saltar.
+3. **Corrección a la implicación B (mía, sobreclamada)**: "la vara no debe pagar el salto"
+   es FALSA — Pearson, Reynolds, Planck y Neptuno SÍ pagaron en fit; C3-C4 muestran saltos
+   sin cobro. Lo válido: **"el fit no necesita pagar siempre"** — la paga-en-fit es una
+   REGIÓN de la perilla, no una prohibición. Crítico después y coherencia como techo: OK.
