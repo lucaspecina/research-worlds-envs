@@ -65,8 +65,8 @@ DEBIT_CAP = 150.0
 NO_MODEL_DEBIT = 100.0
 MAX_TURNS = 14
 
-PISTA_SEEDS = [99714, 99715, 99716]     # QUEMADAS (certificación; 99700-99702
-                                        # descartadas: 99700 crasheo por el bug del debito)
+PISTA_SEEDS = [99717, 99718, 99719]     # QUEMADAS (certificación; 99700-99702 y
+                                        # 99714-99716 descartadas por bugs #1 y #2)
 TEC_SEED = 99703
 TANDA_SEEDS = list(range(99704, 99714))  # 10 seeds × 2 brazos × 2 polos = 40 celdas
 ARMS = ("SILENCIO", "REBOTE")
@@ -119,6 +119,9 @@ def make_monitor_d2(srv, pole: str, params: dict) -> tuple[pd.DataFrame, str, di
     df = pd.DataFrame(rows)
     d["served"].append({"turn": srv._turn, "verb": "monitor",
                         "rows": df.to_dict("records")})
+    d["monitor_fired"] = True   # abre el gate D1 de abajo; el gate D2 (decision,
+    # t8) es el que manda — sin esto las entregas quedaban bloqueadas PARA
+    # SIEMPRE (bug #2 cazado por las pistas: 3/3 max_turns sin submit)
     meta = {"n": MONITOR_N, "obs_mean": float(df["y"].mean()),
             "obs_min": float(df["y"].min())}
     notice = (f"Routine monitoring ran on schedule: {MONITOR_N} production lots "
