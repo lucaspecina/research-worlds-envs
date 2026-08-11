@@ -439,6 +439,21 @@
 > diagnóstico 60/60, pero eligió sustituto unimodal cuando la estructura apenas pagaba y sin
 > consecuencias visibles"*. **CONFIRMACIÓN EN PAUSA.**
 >
+> **REDISEÑO EJECUTADO (2026-08-11) — PAR D2 "EL TURNO DE DECISIÓN", LISTO PARA GO:**
+> vara log-score (CRPS revertido con datos: pagaba ≤0.07 hasta con 7σ) + anclaje rung-0
+> (0 = mejor rival sin salto, congelado) + física D1+pi(T) (única desviación, scan de la
+> perilla) + EVENTO DE DECISIÓN t8 (la planta decide con el modelo registrado; débito
+> auditado por lab — el que no salta paga ~150 vs ~30) + brazos SILENCIO/REBOTE (solo V
+> varía). Certificación VERDE (6 compuertas + byte-identidad 4 streams) y LA ESCALERA DE
+> PISTAS COMPLETA (ADRs 0176/0177, primera aplicación): capacidad ✓ en P1 (S 0.70-0.75,
+> un Y=1 pleno); el cuello es la ESTIMACIÓN no la idea (P2: estructura 2/2, S 0-0.16);
+> la pista fuerte APAGA la verificación (P1: D_pre 0.00 en 2/3, el gemelo se tragó la
+> pista falsa y perdió — conexión canal-contenido vicio 1). Seis rondas de pistas cazaron
+> SEIS bugs de harness/interfaz antes de la tanda (~USD 9, declarado).
+> [Ficha completa](research/2026-08-11-ficha-mundo-d2-decision.md). **PRÓXIMO PASO:
+> GO/ajuste/no-va de Lucas sobre la ficha → técnico → tanda 2 brazos × 2 polos × 10
+> (~USD 20-25) → análisis congelado → dossier.**
+>
 > **PRÓXIMO PASO (2026-08-10): rediseño A LUCAS antes de gastar — "cuánto paga el salto" como
 > variable de diseño**: (i) vara CRPS (distribución completa, cero-LLM — una campana no la
 > finge) + headroom re-certificado contra el MEJOR rival sin estructura; (ii) paga en el mundo
