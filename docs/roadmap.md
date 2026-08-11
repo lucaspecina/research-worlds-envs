@@ -1125,3 +1125,13 @@ Entrenar reteniendo **familias enteras de operadores** y hasta **formalismos ent
 - Un nulo a escala chica (ej. 8B) es evidencia débil: el juicio podría "prender" a cierta escala. Mitigación: E1 ya da señal con frontiers sin entrenar; versión intermedia barata: experiencia in-context sobre mundos (sin tocar pesos) como sonda de transfer.
 - Un positivo a escala chica con los controles bien hechos ya es enorme.
 - Precedente a favor de E2: el RL de matemática con reward de outcome puro hizo emerger verificación y backtracking sin pedirlos; nuestro reward es más denso que un binario.
+
+> **TESIS DE ENTRENAMIENTO DE LUCAS (2026-08-10, registrada — es la apuesta E2 dicha en sus
+> palabras)**: "sin cobro es difícil que dejen de ser lazy porque no tienen motivo" (la síntesis
+> de la era) → entrenar (RL, E2) sobre mundos-con-cobro que pagan el salto (reward cero-LLM =
+> el cobro en training) con curriculum de cobros que se van desvaneciendo (fuerte → débil →
+> sin cobro), y testear TRANSFERENCIA a mundos sin cobro: si la disposición transfiere (el
+> "test Rayleigh": compra y ESCRIBE estructura sin que nadie lo golpee), se rompe el argumento
+> central de "LLMs can't jump" (no gradient → no jump) fabricando el gradiente sintéticamente.
+> Precondición existencial descubierta HOY: si el reward no paga el salto (ADR 0175), el RL
+> aprendería la vagancia ÓPTIMA — el freno de Lucas salvó también a E2.
