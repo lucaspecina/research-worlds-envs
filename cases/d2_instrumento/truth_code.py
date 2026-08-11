@@ -8,7 +8,7 @@ POLE = 'instrumento'
 
 
 def model(regime, n, seed):
-    config = getattr(regime, "config", None) or {}
+    config = regime.config or {}
     T = min(max(float(config.get("T", 1.0)), 0.6), 1.4)
     p = min(max(PI0 + SLOPE * (T - 1.0), 0.02), 0.65)
     rng = np.random.default_rng(np.random.SeedSequence([int(seed), 0xD2]))

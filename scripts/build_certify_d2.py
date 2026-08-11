@@ -123,7 +123,7 @@ POLE = {pole!r}
 
 
 def model(regime, n, seed):
-    config = getattr(regime, "config", None) or {{}}
+    config = regime.config or {{}}
     T = min(max(float(config.get("T", 1.0)), 0.6), 1.4)
     p = min(max(PI0 + SLOPE * (T - 1.0), 0.02), 0.65)
     rng = np.random.default_rng(np.random.SeedSequence([int(seed), 0xD2]))
@@ -159,7 +159,7 @@ CS = {cs!r}    # log sd(T)  = CS[0] + CS[1]*(T-1) + CS[2]*(T-1)**2
 
 
 def model(regime, n, seed):
-    config = getattr(regime, "config", None) or {{}}
+    config = regime.config or {{}}
     T = min(max(float(config.get("T", 1.0)), 0.6), 1.4)
     mu = CM[0] + CM[1] * (T - 1.0) + CM[2] * (T - 1.0) ** 2
     sd = min(max(float(np.exp(CS[0] + CS[1] * (T - 1.0) + CS[2] * (T - 1.0) ** 2)),

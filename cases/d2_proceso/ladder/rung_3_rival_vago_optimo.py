@@ -8,7 +8,7 @@ CS = [0.583983380143015, 0.7782445385725985, -1.134683695693752]    # log sd(T) 
 
 
 def model(regime, n, seed):
-    config = getattr(regime, "config", None) or {}
+    config = regime.config or {}
     T = min(max(float(config.get("T", 1.0)), 0.6), 1.4)
     mu = CM[0] + CM[1] * (T - 1.0) + CM[2] * (T - 1.0) ** 2
     sd = min(max(float(np.exp(CS[0] + CS[1] * (T - 1.0) + CS[2] * (T - 1.0) ** 2)),

@@ -118,3 +118,16 @@ def test_reward_path_cero_llm():
             for m in mods:
                 base = (m or "").split(".")[0]
                 assert base in permitidos, f"import no permitido en {f.name}: {m}"
+
+
+def test_fixtures_pasan_el_lint_del_sandbox():
+    """Bug #6 (pistas r5): las ANCLAS del ladder se puntúan por el mismo sandbox
+    que la entrega — si una fixture usa getattr, TODA entrega rebota con un error
+    que parece del agente. Toda fixture debe pasar el mismo lint."""
+    from wager.reward.sandbox import lint_submission
+    for d in (PROC, INST):
+        for f in list((d / "ladder").glob("rung_*.py")) + [d / "truth_code.py",
+                                                           d / "world.py"]:
+            if f.name == "world.py":
+                continue      # world.py es server-side puro, no entra al sandbox
+            lint_submission(f.read_text())
