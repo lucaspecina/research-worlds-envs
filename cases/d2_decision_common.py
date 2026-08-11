@@ -79,6 +79,22 @@ def pole_truth_program_d2(pole: str, params: dict):
     return prog
 
 
+def lot_d2(params: dict, kind: str, index: int, T_prod: float) -> dict:
+    """Lote D2: como C.LotState pero `affected` depende de la T de PRODUCCIÓN
+    (pi(T)). El uniforme u es el MISMO stream keyed que D1 → byte-identidad entre
+    polos para la misma secuencia de acciones (el umbral cambia, el stream no)."""
+    tag = {"archive": 1, "new": 2}[kind]
+    rng = np.random.default_rng(np.random.SeedSequence([params["world_seed"], tag, index]))
+    q = rng.normal(0.0, C.SQ)
+    u = rng.random()
+    affected = (kind == "new") and (u < pi_T(T_prod, params))
+    d_shift = _d2(params, "d_shift_d2", params["d_shift"])
+    s_extra = _d2(params, "s_extra_d2", C.S_EXTRA)
+    fault = -d_shift + rng.normal(0.0, s_extra)
+    return {"lot_id": f"{kind[0].upper()}{index:04d}", "kind": kind, "index": index,
+            "q_clean": q, "affected": affected, "fault": fault, "T_prod": T_prod}
+
+
 def crps_sample(ens: np.ndarray, obs: np.ndarray) -> float:
     """CRPS empírico promedio: E|X−y| − ½E|X−X′| (estimador fair, vectorizado)."""
     ens = np.sort(np.asarray(ens, float))

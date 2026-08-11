@@ -81,14 +81,21 @@ Additional verbs in this world:
 
 
 # ------------------------------------------------------------------ attach
-def attach_d1(srv, pole: str, params: dict, ep_seed: int) -> None:
+def attach_d1(srv, pole: str, params: dict, ep_seed: int,
+              lot_fn=None, band: tuple | None = None) -> None:
     """Estado D1 sobre el WorldServer: datos de sensor CRN (byte-idénticos entre
     polos para la misma secuencia de acciones), verbos diagnósticos, D_pre/posterior
-    server-side y captura EXACTA de todo lo servido."""
+    server-side y captura EXACTA de todo lo servido.
+
+    lot_fn(kind, index, T) opcional (D2: lotes con pi(T)); default = LotState D1.
+    band opcional (T_min, T_max): banda certificada para experimentos propios (D2)."""
     C.refresh_cache(params)
     st = C.LotState(params)
+    if lot_fn is None:
+        lot_fn = lambda kind, index, T: st.lot(kind, index)  # noqa: E731
     srv._d1 = {
         "pole": pole, "params": params, "ep_seed": int(ep_seed), "state": st,
+        "lot_fn": lot_fn, "band": band,
         "arch_cursor": 0, "new_count": 0, "std_count": 0,
         "lots": {},          # lot_id -> {"lot": dict, "T": float, "last_y": float}
         "w_v": 0.5, "D_pre": 0.0,
@@ -145,7 +152,7 @@ def attach_d1(srv, pole: str, params: dict, ep_seed: int) -> None:
         rows = []
         for _ in range(n):
             i = d["arch_cursor"]
-            lot = d["state"].lot("archive", i)
+            lot = d["lot_fn"]("archive", i, 1.0)
             rows.append({"lot_id": lot["lot_id"], "T": 1.0,
                          "y": _read(lot, 1.0, 10, i)})
             d["arch_cursor"] += 1
@@ -161,6 +168,11 @@ def attach_d1(srv, pole: str, params: dict, ep_seed: int) -> None:
         T = float((design.config or {}).get("T", 1.0))
         if not (0.6 <= T <= 1.4):
             raise ValueError("T must be in [0.6, 1.4]")
+        b = self._d1.get("band")
+        if b is not None and not (b[0] <= T <= b[1]):
+            raise ValueError(
+                f"the line is certified for your own runs at T in [{b[0]}, {b[1]}]; "
+                "outside that band only production runs on its own calendar")
         n = int(design.n)
         reps = int((design.config or {}).get("reps", 1))
         if n <= 0 or n > 200 or reps <= 0 or reps > 8:
@@ -171,7 +183,7 @@ def attach_d1(srv, pole: str, params: dict, ep_seed: int) -> None:
         rows = []
         for j in range(n):
             k = d["new_count"]
-            lot = d["state"].lot("new", k)
+            lot = d["lot_fn"]("new", k, T)
             for r in range(reps):
                 rows.append({"lot_id": lot["lot_id"], "T": T, "rep": r,
                              "y": _read(lot, T, 20, k, r)})
