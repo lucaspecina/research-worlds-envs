@@ -76,7 +76,40 @@ el poder de compra restante — si el agente ya gastó todo, es señal sin mordi
 se declara como límite del cobro.) **Gate: ≥2/3 escriben la estructura correcta de su polo con S_log ≥ 0.5** — si ni
 soplado pueden, el mundo mide incapacidad y NO va.
 
-**RESULTADO**: *(se completa al cerrar la corrida — sección §5b)*
+**RESULTADO — LA ESCALERA COMPLETA (P2 + P1, 6 celdas limpias tras los 6 bugs)**:
+
+| Celda | Escribe estructura | S_log | D_pre (¿verificó?) | Y |
+|---|---|---|---|---|
+| P2 proceso 99732 | ✓ mezcla (ley en T INVENTADA al revés) | 0.00 | 0.77 ✓ | 0 |
+| P2 proceso 99733 | ✓ mezcla | 0.16 | 0.31 ✓ | 0 |
+| P2 instrumento 99734 | ✓ resistió la pista falsa (limpio) | 0.00 | 0.37 ✓ | 0 |
+| P1 proceso 99735 | ✓ mezcla + ley en T | **0.70** | 0.52 ✓ | **1** |
+| P1 proceso 99736 | ✓ mezcla + ley en T | **0.75** | **0.00 ✗** | 0 |
+| P1 instrumento 99737 | ✗ SE TRAGÓ la pista falsa (horneó mezcla) | 0.00 | **0.00 ✗** | 0 |
+
+**Lectura de la escalera**:
+1. **Capacidad: ✓ certificada en P1** (S 0.70-0.75; una celda con TODO: registró temprano,
+   predijo el piloto fuera de banda con débito 29, entregó, Y=1). El techo de la vara es
+   alcanzable por agentes reales.
+2. **El cuello NO es la idea — es la estimación cuidadosa**: con la idea nombrada (P2) la
+   escriben 2/2 pero parametrizada mal (S 0-0.16; uno inventó la ley en T al revés de sus
+   propios datos); con la solución DESCRITA (P1) llegan a 0.70-0.75. La prima del
+   descubrimiento por escalón: sin pista ~0 (D1) · idea 0-0.16 · descrita 0.70-0.75 ·
+   verdad 1.0. **Afinación del hallazgo D1: no les falta solo escribir la estructura — les
+   falta el trabajo cuantitativo de clavarla.**
+3. **La pista fuerte APAGA la verificación** (dato nuevo, gratis): en P1, 2/3 celdas
+   compraron CERO evidencia discriminante (D_pre 0.00) — con la solución en la mano dejan
+   de chequear; el gemelo lo cobró (se tragó la pista falsa en B y perdió, S=0). En P2 el
+   gemelo resistió. Conecta directo con el canal-contenido del vicio 1.
+4. **Gate formal**: P2 falla la parte S≥0.5 (0/3) → el mundo queda certificado para el
+   **endpoint primario de la tanda (el flag: ¿escribe estructura?)** — que P2 pasa 3/3 con
+   dirección correcta — y certificado en P1 para la parte S. En la tanda, S se interpreta
+   calibrada por esta escalera (S≥0.5 sin pista = más que lo que logró P2 con pista).
+
+**Costo real del bloque de pistas: ~USD 9** (planificado ~3; el excedente compró la caza de
+SEIS bugs de harness/interfaz — débito-crash, gate encadenado, lint emboscada, modelo
+registrado sin guard, rechazo-como-traceback, y anclas envenenadas con getattr — cualquiera
+de los cuales habría contaminado la tanda de ~25).
 
 ## 6. La tanda propuesta (espera GO)
 
