@@ -362,7 +362,10 @@ familia con el mundo del cierre prematuro.
 
 ---
 
-## Los saltos creativos (el espejo — SIEMPRE de a pares)
+## Los saltos creativos (con su riesgo opuesto en el catálogo)
+
+Los pares de esta sección son conceptuales. No obligan a construir un gemelo durante la primera
+validación del mundo base; ese control se decide después (ADR 0179).
 
 La evidencia EN MODELOS del lado creativo es la más flaca de todas (casi todo lo tipificado es
 humano) — **y eso es exactamente la oportunidad**: nuestros mundos pueden ser la primera medición

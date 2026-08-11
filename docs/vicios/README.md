@@ -174,7 +174,10 @@ discriminante-caro. Firma computable con gemelos: ¿tu test distingue la verdad 
 **Entra al mundo híbrido del FOCO** (el colega adjunta una "verificación" que pasa con
 cualquier modelo).
 
-### Las operaciones de aha (los espejos — siempre de a pares)
+### Las operaciones de aha (y sus riesgos opuestos)
+
+El par aquí es conceptual. No exige construir un gemelo en la primera etapa de cada experimento;
+ese control se decide después de validar el mundo base (ADR 0179).
 
 Notar la anomalía y jerarquizarla · pivotear a tiempo (el 0/60 releído: 60 trazas de pivot
 correcto — evidencia positiva que el campo no tiene) · sintetizar de verdad (vs la apofenia del

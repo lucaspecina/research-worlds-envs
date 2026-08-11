@@ -10,17 +10,22 @@ para medir — sin jueces LLM — dónde exactamente se les rompe el proceso de 
 
 ## Las piezas del experimento
 
-- **Experimento WAGER**: el paquete científico completo: salto + pregunta + mundo(s) + tarea +
-  condiciones + medida principal + tanda. Se diseña y valida antes de pedir el GO.
+- **Experimento WAGER**: el paquete construido alrededor de un salto: un mundo, una tarea y un
+  puntaje donde realizar ese salto permite encontrar un modelo claramente mejor que cualquier
+  buen rival que no lo realiza. Incluye además sus condiciones, controles y tandas.
 - **Salto**: el cambio de forma que queremos medir. Es el punto de partida de todo nombre y
   diseño. Ejemplo: **grupos escondidos**, pasar de una población a dos tipos.
+- **Pregunta principal**: siempre tiene la misma forma: **¿el agente descubre y realiza el
+  salto?**
+- **Subpregunta**: pregunta cuándo, por qué o bajo qué condición aparece el salto. “Con pista”,
+  “con error visible” y “con más presión” son subpreguntas o controles; no experimentos nuevos.
 - **Mundo**: un programa que genera datos con una verdad escondida adentro. Si cambia la verdad,
   cambia el mundo.
-- **Par de mundos / gemelo**: el control que reúne dos mundos de aspecto parecido donde el
-  salto es correcto en uno e incorrecto en el espejo. No es un mundo adicional.
+- **Gemelo**: control anti-reflejo que puede agregarse después: un mundo parecido donde realizar
+  el mismo salto sería un error. No es requisito de la etapa actual.
 - **Tarea**: qué debe lograr el agente, con qué herramientas, presupuesto, turnos y tipo de
   entrega. El **encargo (brief)** es solo el texto con que se la contamos.
-- **Perfil del mundo**: su ficha de forma oculta, verdades del par, dinámica, llegada de
+- **Perfil del mundo**: su ficha de forma oculta, verdad, dinámica, llegada de
   evidencia, horizonte, profundidad, interacción, dependencias, complejidad efectiva y
   dificultad observada por agente × tarea × ayuda.
 - **ID de mundo**: `world__<familia>__<verdad>__v<n>`. Cambiar solo números crea otra
@@ -47,11 +52,11 @@ Regla de identidad de una partida:
 
 > **ID del experimento · mundo · tarea · condición · agente · instancia · semilla**
 
-Regla del nombre humano: **Salto — qué ponemos a prueba — familia de mundo**.
+Regla del nombre humano: **Salto — situación investigativa**.
 
 Regla del ID:
 
-> `exp__<salto>__<mundo>__<tarea>__<contraste>__v<n>`
+> `exp__<salto>__<situacion>__v<n>`
 
 La **dificultad observada** no entra al nombre: se reporta por agente, tarea y ayuda. Un mismo
 mundo puede ser fácil para un agente y difícil para otro.
@@ -155,14 +160,13 @@ escalera anterior. Resultado histórico que motivó la separación: nombrar la i
 
 - **Validación del mundo y la tarea**: el control previo completo. Reúne las dos pruebas
   siguientes; ninguna reemplaza a la otra.
-- **Certificación matemática**: pruebas automáticas — necesidad
-  (el salto mejora de verdad contra el mejor rival fuerte), alcanzabilidad de la evidencia,
-  gemelo y anti-memorización.
+- **Certificación matemática**: pruebas automáticas de necesidad (el salto mejora de verdad
+  contra el mejor rival fuerte), alcanzabilidad de la evidencia y anti-memorización.
 - **Prueba de resolubilidad con agente**: el mismo agente, con la idea nombrada pero sin la
   solución, debe poder investigar, implementar el salto y mejorar. Complementa la matemática;
-  no la reemplaza. Su diferencia frente al mismo agente sin ayuda es la **prima de
-  descubrimiento**. Su alcance es siempre mundo + tarea + agente + ayuda concretos; no valida
-  “el mundo” en abstracto.
+  no la reemplaza. Su diferencia frente al mismo agente sin ayuda informa cuánto costó descubrir
+  la idea, pero es una subpregunta de validación. Su alcance es siempre mundo + tarea + agente +
+  ayuda concretos; no valida “el mundo” en abstracto.
 - **Rival fuerte**: el mejor modelo SIN el salto (en **Conteos por lote**, `count_mix`: gamma
   continua con persistencia).
   Toda vara se ancla contra él, no contra un rival de paja.
@@ -178,9 +182,9 @@ escalera anterior. Resultado histórico que motivó la separación: nombrar la i
 prematuro↔pozo) · 3 no verificar / fabricar · 4 **no postular la estructura escondida**
 (**Conteos por lote**, `count_mix`) · 5 perder el hilo · 6 adivinar en vez de preguntar ·
 7 correlación vs causa · 8 perder el objetivo · 9 **verificación de paja** (testea con tests
-que no pueden fallar — el “teatro de comparación”). **Ahas**: los saltos espejo (notar la
-anomalía, pivotar a tiempo, pedir el dato que discrimina) — siempre medidos de a pares con su
-vicio.
+que no pueden fallar — el “teatro de comparación”). **Ahas**: los saltos positivos (notar la
+anomalía, pivotar a tiempo, pedir el dato que discrimina). Sus controles opuestos pueden agregarse
+después de validar el mundo base.
 
 ## Dónde vive cada cosa
 

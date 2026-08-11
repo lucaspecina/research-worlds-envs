@@ -10,8 +10,8 @@
 > indagación), su ciclo (abducir·deducir·inducir), las perillas, dónde entran los saltos ·
 > **[WIKI-SALTOS.md](WIKI-SALTOS.md)** — los 11 tipos de salto y su estado de medición ·
 > **[WIKI-FALLAS.md](WIKI-FALLAS.md)** — dónde se rompe el ciclo (los failure modes) ·
-> **este WIKI** — la máquina WAGER y el vocabulario común: mundos, tareas, experimentos,
-> partidas, gemelos, puntaje y estado.
+> **este WIKI** — la máquina WAGER y el vocabulario común: saltos, experimentos, mundos,
+> tareas, partidas, puntaje y estado.
 >
 > **Marcadores de estado** (esto es investigación en desarrollo, así que somos honestos
 > sobre qué es piso firme y qué es andamio):
@@ -103,27 +103,49 @@ hacer trampa: no hay opinión que engañar, solo comportamiento que reproducir.
 
 ### Cómo ordenamos y nombramos una investigación
 
-Llamamos **experimento** al paquete completo que queremos diseñar, validar y, si Lucas da el
-GO, ejecutar. No es solamente el mundo ni solamente la tanda. Todo experimento contiene:
+El orden que manda es este:
 
-- **salto**: el cambio de forma que queremos medir;
-- **pregunta**: una sola pregunta científica principal;
-- **mundo o par de mundos**: las verdades ocultas donde la jugada correcta cambia;
-- **tarea**: qué debe hacer y entregar el agente, con qué herramientas, presupuesto y turnos;
-- **condiciones**: qué cambia de manera controlada entre partidas;
-- **medida principal**: qué número responderá la pregunta;
-- **tanda**: qué agentes jugarán cuántas partidas.
+> **salto → experimento que lo vuelve necesario → partidas que muestran si aparece →
+> subpreguntas sobre cuándo y por qué**
+
+Llamamos **experimento** al paquete construido alrededor de **un salto**. Su corazón es un
+mundo, una tarea y una forma de puntuar donde realizar ese salto permite encontrar un modelo
+claramente mejor que cualquier buen modelo que no lo realiza. La pregunta principal es siempre:
+
+> **¿el agente descubre y realiza el salto?**
+
+Todo experimento contiene:
+
+- **salto**: el cambio de forma que queremos observar;
+- **mundo**: la situación con verdad oculta donde ese cambio hace falta;
+- **tarea y puntaje**: qué investiga y entrega el agente, y cómo se demuestra que encontró el
+  modelo bueno;
+- **condiciones y controles**: ayudas, avisos o consecuencias que permiten preguntar cuándo y
+  por qué aparece el salto;
+- **medida principal**: si el modelo entregado supera claramente el techo de los mejores modelos
+  que no dan el salto y se acerca al modelo bueno;
+- **tandas**: qué agentes jugaron qué partidas.
+
+“¿Aparece con una pista?”, “¿necesita ver fallar su modelo?” o “¿qué presión lo mueve?” son
+**subpreguntas del mismo experimento**. Pueden requerir condiciones y tandas distintas, pero no
+reemplazan la pregunta principal ni convierten cada contraste en un experimento nuevo.
 
 Una **partida / episodio** es una sola ejecución dentro del experimento. Dentro de esa partida,
 lo que el agente compra para poner una hipótesis a prueba se llama **ensayo**. Así “experimento”
 siempre significa nuestro paquete científico y nunca una compra del agente.
 
 La **validación previa** tiene dos partes. La **certificación matemática** comprueba que el salto
-mejora claramente frente al mejor rival sin ese salto y que la evidencia necesaria existe. La
-**prueba de resolubilidad con agente** comprueba que el mismo agente, con la idea nombrada pero
-sin la solución, puede investigar e implementar el salto. Su comparación con el agente sin
-ayuda mide la **prima de descubrimiento**. Una solución casi regalada es solo un **control de
-techo**, nunca una medida de descubrimiento.
+es necesario para llegar al modelo bueno, que mejora claramente frente al mejor rival sin ese
+salto y que la evidencia para descubrirlo está al alcance. La **prueba de resolubilidad con
+agente** comprueba que el mismo agente, con la idea nombrada pero sin la solución, puede investigar
+e implementar el salto. Compararlo con el agente sin ayuda es un control muy informativo sobre la
+dificultad de descubrir la idea, pero sigue siendo una **subpregunta de validación**, no el objetivo
+del experimento. Una solución casi regalada es solo un **control de techo**, nunca una medida de
+descubrimiento.
+
+La nota mide la **consecuencia** del salto, no palabras ni una forma específica de código. Después
+podemos mirar la traza para entender qué representación usó el agente, pero esa lectura nunca entra
+al reward.
 
 #### Cómo se nombra un experimento
 
@@ -131,22 +153,23 @@ Cada experimento tiene dos nombres:
 
 1. **Nombre humano**, para conversar y recordar:
 
-   > **Salto — qué ponemos a prueba — familia de mundo**
+   > **Salto — situación investigativa**
 
 2. **ID estructurado**, estable y legible para archivos:
 
-   > `exp__<salto>__<mundo>__<tarea>__<contraste>__v<n>`
+   > `exp__<salto>__<situacion>__v<n>`
 
-El viejo `D2` queda entonces así:
+El viejo `D2` se entiende entonces así:
 
-> - **Nombre:** Grupos escondidos — Error del modelo a la vista — Planta a alta temperatura
-> - **ID:** `exp__grupos-escondidos__planta-alta-temperatura__modelo-para-piloto__error-explicito__v1`
-> - **Pregunta:** ¿mostrar la comparación entre lo predicho y lo ocurrido provoca el salto?
+> - **Experimento:** Grupos escondidos — Planta a alta temperatura
+> - **Pregunta principal:** ¿el agente descubre y representa los grupos escondidos?
+> - **Subpregunta estudiada:** ¿mostrar la comparación entre lo predicho y lo ocurrido ayuda
+>   a que realice el salto?
 > - **Estado:** cancelado antes de la tanda principal.
 
-Los códigos mudos (`D1`, `D2`, `P1`, `P2`) quedan solo como alias históricos. **Versión**
-(`v1`, `v2`) nombra una revisión técnica del mismo experimento. Si cambia la pregunta principal,
-es otro experimento.
+Los códigos mudos (`D1`, `D2`, `P1`, `P2`) y sus IDs anteriores quedan solo como alias
+históricos. **Versión** (`v1`, `v2`) nombra una revisión técnica del mismo experimento. Cambiar
+una ayuda, un aviso o una consecuencia crea otra condición; no otro experimento.
 
 #### El perfil del mundo: la complejidad no cabe en el nombre
 
@@ -154,16 +177,14 @@ El nombre identifica; el **perfil del mundo** describe. Cada experimento declara
 
 > - **Nombre de mundo:** Familia — verdad oculta
 > - **ID de mundo:** `world__<familia>__<verdad>__v<n>`
-> - **ID del par:** `pair__<familia>__<contraste>__v<n>`
 
 Ejemplo: **Planta a alta temperatura — degradación real creciente** =
-`world__planta-alta-temperatura__degradacion-real-creciente__v1`; su espejo es
-`world__planta-alta-temperatura__sensor-por-vial__v1`.
+`world__planta-alta-temperatura__degradacion-real-creciente__v1`.
 
 | Rasgo | Pregunta simple |
 |---|---|
 | **Forma oculta** | ¿grupos, umbral, memoria, observador, bucle…? |
-| **Verdades del par** | ¿qué es real en cada mundo? |
+| **Verdad oculta** | ¿qué estructura tiene realmente el mundo? |
 | **Dinámica** | ¿la verdad queda fija o cambia durante la partida? |
 | **Llegada de evidencia** | ¿está disponible enseguida o llega por goteo? |
 | **Horizonte** | ¿la tarea necesita pocos turnos o una trayectoria larga? |
@@ -188,8 +209,9 @@ Una partida se identifica así:
 
 > **ID del experimento · mundo · tarea · condición · agente · instancia · semilla**
 
-Y todo pedido de GO muestra, antes del costo: nombre e ID del experimento, salto, pregunta,
-perfil de los mundos, tarea, condiciones, medida principal y composición exacta de la tanda.
+Y todo pedido de GO muestra, antes del costo: nombre e ID del experimento, salto, pregunta
+principal, subpregunta o control de esa tanda, perfil del mundo, tarea, condiciones, medida
+principal y composición exacta de la tanda.
 Nunca más “corramos D2”.
 
 ## 4. Una partida, paso a paso ✅
@@ -273,16 +295,17 @@ y esa divergencia es un hallazgo recurrente del proyecto (ver §10).
 
 ## 7. Qué hace bueno a un mundo ✅
 
-No cualquier mundo sirve. Un buen mundo tiene que **forzar la habilidad que queremos medir**,
-no premiar el azar ni castigar torpezas de interfaz. Antes de usarlo hacemos la **validación del
-mundo y la tarea**: certificación matemática y después resolubilidad con un agente ayudado. La
-parte matemática incluye:
+No cualquier mundo sirve. Un buen mundo tiene que conseguir que **dar el salto sea la manera de
+encontrar el modelo bueno**, no premiar el azar ni castigar torpezas de interfaz. Antes de usarlo
+hacemos la **validación del mundo y la tarea**: certificación matemática y después resolubilidad
+con un agente ayudado. La parte matemática incluye:
 
 - **Techo alcanzable**: un investigador cuidadoso *puede* llegar a R=1. Si ni el mejor jugador
   legal lo alcanza, el mundo es tramposo y se descarta.
 - **Trampas visibles**: cada trampa deja una firma detectable; no hay engaños imposibles.
-- **Headroom (margen)**: existe una brecha real entre "creer los datos" y "entender el sistema".
-  Sin brecha, el mundo no enseña nada.
+- **Necesidad del salto**: el mejor rival serio que conserva la forma vieja pierde por una brecha
+  material frente al modelo que saltó. Si empatan, ese mundo no mide el salto aunque la verdad
+  escondida lo contenga.
 
 La brecha se piensa en **cuatro sabores**, cada uno una presión distinta: ¿el mundo fuerza a
 *investigar* (no alcanza con curve-fitting)? ¿a *pesar la evidencia contra el prior*? ¿a
@@ -329,23 +352,18 @@ destapa un patrón invisible. La regla de admisión es dura: **el salto solo cue
 predicción medible** (si el premio es solo "qué elegante", no lo sabemos puntuar sin un juez, y queda
 afuera).
 
-**La pieza que une los dos — los pares.** El descubrimiento más lindo: el vicio y el salto suelen ser
-*la misma jugada* vista de los dos lados. "Unir dos cosas en una" es Newton si de verdad son lo mismo,
-y delirio (ver patrones que no están) si no. Entonces no alcanza con "saber unir" ni con "saber
-desconfiar" — hay que saber **cuándo**. Por eso construimos de a **pares**: dos mundos que se ven
-iguales por fuera, en uno la jugada gana y en el gemelo pierde. Un modelo que aprendió el reflejo
-"uní siempre" gana uno y pierde el otro; solo el que **paga por averiguar en cuál está** gana los dos.
-El par es lo que impide que el examen se pueda trampear con un truco. (Prioridad honesta: los pares
-son un **agregado** que sumamos donde sale barato — imprescindibles recién para los mundos de saltos;
-lo fundamental del proyecto es la capacidad de diseñar los mundos de los vicios y multiplicarlos
-automáticamente con diversidad, §5.)
+**Primero el mundo donde el salto hace falta.** La prioridad actual es construir y validar una
+situación donde el agente solo llegue al modelo bueno cambiando la forma de su explicación. Recién
+después preguntamos qué lo ayuda, qué lo frena y si aprendió un reflejo superficial.
 
-Cada mundo (y cada par) lleva un **certificado**: se scriptean jugadores-robot — uno que comete el
-vicio, uno cuidadoso, y para los pares uno que aplica la jugada a lo bruto — y se demuestra con
-números que el bruto pierde el gemelo y el cuidadoso gana ambos. Así "solo se gana con juicio" deja
-de ser deseo y pasa a ser propiedad probada. Ya vimos varios vicios pasar en vivo con modelos reales
-(el trofeo del §7 *es* "refugiarse en lo familiar" — y a la vez el lado bueno de un par: "inventar la
-estructura escondida").
+Un **gemelo** puede agregarse más adelante como control anti-reflejo: otro mundo parecido donde
+hacer el mismo salto sería un error. Es valioso para medir “cuándo saltar”, pero **no forma parte
+de la etapa actual ni es requisito para validar el mundo base**. Primero demostramos que el salto
+correcto es necesario, descubrible y ejecutable en un solo mundo sin ambigüedad.
+
+Cada mundo lleva un **certificado**: se programan modelos testigo y se demuestra con números que el
+mejor modelo sin el salto pierde de manera material y que uno que sí lo realiza puede ganar. Así
+“el salto permite encontrar el modelo bueno” deja de ser deseo y pasa a ser una propiedad probada.
 
 **Y la honestidad de fondo** (§1): estas dos listas son *nuestra forma de medir* el juicio, no el
 juicio entero. Crecen, y nunca lo cubren del todo.
@@ -392,10 +410,9 @@ Las preguntas grandes, abiertas de verdad — y algunas necesitan un salto creat
   Un modelo no es un humano: puede no fallar donde un humano falla, y puede tener modos de fallar (o
   de acertar) que ningún psicólogo catalogó, porque los humanos no los tienen. Si nuestros mundos
   revelan eso, es el descubrimiento más original que el proyecto puede dar — y nadie más está parado ahí.
-- **¿Cómo se diseña una frontera "descubrible pero no obvia"?** ❓ — para los pares (§8) hace falta
-  que la evidencia que separa los dos mundos gemelos exista, tenga precio justo, y no sea ni gratis
-  ni imposible. Sabemos *verificar* si una frontera dada funciona; no tenemos la *teoría* de cómo
-  construirlas. Hoy es artesanía.
+- **¿Cómo se diseña un salto "descubrible pero no obvio"?** ❓ — la evidencia necesaria tiene que
+  existir, tener precio justo y no ser ni gratis ni imposible. Sabemos *verificar* si una frontera
+  dada funciona; no tenemos todavía la teoría para construirla. Hoy es artesanía.
 - **Puntuar EXPLICACIONES sin un juez** ❓ — nuestro truco siempre termina en "predecí el sistema" →
   un número. Pero parte del juicio entrega explicaciones, no predicciones. Cómo cobrar eso sin una IA
   opinando es nuestro muro más viejo (retrocedió, no cayó).
@@ -411,8 +428,11 @@ Las preguntas grandes, abiertas de verdad — y algunas necesitan un salto creat
 - **Salto**: el cambio de forma que queremos medir; todo experimento empieza nombrándolo.
 - **Mundo**: un programa con verdad oculta que genera datos bajo reglas; lo que la IA investiga.
 - **Tarea**: lo que debe hacer el agente dentro del mundo; el brief es cómo se lo contamos.
-- **Experimento WAGER**: el paquete completo: salto, pregunta, mundo(s), tarea, condiciones,
-  medida principal y tanda.
+- **Experimento WAGER**: el paquete construido alrededor de un salto: mundo, tarea y puntaje donde
+  saltar permite encontrar el modelo bueno, más sus condiciones, controles y tandas.
+- **Pregunta principal**: siempre la misma forma: ¿el agente descubre y realiza el salto?
+- **Subpregunta**: cuándo, por qué o bajo qué condición aparece; orienta un contraste o una tanda,
+  no crea por sí sola otro experimento.
 - **Condición**: la combinación exacta de ayuda, aviso y consecuencias de una partida.
 - **Episodio / partida**: una corrida donde una IA investiga un mundo con presupuesto y entrega
   un modelo.
@@ -430,6 +450,8 @@ Las preguntas grandes, abiertas de verdad — y algunas necesitan un salto creat
   profundidad, interacción, dependencias y complejidad efectiva.
 - **Headroom**: el margen entre "creer los datos" y "entender el sistema"; lo que el mundo
   enseña.
-- **Validación**: el control previo completo: certificación matemática + resolubilidad con un
-  agente que recibe la idea, no la solución.
+- **Validación**: demuestra que el salto es necesario y alcanzable, y que un agente que recibe la
+  idea —no la solución— puede investigarla e implementarla.
+- **Gemelo**: control futuro opcional donde el mismo salto sería equivocado; queda fuera de la
+  etapa actual.
 - **Cero-IA en el reward**: la regla dura de que ninguna IA participa en el cómputo de la nota.

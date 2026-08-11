@@ -12,8 +12,10 @@ y estado de lectura) · [fundamentos formales](docs/research/2026-08-05-fundamen
 (la matriz componente×edición) · [WIKI-INDAGACION](WIKI-INDAGACION.md) (dónde encaja el salto
 en el ciclo de indagar) · [WIKI-FALLAS](WIKI-FALLAS.md) (por qué no aparece).
 
-**El salto es siempre el punto de partida.** Después elegimos un mundo que lo vuelva necesario,
-una tarea que permita expresarlo y un experimento que haga una sola pregunta sobre cuándo aparece.
+**El salto es siempre el punto de partida.** Después construimos un experimento: un mundo, una
+tarea y un puntaje donde cambiar la forma del modelo sea necesario para encontrar la respuesta
+buena. La pregunta principal es siempre si el agente descubre y realiza ese salto. Las preguntas
+sobre cuándo, por qué o con qué ayuda aparecen después, como subpreguntas del mismo experimento.
 La gramática completa está en
 [WIKI — Cómo ordenamos una investigación](WIKI.md#cómo-ordenamos-y-nombramos-una-investigación).
 
@@ -22,9 +24,14 @@ La gramática completa está en
 - **Salto:** grupos escondidos — pasar de una población aparente a dos tipos persistentes.
 - **Estado:** los dos experimentos de la planta química están cerrados; el último no llegó a
   su tanda principal.
-- **Qué estamos haciendo:** ordenar los conceptos y preparar desde cero la próxima validación.
-- **Pregunta que conservamos:** ¿el mismo agente, con la idea de “dos tipos” nombrada pero sin
-  la solución, puede resolver la tarea y superar claramente a su versión sin ayuda?
+- **Qué estamos haciendo:** diseñar desde cero un mundo y una tarea donde representar dos tipos
+  persistentes sea la manera de llegar al modelo bueno.
+- **Pregunta principal:** ¿el agente descubre y realiza el salto de una población aparente a dos
+  tipos persistentes?
+- **Primer control de construcción:** con la idea de “dos tipos” nombrada, pero sin la solución,
+  ¿puede investigarla, implementarla y mejorar claramente? Es una prueba de resolubilidad, no la
+  pregunta principal.
+- **Gemelo:** fuera de esta etapa; podrá agregarse después como control anti-reflejo.
 - **Corridas autorizadas ahora:** ninguna.
 
 ## La lista, de un vistazo
@@ -60,10 +67,11 @@ una partícula invisible para salvar la conservación de la energía) — lo det
 después. Y la materia oscura es la versión en curso: las galaxias giran como si hubiera seis
 veces más masa de la que se ve.
 
-**El espejo**: el MISMO Le Verrier, envalentonado, postuló "Vulcano" para la anomalía de
+**El riesgo opuesto**: el MISMO Le Verrier, envalentonado, postuló "Vulcano" para la anomalía de
 Mercurio — y Vulcano no existía: la respuesta era cambiar la teoría (relatividad). Mismo
 científico, misma jugada, un triunfo y un fiasco. **La jugada no es buena ni mala; el juicio
-es saber cuándo.** Por eso todos nuestros mundos vienen con gemelo.
+es saber cuándo.** Más adelante un gemelo puede convertir ese riesgo en un control, pero primero
+validamos el mundo donde el salto sí hace falta.
 
 **En WAGER**: pariente medido (latent_mix, era anterior: 0/10 postularon la composición);
 mundo dedicado pendiente.
@@ -84,11 +92,11 @@ respondedores y no-respondedores.
 **El espejo**: ver grupos donde hay continuo (cualquier dataset "tiene clusters" si los buscás
 con ganas).
 
-**En WAGER**: el experimento **Grupos escondidos — Descubrimiento espontáneo — Conteos por lote**
-(alias técnico histórico: `count_mix`). Resultado: **0 de 9 agentes generó la idea** — el
+**En WAGER**: el experimento **Grupos escondidos — Conteos por lote** (alias técnico histórico:
+`count_mix`). En partidas sin ayuda, **0 de 9 agentes generó la idea** — el
 único número de creatividad espontánea medido hasta hoy. Todos entregaron la versión “licuada”
 (variación continua), que clava los promedios y jamás postula clases. La planta química probó
-después otras preguntas sobre este mismo salto; están separadas por nombre en la tabla final.
+después otras situaciones y subpreguntas sobre este mismo salto; están separadas en la tabla final.
 
 ## 3. El régimen oculto — "no es una ley: son dos, con un umbral"
 
@@ -110,11 +118,11 @@ cómo los observadores reales se las pierden.
 
 **El espejo**: inventar quiebres en procesos suaves (ver escalones en el ruido).
 
-**En WAGER**: el experimento **Régimen oculto — Aceptación del quiebre visible — Proceso con
-umbral** (alias técnico histórico: `count_regime` v0) tenía el escalón a la vista, así que
-midió ACEPTACIÓN —la mitad lo llamó “outlier”—, no creatividad. Su continuación,
-**Régimen oculto — Fallo del propio modelo a la vista — Proceso con umbral**, produjo el cambio más
-grande observado: 0/9 sin fallo visible y 30/30 con el fallo a la vista.
+**En WAGER**: el experimento **Régimen oculto — Proceso con umbral** (alias técnico histórico:
+`count_regime`) tuvo dos situaciones. En v0, el escalón estaba a la vista, así que observamos
+ACEPTACIÓN —la mitad lo llamó “outlier”—, no creatividad. Después se estudió la subpregunta del
+fallo visible del propio modelo y apareció el cambio más grande observado: 0/9 sin fallo visible
+y 30/30 con el fallo a la vista.
 
 ## 4. La geometría — "la relación simple existe, pero en otro espacio"
 
@@ -179,7 +187,8 @@ publican"), las encuestas que solo oyen a quien atiende el teléfono.
 
 **El espejo**: culpar al instrumento de todo patrón incómodo (la paranoia del sesgo).
 
-**En WAGER**: sin mundo aún; candidato fuerte porque su gemelo es nítido.
+**En WAGER**: sin mundo aún; candidato fuerte. El control opuesto también es nítido si más
+adelante se decide construirlo.
 
 ## 8. La realimentación oculta — "la causa es el bucle"
 
@@ -254,10 +263,10 @@ grabadas en laboratorios de élite, solo 2 fueron lejanas y ninguna descubrió n
 Los nombres legibles van primero; los códigos entre paréntesis solo sirven para encontrar los
 archivos históricos.
 
-| Salto | Experimentos, con nombre humano | Qué sabemos |
+| Salto | Experimentos y situaciones estudiadas | Qué sabemos |
 |---|---|---|
-| **Grupos escondidos** | ✅ **Descubrimiento espontáneo — Conteos por lote** (`count_mix`) · ✅ **Grupos investigados en el modelo final — Planta química** (`D1`) · ⛔ **Error del modelo a la vista — Planta a alta temperatura** (`D2`, cancelado antes de la tanda principal) | **0/9** generaron los grupos espontáneamente. En la planta, con la disyuntiva disponible y evidencia comprada por ellos, los escribieron **2/15**; un aviso neutral no cambió eso (**1/15**). Pero Lucas encontró que allí una buena campana simple ya sacaba **0.986/1.0**: el salto casi no mejoraba la vara y no tenía una consecuencia visible. El intento siguiente tampoco quedó validado: un rival de un solo grupo llegó a **0.67/1.0**, el evento casi no lo distinguía de la verdad (débito esperado **31.1 vs 30.0**) y el aviso de error no podía ocurrir en 5/6 pruebas. **Conclusión: el 0/9 espontáneo es real; la planta todavía no demuestra que evitar el salto sea irracional.** |
-| **Régimen oculto** | ✅ **Aceptación del quiebre visible — Proceso con umbral** (`count_regime` v0) · ✅ **Fallo del propio modelo a la vista — Proceso con umbral** (`count_regime` v1) | La primera tarea midió aceptación, no generación. En la segunda: **0/9 sin fallo visible → 30/30 con el fallo del propio modelo a la vista**. Sabemos que el choque puede disparar este salto en ese modelo y ese mundo; todavía no que sea el único motor. |
+| **Grupos escondidos** | ✅ **Grupos escondidos — Conteos por lote** (`count_mix`; observación sin ayuda) · ✅ **Grupos escondidos — Planta química** (`D1`; modelo final) · ⛔ **Grupos escondidos — Planta a alta temperatura** (`D2`; subpregunta de error visible, cancelada antes de la tanda principal) | **0/9** generaron los grupos espontáneamente. En la planta, con la disyuntiva disponible y evidencia comprada por ellos, los escribieron **2/15**; un aviso neutral no cambió eso (**1/15**). Pero Lucas encontró que allí una buena campana simple ya sacaba **0.986/1.0**: el salto casi no mejoraba la vara y no tenía una consecuencia visible. El intento siguiente tampoco quedó validado: un rival de un solo grupo llegó a **0.67/1.0**, el evento casi no lo distinguía de la verdad (débito esperado **31.1 vs 30.0**) y el aviso de error no podía ocurrir en 5/6 pruebas. **Conclusión: el 0/9 espontáneo es real; la planta todavía no demuestra que evitar el salto sea irracional.** |
+| **Régimen oculto** | ✅ **Régimen oculto — Proceso con umbral** (`count_regime`; v0: quiebre visible · v1: fallo del propio modelo visible) | La primera situación midió aceptación, no generación. En la segunda: **0/9 sin fallo visible → 30/30 con el fallo del propio modelo a la vista**. Sabemos que el choque puede disparar este salto en ese modelo y ese mundo; todavía no que sea el único motor. |
 | **Transferencia estructural** | ✅ **Transferencia de la regla local — Dos dominios gemelos** (`overgen`) | Par medido en su era. |
 | **Entidad oculta, geometría, unificación, invariante, observador, realimentación, conservación y memoria** | Sin experimento todavía | — |
 

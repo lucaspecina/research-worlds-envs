@@ -11,12 +11,21 @@
 > Claude trabaja como worker persistente de implementación, ejecución y contrapunto. Roles,
 > enforcement y canal: [`docs/operativa-codex-claude.md`](operativa-codex-claude.md).
 
-> **NOMENCLATURA VIGENTE (ADR 0178):** toda corrida se presenta desde el salto hacia abajo:
-> **experimento · mundo · tarea · condición · agente · instancia del mundo · semilla**. Un
-> experimento es el paquete completo; tiene nombre humano `Salto — prueba — mundo` e ID
-> `exp__salto__mundo__tarea__contraste__vN`. `D1/D2/P1/P2`, “brazo” y “polo”
-> quedan solo como alias históricos; ningún pedido de GO usa esos códigos como título. Explicación
+> **NOMENCLATURA VIGENTE (ADR 0179; refina 0178):** toda corrida se presenta desde el salto
+> hacia abajo: **experimento · mundo · tarea · condición · agente · instancia del mundo ·
+> semilla**. Un experimento construye un mundo+tarea+puntaje donde el salto permite encontrar el
+> modelo bueno; su pregunta principal siempre es si el agente lo descubre y realiza. Pistas,
+> avisos, presión y consecuencias responden subpreguntas dentro del experimento. Nombre humano:
+> `Salto — situación investigativa`; ID: `exp__salto__situacion__vN`. `D1/D2/P1/P2`, “brazo” y
+> “polo” quedan solo como alias históricos; ningún pedido de GO usa esos códigos como título. Explicación
 > en llano: [WIKI §3](../WIKI.md#cómo-ordenamos-y-nombramos-una-investigación).
+
+> **FOCO ACTUAL (decisión de Lucas, 2026-08-11):** volver al objetivo primario del programa de
+> saltos. Diseñar desde cero **un solo mundo** donde pasar de una población aparente a dos tipos
+> persistentes sea necesario para encontrar el modelo bueno; luego medir si el agente descubre y
+> realiza ese salto. Las comparaciones con pista, error visible o presión son controles y
+> subpreguntas posteriores. **El gemelo queda deliberadamente fuera de esta etapa** y podrá
+> agregarse después. No hay mundo nuevo aprobado ni corridas autorizadas todavía.
 
 > **REGLA DE NAVEGACIÓN (Lucas, 2026-07-31): avanzar y volver a mirar un paso arriba.**
 > Trabajamos con una hipótesis concreta, la probamos pronto y usamos el resultado para decidir;
@@ -447,10 +456,11 @@
 > consecuencias visibles"*. **CONFIRMACIÓN EN PAUSA.**
 >
 > **DISEÑO Y VALIDACIÓN EJECUTADOS; EXPERIMENTO CANCELADO ANTES DE LA TANDA PRINCIPAL
-> (2026-08-11) — “GRUPOS ESCONDIDOS — ERROR DEL MODELO A LA VISTA — PLANTA A ALTA
-> TEMPERATURA” (`exp__grupos-escondidos__planta-alta-temperatura__modelo-para-piloto__error-explicito__v1`;
-> alias histórico `D2`):** pregunta: ¿la comparación explícita entre lo predicho y lo ocurrido
-> provoca el salto?; tarea:
+> (2026-08-11) — “GRUPOS ESCONDIDOS — PLANTA A ALTA TEMPERATURA” (ID histórico
+> `exp__grupos-escondidos__planta-alta-temperatura__modelo-para-piloto__error-explicito__v1`;
+> alias histórico `D2`):** la pregunta principal debía ser si el agente descubría y realizaba el
+> salto. La subpregunta estudiada era si la comparación explícita entre lo predicho y lo ocurrido
+> ayudaba a provocarlo; tarea:
 > reconstruir el proceso y mantener un modelo registrado para el piloto de decisión en T=1.3;
 > vara log-score (CRPS revertido con datos: pagaba ≤0.07 hasta con 7σ) + anclaje rung-0
 > (0 = mejor rival sin salto, congelado) + física D1+pi(T) (única desviación, scan de la
@@ -463,9 +473,9 @@
 > la solución servida APAGÓ la verificación (D_pre 0.00 en 2/3, el gemelo se tragó la
 > pista falsa y perdió — conexión canal-contenido vicio 1). Seis rondas de pistas cazaron
 > SEIS bugs de harness/interfaz antes de la tanda (~USD 9, declarado).
-> [Ficha completa](research/2026-08-11-ficha-mundo-d2-decision.md). **PRÓXIMO PASO:
-> GO/ajuste/no-va de Lucas sobre la ficha → técnico → tanda 2 condiciones × 2 mundos × 10
-> (~USD 20-25) → análisis congelado → dossier.**
+> [Ficha completa](research/2026-08-11-ficha-mundo-d2-decision.md). **PRÓXIMO PASO QUE SE
+> PROPUSO EN ESE MOMENTO — SUPERSEDIDO:** GO/ajuste/no-va de Lucas sobre la ficha → técnico →
+> tanda 2 condiciones × 2 mundos × 10 (~USD 20-25) → análisis congelado → dossier.
 >
 > **CORRECCIÓN POSTERIOR (2026-08-11) — ESTE EXPERIMENTO SE CERRÓ, NO CORRER:** un control decisivo y
 > reproducible encontró un rival unimodal asimétrico que obtiene S_log medio **0.671** y
@@ -474,20 +484,22 @@
 > **31.1 vs 30.0** con el piloto de 60 lotes. En las pistas, solo 1/6 tenía modelo al turno 8; para
 > las otras 5/6 la condición **error señalado** no podía mostrar la comparación que la define.
 > La prueba congelada con **idea nombrada** también dio 0/3 en S≥0.5 y no puede rescatarse
-> repartiendo sus requisitos con el control de techo. **Veredicto: PIVOTEAR EL ANFITRIÓN,
-> mantener pregunta y maquinaria; cero tanda y cero tuning adicional en este mundo.** Próximo
-> paso sujeto a GO de Lucas: especificar un
-> slice corto y puro de dos tipos persistentes versus heterogeneidad continua, puntuado sobre
-> predicciones conjuntas/repetidas y certificado contra rivales fuertes antes de un único
-> control apareado con pistas. [Auditoría y diseño mínimo §8](research/2026-08-11-ficha-mundo-d2-decision.md)
+> repartiendo sus requisitos con el control de techo. **Veredicto: ABANDONAR ESTE ANFITRIÓN Y
+> VOLVER AL SALTO; cero tanda y cero tuning adicional en esta planta.** La subpregunta de error
+> visible no se conserva como objetivo. Próximo paso sujeto a GO de Lucas: definir desde cero un
+> mundo y una tarea donde dos tipos persistentes sean necesarios para ganar; certificarlo contra
+> rivales fuertes; y recién entonces usar la idea nombrada como control de resolubilidad.
+> [Auditoría y diseño mínimo §8](research/2026-08-11-ficha-mundo-d2-decision.md)
 > · control: `scripts/audit_d2_strong_unimodal.py`.
 >
 > **NOTA DE DIRECCIÓN 2026-08-11:** Strategic Play queda como inspiración para separar
 > evidencia→modelo→acción, no como métrica importada ni réplica de D1 ([método](como-medimos.md)).
 > La infraestructura admite 30+ turnos, pero los mundos actuales no los necesitan; el horizonte
-> largo debe nacer de dependencias reales, no de un límite mayor ([auditoría](research/2026-08-10-anatomia-casos-reales-requisitos-mundo-realista.md)). El orden D2→largo vs largo primero sigue abierto.
+> largo debe nacer de dependencias reales, no de un límite mayor ([auditoría](research/2026-08-10-anatomia-casos-reales-requisitos-mundo-realista.md)). Esa línea queda como decisión futura:
+> no se mezcla ahora con la construcción limpia del experimento de grupos escondidos.
 >
-> **PRÓXIMO PASO (2026-08-10): rediseño A LUCAS antes de gastar — "cuánto paga el salto" como
+> **[SUPERSEDIDO POR EL FOCO ACTUAL] PRÓXIMO PASO PROPUESTO EL 2026-08-10:** rediseño a Lucas
+> antes de gastar — "cuánto paga el salto" como
 > variable de diseño**: (i) vara CRPS (distribución completa, cero-LLM — una campana no la
 > finge) + headroom re-certificado contra el MEJOR rival sin estructura; (ii) paga en el mundo
 > (consecuencias de decisión); (iii) visibilidad de la paga (nada / a-pedido / rebote — une D1

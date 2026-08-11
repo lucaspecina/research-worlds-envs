@@ -158,9 +158,10 @@ agentes ni una razón para convertir KellyBench en el centro del proyecto.
 3. **Adquisición y asimilación se separan.** Una versión garantiza que el mismo dato llegue de
    forma natural para medir incorporación; otra permite que dependa del experimento elegido
    para medir la cadena completa.
-4. **Los mundos vienen en pares o tríos.** Ante superficies similares debe existir un polo
-   donde cambiar gana, otro donde mantener gana y, cuando corresponda, uno donde la respuesta
-   correcta sea parcial o más incierta.
+4. **Primero se valida el mundo que instancia el fenómeno.** En la etapa inicial alcanza con
+   demostrar que la jugada buscada es necesaria, alcanzable y ejecutable en un mundo. Los pares
+   o tríos se agregan después cuando haga falta probar calibración bilateral o derrotar un
+   reflejo; no bloquean la construcción del anfitrión base.
 5. **El prefijo y el estado previo se igualan cuando se afirma causalidad.** Los forks parten
    del mismo trabajo y varían una condición. Comparar mundos o horizontes distintos habla de
    generalización, no identifica por sí solo una causa.
@@ -170,8 +171,8 @@ agentes ni una razón para convertir KellyBench en el centro del proyecto.
 6. **La longitud es una perilla.** Ningún número fijo de rondas representa “trayectoria larga”.
 7. **La dificultad operativa se controla.** Escribir código inválido, olvidar el protocolo o
    perder contexto no se confunde con juicio epistémico.
-8. **Las estrategias reflejas deben perder.** Cambiar siempre, mantener siempre, ensanchar
-   siempre y copiar la última señal deben fallar en algún gemelo certificado.
+8. **Las estrategias reflejas se controlan en una etapa posterior.** Si el claim incluye saber
+   cuándo cambiar, mantener o ensanchar, se agrega entonces un control donde el reflejo pierda.
 9. **La creencia previa debe ser sustantiva.** Que `Mpre` compile no demuestra que exista
    algo relevante para revisar. Antes del fork se certifica que sus predicciones responden
    al mecanismo o alcance que el tratamiento podría racionalmente conservar o cambiar.
@@ -284,7 +285,8 @@ Antes de firmar un mundo, interpretar una corrida o pivotear el programa, respon
    propagación están materializados? Un nulo no informa sobre un eje ausente.
 4. ¿Qué caso real y qué fila de esta guía estamos reproduciendo?
 5. ¿Cómo apareció realmente la evidencia: propia, rutinaria, externa, limpia o mezclada?
-6. ¿Qué respuesta debería ser correcta y qué gemelo derrota el reflejo opuesto?
+6. ¿Qué respuesta debería ser correcta, cuánto supera al mejor rival sin esa jugada y qué control
+   anti-reflejo podría agregarse después si el claim lo requiere?
 7. ¿Estamos midiendo búsqueda, atención, interpretación, asimilación o propagación?
 8. ¿La fricción surge del trabajo que debe rehacerse o la inventamos como señal artificial?
 9. ¿El horizonte reproduce el fenómeno o elegimos una cantidad cómoda de rondas?

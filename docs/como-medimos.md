@@ -82,7 +82,7 @@ de ideas/hipótesis* — justo el polo aha que a nosotros nos cuesta puntuar.
 
 - **Robamos: pensar DISTRIBUCIONALMENTE.** Nuestra crisis de la semana (medianas de n=8 son ruido, la
   varianza corrida-a-corrida ahogó la señal) es EXACTAMENTE lo que este paper resuelve mirando la
-  distribución completa, no puntos. Para el rediseño del experimento de pistas y para E1: reportar
+  distribución completa, no puntos. Para el próximo control de resolubilidad con pistas y para E1: reportar
   **distribuciones de R + tasas con intervalos**, no medianas sueltas; y pensar el perfil de un modelo
   como una **distribución de movidas/firmas** entre muchos mundos, no un número por mundo.
 - **Robamos: la receta de taxonomía con rigor.** Nuestra taxonomía de vicios/ahas se construyó de
@@ -130,9 +130,10 @@ de ideas/hipótesis* — justo el polo aha que a nosotros nos cuesta puntuar.
   de forma como `has_mixture` puede servir para autopsia, no como prueba primaria de que hubo dos grupos.
   [El control que destapó el problema](research/2026-08-11-ficha-mundo-d2-decision.md#81-el-salto-todavía-no-paga-contra-un-rival-fuerte).
 - **La pregunta abierta que este doc deja viva**: ¿cuál es el instrumento DESCRIPTIVO cero-costo-de-
-  gaming que valida que un mundo pega donde debe? Candidatos: (a) la pista dirigida (en rediseño,
-  ADR 0122); (b) los robots hábito/juicio (certificado del par); (c) un anotador de movidas off-reward
-  estilo §1.6. Los tres son descriptivos; ninguno toca la nota. Elegir/combinar es trabajo de diseño.
+  gaming que valida que un mundo pega donde debe? Candidatos: (a) la idea nombrada como control de
+  resolubilidad —una subpregunta, no el experimento—; (b) modelos testigo que comparan salto vs mejor
+  rival sin salto; (c) un anotador de movidas off-reward estilo §1.6. Los tres son descriptivos;
+  ninguno toca la nota. Elegir/combinar es trabajo de diseño.
 
 *(Doc vivo. Cada paper nuevo que MIDA juicio/vicios/ideas entra acá con su método + reflexión, además
 de a `lectura-de-fuentes.md` con su hallazgo.)*

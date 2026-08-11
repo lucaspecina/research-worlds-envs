@@ -14,10 +14,12 @@ saltos creativos.*
 [WIKI-FALLAS](WIKI-FALLAS.md) (dónde se rompe el ciclo) · [WIKI](WIKI.md) (la máquina que
 lo mide) · [docs/saltos.md](docs/saltos.md) (el fondo con fuentes).
 
-**Cómo se conectan los nombres:** el **salto** es la jugada conceptual; el **mundo** hace que
-esa jugada sea correcta o equivocada; la **tarea** dice qué debe hacer el agente; el
-**experimento WAGER** pregunta cuándo aparece; y las **fallas** localizan en qué paso del ciclo
-se perdió. El vocabulario completo y la forma de nombrar corridas están en
+**Cómo se conectan los nombres:** el **salto** es la jugada conceptual que queremos observar;
+el **experimento WAGER** construye un mundo, una tarea y un puntaje donde esa jugada permite
+encontrar el modelo bueno; su pregunta principal es si el agente la descubre y la realiza; y
+las **fallas** localizan en qué paso del ciclo se perdió. Preguntar cuándo aparece, qué la
+dispara o por qué falla produce subpreguntas y condiciones dentro de ese experimento. El
+vocabulario completo y la forma de nombrar corridas están en
 [WIKI — Cómo ordenamos una investigación](WIKI.md#cómo-ordenamos-y-nombramos-una-investigación).
 
 ## 1. No todo problema es igual: las tres familias de "resolver"

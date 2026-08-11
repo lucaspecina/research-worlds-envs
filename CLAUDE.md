@@ -12,6 +12,12 @@ saltos (creatividad = generar el candidato); paraguas secundario: revisión de c
 objetivo: si el mundo no materializa el fenómeno, se cambia el mundo antes de ampliar
 infraestructura o cantidad de corridas.
 
+**Jerarquía experimental vigente (ADR 0179):** se elige un salto y se construye un mundo+tarea+
+puntaje donde realizarlo permite encontrar el modelo bueno. La pregunta principal siempre es si
+el agente descubre y realiza el salto. Pistas, error visible, presión y consecuencias son
+subpreguntas o controles dentro de ese experimento, no experimentos nuevos. Para el foco actual de
+grupos escondidos se valida primero un solo mundo; el gemelo queda para una etapa posterior.
+
 **Dos fases que no se mezclan (ADR 0173):** durante descubrimiento, probar variaciones sustantivas
 con microhipótesis previas, agentes reales baratos y autopsia; durante confirmación, congelar la
 pregunta, diseño, métricas e instancias y validar en frontier held-out. Una falla ajena al foco que

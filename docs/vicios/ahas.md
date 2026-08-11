@@ -1,7 +1,8 @@
 # Las operaciones de aha (los espejos) — y el hallazgo incómodo sobre su evidencia
 
-> Etiquetas y marco: ver [README](README.md). Doctrina intacta: SIEMPRE de a pares (el vicio y
-> el aha son polos de la misma operación; el par impide ganar con un reflejo fijo).
+> Etiquetas y marco: ver [README](README.md). El catálogo conserva pares **conceptuales**: toda
+> operación útil tiene un riesgo opuesto. Eso no obliga a construir dos mundos desde el comienzo;
+> el gemelo experimental puede agregarse después de validar el mundo base (ADR 0179).
 
 ## El hallazgo transversal (Codex r22, confirmado por las vías externas)
 

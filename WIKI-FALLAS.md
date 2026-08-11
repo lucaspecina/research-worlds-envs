@@ -8,9 +8,10 @@ paso por paso, con la falla de cada uno, nuestro espécimen medido, y lo que doc
 profesiones que investigan por oficio (espías, jueces, médicos).
 
 **Salto y falla no son lo mismo.** El salto nombra la jugada que hacía falta —por ejemplo,
-separar una población en dos grupos—; la falla dice **dónde se perdió** esa jugada. El mismo
-salto puede no nacer al generar candidatos, puede ser descartado al actualizar o puede quedar
-afuera de la entrega. Por eso un resultado siempre debe nombrar las dos cosas.
+separar una población en dos grupos—; la falla dice **dónde se perdió** esa jugada. El
+experimento se construye primero para observar si el agente descubre y realiza el salto. Después,
+las subpreguntas y la autopsia localizan si no nació al generar candidatos, fue descartado al
+actualizar o quedó afuera de la entrega. Por eso un resultado siempre debe nombrar las dos cosas.
 
 ---
 
