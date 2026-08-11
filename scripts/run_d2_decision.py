@@ -63,7 +63,7 @@ PILOT_N = 60
 DEBIT_SCALE = 600.0
 DEBIT_CAP = 150.0
 NO_MODEL_DEBIT = 100.0
-MAX_TURNS = 14
+MAX_TURNS = 16
 
 PISTA_SEEDS = [99720, 99721, 99722]     # QUEMADAS (certificación; 99700-99722
                                         # bloques previos descartados: bugs #1/#2 +
@@ -230,15 +230,28 @@ def run_episode_d2(srv, pole: str, params: dict, arm: str, model: str,
     _orig_submit = srv.submit
 
     def submit(self, code: str):
+        from wager.contracts.episode import SubmitResult
         if not self._d1.get("decision_fired"):
-            from wager.contracts.episode import SubmitResult
             self._d1["early_submits"].append({"turn": self._turn})
             self._log("submit", {"accepted": False}, 0.0, note="early submit deferred")
             return SubmitResult(accepted=False, error=(
                 "the plant's calendar has a scheduled operating decision pending; "
                 "final models are accepted once it has run. You may keep working "
                 "and register provisional models meanwhile."))
-        return _orig_submit(code)
+        try:
+            return _orig_submit(code)
+        except Exception as e:
+            # el rechazo del sandbox vuelve como RESPUESTA con la receta, no como
+            # traceback crudo (pistas r4: 3 reintentos con getattr + turnos muertos)
+            self._log("submit", {"accepted": False}, 0.0, note=f"lint reject: {e!r}")
+            return SubmitResult(accepted=False, error=(
+                f"submission rejected by the evaluation sandbox: {e}. Your code must "
+                "be SELF-CONTAINED (include your own `import numpy as np` / "
+                "`import pandas as pd`) and use plain attribute access "
+                "(`regime.config[\'T\']` or `regime.config.get(\'T\')`); dynamic names "
+                "like getattr/eval/exec and dunder access are forbidden. Fix and "
+                "resubmit — env.register_model(code) returns `final_gate_check` so "
+                "you can pre-validate the exact code."))
 
     srv.submit = types.MethodType(submit, srv)
 
