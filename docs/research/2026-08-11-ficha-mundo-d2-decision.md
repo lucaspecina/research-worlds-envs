@@ -32,6 +32,11 @@ experimentos, monitoreo, piloto).
 ## 2. Qué mide (el endpoint, congelado)
 
 **Primario: ¿ESCRIBE la estructura?** (flag mecánico `has_mixture`) por brazo × polo.
+**Alcance del constructo (dos ejes de Lucas, 2026-08-11)**: D2 manipula el eje del SABER
+(cómo llega la señal de desajuste: disponible-en-datos vs masticada) con PRESIÓN constante y
+modesta (el débito). El eje de la presión (rival, mandato, norma interna — incluso sin saber)
+queda como perilla de rondas futuras; el "mundo Einstein" (predicciones iguales, solo
+elegancia) registrado como familia C4 en anatomía-de-la-paga §F.
 La pregunta de Lucas: *¿cuánto necesitan que se lo muestren para que les importe?* — con
 el costo ya puesto (el débito corre en ambos brazos).
 

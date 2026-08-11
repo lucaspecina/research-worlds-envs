@@ -115,3 +115,30 @@ vía 1+3: el rebote es un rival-mundo que ejecuta).
    es FALSA — Pearson, Reynolds, Planck y Neptuno SÍ pagaron en fit; C3-C4 muestran saltos
    sin cobro. Lo válido: **"el fit no necesita pagar siempre"** — la paga-en-fit es una
    REGIÓN de la perilla, no una prohibición. Crítico después y coherencia como techo: OK.
+
+## F. Los dos ejes (Lucas, 2026-08-11): SABER ≠ PRESIÓN
+
+**Distinción de Lucas**: ¿es lo mismo *saber que el modelo no cierra* que *la presión para
+cambiarlo*? NO — dos ejes separables; la escalera del cobro los mezclaba:
+
+- **SABER**: la señal de desajuste llega (propio análisis → datos servidos → te lo dicen →
+  te chocás). Es lo que D2 manipula (brazos SILENCIO/REBOTE) con presión constante.
+- **PRESIÓN**: el empuje a mejorar, SEPA O NO que está mal (consecuencias, rival que
+  compite, mandato, norma interna). Puede operar sin saber: *"quizás nunca sabe si está
+  bien o mal pero tiene tanta presión que intenta igual — y encuentra un modelo más
+  elegante con las MISMAS predicciones"* (Lucas).
+
+Grilla 2×2 con casos: sin-saber/sin-presión = D1 (nadie se mueve) · saber/presión = rung 0
+(30/30) · **Rayleigh = saber auto-generado** (su 0.5% no cerraba) · **Einstein 1905 =
+presión pura sin saber posible** (nada fallaba; fealdad de dos explicaciones → C4).
+Los dos motores "internos" son DISTINTOS.
+
+**Consecuencia de vara**: la presión-sin-saber produce mejoras de ELEGANCIA con predicciones
+iguales — invisibles para toda vara predictiva (log-score incluida). Medirla exige el segundo
+bolsillo (simplicidad/MDL, hoy apagado) y una familia de mundos nueva: **el "mundo Einstein"
+(C4)** — dos formulaciones predictivamente equivalentes en todo lo alcanzable, separadas solo
+por elegancia; ¿la presión sola empuja la reescritura? Registrada como familia futura.
+
+**Operacional hoy**: D2 = eje SABER con presión modesta constante (declarado en ficha);
+descriptivo nuevo congelable: re-registros de modelo sin señal previa de desajuste (proxy de
+presión interna).
