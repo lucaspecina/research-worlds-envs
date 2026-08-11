@@ -14,8 +14,10 @@ en el ciclo de indagar) · [WIKI-FALLAS](WIKI-FALLAS.md) (por qué no aparece).
 
 **El salto es siempre el punto de partida.** Después construimos un experimento: un mundo, una
 tarea y un puntaje donde cambiar la forma del modelo sea necesario para encontrar la respuesta
-buena. La pregunta principal es siempre si el agente descubre y realiza ese salto. Las preguntas
-sobre cuándo, por qué o con qué ayuda aparecen después, como subpreguntas del mismo experimento.
+buena. Primero resolvemos preguntas de diseño: si el salto es necesario, si la evidencia permite
+descubrirlo y si la tarea deja expresarlo. La pregunta principal es siempre si el agente descubre
+y realiza ese salto. Las preguntas sobre cuándo, por qué o bajo qué condición aparecen después,
+como subpreguntas científicas del mismo experimento.
 La gramática completa está en
 [WIKI — Cómo ordenamos una investigación](WIKI.md#cómo-ordenamos-y-nombramos-una-investigación).
 
@@ -29,8 +31,8 @@ La gramática completa está en
 - **Pregunta principal:** ¿el agente descubre y realiza el salto de una población aparente a dos
   tipos persistentes?
 - **Primer control de construcción:** con la idea de “dos tipos” nombrada, pero sin la solución,
-  ¿puede investigarla, implementarla y mejorar claramente? Es una prueba de resolubilidad, no la
-  pregunta principal.
+  ¿puede investigarla, implementarla y mejorar claramente? Es una validación del diseño que usa
+  un agente; no es la pregunta principal ni una subpregunta científica todavía.
 - **Gemelo:** fuera de esta etapa; podrá agregarse después como control anti-reflejo.
 - **Corridas autorizadas ahora:** ninguna.
 

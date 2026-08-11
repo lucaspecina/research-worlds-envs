@@ -17,8 +17,12 @@ para medir — sin jueces LLM — dónde exactamente se les rompe el proceso de 
   diseño. Ejemplo: **grupos escondidos**, pasar de una población a dos tipos.
 - **Pregunta principal**: siempre tiene la misma forma: **¿el agente descubre y realiza el
   salto?**
-- **Subpregunta**: pregunta cuándo, por qué o bajo qué condición aparece el salto. “Con pista”,
-  “con error visible” y “con más presión” son subpreguntas o controles; no experimentos nuevos.
+- **Pregunta de diseño**: comprueba si el mundo, la evidencia, la tarea y el puntaje hacen que el
+  salto sea necesario, descubrible y ejecutable. Si falla, se cambia el diseño; todavía no se
+  interpreta como una falla del agente.
+- **Subpregunta científica**: pregunta cuándo, por qué o bajo qué condición aparece el salto en
+  un mundo ya validado. “Con error visible” y “con más presión” son ejemplos; no experimentos
+  nuevos.
 - **Mundo**: un programa que genera datos con una verdad escondida adentro. Si cambia la verdad,
   cambia el mundo.
 - **Gemelo**: control anti-reflejo que puede agregarse después: un mundo parecido donde realizar
@@ -164,9 +168,10 @@ escalera anterior. Resultado histórico que motivó la separación: nombrar la i
   contra el mejor rival fuerte), alcanzabilidad de la evidencia y anti-memorización.
 - **Prueba de resolubilidad con agente**: el mismo agente, con la idea nombrada pero sin la
   solución, debe poder investigar, implementar el salto y mejorar. Complementa la matemática;
-  no la reemplaza. Su diferencia frente al mismo agente sin ayuda informa cuánto costó descubrir
-  la idea, pero es una subpregunta de validación. Su alcance es siempre mundo + tarea + agente +
-  ayuda concretos; no valida “el mundo” en abstracto.
+  no la reemplaza. Antes de validar el mundo es una pregunta de diseño, aunque use un agente. Sobre
+  un mundo ya validado, una comparación pre-registrada con y sin ayuda sí puede convertirse en una
+  subpregunta científica. Su alcance es siempre mundo + tarea + agente + ayuda concretos; no valida
+  “el mundo” en abstracto.
 - **Rival fuerte**: el mejor modelo SIN el salto (en **Conteos por lote**, `count_mix`: gamma
   continua con persistencia).
   Toda vara se ancla contra él, no contra un rival de paja.

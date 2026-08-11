@@ -130,9 +130,9 @@ de ideas/hipótesis* — justo el polo aha que a nosotros nos cuesta puntuar.
   de forma como `has_mixture` puede servir para autopsia, no como prueba primaria de que hubo dos grupos.
   [El control que destapó el problema](research/2026-08-11-ficha-mundo-d2-decision.md#81-el-salto-todavía-no-paga-contra-un-rival-fuerte).
 - **La pregunta abierta que este doc deja viva**: ¿cuál es el instrumento DESCRIPTIVO cero-costo-de-
-  gaming que valida que un mundo pega donde debe? Candidatos: (a) la idea nombrada como control de
-  resolubilidad —una subpregunta, no el experimento—; (b) modelos testigo que comparan salto vs mejor
-  rival sin salto; (c) un anotador de movidas off-reward estilo §1.6. Los tres son descriptivos;
+  gaming que valida que un mundo pega donde debe? Candidatos: (a) la idea nombrada como pregunta de
+  diseño y control de resolubilidad —no una subpregunta científica—; (b) modelos testigo que comparan
+  salto vs mejor rival sin salto; (c) un anotador de movidas off-reward estilo §1.6. Los tres son descriptivos;
   ninguno toca la nota. Elegir/combinar es trabajo de diseño.
 
 *(Doc vivo. Cada paper nuevo que MIDA juicio/vicios/ideas entra acá con su método + reflexión, además

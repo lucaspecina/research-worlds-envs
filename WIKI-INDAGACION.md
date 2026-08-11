@@ -17,8 +17,10 @@ lo mide) · [docs/saltos.md](docs/saltos.md) (el fondo con fuentes).
 **Cómo se conectan los nombres:** el **salto** es la jugada conceptual que queremos observar;
 el **experimento WAGER** construye un mundo, una tarea y un puntaje donde esa jugada permite
 encontrar el modelo bueno; su pregunta principal es si el agente la descubre y la realiza; y
-las **fallas** localizan en qué paso del ciclo se perdió. Preguntar cuándo aparece, qué la
-dispara o por qué falla produce subpreguntas y condiciones dentro de ese experimento. El
+las **fallas** localizan en qué paso del ciclo se perdió. Antes de observar al agente, las
+preguntas de diseño comprueban que el mundo vuelve el salto necesario y descubrible. Después,
+preguntar cuándo aparece, qué lo dispara o por qué falla produce subpreguntas científicas y
+condiciones dentro de ese experimento. El
 vocabulario completo y la forma de nombrar corridas están en
 [WIKI — Cómo ordenamos una investigación](WIKI.md#cómo-ordenamos-y-nombramos-una-investigación).
 

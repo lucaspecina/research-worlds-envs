@@ -105,8 +105,8 @@ hacer trampa: no hay opinión que engañar, solo comportamiento que reproducir.
 
 El orden que manda es este:
 
-> **salto → experimento que lo vuelve necesario → partidas que muestran si aparece →
-> subpreguntas sobre cuándo y por qué**
+> **salto → preguntas de diseño → mundo y tarea → validación del diseño → partidas que muestran
+> si aparece → subpreguntas científicas sobre cuándo y por qué**
 
 Llamamos **experimento** al paquete construido alrededor de **un salto**. Su corazón es un
 mundo, una tarea y una forma de puntuar donde realizar ese salto permite encontrar un modelo
@@ -126,9 +126,15 @@ Todo experimento contiene:
   que no dan el salto y se acerca al modelo bueno;
 - **tandas**: qué agentes jugaron qué partidas.
 
-“¿Aparece con una pista?”, “¿necesita ver fallar su modelo?” o “¿qué presión lo mueve?” son
-**subpreguntas del mismo experimento**. Pueden requerir condiciones y tandas distintas, pero no
-reemplazan la pregunta principal ni convierten cada contraste en un experimento nuevo.
+Sobre un mundo ya validado, “¿aparece con una pista?”, “¿necesita ver fallar su modelo?” o “¿qué
+presión lo mueve?” son **subpreguntas científicas del mismo experimento**. Pueden requerir
+condiciones y tandas distintas, pero no reemplazan la pregunta principal ni convierten cada
+contraste en un experimento nuevo.
+
+Antes de esas preguntas sobre el agente están las **preguntas de diseño del mundo**: ¿qué datos
+permiten descubrir el salto?, ¿el salto mejora de verdad?, ¿el mejor modelo sin salto pierde?,
+¿la tarea permite investigar y expresar la idea? Estas preguntas no buscan explicar la conducta
+del agente: deciden si construimos un instrumento válido o si debemos cambiarlo.
 
 Una **partida / episodio** es una sola ejecución dentro del experimento. Dentro de esa partida,
 lo que el agente compra para poner una hipótesis a prueba se llama **ensayo**. Así “experimento”
@@ -139,9 +145,13 @@ es necesario para llegar al modelo bueno, que mejora claramente frente al mejor 
 salto y que la evidencia para descubrirlo está al alcance. La **prueba de resolubilidad con
 agente** comprueba que el mismo agente, con la idea nombrada pero sin la solución, puede investigar
 e implementar el salto. Compararlo con el agente sin ayuda es un control muy informativo sobre la
-dificultad de descubrir la idea, pero sigue siendo una **subpregunta de validación**, no el objetivo
-del experimento. Una solución casi regalada es solo un **control de techo**, nunca una medida de
-descubrimiento.
+dificultad de descubrir la idea, pero en esta etapa es una **prueba del diseño**, no una subpregunta
+científica ni el objetivo del experimento. Una solución casi regalada es solo un **control de
+techo**, nunca una medida de descubrimiento.
+
+La misma ayuda puede cumplir dos papeles distintos. **Antes** de validar el mundo, una partida con
+la idea nombrada pregunta “¿este diseño es resoluble?”. **Después**, sobre un mundo ya validado, un
+contraste pre-registrado con y sin ayuda puede responder una subpregunta científica sobre el agente.
 
 La nota mide la **consecuencia** del salto, no palabras ni una forma específica de código. Después
 podemos mirar la traza para entender qué representación usó el agente, pero esa lectura nunca entra
@@ -209,9 +219,9 @@ Una partida se identifica así:
 
 > **ID del experimento · mundo · tarea · condición · agente · instancia · semilla**
 
-Y todo pedido de GO muestra, antes del costo: nombre e ID del experimento, salto, pregunta
-principal, subpregunta o control de esa tanda, perfil del mundo, tarea, condiciones, medida
-principal y composición exacta de la tanda.
+Y todo pedido de GO muestra, antes del costo: nombre e ID del experimento, salto, etapa
+(construcción, validación o estudio), pregunta de diseño o pregunta científica de esa tanda,
+perfil del mundo, tarea, condiciones, medida principal y composición exacta de la tanda.
 Nunca más “corramos D2”.
 
 ## 4. Una partida, paso a paso ✅
@@ -431,8 +441,10 @@ Las preguntas grandes, abiertas de verdad — y algunas necesitan un salto creat
 - **Experimento WAGER**: el paquete construido alrededor de un salto: mundo, tarea y puntaje donde
   saltar permite encontrar el modelo bueno, más sus condiciones, controles y tandas.
 - **Pregunta principal**: siempre la misma forma: ¿el agente descubre y realiza el salto?
-- **Subpregunta**: cuándo, por qué o bajo qué condición aparece; orienta un contraste o una tanda,
-  no crea por sí sola otro experimento.
+- **Pregunta de diseño**: comprueba si el mundo, la evidencia, la tarea y el puntaje hacen que el
+  salto sea necesario, descubrible y ejecutable.
+- **Subpregunta científica**: cuándo, por qué o bajo qué condición el agente salta; orienta un
+  contraste o una tanda, no crea por sí sola otro experimento.
 - **Condición**: la combinación exacta de ayuda, aviso y consecuencias de una partida.
 - **Episodio / partida**: una corrida donde una IA investiga un mundo con presupuesto y entrega
   un modelo.

@@ -47,10 +47,11 @@ chequeos y ESCRIBE la estructura sin que nadie la golpee? Si sí → la norma qu
 1. **El reward PAGA el salto** (ADR 0175: rival vago óptimo pierde fuerte; vara de forma
    completa/CRPS). Existencial: contra la vara de D1, el RL habría aprendido la **vagancia
    óptima** (campana afinada = 0.986 gratis). El freno de Lucas salvó E2 antes de que exista.
-2. **Resolubilidad con agente** (ADRs 0176/0177/0179): con la idea nombrada, pero sin la
-   solución, el agente debe poder investigar e implementar el salto. Compararlo con la condición
-   sin ayuda informa la dificultad de descubrirlo; es un control previo, no el objetivo del
-   experimento. La solución servida queda solo como control de techo.
+2. **Resolubilidad con agente** (ADRs 0176/0177/0179/0180): con la idea nombrada, pero sin la
+   solución, el agente debe poder investigar e implementar el salto. En esta etapa es una pregunta
+   de diseño y un control previo, no el objetivo ni una subpregunta científica del experimento.
+   Compararlo con la condición sin ayuda puede estudiar la dificultad de descubrirlo recién sobre
+   un mundo ya validado. La solución servida queda solo como control de techo.
 3. **Diversidad de mundos** (la fábrica, hoy pausada): sin ella, el RL memoriza los 11
    operadores y no generaliza al 12 — la fábrica vuelve a ser central en E2.
 4. Test de contaminación constitutivo (Magnani: creatividad relativa al repertorio).

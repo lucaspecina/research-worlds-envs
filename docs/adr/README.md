@@ -190,3 +190,4 @@
 | 0177 | v1.77 | 2026-08-10 | [LOS AGENTES CON PISTAS + escalera P1 solución-regalada / P2 idea-nombrada / P3 dirección](0177-los-agentes-con-pistas-nombre-y-escalera.md) | Contenido de ayudas vigente; nombres numéricos supersedidos por 0178 y jerarquía refinada por 0179 |
 | 0178 | v1.78 | 2026-08-11 | [Experimento como paquete completo + nombres e IDs semánticos para experimentos, mundos y partidas](0178-nomenclatura-orientada-al-salto.md) | Supersedido parcialmente por 0179 en jerarquía y nombres; conserva niveles y trazabilidad |
 | 0179 | v1.79 | 2026-08-11 | [El experimento se centra en el salto; subpreguntas subordinadas y gemelo posterior](0179-experimento-centrado-en-el-salto.md) | Vigente — foco actual: un mundo base de grupos escondidos |
+| 0180 | v1.80 | 2026-08-11 | [Separar preguntas de diseño de subpreguntas científicas](0180-preguntas-de-diseno-y-subpreguntas-cientificas.md) | Vigente — la resolubilidad con idea nombrada valida primero el diseño |

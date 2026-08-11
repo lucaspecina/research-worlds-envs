@@ -14,8 +14,9 @@
 > **NOMENCLATURA VIGENTE (ADR 0179; refina 0178):** toda corrida se presenta desde el salto
 > hacia abajo: **experimento · mundo · tarea · condición · agente · instancia del mundo ·
 > semilla**. Un experimento construye un mundo+tarea+puntaje donde el salto permite encontrar el
-> modelo bueno; su pregunta principal siempre es si el agente lo descubre y realiza. Pistas,
-> avisos, presión y consecuencias responden subpreguntas dentro del experimento. Nombre humano:
+> modelo bueno; su pregunta principal siempre es si el agente lo descubre y realiza. Antes se
+> resuelven preguntas de diseño sobre necesidad, evidencia, tarea y puntaje. Después, avisos,
+> presión y consecuencias pueden responder subpreguntas científicas. Nombre humano:
 > `Salto — situación investigativa`; ID: `exp__salto__situacion__vN`. `D1/D2/P1/P2`, “brazo” y
 > “polo” quedan solo como alias históricos; ningún pedido de GO usa esos códigos como título. Explicación
 > en llano: [WIKI §3](../WIKI.md#cómo-ordenamos-y-nombramos-una-investigación).
@@ -23,8 +24,9 @@
 > **FOCO ACTUAL (decisión de Lucas, 2026-08-11):** volver al objetivo primario del programa de
 > saltos. Diseñar desde cero **un solo mundo** donde pasar de una población aparente a dos tipos
 > persistentes sea necesario para encontrar el modelo bueno; luego medir si el agente descubre y
-> realiza ese salto. Las comparaciones con pista, error visible o presión son controles y
-> subpreguntas posteriores. **El gemelo queda deliberadamente fuera de esta etapa** y podrá
+> realiza ese salto. La idea nombrada se usa primero para validar la resolubilidad del diseño;
+> error visible o presión son subpreguntas científicas posteriores. **El gemelo queda
+> deliberadamente fuera de esta etapa** y podrá
 > agregarse después. No hay mundo nuevo aprobado ni corridas autorizadas todavía.
 
 > **REGLA DE NAVEGACIÓN (Lucas, 2026-07-31): avanzar y volver a mirar un paso arriba.**
