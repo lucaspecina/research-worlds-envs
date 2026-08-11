@@ -83,3 +83,20 @@ vía 1+3: el rebote es un rival-mundo que ejecuta).
 4. Uptake de Wald (Mangel & Samaniego 1984) y paga de Onnes (van Delft & Kes 2010) — apuntados
    y sin leer.
 5. La CURVA del cobro diferido a no-saltadores (Klein & Jarosz 2011, conteos).
+
+## D. El ordenamiento de Lucas (post-lectura — entra a la ficha del paso 4)
+
+1. **Corrección aceptada**: Einstein 1905 SÍ tenía señal — pero de COHERENCIA (dos
+   explicaciones para un mismo fenómeno según el marco), no de predicción fallada. La brecha
+   puede vivir en el ajuste O en la elegancia (los dos bolsillos de la vara). C4 se redefine:
+   no "sin señal" sino "señal solo de coherencia".
+2. **Definición ordenadora (Lucas)**: EL COSTO = la diferencia de calidad de modelo entre dar
+   el salto y no darlo. Tiene que EXISTIR de verdad en el mundo ANTES de discutir quién la
+   muestra (en D1 casi no existía/no se veía: 0.986).
+3. **"Alguien que apriete" NO es alguien que OPINE "está mal"** — eso mediría obediencia
+   (sycophancy, ya documentada: se doblan ante opinión sin datos). El apriete legítimo es que
+   el mundo MUESTRE el modelo fallando con datos (el rebote). El colega entra después y solo
+   señalando evidencia real (Dunbar: te obligan a replicar, no te discuten por autoridad).
+4. **Orden del diseño**: (i) fabricar la diferencia real (no-saltar ⇒ modelo peor en cosas
+   que el mundo cobra); (ii) la perilla de cuán fuerte se muestra (silencio → rebote);
+   (iii) el crítico como eje aparte y posterior; (iv) techo: brecha solo de coherencia.
