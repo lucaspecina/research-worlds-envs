@@ -852,9 +852,9 @@ juegos repetidos 2×2 (800 trials), Kuhn Poker generalizado (400) y The Chameleo
 
 - **BCC (Bayesian Coherence Coefficient) es CERO-LLM**: correlación de Pearson entre los
   cambios de log-odds de la creencia del modelo y los cambios bayesianos correctos computados
-  de un modelo de verosimilitud — mecánico, sin juez. Para `como-medimos.md`: medir-para-
-  describir ejemplar; y nuestro w_v server-side ES la trayectoria bayesiana correcta → un
-  "BCC verbal" post-hoc sobre trazas D2 es computable gratis (candidato, no construido).
+  de un modelo de verosimilitud — mecánico, sin juez. Es un ejemplo limpio de medir una
+  trayectoria y no solo el resultado final. La posible traducción a WAGER queda analizada en
+  `como-medimos.md`; **no se incorpora ninguna métrica ni se modifica D2 por esta lectura**.
 - **La sub-actualización CRECE con el horizonte** (lo que trajo Lucas): *"internal belief
   updates transition from early updating at correct magnitude (slope ≈ 1) to later
   under-updating (slope << 1)"*; el BCC interno cae a menos de la mitad para la ronda 10
@@ -863,10 +863,10 @@ juegos repetidos 2×2 (800 trials), Kuhn Poker generalizado (400) y The Chameleo
 - **El vínculo creencia→acción está ROTO por método causal**: probes internos superan a los
   verbales (saben más de lo que dicen); steering de creencias internas mueve la acción solo
   ~50-70% (≈azar en Kuhn/gpt-oss). *"Internal beliefs have weak causal influence on action
-  selection."* → **réplica externa, por método distinto (probes/intervención en juegos), de
-  nuestro hallazgo D1** (compran y resuelven la evidencia; no la escriben): el eslabón que
-  se rompe es el mismo — de la creencia al artefacto/acción. Va a vicios 8.6/4 como
-  evidencia convergente `[VERIFICADO][AGÉNTICO-juegos, modelos abiertos ≤70B]`.
+  selection."* → **evidencia convergente, no réplica de D1**: ellos sí midieron e intervinieron
+  creencias internas; D1 no lo hizo, solo observó la distancia entre evidencia comprada y modelo
+  entregado. Ambos vuelven plausible una falla entre representar algo y actuar con ello, pero no
+  autorizan afirmar que en D1 los agentes internamente “sabían”.
 - **Sesgos de superficie en creencia→acción**: first-item bias (elige A por posición aunque
   su creencia interna favorezca B).
 - Sin explicación mecanística del decaimiento (lo declaran fenómeno); límites: modelos ≤100B
@@ -878,5 +878,6 @@ juegos repetidos 2×2 (800 trials), Kuhn Poker generalizado (400) y The Chameleo
 **Impacto inmediato**: rival nueva pre-declarada en la ficha D2 ANTES de la tanda — "el
 rebote del turno 8 llega TARDE en el horizonte: si REBOTE no mueve, puede ser deriva de
 sub-actualización tardía (Strategic Play), no indiferencia" — parcialmente separable porque
-REBOTE entrega el desajuste masticado (no exige actualización fina) y la cadena del saber
-separa "no supo" de "supo y no actuó".
+REBOTE entrega el desajuste masticado (no exige actualización fina). La lectura no decide
+adoptar su métrica: primero interesa entender si, con las armas propias de WAGER, podemos separar
+evidencia disponible, reconocimiento explícito, cambio de modelo y acción.

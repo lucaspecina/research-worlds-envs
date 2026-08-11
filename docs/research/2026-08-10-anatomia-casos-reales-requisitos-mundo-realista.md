@@ -338,6 +338,30 @@ contra, Findley & Scott con el fresh look sin propiedad).
 
 ---
 
+## Addendum 2026-08-11 — muchos turnos solo si el mundo los necesita
+
+**Pregunta de Lucas:** ¿WAGER puede sostener una investigación interactiva de 30 o más turnos?
+
+**La maquinaria sí.** El kernel conserva variables y modelos; los lotes mantienen identidad; hay
+acciones con demora, calendario de eventos y modelos registrados que el mundo puede usar. El máximo
+de turnos es configurable.
+
+**Los mundos actuales no.** Se agotan en 5-8 turnos porque contienen una pregunta escondida, dos o
+tres compras que la resuelven, evidencia inmediata, verdad fija y un solo nivel de mecanismo. Subir
+el límite a 50 solo agregaría tiempo vacío.
+
+Un mundo largo debe volver necesarios los pasos: evidencia que llega gradualmente; preguntas
+encadenadas donde una respuesta abre la siguiente; un mecanismo que cambia durante la partida;
+señuelos que cuesta descartar; un interlocutor guionado y mecánico; y análisis con demoras distintas
+que obligan a planificar. No hace falta usar todas las palancas juntas.
+
+**Regla de diseño:** la duración se deriva de dependencias reales del mundo, no de fijar un número
+alto de turnos. Hay que agregar los ejes de a uno y comprobar que seguimos midiendo juicio, no olvido
+o desorganización. D3 (“La línea que corre”) es la familia natural para esta dirección. Sigue abierta
+la decisión de terminar primero el microscopio D2 o pasar antes a un primer slice largo.
+
+---
+
 ## Nivel arriba
 
 - **Aprendizaje real**: no es "faltan ejes". Es que **el corpus documenta un fenómeno acompañado,

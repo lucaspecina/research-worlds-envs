@@ -454,6 +454,11 @@
 > GO/ajuste/no-va de Lucas sobre la ficha → técnico → tanda 2 brazos × 2 polos × 10
 > (~USD 20-25) → análisis congelado → dossier.**
 >
+> **NOTA DE DIRECCIÓN 2026-08-11:** Strategic Play queda como inspiración para separar
+> evidencia→modelo→acción, no como métrica importada ni réplica de D1 ([método](como-medimos.md)).
+> La infraestructura admite 30+ turnos, pero los mundos actuales no los necesitan; el horizonte
+> largo debe nacer de dependencias reales, no de un límite mayor ([auditoría](research/2026-08-10-anatomia-casos-reales-requisitos-mundo-realista.md)). El orden D2→largo vs largo primero sigue abierto.
+>
 > **PRÓXIMO PASO (2026-08-10): rediseño A LUCAS antes de gastar — "cuánto paga el salto" como
 > variable de diseño**: (i) vara CRPS (distribución completa, cero-LLM — una campana no la
 > finge) + headroom re-certificado contra el MEJOR rival sin estructura; (ii) paga en el mundo

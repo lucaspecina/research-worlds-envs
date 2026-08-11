@@ -96,7 +96,9 @@ WAGER no estudia simplemente si un modelo “cambia de opinión”. La pregunta 
   `evidencia → creencia → modelo entregado → decisión`
   WAGER no debería llamar “falla de actualización” a toda mala entrega sin localizar primero dónde se rompió esa cadena.
 
-  **Estado:** conceptualmente muy importante; conviene una lectura completa antes de usar resultados específicos.
+  **Estado:** leído completo el 2026-08-11. Método y límites registrados en
+  `lectura-de-fuentes.md`; entra como evidencia convergente y explicación rival, no como réplica
+  directa de D1.
 
 - **STALE**
   Historias de hasta 150 mil tokens con información que queda obsoleta: los modelos reconocen que un dato ya no vale y actúan desde él igual (mejor modelo: 55%). **Lo que les falta:** todo el puntaje lo pone un juez-IA (confirmado con cita); no hay obra científica propia ni consecuencia.

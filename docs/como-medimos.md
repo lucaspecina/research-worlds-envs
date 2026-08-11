@@ -185,3 +185,24 @@ estado de lectura en `lectura-de-fuentes.md`; hallazgos en `vicios/vicio-1`.
   reconocer↔ejecutar. En WAGER el chequeo espontáneo se cobra solo (quien no lo hace entrega
   peor modelo), sin juez.
 
+## 5. Strategic Play — medir por separado observación, creencia y acción
+
+**Qué tiene de limpio** ([2605.00226](https://arxiv.org/abs/2605.00226), leído 2026-08-11): no
+infiere “actualizó bien” desde la jugada final. Primero calcula, sin juez LLM, cuánto debería
+cambiar una creencia según Bayes; después mide cuánto cambió realmente. Por separado, usa sondas
+internas e intervenciones causales para preguntar si esa creencia gobierna la acción.
+
+La enseñanza para WAGER no es copiar ahora su métrica, sino **separar los eslabones**:
+
+1. **Evidencia disponible**: la verdad programada permite calcular mecánicamente cuánto distinguían
+   los datos comprados entre explicaciones rivales.
+2. **Modelo provisional**: los modelos registrados muestran qué predice el artefacto del agente en
+   cada momento.
+3. **Acción**: la siguiente compra, decisión y entrega muestran si actuó de acuerdo con ese modelo.
+4. **Resultado**: el programa final permite verificar si el cambio fue realmente mejor.
+
+Límite importante: un modelo registrado es conducta observable, **no una lectura de la creencia
+interna**. Con modelos cerrados no tenemos las sondas del paper. WAGER sí puede medir limpiamente la
+cadena `evidencia → modelo registrado → acción → entrega`, y describir aparte lo que el agente dijo,
+sin poner ese texto en el reward. Esto queda como inspiración de diseño; no modifica D2 ni abre una
+métrica nueva por decisión automática.
