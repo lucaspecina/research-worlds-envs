@@ -222,6 +222,14 @@ Hay tres controles adicionales que también quedaron rojos:
 3. El choque operativo usa un único porcentaje bajo umbral. Un modelo unimodal puede ajustar
    ese número sin cambiar su forma, así que el choque visible tampoco obliga al salto.
 
+El mismo control lo cuantifica. En el turno 8, la verdad predice **37.37%** de lotes bajo
+especificación y el rival unimodal fuerte **38.98%**: solo **1.62 puntos** de diferencia. El
+piloto de 60 lotes tiene un error estándar de **6.25 puntos**. Integrando ese ruido, el débito
+esperado es **30.0** para la verdad y **31.1** para el rival; son prácticamente indistinguibles
+desde adentro de la partida. En el piloto concreto congelado (26/60), incluso quedaron
+ordenados al revés. Por lo tanto, el evento separaba a la campana simétrica débil, no al rival
+fuerte de un solo grupo, y tampoco hacía visible la necesidad del salto.
+
 ### 8.3. Decisión científica
 
 **PIVOTEAR EL ANFITRIÓN; MANTENER LA PREGUNTA Y LA MAQUINARIA ÚTIL.** No correr la tanda de

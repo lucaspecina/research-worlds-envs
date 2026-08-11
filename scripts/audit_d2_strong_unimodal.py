@@ -21,7 +21,7 @@ import numpy as np
 import pandas as pd
 from numpy.polynomial.hermite import hermgauss
 from scipy.optimize import minimize
-from scipy.stats import norm, skewnorm
+from scipy.stats import binom, norm, skewnorm
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -31,6 +31,10 @@ from cases import d2_decision_common as D2  # noqa: E402
 
 QUAD_N = 64
 SCORE_SEEDS = (4242, 4243, 4244, 4245, 4246)
+PILOT_T = 1.3
+PILOT_N = 60
+DEBIT_SCALE = 600.0
+DEBIT_CAP = 150.0
 
 
 def _d2_param(params: dict, key: str, fallback: float) -> float:
@@ -73,6 +77,42 @@ def _truth_logpdf(y: np.ndarray, params: dict, T: float) -> np.ndarray:
     a = np.log1p(-p) + norm.logpdf(y, loc=base, scale=C.SQ)
     b = np.log(p) + norm.logpdf(y, loc=base - d_shift, scale=affected_sd)
     return np.logaddexp(a, b)
+
+
+def _truth_tail_probability(params: dict, T: float, limit: float) -> float:
+    base = params["mu0"] + params["beta"] * (T - 1.0)
+    p = D2.pi_T(T, params)
+    d_shift = _d2_param(params, "d_shift_d2", params["d_shift"])
+    s_extra = _d2_param(params, "s_extra_d2", C.S_EXTRA)
+    affected_sd = float(np.sqrt(C.SQ**2 + s_extra**2))
+    return float(
+        (1.0 - p) * norm.cdf(limit, loc=base, scale=C.SQ)
+        + p * norm.cdf(limit, loc=base - d_shift, scale=affected_sd)
+    )
+
+
+def _expected_event_debit(p_pred: float, p_true: float) -> dict:
+    """Débito esperado por el piloto n=60, manteniendo p_pred sin ruido Monte Carlo."""
+    ks = np.arange(PILOT_N + 1)
+    probs = binom.pmf(ks, PILOT_N, p_true)
+    realized = ks / PILOT_N
+    debits = np.minimum(
+        np.asarray([round(DEBIT_SCALE * abs(p_pred - q)) for q in realized], float),
+        DEBIT_CAP,
+    )
+    order = np.argsort(debits)
+    sorted_debits = debits[order]
+    sorted_cdf = np.cumsum(probs[order])
+
+    def quantile(probability: float) -> float:
+        return float(sorted_debits[np.searchsorted(sorted_cdf, probability)])
+
+    return {
+        "expected": float(probs @ debits),
+        "p05": quantile(0.05),
+        "median": quantile(0.50),
+        "p95": quantile(0.95),
+    }
 
 
 def _expected_gaps(theta: np.ndarray, params: dict,
@@ -160,6 +200,17 @@ def main() -> int:
     exact_gap, current_gauss_gap = _expected_gaps(theta, params, cm, cs)
     model = _program(theta)
 
+    limit = float(params["mu0"] - D2.SPEC_OFFSET)
+    p_true = _truth_tail_probability(params, PILOT_T, limit)
+    loc, scale, shape = _params_at(theta, PILOT_T)
+    p_skew = float(skewnorm.cdf(limit, shape, loc=loc, scale=scale))
+    basis = np.asarray([1.0, PILOT_T - 1.0, (PILOT_T - 1.0) ** 2])
+    p_gaussian = float(norm.cdf(
+        limit,
+        loc=float(cm @ basis),
+        scale=float(np.exp(cs @ basis)),
+    ))
+
     production_scores = []
     anchor = _gaussian_anchor(inst)
     for seed in SCORE_SEEDS:
@@ -197,6 +248,29 @@ def main() -> int:
         "production_protocol": (
             "evaluation seeds vary truth/floor draws; candidate ensemble seed is fixed at 777"
         ),
+        "turn_8_event_exact": {
+            "T": PILOT_T,
+            "spec_limit": limit,
+            "pilot_n": PILOT_N,
+            "p_below_spec": {
+                "truth": p_true,
+                "skew_normal": p_skew,
+                "current_gaussian_anchor": p_gaussian,
+            },
+            "absolute_probability_error": {
+                "skew_normal": abs(p_skew - p_true),
+                "current_gaussian_anchor": abs(p_gaussian - p_true),
+            },
+            "expected_debit_from_binomial_pilot": {
+                "truth": _expected_event_debit(p_true, p_true),
+                "skew_normal": _expected_event_debit(p_skew, p_true),
+                "current_gaussian_anchor": _expected_event_debit(p_gaussian, p_true),
+            },
+            "note": (
+                "Uses exact model probabilities and integrates over K~Binomial(60,p_true); "
+                "the live event also estimates p_pred with 4000 model draws."
+            ),
+        },
         "current_gate": (
             "best rival without a discrete-group split must have S <= 0.5 "
             "and remaining gap >= 0.10 nats/lot"
