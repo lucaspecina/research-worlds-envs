@@ -65,7 +65,8 @@ DEBIT_CAP = 150.0
 NO_MODEL_DEBIT = 100.0
 MAX_TURNS = 14
 
-PISTA_SEEDS = [99700, 99701, 99702]     # QUEMADAS (certificación, jamás en resultados)
+PISTA_SEEDS = [99714, 99715, 99716]     # QUEMADAS (certificación; 99700-99702
+                                        # descartadas: 99700 crasheo por el bug del debito)
 TEC_SEED = 99703
 TANDA_SEEDS = list(range(99704, 99714))  # 10 seeds × 2 brazos × 2 polos = 40 celdas
 ARMS = ("SILENCIO", "REBOTE")
@@ -163,10 +164,15 @@ def make_decision(srv, pole: str, params: dict, arm: str) -> tuple[pd.DataFrame,
         sim = np.asarray(fn(C._regime(PILOT_T), 4000, 778)["y"], float)
         p_pred = float((sim < L).mean())
         debit = min(round(DEBIT_SCALE * abs(p_pred - p_real)), DEBIT_CAP)
-    srv._charge(float(debit), "operating_decision_debit")
+    # el debito es CONSECUENCIA, no compra: se clampa a lo disponible y jamas
+    # crashea el episodio (bug cazado por las pistas P2: BudgetError con 0.0)
+    available = float(max(srv.budget_remaining, 0.0))
+    charged = float(min(float(debit), available))
+    if charged > 0:
+        srv._charge(charged, "operating_decision_debit")
     srv._log("decision_event", {"p_pred": p_pred, "p_real": p_real,
-                                "debit": float(debit)}, float(debit),
-             note="scheduled operating decision (plant calendar)")
+                                "debit": float(debit), "charged": charged},
+             charged, note="scheduled operating decision (plant calendar)")
     d["served"].append({"turn": srv._turn, "verb": "decision_pilot",
                         "rows": df.to_dict("records")})
     d["decision_fired"] = True
