@@ -1135,3 +1135,5 @@ Entrenar reteniendo **familias enteras de operadores** y hasta **formalismos ent
 > central de "LLMs can't jump" (no gradient → no jump) fabricando el gradiente sintéticamente.
 > Precondición existencial descubierta HOY: si el reward no paga el salto (ADR 0175), el RL
 > aprendería la vagancia ÓPTIMA — el freno de Lucas salvó también a E2.
+
+> **Tesis E2 documentada**: [nota-e2-tesis-entrenamiento-saltos.md](nota-e2-tesis-entrenamiento-saltos.md) — la escalera del cobro C1-C4, el curriculum desvaneciente, el test Rayleigh y la apuesta anti-cant-jump. Para E2; E1 sigue su curso.
