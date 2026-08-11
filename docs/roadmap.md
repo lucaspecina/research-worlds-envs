@@ -21,6 +21,11 @@
 > “polo” quedan solo como alias históricos; ningún pedido de GO usa esos códigos como título. Explicación
 > en llano: [WIKI §3](../WIKI.md#cómo-ordenamos-y-nombramos-una-investigación).
 
+> **WORKFLOW OBLIGATORIO DE TODO EXPERIMENTO:** nombrar el salto → diseñar mundo+tarea → validar
+> matemáticamente → validar resolubilidad con la idea nombrada → prueba principal sin ayuda →
+> subpreguntas científicas. No se interpreta al agente si antes falló el diseño. Versión completa:
+> [WIKI — workflow obligatorio](../WIKI.md#el-workflow-obligatorio-para-diseñar-cualquier-experimento).
+
 > **FOCO ACTUAL (decisión de Lucas, 2026-08-11):** volver al objetivo primario del programa de
 > saltos. Diseñar desde cero **un solo mundo** donde pasar de una población aparente a dos tipos
 > persistentes sea necesario para encontrar el modelo bueno; luego medir si el agente descubre y

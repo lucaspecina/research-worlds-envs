@@ -157,6 +157,26 @@ La nota mide la **consecuencia** del salto, no palabras ni una forma específica
 podemos mirar la traza para entender qué representación usó el agente, pero esa lectura nunca entra
 al reward.
 
+#### El workflow obligatorio para diseñar cualquier experimento
+
+Este es el “tatuaje en la frente” del proyecto. Siempre se sigue en este orden:
+
+1. **Nombrar el salto.** Definir qué cambio de forma debería realizar el agente.
+2. **Diseñar el mundo y la tarea.** Crear una situación donde ese salto sea necesario para
+   encontrar el modelo bueno.
+3. **Validar matemáticamente el diseño.** Demostrar que el mejor rival serio sin el salto pierde
+   claramente y que la evidencia necesaria está al alcance.
+4. **Validar la resolubilidad con agente.** Con la idea nombrada, pero sin la solución, comprobar
+   que el agente puede investigarla, implementarla y mejorar.
+5. **Hacer la prueba principal sin ayuda.** Recién ahora preguntar si el agente descubre y realiza
+   el salto por sí mismo.
+6. **Estudiar las subpreguntas científicas.** Después probar cuándo y por qué salta: error visible,
+   presión, pistas, horizonte u otras condiciones.
+
+**No se saltea una etapa.** Si fallan los pasos 2, 3 o 4, se cambia o abandona el diseño; todavía
+no se concluye nada sobre la capacidad del agente para saltar. El gemelo puede agregarse más
+adelante como control, pero no bloquea esta secuencia inicial.
+
 #### Cómo se nombra un experimento
 
 Cada experimento tiene dos nombres:

@@ -19,6 +19,12 @@ condiciones responden subpreguntas científicas posteriores. La idea nombrada es
 validación de resolubilidad del diseño, aunque use un agente. Para el foco actual de grupos
 escondidos se valida primero un solo mundo; el gemelo queda para una etapa posterior.
 
+**Workflow obligatorio de todo experimento:** (1) nombrar el salto; (2) diseñar mundo+tarea donde
+sea necesario; (3) validarlo matemáticamente contra el mejor rival sin salto; (4) validar con un
+agente que recibe la idea, no la solución; (5) recién entonces correr la prueba principal sin
+ayuda; (6) después estudiar subpreguntas. Si falla 2–4, se cambia el diseño y no se atribuye el
+resultado al agente. Fuente en llano: `WIKI.md`, “El workflow obligatorio”.
+
 **Dos fases que no se mezclan (ADR 0173):** durante descubrimiento, probar variaciones sustantivas
 con microhipótesis previas, agentes reales baratos y autopsia; durante confirmación, congelar la
 pregunta, diseño, métricas e instancias y validar en frontier held-out. Una falla ajena al foco que
