@@ -454,6 +454,19 @@
 > GO/ajuste/no-va de Lucas sobre la ficha → técnico → tanda 2 brazos × 2 polos × 10
 > (~USD 20-25) → análisis congelado → dossier.**
 >
+> **CORRECCIÓN POSTERIOR (2026-08-11) — D2 EN HOLD, NO CORRER:** un control decisivo y
+> reproducible encontró un rival unimodal asimétrico que obtiene S_log medio **0.671** y
+> deja solo **0.040 nats/lote** hasta la verdad: viola las dos compuertas de ADR 0175 y,
+> además, el flag lo llama “mezcla”. En las pistas, solo 1/6 tenía modelo al turno 8; para
+> las otras 5/6 REBOTE no podía mostrar la comparación que define el tratamiento. El gate
+> P2 congelado también dio 0/3 en S≥0.5 y no puede rescatarse repartiendo sus requisitos
+> entre P2 y P1. **Veredicto: PIVOTEAR EL ANFITRIÓN, mantener pregunta y maquinaria; cero
+> tanda y cero tuning adicional en D2.** Próximo paso sujeto a GO de Lucas: especificar un
+> slice corto y puro de dos tipos persistentes versus heterogeneidad continua, puntuado sobre
+> predicciones conjuntas/repetidas y certificado contra rivales fuertes antes de un único
+> control apareado con pistas. [Auditoría y diseño mínimo §8](research/2026-08-11-ficha-mundo-d2-decision.md)
+> · control: `scripts/audit_d2_strong_unimodal.py`.
+>
 > **NOTA DE DIRECCIÓN 2026-08-11:** Strategic Play queda como inspiración para separar
 > evidencia→modelo→acción, no como métrica importada ni réplica de D1 ([método](como-medimos.md)).
 > La infraestructura admite 30+ turnos, pero los mundos actuales no los necesitan; el horizonte

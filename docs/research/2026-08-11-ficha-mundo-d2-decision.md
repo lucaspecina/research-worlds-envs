@@ -1,9 +1,17 @@
-# FICHA — Par D2 "El turno de decisión" (para el GO final de Lucas)
+# FICHA — Par D2 "El turno de decisión" — EN PAUSA
+
+> **ESTADO ACTUAL (auditoría Codex, 2026-08-11): HOLD — NO CORRER LA TANDA.** Un control
+> decisivo posterior encontró que un rival de una sola población, pero asimétrico, supera
+> las compuertas que debían estar reservadas al salto. Además, en 5/6 partidas con pistas no
+> había modelo registrado al llegar al turno 8, por lo que SILENCIO y REBOTE no habrían sido
+> tratamientos distintos. La declaración de "certificado verde" que sigue queda preservada
+> como historia del diseño; fue retirada. Evidencia, decisión y reemplazo mínimo en §8.
 
 > **Qué es este doc**: la ficha de decisión del experimento aprobado en dirección el
 > 2026-08-11 ("Equivocarse ahora cuesta / dos versiones idénticas salvo cuánto te enterás").
-> Todo lo de abajo está CONSTRUIDO, CERTIFICADO VERDE y verificado en dry-run — pero la
-> tanda NO corre sin el GO explícito de Lucas sobre esta ficha. Costo de la tanda: ~USD 20-25.
+> Al cerrarse la escalera, todo lo de abajo se consideró construido y certificado. La
+> auditoría posterior de §8 invalida ese estado. La tanda no corre. Costo que se evita:
+> ~USD 20-25.
 
 ## 1. El mundo, contado simple
 
@@ -156,4 +164,105 @@ pistas/tecnico/tanda) · 8 wiring tests `tests/test_d2_decision.py` · dry-run s
 scratchpad. Seeds: instancia 99600 (heredada de D1) · pistas 99714-99716 (quemadas; 99700-99702
 descartadas por el bug del débito) · técnico 99703 · tanda 99704-99713.
 
-**La decisión es tuya: ¿corre la tanda así (~USD 20-25), se ajusta algo, o no va?**
+**La decisión original era: ¿corre la tanda así, se ajusta o no va? La auditoría posterior
+responde: no corre así.**
+
+## 8. ADDENDUM — auditoría posterior a las pistas (2026-08-11)
+
+### 8.1. El salto todavía no paga contra un rival fuerte
+
+La compuerta 0175 comparó la verdad contra una campana simétrica. Faltaba un rival obvio:
+una sola población con una cola asimétrica. El control reproducible
+`scripts/audit_d2_strong_unimodal.py` optimiza directamente una *skew-normal* unimodal cuya
+posición, ancho y asimetría cambian suavemente con T. Usa la verdad como oráculo offline para
+ajustarla con log-score analítico y después la prueba con el evaluador KDE de producción, sin
+LLM ni API:
+
+```bash
+.venv/bin/python scripts/audit_d2_strong_unimodal.py
+```
+
+Resultado congelado sobre cinco seeds del evaluador:
+
+- obtiene S_log medio **0.671** (rango **0.651–0.699**), cuando el mejor rival sin salto
+  debía quedar en S≤0.5;
+- deja **0.040 nats/lote** de diferencia analítica con la verdad; en el evaluador de
+  producción, **0.044** de media (rango **0.039–0.049**). La compuerta exigía ≥0.10;
+- captura **66%** de la supuesta paga del salto;
+- y el flag `has_mixture` lo clasifica erróneamente como mezcla aunque es unimodal.
+
+Las cinco seeds cambian las muestras de verdad y del piso del evaluador; el ensemble candidato
+queda fijo con seed 777. El resultado no depende de cinco reajustes distintos del rival.
+
+Conclusión: D2 certificó “mezcla contra una campana simétrica”, no “dos grupos contra un rival
+fuerte sin dos grupos”. Este es un contraejemplo suficiente para tirar la compuerta, no una
+prueba de que hallamos el óptimo global ni de que el agente conocía esta alternativa. Desde una
+salida predictiva tampoco se puede exigir que el código *diga* “dos grupos”: hay que hacer que
+esos dos grupos produzcan una diferencia observable que la mejor familia sin partición no
+pueda copiar. Si una explicación reproduce todas las consecuencias disponibles, WAGER no tiene
+base operacional para declararla incorrecta por su vocabulario interno.
+
+### 8.2. El contraste SILENCIO/REBOTE tampoco quedó operativo
+
+Solo la partida 99735 tenía un modelo registrado antes del turno 8. En las otras **5/6**,
+`p_pred=null` y se aplicó la multa fija de 100. El código agrega la frase distintiva de
+REBOTE únicamente cuando existe ese modelo (`scripts/run_d2_decision.py`, evento de decisión).
+Por eso, para cinco de las seis trayectorias observadas, ambos brazos habrían mostrado lo
+mismo. Un REBOTE nulo no habría significado “ni mostrándoselo”: a muchos no se les habría
+mostrado la comparación.
+
+Hay tres controles adicionales que también quedaron rojos:
+
+1. El gate P2 predeclarado era ≥2/3 con estructura correcta **y** S_log≥0.5. Dio 0/3 en
+   score y luego se reinterpretó separando el flag de P2 y el score de P1. Eso contradice la
+   regla congelada y los ADRs 0176/0177.
+2. El certificador anuncia seis compuertas y cinco robots, pero el artefacto comprometido
+   guarda solo tres números de vara más el apareo; `all_pass` se escribe como verdadero al
+   pasar ese subconjunto.
+3. El choque operativo usa un único porcentaje bajo umbral. Un modelo unimodal puede ajustar
+   ese número sin cambiar su forma, así que el choque visible tampoco obliga al salto.
+
+### 8.3. Decisión científica
+
+**PIVOTEAR EL ANFITRIÓN; MANTENER LA PREGUNTA Y LA MAQUINARIA ÚTIL.** No correr la tanda de
+40, no seguir afinando la física de D2 y no reinterpretarlo como estudio de “proceso versus
+instrumento”: eso sería una pregunta nueva y la entrega actual ni siquiera modela el canal de
+medición por separado.
+
+Se preservan los gemelos, las compras diagnósticas, el calendario, el modelo registrado y la
+maquinaria de bifurcar una misma historia. El control unimodal fue el único control decisivo
+permitido sobre este anfitrión; su resultado basta para salir de él.
+
+### 8.4. Reemplazo mínimo a diseñar antes de escribir código
+
+El próximo slice debe aislar el salto **“una población → dos tipos persistentes”**, sin mezclarlo
+otra vez con “material → instrumento”:
+
+1. Cada unidad se observa varias veces bajo tres condiciones. En A existen dos tipos discretos
+   y persistentes: forman dos ramas separadas en el vector de respuestas. En el gemelo B existe
+   una sola heterogeneidad continua. Los datos rutinarios son byte-idénticos; las mediciones
+   apareadas bajo intervención separan “dos ramas” de “un continuo”.
+2. La entrega predice la **distribución conjunta** de respuestas de unidades nuevas en
+   combinaciones no mostradas. Media o cola correctas ya no alcanzan: debe preservar el valle
+   entre ramas y la pertenencia persistente de cada unidad.
+3. Cualquier programa que reproduzca esa firma cuenta como salto funcional aunque no use la
+   palabra “mezcla”. El reward primario deja de ser `has_mixture`: 0 es el techo de la mejor
+   familia sin partición y 1 es la verdad. La movida conceptual se audita aparte, fuera del
+   reward.
+4. Antes de agentes se optimiza una biblioteca congelada sin partición: distribuciones
+   asimétricas y de cola pesada, ruido variable, interceptos/pendientes aleatorios continuos y
+   una densidad latente no paramétrica restringida a ser unimodal. Debe quedar bajo S=0.5 y a
+   ≥0.10 nats **por vector conjunto**.
+5. Recién si eso pasa se hace **un** control con agentes: el mismo prefijo se bifurca en P2
+   (“considerá dos tipos persistentes”) versus neutral, con dos historias A y una B. Se sigue
+   solo si P2 cruza el techo sin partición en ambas A y el gemelo resiste; si falla, se abandona
+   el anfitrión, sin regalar P1 ni reinterpretar el gate.
+6. Después —no en el mismo control— el experimento sin pistas puede bifurcar un mismo modelo
+   previo en SILENCIO/REBOTE. Ambos reciben idéntica evidencia y consecuencia fuera del dinero
+   de investigación; REBOTE solo agrega “predijiste X, ocurrió Y”. Se mide la transición
+   modelo-anterior → modelo-posterior y la cadena “podía verlo / lo mencionó / actuó” queda
+   descriptiva, nunca como lectura de mente.
+
+Primero debe funcionar este slice corto. El mundo de 30+ turnos sigue siendo importante, pero
+es otro eje: goteo, preguntas anidadas y verdad cambiante se agregan después de demostrar que
+podemos medir limpiamente un salto.

@@ -121,6 +121,14 @@ de ideas/hipótesis* — justo el polo aha que a nosotros nos cuesta puntuar.
   premiadas (construye una variable no dada; compra la evidencia discriminante; un mecanismo cubre
   ambas anomalías). *Lo que el paper agrega*: una forma de MEDIR la movida generativa (qué operación)
   a nivel distribución — útil para validar que nuestros mundos-aha piden la operación que decimos.
+- **Regla aprendida en D2: premiamos la CONSECUENCIA del salto, no su nombre.** Si un programa sin
+  la estructura declarada reproduce todo lo que el mundo puede observar, la nota no puede distinguirlo
+  del salto. Eso no prueba que el agente vaya a encontrar esa alternativa; prueba que el reward no
+  aísla el constructo. Leer palabras o reconocer una forma dentro del código sería frágil y gameable.
+  Por eso el mundo debe hacer que el salto cambie predicciones conjuntas, repetidas o bajo intervención,
+  y la nota se ancla contra la mejor familia optimizada que no hace el salto objetivo. Un descriptor
+  de forma como `has_mixture` puede servir para autopsia, no como prueba primaria de que hubo dos grupos.
+  [El control que destapó el problema](research/2026-08-11-ficha-mundo-d2-decision.md#81-el-salto-todavía-no-paga-contra-un-rival-fuerte).
 - **La pregunta abierta que este doc deja viva**: ¿cuál es el instrumento DESCRIPTIVO cero-costo-de-
   gaming que valida que un mundo pega donde debe? Candidatos: (a) la pista dirigida (en rediseño,
   ADR 0122); (b) los robots hábito/juicio (certificado del par); (c) un anotador de movidas off-reward
