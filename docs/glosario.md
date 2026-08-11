@@ -8,39 +8,78 @@
 Construimos mundos simulados con una verdad escondida y ponemos agentes LLM a investigarlos,
 para medir — sin jueces LLM — dónde exactamente se les rompe el proceso de descubrir.
 
-## Las piezas del juego
+## Las piezas del experimento
 
-- **Mundo**: un programa que genera datos con una verdad escondida adentro. El agente nunca ve
-  el código — solo compra datos y entrega su propio modelo.
-- **Gemelo**: el mundo espejo donde la estructura escondida NO está. Todo se mide de a pares:
-  el que ve fantasmas pierde en el gemelo; el que no ve nada pierde en el principal.
-- **Encargo (brief)**: la consigna que lee el agente ("sos analista de calidad…"). Se escribe a
-  ciegas de la evaluación para no regalar pistas.
-- **Episodio**: una partida completa: leer el encargo → comprar datos → experimentar → entregar
-  el modelo. Con presupuesto finito.
-- **Perillas (regime del episodio)**: los diales que el agente puede fijar al experimentar (en
-  count_mix: `speed`, `repeats_per_unit`). ⚠️ No confundir con el OPERADOR "régimen oculto"
-  (abajo) — colisión de nombres heredada de la plataforma.
-- **Seeds quemadas**: cada corrida usa un número de semilla nuevo, anotado para siempre; nunca
-  se re-corre "hasta que dé".
+- **Experimento WAGER**: el paquete científico completo: salto + pregunta + mundo(s) + tarea +
+  condiciones + medida principal + tanda. Se diseña y valida antes de pedir el GO.
+- **Salto**: el cambio de forma que queremos medir. Es el punto de partida de todo nombre y
+  diseño. Ejemplo: **grupos escondidos**, pasar de una población a dos tipos.
+- **Mundo**: un programa que genera datos con una verdad escondida adentro. Si cambia la verdad,
+  cambia el mundo.
+- **Par de mundos / gemelo**: el control que reúne dos mundos de aspecto parecido donde el
+  salto es correcto en uno e incorrecto en el espejo. No es un mundo adicional.
+- **Tarea**: qué debe lograr el agente, con qué herramientas, presupuesto, turnos y tipo de
+  entrega. El **encargo (brief)** es solo el texto con que se la contamos.
+- **Perfil del mundo**: su ficha de forma oculta, verdades del par, dinámica, llegada de
+  evidencia, horizonte, profundidad, interacción, dependencias, complejidad efectiva y
+  dificultad observada por agente × tarea × ayuda.
+- **ID de mundo**: `world__<familia>__<verdad>__v<n>`. Cambiar solo números crea otra
+  instancia; cambiar la verdad o la forma crea otro mundo o una nueva versión explícita.
+- **Condición**: la combinación exacta de los ejes manipulados: ayuda, aviso, consecuencia,
+  etc. Para un contraste causal, dos condiciones deben diferir en un solo eje. Una consecuencia
+  fija pertenece a la tarea; solo es condición si se manipula.
+- **Episodio / partida**: una ejecución completa de un agente en un mundo, tarea y condición
+  exactos: leer el encargo → comprar datos o ensayos → entregar el modelo.
+- **Tanda**: el conjunto operativo de partidas que mandamos a correr. Una tanda implementa
+  todo o parte de un experimento.
+- **Instancia del mundo**: los parámetros concretos congelados de un mundo. Varias partidas
+  pueden usar la misma instancia.
+- **Semilla de partida**: identifica el azar de una ejecución. Puede compartirse entre partidas
+  apareadas; una vez corrida queda quemada y nunca se repite “hasta que dé”.
+- **Ensayo**: la intervención que compra el agente dentro de una partida. En el código todavía
+  se llama `experiment`; en los documentos reservamos **experimento** para el paquete científico.
+- **Perillas del mundo**: los diales que el agente puede fijar al hacer un ensayo (por ejemplo,
+  velocidad o cantidad de repeticiones). No confundir con el salto **régimen oculto**.
+- **Agente**: la IA que juega (por ejemplo GPT-5.4). **Modelo entregado**: el programa predictivo
+  que esa IA produce. Evitamos llamar “modelo” a ambos en la misma frase.
 
-## Saltos y operadores
+Regla de identidad de una partida:
+
+> **ID del experimento · mundo · tarea · condición · agente · instancia · semilla**
+
+Regla del nombre humano: **Salto — qué ponemos a prueba — familia de mundo**.
+
+Regla del ID:
+
+> `exp__<salto>__<mundo>__<tarea>__<contraste>__v<n>`
+
+La **dificultad observada** no entra al nombre: se reporta por agente, tarea y ayuda. Un mismo
+mundo puede ser fácil para un agente y difícil para otro.
+
+Los códigos históricos (`D1`, `D2`, `P1`, `P2`), “brazo” y “polo” quedan solo como alias para
+encontrar archivos viejos. Los títulos visibles dicen qué significan. **Variante** no se usa
+sola: se aclara si es otro mundo, otra tarea u otra condición. **Versión** (`v1`, `v2`) nombra
+solo una revisión técnica del mismo artefacto.
+
+## Los saltos
 
 - **Refinamiento**: ajustar los NÚMEROS de un modelo sin cambiarle la forma.
-- **Salto**: cambiarle la FORMA al modelo (qué variables existen, cómo se conectan). Lo que
-  medimos. **Distinción que manda (Lucas, 2026-08-07): GENERAR el candidato cuando nada lo
-  dicta (= creatividad, la vara del programa) ≠ ACEPTARLO cuando la evidencia lo grita (= 
-  revisión de creencias, vicio 1).** Un mundo mide creatividad solo si el candidato tiene que
+- **Salto**: una clase de cambio de forma del modelo —y también el acto de hacerla en una
+  partida—: qué variables existen, cómo se conectan. **Grupos escondidos** es el nombre de un
+  salto; un agente puede darlo o no. Eso es lo que medimos. **Distinción que manda (Lucas,
+  2026-08-07): GENERAR el candidato cuando nada lo dicta (= creatividad, la vara del programa)
+  ≠ ACEPTARLO cuando la evidencia lo grita (= revisión de creencias, vicio 1).** Un mundo mide
+  creatividad solo si el candidato tiene que
   NACER del agente. ⚠️ **No son dos fenómenos separados** (Aliseda; ratificado Codex
   2026-08-09): son **momentos operacionalmente separables** de un solo proceso —
   revisar = soltar (contracción) + incorporar (expansión), y generar el candidato ocurre en
   las dos. Lo que separamos server-side es el MOMENTO (antes/después de que la evidencia
   discrimine), y eso prueba activación-antes-de-discriminación, no que el candidato estuviera
   fuera del espacio efectivo del agente.
-- **Operador (de salto)**: cada TIPO de cambio de forma. La lista 10+1 — **contada con
-  historia y fuentes en [el libro de los saltos](saltos.md)**;
+- **Lista de saltos** (alias técnico histórico: operadores): las 10+1 clases están
+  **contadas con historia y fuentes en [el libro de los saltos](saltos.md)** y su
   [justificación formal](research/2026-08-05-fundamentos-taxonomia-de-saltos.md): 1 entidad oculta ·
-  2 grupos escondidos (count_mix) · 3 régimen/fase oculto (dos leyes con umbral) · 4 geometría ·
+  2 grupos escondidos (`count_mix`) · 3 régimen/fase oculto (dos leyes con umbral) · 4 geometría ·
   5 unificación · 6 invariante promovido (simetría) · 7 proceso del observador · 8 realimentación
   oculta · 9 conservación/cuantización · 10 memoria oculta · 11 transferencia estructural
   (analogía tipo Darwin).
@@ -67,14 +106,21 @@ para medir — sin jueces LLM — dónde exactamente se les rompe el proceso de 
 - **Predicción vs intervención**: modelos que empatan sobre lo ya visto se separan al mover
   una perilla; por eso el examen incluye regímenes que el agente no visitó.
 
-## La escalera de ayudas (etiquetas del Explorer)
+## Las ayudas, nombradas por lo que contienen
 
-- **no**: solo el encargo. — **poca**: pista vaga vieja ("puede haber subpoblaciones").
-- **media (concepto)**: "considerá que los lotes vengan en unos pocos tipos" — dice QUÉ buscar.
-- **mucha (receta)**: "probá una mezcla finita de 2-3 grupos" — dice QUÉ HERRAMIENTA usar.
-- **procedimiento**: "ajustá ≥2 familias y compará" — ordena el ACTO, sin contenido.
-  Resultado clave: no/0-de-9 · concepto rescata a gpt 4/4 · receta rescata a DeepSeek 3/3 ·
-  procedimiento 0/3 (comparan… dentro de su menú).
+- **Sin ayuda**: solo el encargo.
+- **Dirección general**: señala dónde mirar, sin nombrar la idea.
+- **Idea nombrada**: dice qué posibilidad considerar, pero el agente debe investigarla,
+  estimarla y convertirla en un modelo. Esta es la prueba real de resolubilidad con agente.
+- **Herramienta indicada**: sugiere una familia de método, sin dar los números ni el resultado.
+- **Solución servida — control de techo**: describe casi toda la respuesta. Solo comprueba que
+  la interfaz y la entrega admiten la solución; no mide descubrimiento.
+- **Procedimiento pedido**: ordena un acto (“compará al menos dos familias”) sin nombrar una
+  idea. Es otro tipo de condición, no un peldaño de “más ayuda”.
+
+Los nombres numéricos viejos se retiran porque escondían el contenido y chocaban con otra
+escalera anterior. Resultado histórico que motivó la separación: nombrar la idea rescató a GPT
+4/4; indicar la herramienta rescató a DeepSeek 3/3; pedir solo el procedimiento dio 0/3.
 
 ## Métricas (las columnas del Explorer)
 
@@ -107,10 +153,18 @@ para medir — sin jueces LLM — dónde exactamente se les rompe el proceso de 
 
 ## Reglas de juego de la investigación
 
-- **Certificados**: pruebas automáticas que un mundo pasa antes de usarse — necesidad (el salto
-  hace falta de verdad contra un rival fuerte), alcanzabilidad (un robot mecánico puede lograrlo
-  con los datos comprables), gemelo (bilateral), anti-memorización.
-- **Rival fuerte**: el mejor modelo SIN el salto (en count_mix: gamma continua con persistencia).
+- **Validación del mundo y la tarea**: el control previo completo. Reúne las dos pruebas
+  siguientes; ninguna reemplaza a la otra.
+- **Certificación matemática**: pruebas automáticas — necesidad
+  (el salto mejora de verdad contra el mejor rival fuerte), alcanzabilidad de la evidencia,
+  gemelo y anti-memorización.
+- **Prueba de resolubilidad con agente**: el mismo agente, con la idea nombrada pero sin la
+  solución, debe poder investigar, implementar el salto y mejorar. Complementa la matemática;
+  no la reemplaza. Su diferencia frente al mismo agente sin ayuda es la **prima de
+  descubrimiento**. Su alcance es siempre mundo + tarea + agente + ayuda concretos; no valida
+  “el mundo” en abstracto.
+- **Rival fuerte**: el mejor modelo SIN el salto (en **Conteos por lote**, `count_mix`: gamma
+  continua con persistencia).
   Toda vara se ancla contra él, no contra un rival de paja.
 - **Pre-registro**: predicciones y reglas de decisión escritas y commiteadas ANTES de correr.
   Una-frase-una-corrida: las ayudas se congelan textualmente; no se escalan sobre la marcha.
@@ -121,11 +175,12 @@ para medir — sin jueces LLM — dónde exactamente se les rompe el proceso de 
 ## Los vicios (catálogo, por número — [tablero](vicios/README.md))
 
 1 calibración de creencias (rigidez / influenciable) · 2 calibración de parada (cierre
-prematuro↔pozo) · 3 no verificar / fabricar · 4 **no postular la estructura escondida** (el de
-count_mix) · 5 perder el hilo · 6 adivinar en vez de preguntar · 7 correlación vs causa ·
-8 perder el objetivo · 9 **verificación de paja** (testea con tests que no pueden fallar — el
-del "teatro de comparación"). **Ahas**: las operaciones espejo (notar la anomalía, pivotar a
-tiempo, pedir el dato que discrimina) — siempre medidas de a pares con su vicio.
+prematuro↔pozo) · 3 no verificar / fabricar · 4 **no postular la estructura escondida**
+(**Conteos por lote**, `count_mix`) · 5 perder el hilo · 6 adivinar en vez de preguntar ·
+7 correlación vs causa · 8 perder el objetivo · 9 **verificación de paja** (testea con tests
+que no pueden fallar — el “teatro de comparación”). **Ahas**: los saltos espejo (notar la
+anomalía, pivotar a tiempo, pedir el dato que discrimina) — siempre medidos de a pares con su
+vicio.
 
 ## Dónde vive cada cosa
 

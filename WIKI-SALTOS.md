@@ -12,6 +12,21 @@ y estado de lectura) · [fundamentos formales](docs/research/2026-08-05-fundamen
 (la matriz componente×edición) · [WIKI-INDAGACION](WIKI-INDAGACION.md) (dónde encaja el salto
 en el ciclo de indagar) · [WIKI-FALLAS](WIKI-FALLAS.md) (por qué no aparece).
 
+**El salto es siempre el punto de partida.** Después elegimos un mundo que lo vuelva necesario,
+una tarea que permita expresarlo y un experimento que haga una sola pregunta sobre cuándo aparece.
+La gramática completa está en
+[WIKI — Cómo ordenamos una investigación](WIKI.md#cómo-ordenamos-y-nombramos-una-investigación).
+
+### Foco actual
+
+- **Salto:** grupos escondidos — pasar de una población aparente a dos tipos persistentes.
+- **Estado:** los dos experimentos de la planta química están cerrados; el último no llegó a
+  su tanda principal.
+- **Qué estamos haciendo:** ordenar los conceptos y preparar desde cero la próxima validación.
+- **Pregunta que conservamos:** ¿el mismo agente, con la idea de “dos tipos” nombrada pero sin
+  la solución, puede resolver la tarea y superar claramente a su versión sin ayuda?
+- **Corridas autorizadas ahora:** ninguna.
+
 ## La lista, de un vistazo
 
 | # | Salto | La idea que hay que parir | Ancla histórica |
@@ -69,9 +84,11 @@ respondedores y no-respondedores.
 **El espejo**: ver grupos donde hay continuo (cualquier dataset "tiene clusters" si los buscás
 con ganas).
 
-**En WAGER**: NUESTRO MUNDO 1 (count_mix). Resultado: **0 de 9 agentes generó la idea** — el
-único número de creatividad medido hasta hoy. Todos entregaron la versión "licuada" (variación
-continua) que clava los promedios y jamás postula clases.
+**En WAGER**: el experimento **Grupos escondidos — Descubrimiento espontáneo — Conteos por lote**
+(alias técnico histórico: `count_mix`). Resultado: **0 de 9 agentes generó la idea** — el
+único número de creatividad espontánea medido hasta hoy. Todos entregaron la versión “licuada”
+(variación continua), que clava los promedios y jamás postula clases. La planta química probó
+después otras preguntas sobre este mismo salto; están separadas por nombre en la tabla final.
 
 ## 3. El régimen oculto — "no es una ley: son dos, con un umbral"
 
@@ -93,9 +110,11 @@ cómo los observadores reales se las pierden.
 
 **El espejo**: inventar quiebres en procesos suaves (ver escalones en el ruido).
 
-**En WAGER**: mundo 2 (count_regime) construido y certificado — pero su v0 tenía el escalón a
-la vista, así que midió ACEPTACIÓN (la mitad lo llamó "outlier"), no creatividad. La versión
-con el cambio escondido está diseñada.
+**En WAGER**: el experimento **Régimen oculto — Aceptación del quiebre visible — Proceso con
+umbral** (alias técnico histórico: `count_regime` v0) tenía el escalón a la vista, así que
+midió ACEPTACIÓN —la mitad lo llamó “outlier”—, no creatividad. Su continuación,
+**Régimen oculto — Fallo del propio modelo a la vista — Proceso con umbral**, produjo el cambio más
+grande observado: 0/9 sin fallo visible y 30/30 con el fallo a la vista.
 
 ## 4. La geometría — "la relación simple existe, pero en otro espacio"
 
@@ -232,12 +251,15 @@ grabadas en laboratorios de élite, solo 2 fueron lejanas y ninguna descubrió n
 
 ## Estado de medición, en una mirada
 
-| Salto | Mundo | Creatividad medida |
+Los nombres legibles van primero; los códigos entre paréntesis solo sirven para encontrar los
+archivos históricos.
+
+| Salto | Experimentos, con nombre humano | Qué sabemos |
 |---|---|---|
-| 2 grupos escondidos | ✅ count_mix · ✅ par planta química D1 · ⛔ D2 cerrado antes de tanda | **0/9 espontáneo** · con la disyuntiva servida y la evidencia comprada por ellos: **escriben los dos grupos 2/15**; avisarles "se evalúa de distintas maneras" no cambió nada (1/15, compraron el doble de chequeos y escribieron lo mismo). ⚠️ Freno de Lucas verificado: D1 pagaba el salto casi cero (mejor campana simple: 0.986/1.0). D2 intentó hacerlo pagar y mostrar el fallo, pero un rival de un solo grupo llegó a 0.67/1.0 y el “rebote” no podía llegar en 5/6 pruebas porque no había modelo previo. El hecho conductual queda; D1 y D2 no sostienen todavía que evitar el salto sea irracional |
-| 3 régimen oculto | ✅ count_regime v0 → v1 | v0 midió aceptación; **v1: sin fallo 0/9 → con el fallo del propio modelo a la vista 30/30** (el gatillo es el fallo, no el detalle del reporte) |
-| +1 transferencia | ✅ overgen (era anterior) | par medido en su era |
-| 1, 4–10 | sin mundo | — |
+| **Grupos escondidos** | ✅ **Descubrimiento espontáneo — Conteos por lote** (`count_mix`) · ✅ **Grupos investigados en el modelo final — Planta química** (`D1`) · ⛔ **Error del modelo a la vista — Planta a alta temperatura** (`D2`, cancelado antes de la tanda principal) | **0/9** generaron los grupos espontáneamente. En la planta, con la disyuntiva disponible y evidencia comprada por ellos, los escribieron **2/15**; un aviso neutral no cambió eso (**1/15**). Pero Lucas encontró que allí una buena campana simple ya sacaba **0.986/1.0**: el salto casi no mejoraba la vara y no tenía una consecuencia visible. El intento siguiente tampoco quedó validado: un rival de un solo grupo llegó a **0.67/1.0**, el evento casi no lo distinguía de la verdad (débito esperado **31.1 vs 30.0**) y el aviso de error no podía ocurrir en 5/6 pruebas. **Conclusión: el 0/9 espontáneo es real; la planta todavía no demuestra que evitar el salto sea irracional.** |
+| **Régimen oculto** | ✅ **Aceptación del quiebre visible — Proceso con umbral** (`count_regime` v0) · ✅ **Fallo del propio modelo a la vista — Proceso con umbral** (`count_regime` v1) | La primera tarea midió aceptación, no generación. En la segunda: **0/9 sin fallo visible → 30/30 con el fallo del propio modelo a la vista**. Sabemos que el choque puede disparar este salto en ese modelo y ese mundo; todavía no que sea el único motor. |
+| **Transferencia estructural** | ✅ **Transferencia de la regla local — Dos dominios gemelos** (`overgen`) | Par medido en su era. |
+| **Entidad oculta, geometría, unificación, invariante, observador, realimentación, conservación y memoria** | Sin experimento todavía | — |
 
 ---
 

@@ -10,7 +10,8 @@
 > indagación), su ciclo (abducir·deducir·inducir), las perillas, dónde entran los saltos ·
 > **[WIKI-SALTOS.md](WIKI-SALTOS.md)** — los 11 tipos de salto y su estado de medición ·
 > **[WIKI-FALLAS.md](WIKI-FALLAS.md)** — dónde se rompe el ciclo (los failure modes) ·
-> **este WIKI** — la máquina WAGER: mundos, gemelos, puntaje, estado.
+> **este WIKI** — la máquina WAGER y el vocabulario común: mundos, tareas, experimentos,
+> partidas, gemelos, puntaje y estado.
 >
 > **Marcadores de estado** (esto es investigación en desarrollo, así que somos honestos
 > sobre qué es piso firme y qué es andamio):
@@ -45,7 +46,7 @@ pasar nuestro examen, no la última palabra. Por eso el examen tiene que poder c
 Las IAs de hoy se evalúan sobre todo con problemas que **tienen respuesta**: matemática,
 programación, preguntas de examen. Eso mide ejecución, no juicio. Pero la parte más valiosa
 —y menos medida— del trabajo científico o de ingeniería es **el medio**: formular una
-hipótesis, decidir qué experimento vale la pena, darse cuenta de que los datos te están
+hipótesis, decidir qué ensayo vale la pena, darse cuenta de que los datos te están
 engañando, cambiar de idea cuando la evidencia contradice tu corazonada, saber cuándo parar.
 
 Medir eso es difícil por una razón profunda: **si el juez es otra IA que opina "esto parece
@@ -95,10 +96,101 @@ intenta reproducir el comportamiento del mundo verdadero. Sus dudas se expresan 
 dentro puede tener lo que quiera, pero el borde —qué entra, qué sale— está clavado.
 
 **El juez es matemática pura.** Compara las salidas del modelo de la IA contra las del mundo
-verdadero, en muchas condiciones, y mide la distancia. **Cero IA en ese cómputo, para siempre**
-✅ (hay un test de integración continua que rompe el build si una IA se cuela en el camino de
+verdadero, en muchos casos de evaluación, y mide la distancia. **Cero IA en ese cómputo, para
+siempre** ✅ (hay un test de integración continua que rompe el build si una IA se cuela en el camino de
 la nota). Esto es lo que permite usar la nota como recompensa de entrenamiento sin que se pueda
 hacer trampa: no hay opinión que engañar, solo comportamiento que reproducir.
+
+### Cómo ordenamos y nombramos una investigación
+
+Llamamos **experimento** al paquete completo que queremos diseñar, validar y, si Lucas da el
+GO, ejecutar. No es solamente el mundo ni solamente la tanda. Todo experimento contiene:
+
+- **salto**: el cambio de forma que queremos medir;
+- **pregunta**: una sola pregunta científica principal;
+- **mundo o par de mundos**: las verdades ocultas donde la jugada correcta cambia;
+- **tarea**: qué debe hacer y entregar el agente, con qué herramientas, presupuesto y turnos;
+- **condiciones**: qué cambia de manera controlada entre partidas;
+- **medida principal**: qué número responderá la pregunta;
+- **tanda**: qué agentes jugarán cuántas partidas.
+
+Una **partida / episodio** es una sola ejecución dentro del experimento. Dentro de esa partida,
+lo que el agente compra para poner una hipótesis a prueba se llama **ensayo**. Así “experimento”
+siempre significa nuestro paquete científico y nunca una compra del agente.
+
+La **validación previa** tiene dos partes. La **certificación matemática** comprueba que el salto
+mejora claramente frente al mejor rival sin ese salto y que la evidencia necesaria existe. La
+**prueba de resolubilidad con agente** comprueba que el mismo agente, con la idea nombrada pero
+sin la solución, puede investigar e implementar el salto. Su comparación con el agente sin
+ayuda mide la **prima de descubrimiento**. Una solución casi regalada es solo un **control de
+techo**, nunca una medida de descubrimiento.
+
+#### Cómo se nombra un experimento
+
+Cada experimento tiene dos nombres:
+
+1. **Nombre humano**, para conversar y recordar:
+
+   > **Salto — qué ponemos a prueba — familia de mundo**
+
+2. **ID estructurado**, estable y legible para archivos:
+
+   > `exp__<salto>__<mundo>__<tarea>__<contraste>__v<n>`
+
+El viejo `D2` queda entonces así:
+
+> - **Nombre:** Grupos escondidos — Error del modelo a la vista — Planta a alta temperatura
+> - **ID:** `exp__grupos-escondidos__planta-alta-temperatura__modelo-para-piloto__error-explicito__v1`
+> - **Pregunta:** ¿mostrar la comparación entre lo predicho y lo ocurrido provoca el salto?
+> - **Estado:** cancelado antes de la tanda principal.
+
+Los códigos mudos (`D1`, `D2`, `P1`, `P2`) quedan solo como alias históricos. **Versión**
+(`v1`, `v2`) nombra una revisión técnica del mismo experimento. Si cambia la pregunta principal,
+es otro experimento.
+
+#### El perfil del mundo: la complejidad no cabe en el nombre
+
+El nombre identifica; el **perfil del mundo** describe. Cada experimento declara:
+
+> - **Nombre de mundo:** Familia — verdad oculta
+> - **ID de mundo:** `world__<familia>__<verdad>__v<n>`
+> - **ID del par:** `pair__<familia>__<contraste>__v<n>`
+
+Ejemplo: **Planta a alta temperatura — degradación real creciente** =
+`world__planta-alta-temperatura__degradacion-real-creciente__v1`; su espejo es
+`world__planta-alta-temperatura__sensor-por-vial__v1`.
+
+| Rasgo | Pregunta simple |
+|---|---|
+| **Forma oculta** | ¿grupos, umbral, memoria, observador, bucle…? |
+| **Verdades del par** | ¿qué es real en cada mundo? |
+| **Dinámica** | ¿la verdad queda fija o cambia durante la partida? |
+| **Llegada de evidencia** | ¿está disponible enseguida o llega por goteo? |
+| **Horizonte** | ¿la tarea necesita pocos turnos o una trayectoria larga? |
+| **Profundidad** | ¿hay una sola pregunta o problemas anidados? |
+| **Interacción** | ¿solo observa, interviene, decide y/o recibe consecuencias? |
+| **Dependencias** | ¿qué decisiones o artefactos usan el modelo y sobreviven? |
+| **Complejidad efectiva** | ¿se resuelve con un resumen pequeño o exige mantener mucho estado? |
+| **Dificultad observada** | ¿qué tasa logra cada agente, con y sin ayuda? |
+
+La dificultad **no es una propiedad absoluta del mundo**: depende del agente, la tarea y la
+ayuda. Por eso se mide después de validar y no se incrusta como “fácil/difícil” en el ID.
+Cambiar solo los números produce otra **instancia** del mismo mundo; cambiar su verdad o su
+forma produce otro mundo o una nueva versión explícita.
+
+#### Cómo se identifica una partida y cómo se pide un GO
+
+Dos números distintos se conservan: la **instancia del mundo** fija sus parámetros concretos;
+la **semilla de partida** identifica el azar de la ejecución. Pueden compartirse deliberadamente
+en comparaciones apareadas; una semilla ya corrida queda quemada.
+
+Una partida se identifica así:
+
+> **ID del experimento · mundo · tarea · condición · agente · instancia · semilla**
+
+Y todo pedido de GO muestra, antes del costo: nombre e ID del experimento, salto, pregunta,
+perfil de los mundos, tarea, condiciones, medida principal y composición exacta de la tanda.
+Nunca más “corramos D2”.
 
 ## 4. Una partida, paso a paso ✅
 
@@ -112,8 +204,8 @@ Así se juega un **episodio** (todo esto funciona hoy):
 
 2. **Investiga con un presupuesto.** Tiene "plata" y puede gastarla:
    - `observe` — comprar datos históricos baratos (que pueden venir sesgados).
-   - `experiment` — pagar caro por correr el sistema bajo condiciones que ella elige.
-   Cada acción cuesta. El presupuesto se acaba. Eso hace que **decidir qué experimento vale la
+   - `experiment` — pagar caro por hacer un **ensayo** bajo valores que ella elige.
+   Cada acción cuesta. El presupuesto se acaba. Eso hace que **decidir qué ensayo vale la
    pena** sea parte del juego.
 
 3. **Entrega.** Cuando cree que entendió, entrega su modelo (un programa).
@@ -148,7 +240,7 @@ previo de la IA — y una perilla de diseño controla si ese conocimiento previo
 engañoso** (a veces lo que "suena razonable" es exactamente la trampa).
 
 **Y la vista de fábrica, que ordena todo el proyecto en tres capas.** Los mundos que construimos a
-mano son **plantas piloto**: experimentos controlados que prueban que una estructura de trampa
+mano son **casos piloto**: pruebas controladas de que una estructura de trampa
 funciona de verdad (el que cae en el vicio pierde, el cuidadoso gana, y una IA real muerde). **No
 son el producto final.** Cuando una estructura queda validada se convierte en **plantilla**, y una
 **fábrica automática** la multiplica: misma estructura de fondo, muchos disfraces, números y
@@ -182,8 +274,9 @@ y esa divergencia es un hallazgo recurrente del proyecto (ver §10).
 ## 7. Qué hace bueno a un mundo ✅
 
 No cualquier mundo sirve. Un buen mundo tiene que **forzar la habilidad que queremos medir**,
-no premiar el azar ni castigar torpezas de interfaz. Antes de usar un mundo lo **certificamos**:
-una batería de tests que demuestra que la nota mide lo que decimos. Los principales:
+no premiar el azar ni castigar torpezas de interfaz. Antes de usarlo hacemos la **validación del
+mundo y la tarea**: certificación matemática y después resolubilidad con un agente ayudado. La
+parte matemática incluye:
 
 - **Techo alcanzable**: un investigador cuidadoso *puede* llegar a R=1. Si ni el mejor jugador
   legal lo alcanza, el mundo es tramposo y se descarta.
@@ -211,14 +304,14 @@ con la plata recortada a un cuarto, la escasez no bloquea el premio — **separa
 modelo compró la evidencia clave y no la usó (se apuró); otro, pensando el doble, la cobró
 gastando un tercio del presupuesto.
 
-## 8. Los dos polos: los vicios que cazamos y los saltos que exigimos 🔨
+## 8. Las dos caras: los vicios que cazamos y los saltos que exigimos 🔨
 
 La dirección más fuerte del proyecto: en vez de "medir juicio" a lo vago, bajarlo a dos listas
 concretas y documentadas, y construir mundos que las vuelvan medibles. La regla de oro se respeta
 siempre — **nada se castiga ni premia con una opinión; se construye el mundo para que la mala jugada
 prediga peor**, y el juez matemático cobra la consecuencia sola.
 
-**Polo defensivo — los vicios (no caer).** Fuimos a la literatura (psicología del razonamiento,
+**Cara defensiva — los vicios (no caer).** Fuimos a la literatura (psicología del razonamiento,
 historia de la ciencia, análisis de fallas de agentes reales) y sacamos una lista con fuentes de los
 errores donde los investigadores tropiezan. Ejemplos:
 - No cambiar de idea ante evidencia que contradice la hipótesis.
@@ -227,7 +320,7 @@ errores donde los investigadores tropiezan. Ejemplos:
 - Refugiarse en la arquitectura familiar cuando la correcta es más incómoda.
 - Confundir "estas dos cosas pasan juntas" con "una causa la otra".
 
-**Polo creativo — los saltos / "aha moments" (descubrir).** El otro lado: las operaciones creativas
+**Cara creativa — los saltos / "aha moments" (descubrir).** El otro lado: las operaciones creativas
 del descubrimiento, también tipificadas en la literatura. El mundo se arma para que el único camino a
 la nota alta *pase por* hacer ese salto. Ejemplos: ver que dos sistemas distintos comparten la misma
 estructura y traer el mecanismo de uno al otro (lo que hizo Darwin); postular algo invisible para
@@ -251,7 +344,7 @@ Cada mundo (y cada par) lleva un **certificado**: se scriptean jugadores-robot �
 vicio, uno cuidadoso, y para los pares uno que aplica la jugada a lo bruto — y se demuestra con
 números que el bruto pierde el gemelo y el cuidadoso gana ambos. Así "solo se gana con juicio" deja
 de ser deseo y pasa a ser propiedad probada. Ya vimos varios vicios pasar en vivo con modelos reales
-(el trofeo del §7 *es* "refugiarse en lo familiar" — y a la vez el polo bueno de un par: "inventar la
+(el trofeo del §7 *es* "refugiarse en lo familiar" — y a la vez el lado bueno de un par: "inventar la
 estructura escondida").
 
 **Y la honestidad de fondo** (§1): estas dos listas son *nuestra forma de medir* el juicio, no el
@@ -269,11 +362,14 @@ juicio entero. Crecen, y nunca lo cubren del todo.
 - El dossier visual para inspeccionar partidas.
 - Varios mundos: unos de control (la vara) y los primeros de dificultad real (el trofeo de
   composición oculta y el de presupuesto escaso).
-- **Los mundos gemelos y sus primeros hallazgos (era de saltos, agosto 2026)**: el mismo
-  agente que nunca propone la idea nueva por su cuenta (0/9) la escribe siempre cuando su
-  propio modelo falla delante suyo (30/30); y en la planta química, todos compran los chequeos
-  correctos, sus datos muestran la estructura… y casi nadie la escribe en la entrega (2/15).
-  El detalle en llano: WIKI-FALLAS ⑤ y WIKI-SALTOS (tabla de estado).
+- **Los primeros hallazgos del programa de saltos (agosto 2026)**: en **Grupos escondidos —
+  ¿aparecen sin ayuda? — Conteos por lote**, 0/9 agentes propusieron los dos tipos; en
+  **Régimen oculto — ¿el fallo propio provoca el salto? — Proceso con umbral**, el mismo
+  modelo pasó de 0/9 sin fallo visible a 30/30 con su fallo a la vista. La planta química
+  produjo un hecho interesante —investigaron pero casi nunca escribieron los grupos—, aunque
+  después descubrimos que su vara casi no premiaba el salto. El intento de corregirla y mostrar
+  el error se cerró antes de la tanda principal porque tampoco pasó la validación. **Ahora no
+  hay ninguna tanda autorizada en esa planta.** El detalle: WIKI-FALLAS ⑤ y WIKI-SALTOS.
 
 **Lo que todavía no:**
 - No entrenamos nada aún (la fase de RL — la apuesta grande, no un hecho).
@@ -312,18 +408,28 @@ Las preguntas grandes, abiertas de verdad — y algunas necesitan un salto creat
 
 ## 11. Glosario (en llano)
 
+- **Salto**: el cambio de forma que queremos medir; todo experimento empieza nombrándolo.
 - **Mundo**: un programa con verdad oculta que genera datos bajo reglas; lo que la IA investiga.
+- **Tarea**: lo que debe hacer el agente dentro del mundo; el brief es cómo se lo contamos.
+- **Experimento WAGER**: el paquete completo: salto, pregunta, mundo(s), tarea, condiciones,
+  medida principal y tanda.
+- **Condición**: la combinación exacta de ayuda, aviso y consecuencias de una partida.
 - **Episodio / partida**: una corrida donde una IA investiga un mundo con presupuesto y entrega
   un modelo.
+- **Tanda**: el conjunto de partidas que ejecuta todo o parte de un experimento.
+- **Ensayo**: una prueba que compra el agente dentro de su partida.
 - **Brief**: el encargo narrativo que ve la IA (las reglas del juego, no los puntos del examen).
 - **Submission**: el modelo (programa) que entrega la IA.
 - **R**: la nota, de 0 (creer los datos crudos) a 1 (el mejor jugador legal).
 - **Rival / ancla**: jugador-robot de referencia que fija los extremos de la nota.
-- **Batería**: el conjunto de condiciones sobre las que se puntúa (secreto para la IA).
-- **Trampa / operador**: una corrupción realista de los datos (sesgo de selección, ruido de
-  medición) que la IA tiene que descubrir y deshacer.
+- **Batería**: el conjunto de casos de evaluación sobre los que se puntúa (secreto para la IA).
+- **Trampa**: una corrupción o dificultad realista de los datos (sesgo de selección, ruido de
+  medición) que la IA tiene que descubrir y deshacer. No es sinónimo de tipo de salto.
 - **Piel**: el vestido semántico de un mundo (línea de proceso, cultivo, etc.).
+- **Perfil del mundo**: su forma oculta, dinámica, llegada de evidencia, horizonte,
+  profundidad, interacción, dependencias y complejidad efectiva.
 - **Headroom**: el margen entre "creer los datos" y "entender el sistema"; lo que el mundo
   enseña.
-- **Certificado**: la prueba, antes de usar un mundo, de que la nota mide lo que decimos.
+- **Validación**: el control previo completo: certificación matemática + resolubilidad con un
+  agente que recibe la idea, no la solución.
 - **Cero-IA en el reward**: la regla dura de que ninguna IA participa en el cómputo de la nota.

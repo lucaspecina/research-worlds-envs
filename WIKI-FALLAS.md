@@ -7,6 +7,11 @@ que se puede tener casi todo el ciclo sano con UNA bisagra rota. Este wiki recor
 paso por paso, con la falla de cada uno, nuestro espécimen medido, y lo que documentaron las
 profesiones que investigan por oficio (espías, jueces, médicos).
 
+**Salto y falla no son lo mismo.** El salto nombra la jugada que hacía falta —por ejemplo,
+separar una población en dos grupos—; la falla dice **dónde se perdió** esa jugada. El mismo
+salto puede no nacer al generar candidatos, puede ser descartado al actualizar o puede quedar
+afuera de la entrega. Por eso un resultado siempre debe nombrar las dos cosas.
+
 ---
 
 **Para profundizar**: [docs/vicios/](docs/vicios/README.md) (el catálogo canónico con
@@ -20,19 +25,19 @@ fuentes) · [WIKI-INDAGACION](WIKI-INDAGACION.md) (el ciclo sano).
 El agente (o el humano) considera solo las hipótesis de siempre; si la respuesta no está en esa
 lista, ninguna cantidad de datos la salva.
 
-**Nuestro espécimen**: **0 de 9** agentes postuló los grupos escondidos en count_mix — todos
-entregaron la versión continua de siempre, que ajusta bien los promedios. Y el detalle
+**Nuestro espécimen**: **0 de 9** agentes postuló los grupos escondidos en **Conteos por lote:
+tipos discretos o variación continua** (alias técnico `count_mix`) — todos entregaron la
+versión continua de siempre, que ajusta bien los promedios. Y el detalle
 revelador: hasta cuando la evidencia discriminante estaba IMPRESA en su propia pantalla (el
 histograma con dos jorobas), no la vieron — se mira a través de los resúmenes que el modelo
 vigente considera relevantes.
 
-**Las profesiones**: la CIA lo llama "failure to generate the full set of hypotheses" y midió
-que el desempeño humano generando alternativas es "woefully inadequate"; el menú además lo
-trunca el HÁBITO (cada analista usa casi siempre una sola estrategia de generación). **Por qué
-no nace**: la teoría del insight es inequívoca — **sin impasse no hay reestructuración**. La
-idea nueva no viene porque la llames: viene como respuesta al fracaso persistente y VISIBLE.
-Si tu modelo de siempre ajusta bien (y en nuestros mundos ajustaba), nada dispara el salto:
-*fluidez sin reestructuración*.
+**Las profesiones**: la CIA lo llama “no generar el conjunto completo de hipótesis” y encontró
+que las personas generan muy pocas alternativas; el menú además lo trunca el HÁBITO (cada
+analista usa casi siempre una sola estrategia). La teoría del insight marca el **impasse** —un
+fracaso persistente y visible— como un gatillo fuerte de reestructuración. Nuestro salto de
+0/9 a 30/30 muestra que puede funcionar; no demuestra que sea el único motor. También puede
+haber presión interna por coherencia o simplicidad, aun sin una predicción fallida.
 
 **El corolario medido tres veces**: ORDENAR el procedimiento no lo arregla. Nosotros mandamos
 "ajustá ≥2 familias y compará" → obedecieron y compararon… dentro del menú de siempre (0/3,
@@ -50,7 +55,8 @@ pero sube la confianza** (probado con expertos: de 5 a 40 variables, precisión 
 confianza por las nubes).
 
 **Nuestro matiz**: en mundos simples los agentes COMPRAN BIEN (11/12 eligieron solos el
-experimento discriminante; en el mundo 2, los que saltaron hicieron zoom fino alrededor del
+ensayo discriminante; en **Proceso con umbral: el fallo propio provoca el salto**, los que
+saltaron hicieron zoom fino alrededor del
 umbral). El cuello no es el shopping — es qué hacen con lo comprado. Pero la métrica queda:
 fracción del gasto en evidencia-fiebre vs discriminante, computable sin jueces.
 
@@ -79,11 +85,10 @@ ignorar: es escrutinio activo al servicio del descarte.
 verificarlo**, confirma que es real, escribe *"¿y si son dos tramos?"*… y entrega la curva de
 siempre llamando **"outlier"** al punto que él mismo confirmó.
 
-**Actualización 2026-08-10 (buena noticia parcial)**: en la planta química, la parte de
-"chequear antes de descartar" los agentes la hacen SOLOS y siempre (30/30 verificaron el
-instrumento sin que nadie lo sugiriera) — el reflejo humano de culpar al aparato sin pagar el
-chequeo no apareció. Donde sí se caen es un paso después: en escribir lo que el chequeo
-mostró (ver ⑤).
+**Actualización de la planta química (2026-08-10):** los agentes sí hicieron solos la parte
+“chequear antes de culpar al aparato”: 30/30 verificaron el instrumento. Donde apareció la
+separación fue después, entre lo investigado y lo entregado. Eso no prueba todavía que supieran
+que su modelo final estaba mal; la cautela completa está en ⑤.
 
 **Las profesiones lo tienen fotografiado**: en condenas erróneas, la contra-evidencia se
 examina con lupa y *"se redefine en una categoría menos dañina"* ("el testigo es pariente",
@@ -109,11 +114,12 @@ teoría; Dunbar midió el gate más duro que tenemos (*si el investigador cree q
 ningún desafío produce cambio conceptual*); y nuestros propios agentes la usan literalmente
 ("la muestra histórica era ruidosa", "quizás ese punto es un outlier"). **El descarte por
 instrumento es legítimo** — lo ilegítimo es descartar sin replicar, o replicar, confirmar y
-descartar igual. Hoy nuestros mundos no tienen instrumento: el ruido es solo de muestreo, así
-que la excusa más usada del mundo real ni siquiera es jugable acá
-([anatomía de casos reales](docs/research/2026-08-10-anatomia-casos-reales-requisitos-mundo-realista.md) §B3).
+descartar igual. Los mundos anteriores no tenían un instrumento separable; la **planta química:
+¿lotes distintos o sensor engañoso?** lo volvió jugable por primera vez. Allí 30/30 agentes
+pagaron el chequeo correcto. Ese éxito del diagnóstico se conserva aunque el mundo no haya
+quedado validado para medir el salto de grupos escondidos.
 
-## ⑤ Al entregar — el knowledge-action gap
+## ⑤ Al entregar — el saber no llega a la acción
 
 **Qué es**: diagnosticar correctamente la propia falla… y no corregir nada. El saber no
 gobierna la acción.
@@ -123,19 +129,25 @@ de autocrítica identificando la causa raíz de sus pérdidas — y no cambió u
 modelo. Nuestro "outlier" es lo mismo en chico: el diagnóstico está escrito en su propia traza
 y la entrega lo ignora.
 
-**Nuestro espécimen más fuerte (2026-08-10, la planta química)**: 30 de 30 agentes compraron
+**Observación de la planta química (2026-08-10; interpretación limitada)**: 30 de 30 agentes compraron
 los chequeos correctos sin que nadie se los pidiera, sus propios datos mostraban clarísimo
 "hay dos tipos de lotes" (verificado con matemática pura sobre lo que cada uno vio) — y 13 de
 15 entregaron igual el modelo simple de un solo grupo, escondiendo los lotes malos en "más
 ruido". Uno escribió "voy a agregar un componente de contaminación"… y entregó el simple.
-**⚠️ Y el remate lo puso Lucas contra NOSOTROS (mismo día)**: ¿seguros de que hacerlo bien
-mejoraba mucho, según lo que el agente puede ver? NO — verificado con números: nuestra propia
-regla de puntaje le daba 0.986 sobre 1.0 a la mejor campana simple (el salto pagaba casi
-cero) y la partida no mostraba ninguna consecuencia de entregar simple. La lectura "son
-vagos" CAE; queda el hecho: *eligieron el sustituto simple cuando la estructura apenas pagaba
-y sin consecuencias visibles*. De acá nace el programa nuevo: **cuánto paga el salto** (y si
-esa paga se VE) como perilla de diseño de cada mundo — con la pista de que cuando la paga fue
-visible y real (su modelo falló delante suyo), saltaron 30/30.
+Después vino el freno decisivo de Lucas: **¿estábamos seguros de que ese salto mejoraba mucho
+desde adentro de la partida?** No. La mejor campana de un solo grupo ya obtenía **0.986/1.0**
+y omitir los grupos no tenía una consecuencia visible. El hecho se conserva —investigaron y
+entregaron el sustituto simple—, pero la lectura “sabían que estaba mal y no actuaron” **no está
+demostrada**. Para separar “no lo supo”, “lo supo” y “actuó” necesitamos mundos donde la
+diferencia sea material y una cadena observable entre evidencia, modelo y entrega.
+
+**Convergencia externa, por otra vía:**
+[*Why Do LLMs Struggle in Strategic Play?*](https://arxiv.org/abs/2605.00226) midió con
+matemática pura que los modelos incorporan cada vez menos evidencia nueva a medida que avanzan
+los turnos. Sus sondas internas también encontraron creencias mejores que las acciones que
+producían. Se parece a nuestra separación evidencia→modelo→acción, pero entra como apoyo y
+explicación rival, no como réplica exacta: ellos usan juegos repetidos y modelos abiertos;
+nosotros, investigación de mundos ocultos y modelos ejecutables.
 
 ---
 

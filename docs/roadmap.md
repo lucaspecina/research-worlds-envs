@@ -11,6 +11,13 @@
 > Claude trabaja como worker persistente de implementación, ejecución y contrapunto. Roles,
 > enforcement y canal: [`docs/operativa-codex-claude.md`](operativa-codex-claude.md).
 
+> **NOMENCLATURA VIGENTE (ADR 0178):** toda corrida se presenta desde el salto hacia abajo:
+> **experimento · mundo · tarea · condición · agente · instancia del mundo · semilla**. Un
+> experimento es el paquete completo; tiene nombre humano `Salto — prueba — mundo` e ID
+> `exp__salto__mundo__tarea__contraste__vN`. `D1/D2/P1/P2`, “brazo” y “polo”
+> quedan solo como alias históricos; ningún pedido de GO usa esos códigos como título. Explicación
+> en llano: [WIKI §3](../WIKI.md#cómo-ordenamos-y-nombramos-una-investigación).
+
 > **REGLA DE NAVEGACIÓN (Lucas, 2026-07-31): avanzar y volver a mirar un paso arriba.**
 > Trabajamos con una hipótesis concreta, la probamos pronto y usamos el resultado para decidir;
 > no intentamos resolver por discusión todos los detalles antes de construir. Al cerrar CADA
@@ -439,29 +446,37 @@
 > diagnóstico 60/60, pero eligió sustituto unimodal cuando la estructura apenas pagaba y sin
 > consecuencias visibles"*. **CONFIRMACIÓN EN PAUSA.**
 >
-> **REDISEÑO EJECUTADO (2026-08-11) — PAR D2 "EL TURNO DE DECISIÓN", LISTO PARA GO:**
+> **DISEÑO Y VALIDACIÓN EJECUTADOS; EXPERIMENTO CANCELADO ANTES DE LA TANDA PRINCIPAL
+> (2026-08-11) — “GRUPOS ESCONDIDOS — ERROR DEL MODELO A LA VISTA — PLANTA A ALTA
+> TEMPERATURA” (`exp__grupos-escondidos__planta-alta-temperatura__modelo-para-piloto__error-explicito__v1`;
+> alias histórico `D2`):** pregunta: ¿la comparación explícita entre lo predicho y lo ocurrido
+> provoca el salto?; tarea:
+> reconstruir el proceso y mantener un modelo registrado para el piloto de decisión en T=1.3;
 > vara log-score (CRPS revertido con datos: pagaba ≤0.07 hasta con 7σ) + anclaje rung-0
 > (0 = mejor rival sin salto, congelado) + física D1+pi(T) (única desviación, scan de la
 > perilla) + EVENTO DE DECISIÓN t8 (la planta decide con el modelo registrado; débito
-> auditado por lab — el que no salta paga ~150 vs ~30) + brazos SILENCIO/REBOTE (solo V
-> varía). Certificación VERDE (6 compuertas + byte-identidad 4 streams) y LA ESCALERA DE
-> PISTAS COMPLETA (ADRs 0176/0177, primera aplicación): capacidad ✓ en P1 (S 0.70-0.75,
-> un Y=1 pleno); el cuello es la ESTIMACIÓN no la idea (P2: estructura 2/2, S 0-0.16);
-> la pista fuerte APAGA la verificación (P1: D_pre 0.00 en 2/3, el gemelo se tragó la
+> auditado por lab — el que no salta paga ~150 vs ~30) + condiciones **Aviso: resultado del
+> piloto y débito / lo mismo + comparación explícita entre predicción y resultado**. La
+> certificación se declaró verde y se recorrieron ayudas
+> (ADRs 0176/0177): capacidad aparente con **solución servida — control de techo** (alias P1;
+> S 0.70-0.75, un Y=1 pleno); con **idea nombrada** (alias P2), estructura 2/2 pero S 0-0.16;
+> la solución servida APAGÓ la verificación (D_pre 0.00 en 2/3, el gemelo se tragó la
 > pista falsa y perdió — conexión canal-contenido vicio 1). Seis rondas de pistas cazaron
 > SEIS bugs de harness/interfaz antes de la tanda (~USD 9, declarado).
 > [Ficha completa](research/2026-08-11-ficha-mundo-d2-decision.md). **PRÓXIMO PASO:
-> GO/ajuste/no-va de Lucas sobre la ficha → técnico → tanda 2 brazos × 2 polos × 10
+> GO/ajuste/no-va de Lucas sobre la ficha → técnico → tanda 2 condiciones × 2 mundos × 10
 > (~USD 20-25) → análisis congelado → dossier.**
 >
-> **CORRECCIÓN POSTERIOR (2026-08-11) — D2 EN HOLD, NO CORRER:** un control decisivo y
+> **CORRECCIÓN POSTERIOR (2026-08-11) — ESTE EXPERIMENTO SE CERRÓ, NO CORRER:** un control decisivo y
 > reproducible encontró un rival unimodal asimétrico que obtiene S_log medio **0.671** y
 > deja solo **0.040 nats/lote** hasta la verdad: viola las dos compuertas de ADR 0175 y,
-> además, el flag lo llama “mezcla”. En las pistas, solo 1/6 tenía modelo al turno 8; para
-> las otras 5/6 REBOTE no podía mostrar la comparación que define el tratamiento. El gate
-> P2 congelado también dio 0/3 en S≥0.5 y no puede rescatarse repartiendo sus requisitos
-> entre P2 y P1. **Veredicto: PIVOTEAR EL ANFITRIÓN, mantener pregunta y maquinaria; cero
-> tanda y cero tuning adicional en D2.** Próximo paso sujeto a GO de Lucas: especificar un
+> además, el flag lo llama “mezcla”. El evento tampoco lo separa de la verdad: débito esperado
+> **31.1 vs 30.0** con el piloto de 60 lotes. En las pistas, solo 1/6 tenía modelo al turno 8; para
+> las otras 5/6 la condición **error señalado** no podía mostrar la comparación que la define.
+> La prueba congelada con **idea nombrada** también dio 0/3 en S≥0.5 y no puede rescatarse
+> repartiendo sus requisitos con el control de techo. **Veredicto: PIVOTEAR EL ANFITRIÓN,
+> mantener pregunta y maquinaria; cero tanda y cero tuning adicional en este mundo.** Próximo
+> paso sujeto a GO de Lucas: especificar un
 > slice corto y puro de dos tipos persistentes versus heterogeneidad continua, puntuado sobre
 > predicciones conjuntas/repetidas y certificado contra rivales fuertes antes de un único
 > control apareado con pistas. [Auditoría y diseño mínimo §8](research/2026-08-11-ficha-mundo-d2-decision.md)

@@ -14,7 +14,13 @@ saltos creativos.*
 [WIKI-FALLAS](WIKI-FALLAS.md) (dónde se rompe el ciclo) · [WIKI](WIKI.md) (la máquina que
 lo mide) · [docs/saltos.md](docs/saltos.md) (el fondo con fuentes).
 
-## 1. No toda tarea es lo mismo: las tres familias de "resolver"
+**Cómo se conectan los nombres:** el **salto** es la jugada conceptual; el **mundo** hace que
+esa jugada sea correcta o equivocada; la **tarea** dice qué debe hacer el agente; el
+**experimento WAGER** pregunta cuándo aparece; y las **fallas** localizan en qué paso del ciclo
+se perdió. El vocabulario completo y la forma de nombrar corridas están en
+[WIKI — Cómo ordenamos una investigación](WIKI.md#cómo-ordenamos-y-nombramos-una-investigación).
+
+## 1. No todo problema es igual: las tres familias de "resolver"
 
 | Familia | Qué es | Ejemplos | ¿Verdad oculta? |
 |---|---|---|---|
@@ -22,7 +28,7 @@ lo mide) · [docs/saltos.md](docs/saltos.md) (el fondo con fuentes).
 | **B. Diseñar / construir** | La "respuesta" no existe hasta que la hacés | una app, un puente, una canción | No — se crea, no se descubre |
 | **C. INDAGAR** | Hay una verdad oculta que YA existe; se infiere desde observaciones compradas | detective, médico, científico, **debuggear** | **SÍ — es la definición** |
 
-Las tareas reales mezclan familias: programar es B… hasta que aparece el bug — debuggear es C
+Los problemas reales mezclan familias: programar es B… hasta que aparece el bug — debuggear es C
 metida adentro de B (por eso "se siente" detectivesco). La ciencia es C en el núcleo con B en
 el diseño de instrumentos. **WAGER trabaja en la familia C, destilada.**
 
@@ -30,7 +36,7 @@ el diseño de instrumentos. **WAGER trabaja en la familia C, destilada.**
 
 El juez, el médico, el detective y el científico ejecutan EL MISMO lazo (lo describió Peirce;
 la psicología lo midió en laboratorio como búsqueda en dos espacios — hipótesis ×
-experimentos):
+ensayos):
 
 1. **ABDUCIR** — generar explicaciones candidatas: *"¿y si los lotes vienen de DOS máquinas?"*
 2. **DEDUCIR** — derivar qué se vería si cada candidata fuera cierta: *"entonces el histograma
@@ -103,7 +109,8 @@ nadie puede recorrer. En la práctica solo se pueden ESCRIBIR y puntuar un puña
 candidatos, y elegir cuáles escribís es de vuelta el problema original: la abducción no
 desaparece con la lista infinita — se esconde en el paso de proponer. Por eso el programa
 mide al PROPONEDOR, no al puntuador: los agentes ejecutan los niveles 1 y 2 muy bien, y
-jamás escriben una entrada nueva en el menú (el 0/9 de count_mix).
+jamás escriben una entrada nueva en el menú (el 0/9 de **Conteos por lote: tipos discretos o
+variación continua**, alias técnico `count_mix`).
 
 ## 4. Las cuatro perillas (por qué el juez, el médico y el detective no son idénticos)
 
@@ -170,11 +177,19 @@ programa corto que los genera todos).
 computa recién DESPUÉS de tener el candidato en la mano — la ganancia de compresión de
 reemplazar a Newton estuvo disponible 200 años sin que nada en los datos la gritara. El
 problema del salto es el DISPARADOR: qué te pone a buscar cuando lo de siempre anda bien.
-Dos canales, y nuestros agentes auditan solo uno:
+
+**Saber que el modelo no cierra ≠ sentir presión por mejorarlo.** Son dos ejes. **Saber** es
+que la señal de desajuste llegó al agente — porque la encontró, se la mostraron o sufrió una
+consecuencia. **Presión** es cuánto empuje tiene para seguir buscando, incluso si ninguna
+predicción falló: autoexigencia, coherencia o simplicidad. Una pista cambia qué idea tiene
+disponible; un aviso cambia lo que sabe; una consecuencia puede cambiar también la presión.
+No forman una sola “escalera de ayuda”. Cada experimento debe decir cuál de esos ejes cambia.
+
+Dos canales pueden disparar la búsqueda:
 
 - **Impasse por datos**: el modelo de siempre falla a la vista, persistente y barato de
-  verificar. El que sabemos fabricar ([WIKI-FALLAS](WIKI-FALLAS.md): sin impasse no hay
-  reestructuración).
+  verificar. Es el gatillo que ya sabemos fabricar y que produjo nuestro cambio más grande
+  ([WIKI-FALLAS](WIKI-FALLAS.md)).
 - **Impasse por coherencia**: nada predice mal, pero las piezas del propio modelo se
   contradicen ENTRE SÍ — el canal Einstein (mecánica y electromagnetismo no podían ser
   ciertos a la vez; el mismo fenómeno con dos explicaciones según el marco). Los agentes
