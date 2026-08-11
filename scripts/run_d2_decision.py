@@ -80,7 +80,10 @@ PISTA_P2 = ("\n\n[NOTE from a colleague, mentioned in passing] "
 D2_VERB_DOC = VERB_DOC + """
   NOTE: the plant's calendar USES your latest filed model: routine monitoring
         reports against it, and scheduled operating decisions are taken with it —
-        the resulting operating costs are debited from your budget."""
+        the resulting operating costs are debited from your budget.
+        register_model's response includes `final_gate_check`: whether that EXACT
+        code would pass the final-submission sandbox (self-contained imports,
+        no dynamic access) — fix any WARNING before submitting."""
 
 
 def _lazy_anchor(instance: dict):
@@ -128,10 +131,14 @@ def make_monitor_d2(srv, pole: str, params: dict) -> tuple[pd.DataFrame, str, di
     notice = (f"Routine monitoring ran on schedule: {MONITOR_N} production lots "
               "measured by the line spectrometer, attached as dataframe `monitoreo`.")
     fn = _last_model_fn(srv)
+    if fn is not None:
+        try:
+            sim = np.asarray(fn(C._regime(1.0), 4000, 777)["y"], float)
+        except Exception:
+            fn = None
     if fn is None:
-        notice += " No model is on file with the plant, so no model report accompanies it."
+        notice += " No usable model is on file with the plant, so no model report accompanies it."
         return df, notice, meta
-    sim = np.asarray(fn(C._regime(1.0), 4000, 777)["y"], float)
     p05, mmean = float(np.quantile(sim, 0.05)), float(sim.mean())
     share = float((df["y"] < p05).mean())
     meta.update({"model_mean": mmean, "model_p05": p05, "share_below_p05": share})
@@ -162,11 +169,16 @@ def make_decision(srv, pole: str, params: dict, arm: str) -> tuple[pd.DataFrame,
     p_real = float((np.asarray(y_true) < L).mean())
 
     fn = _last_model_fn(srv)
+    p_pred = None
+    if fn is not None:
+        try:
+            sim = np.asarray(fn(C._regime(PILOT_T), 4000, 778)["y"], float)
+            p_pred = float((sim < L).mean())
+        except Exception:
+            fn = None      # modelo registrado que no ejecuta = sin modelo (bug #4)
     if fn is None:
-        p_pred, debit = None, NO_MODEL_DEBIT
+        debit = NO_MODEL_DEBIT
     else:
-        sim = np.asarray(fn(C._regime(PILOT_T), 4000, 778)["y"], float)
-        p_pred = float((sim < L).mean())
         debit = min(round(DEBIT_SCALE * abs(p_pred - p_real)), DEBIT_CAP)
     # el debito es CONSECUENCIA, no compra: se clampa a lo disponible y jamas
     # crashea el episodio (bug cazado por las pistas P2: BudgetError con 0.0)

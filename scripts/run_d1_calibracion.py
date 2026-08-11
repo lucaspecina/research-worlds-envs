@@ -331,7 +331,18 @@ def attach_d1(srv, pole: str, params: dict, ep_seed: int,
         self._d1.setdefault("regs", []).append({"turn": self._turn, "code": code})
         self._log("register_model", {"version": len(self._d1["regs"])}, 0.0,
                   note="registered with production")
-        return {"registered": True, "version": len(self._d1["regs"])}
+        # el registro corre el MISMO smoke que la entrega final y avisa YA
+        # (bug #3b de las pistas: los agentes descubrian recien al submit que su
+        # codigo no pasaba el sandbox standalone — p.ej. sin `import numpy`)
+        gate_err = None
+        try:
+            gate_err = self._smoke(code)
+        except Exception as e:
+            gate_err = repr(e)
+        return {"registered": True, "version": len(self._d1["regs"]),
+                "final_gate_check": ("PASS" if not gate_err else
+                                     f"WARNING - this exact code would FAIL final "
+                                     f"submission: {gate_err}")}
 
     _orig_submit = srv.submit
 
