@@ -64,6 +64,8 @@ local que tenga enfrente.
   discuta resultados. Consenso no reemplaza evidencia.
 - Usar únicamente la sesión persistente registrada localmente en
   `scratch/claude-worker-session.json`, mediante `scripts/claude_worker.ps1`.
+- Si el metadato todavía no existe, darla de alta únicamente con `-Bootstrap` en ese mismo
+  wrapper; jamás recuperar por heurística ni reutilizar una sesión interactiva de Lucas.
 - Para Claude se permite solo `fable` con esfuerzo `max`; si no está disponible, `opus` con esfuerzo
   `max`. No usar fallback automático ni ningún otro modelo.
 - Un solo escritor a la vez. No invocar el worker mientras Lucas usa esa misma sesión.

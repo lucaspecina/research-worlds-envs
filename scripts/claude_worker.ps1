@@ -9,17 +9,25 @@ param(
     [ValidateSet("plan", "work")]
     [string]$Mode = "work",
 
-    [switch]$DryRun
+    [switch]$DryRun,
+
+    [switch]$Bootstrap
 )
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $sessionFile = Join-Path $repoRoot "scratch\claude-worker-session.json"
+$creatingSession = $false
 
 if (-not (Test-Path -LiteralPath $sessionFile)) {
-    throw "Claude worker session metadata not found: $sessionFile"
+    if (-not $Bootstrap) {
+        throw "Claude worker session metadata not found: $sessionFile (use -Bootstrap once to create the exclusive worker session)"
+    }
+    $session = [pscustomobject]@{ session_id = [guid]::NewGuid().ToString() }
+    $creatingSession = $true
+} else {
+    $session = Get-Content -LiteralPath $sessionFile -Raw | ConvertFrom-Json
 }
 
-$session = Get-Content -LiteralPath $sessionFile -Raw | ConvertFrom-Json
 if (-not $session.session_id) {
     throw "Claude worker session metadata has no session_id: $sessionFile"
 }
@@ -42,13 +50,19 @@ if ($DryRun) {
         model = $Model
         effort = "max"
         permission_mode = $permissionMode
+        creating_session = $creatingSession
         prompt_preview = $roleReminder.Substring(0, [Math]::Min(500, $roleReminder.Length))
     } | ConvertTo-Json -Depth 3
     exit 0
 }
 
-& claude `
-    --resume $session.session_id `
+$sessionArgs = if ($creatingSession) {
+    @("--session-id", $session.session_id)
+} else {
+    @("--resume", $session.session_id)
+}
+
+& claude @sessionArgs `
     --model $Model `
     --effort max `
     --permission-mode $permissionMode `
@@ -56,4 +70,14 @@ if ($DryRun) {
     --output-format json `
     $roleReminder
 
-exit $LASTEXITCODE
+$exitCode = $LASTEXITCODE
+if ($creatingSession -and $exitCode -eq 0) {
+    $metadata = [ordered]@{
+        session_id = $session.session_id
+        created_at = (Get-Date).ToString("o")
+        purpose = "Claude worker persistente y exclusivo de Codex para WAGER (ADR 0172)"
+    }
+    $metadata | ConvertTo-Json | Set-Content -LiteralPath $sessionFile -Encoding utf8
+}
+
+exit $exitCode

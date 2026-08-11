@@ -100,3 +100,8 @@ El canal vigente es Claude Code CLI con sesión persistente, no MCP. El wrapper 
 usa `fable/max` por defecto y solo permite `opus/max` como alternativa explícita. No hay fallback a
 modelos menores. Para evitar colisiones, la sesión worker es exclusiva de Codex y distinta de la
 sesión interactiva principal de Lucas.
+
+Si una máquina todavía no tiene `scratch/claude-worker-session.json`, el alta se hace una sola vez
+con el mismo wrapper y el switch `-Bootstrap`. El wrapper genera un identificador nuevo, inicia la
+sesión con el modelo y esfuerzo autorizados y recién guarda el metadato si la primera consulta
+termina bien. No se recupera ni reutiliza por heurística una sesión interactiva de Lucas.
