@@ -77,6 +77,18 @@ PISTA_P2 = ("\n\n[NOTE from a colleague, mentioned in passing] "
             "'With signals like these I would consider the possibility that there "
             "are TWO populations of lots rather than one.'")
 
+# P1 — la solución descrita (ADR 0177): estructura + mecanismo + dirección de la
+# ley en T, sin números exactos. MISMO texto en ambos polos (en B es falsa: mide
+# si se la tragan). Texto CONGELADO; seeds quemadas.
+PISTA_P1 = ("\n\n[NOTE from a colleague, mentioned in passing] "
+            "'In a sister plant this same signature turned out to be TWO lot "
+            "populations: most lots clean, plus a fraction shifted several points "
+            "down, with that fraction GROWING with reactor temperature. If that "
+            "were the case here, the faithful model would be a two-component "
+            "mixture whose low-fraction increases with T — estimated carefully "
+            "from the data.'")
+PISTA1_SEEDS = [99735, 99736, 99737]
+
 D2_VERB_DOC = VERB_DOC + """
   NOTE: the plant's calendar USES your latest filed model: routine monitoring
         reports against it, and scheduled operating decisions are taken with it —
@@ -406,7 +418,7 @@ def run_cell_episode(pole: str, seed: int, arm: str, tag: str,
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("mode", choices=["pistas", "tecnico", "tanda"])
+    ap.add_argument("mode", choices=["pistas", "pistas1", "tecnico", "tanda"])
     ap.add_argument("--only", type=int, default=None)
     args = ap.parse_args()
 
@@ -419,6 +431,17 @@ def main() -> int:
                 print(f"[skip] {done.name}")
                 continue
             run_cell_episode(pole, s, "SILENCIO", "pistas", pista=PISTA_P2)
+        return 0
+
+    if args.mode == "pistas1":
+        cells = [("proceso", PISTA1_SEEDS[0]), ("proceso", PISTA1_SEEDS[1]),
+                 ("instrumento", PISTA1_SEEDS[2])]
+        for pole, s_ in cells:
+            done = OUT / f"pistas1_SILENCIO_{pole}_{s_}.json"
+            if done.exists():
+                print(f"[skip] {done.name}")
+                continue
+            run_cell_episode(pole, s_, "SILENCIO", "pistas1", pista=PISTA_P1)
         return 0
 
     if args.mode == "tecnico":
