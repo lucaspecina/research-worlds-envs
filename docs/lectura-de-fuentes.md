@@ -843,3 +843,40 @@ correcciones registradas. Los PDFs se borraron tras leerlos (pedido de Lucas).
 **Mantenimiento**: tensión nueva que aparezca en una lectura → fila nueva acá, en el momento.
 Una fila solo se cierra cuando NUESTROS datos (no otra lectura) la resuelven — y ahí migra al
 índice de hallazgos con su evidencia.
+
+### "Why Do LLMs Struggle in Strategic Play? Broken Links Between Observations, Beliefs, and Actions" (arXiv 2605.00226) — LEÍDO 2026-08-11 (HTML v1 completo vía fetch, extracción con citas)
+
+Estaba de segunda mano desde julio (repasos: "compite conceptualmente, riesgo alto de
+solapamiento"); pedido de Lucas → texto completo. Llama 3.1 70B, Qwen3 32B, gpt-oss 20B en
+juegos repetidos 2×2 (800 trials), Kuhn Poker generalizado (400) y The Chameleon (230).
+
+- **BCC (Bayesian Coherence Coefficient) es CERO-LLM**: correlación de Pearson entre los
+  cambios de log-odds de la creencia del modelo y los cambios bayesianos correctos computados
+  de un modelo de verosimilitud — mecánico, sin juez. Para `como-medimos.md`: medir-para-
+  describir ejemplar; y nuestro w_v server-side ES la trayectoria bayesiana correcta → un
+  "BCC verbal" post-hoc sobre trazas D2 es computable gratis (candidato, no construido).
+- **La sub-actualización CRECE con el horizonte** (lo que trajo Lucas): *"internal belief
+  updates transition from early updating at correct magnitude (slope ≈ 1) to later
+  under-updating (slope << 1)"*; el BCC interno cae a menos de la mitad para la ronda 10
+  (juegos simples) o el TURNO 3 (juegos complejos). Consecuencia declarada por ellos:
+  *"underreaction to new information or persistence in outdated hypotheses"*.
+- **El vínculo creencia→acción está ROTO por método causal**: probes internos superan a los
+  verbales (saben más de lo que dicen); steering de creencias internas mueve la acción solo
+  ~50-70% (≈azar en Kuhn/gpt-oss). *"Internal beliefs have weak causal influence on action
+  selection."* → **réplica externa, por método distinto (probes/intervención en juegos), de
+  nuestro hallazgo D1** (compran y resuelven la evidencia; no la escriben): el eslabón que
+  se rompe es el mismo — de la creencia al artefacto/acción. Va a vicios 8.6/4 como
+  evidencia convergente `[VERIFICADO][AGÉNTICO-juegos, modelos abiertos ≤70B]`.
+- **Sesgos de superficie en creencia→acción**: first-item bias (elige A por posición aunque
+  su creencia interna favorezca B).
+- Sin explicación mecanística del decaimiento (lo declaran fenómeno); límites: modelos ≤100B
+  abiertos y cuantizados, horizontes cortos.
+- ⚠️ **Anti-recencia**: sus horizontes son rondas homogéneas de juego; nuestros episodios
+  tienen eventos heterogéneos — la transferencia del decaimiento NO está garantizada. Entra
+  como RIVAL pre-declarada de D2 y como convergencia, no como verdad.
+
+**Impacto inmediato**: rival nueva pre-declarada en la ficha D2 ANTES de la tanda — "el
+rebote del turno 8 llega TARDE en el horizonte: si REBOTE no mueve, puede ser deriva de
+sub-actualización tardía (Strategic Play), no indiferencia" — parcialmente separable porque
+REBOTE entrega el desajuste masticado (no exige actualización fina) y la cadena del saber
+separa "no supo" de "supo y no actuó".

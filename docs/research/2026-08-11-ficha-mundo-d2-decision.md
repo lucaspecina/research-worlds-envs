@@ -138,6 +138,12 @@ de los cuales habría contaminado la tanda de ~25).
    diseño del cobro, no del agente; se reporta como tal.
 5. Apareado por seed entre brazos (misma seed = mismo mundo latente) — McNemar exacto
    descriptivo; la comparación con D1 es CONTEXTO (el mundo cambió), no test.
+5b. **RIVAL pre-declarada (lectura 2026-08-11, Strategic Play 2605.00226)**: la
+   sub-actualización crece con el horizonte (slope≈1 → slope<<1; BCC cae a la mitad para
+   el turno 3-10 en sus juegos) → si REBOTE no mueve, la explicación rival es "el turno 8
+   llega tarde para actualizar", no "no les importa". Separación parcial: REBOTE entrega
+   el desajuste masticado (no exige actualización bayesiana fina) y la cadena del saber
+   distingue "no supo" / "supo y no actuó". Se reporta con el resultado.
 6. Conducta (D_pre) se reporta; D1 predice ~100%.
 
 ## 7. Ledger de artefactos

@@ -47,6 +47,12 @@
   (la disociación verbal inequívoca — el resto es regex cruda, anotación fina pendiente).
   Convergencia con vicio 4.3 (así lo clasificó Codex: no vicio nuevo). Estado: VIVO;
   candidata de pivote. [Dossier](../research/2026-08-10-resultado-tanda-d1-calibracion.md).
+- **Réplica externa por método causal** `[VERIFICADO][AGÉNTICO-juegos, abiertos ≤70B]`
+  (Strategic Play, arXiv 2605.00226, leído 2026-08-11): probes internos > verbales (saben
+  más de lo que dicen) y el steering de creencias mueve la acción solo ~50-70% — *"internal
+  beliefs have weak causal influence on action selection"*. El mismo eslabón roto
+  (creencia→artefacto) que medimos conductualmente en D1, encontrado con intervención en
+  juegos. Registro completo en lectura-de-fuentes.
 
 ## Estado en WAGER y diseño
 - CERO mundos dedicados; la batería nueva (endurecida post-0137) ya cobra 8.6 parcialmente.
