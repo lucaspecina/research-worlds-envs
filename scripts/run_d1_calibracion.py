@@ -317,12 +317,17 @@ def attach_d1(srv, pole: str, params: dict, ep_seed: int,
     def register_model(self, code: str):
         self._guard_open()
         try:
+            from wager.reward.sandbox import lint_submission
+            lint_submission(code)   # mismo lint que la entrega final: el choque
+            # aparece TEMPRANO (bug #3 de las pistas: getattr pasaba el registro
+            # y moria recien en el submit, sin turnos para adaptarse)
             ns: dict = {}
             exec(compile(code, "<registered>", "exec"), ns)
             assert callable(ns.get("model"))
         except Exception as e:
             return {"registered": False,
-                    "error": f"code must define model(regime,n,seed): {e!r}"}
+                    "error": f"code must define model(regime,n,seed) and pass the "
+                             f"submission lint: {e!r}"}
         self._d1.setdefault("regs", []).append({"turn": self._turn, "code": code})
         self._log("register_model", {"version": len(self._d1["regs"])}, 0.0,
                   note="registered with production")

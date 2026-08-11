@@ -10,7 +10,9 @@ decisiones operativas con tu modelo. Necesita un modelo generativo del PROCESO.
 `model(regime, n, seed) -> DataFrame` con columnas exactas `[unit_id, y]`:
 `n` cuenta LOTES (una pureza por lote; `unit_id` correlativo desde 0). Honrá
 `regime.config["T"]` (temperatura del reactor, en [0.6, 1.4]). Se evaluará en
-condiciones que podés no haber visto.
+condiciones que podés no haber visto. El sandbox de evaluación ejecuta tu código
+con un lint estricto: usá acceso directo (`regime.config`) — nombres dinámicos
+como `getattr`/`eval`/`exec` y atributos dunder están prohibidos.
 
 ## Acciones y costos (presupuesto finito, sin reembolso)
 

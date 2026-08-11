@@ -65,8 +65,9 @@ DEBIT_CAP = 150.0
 NO_MODEL_DEBIT = 100.0
 MAX_TURNS = 14
 
-PISTA_SEEDS = [99717, 99718, 99719]     # QUEMADAS (certificación; 99700-99702 y
-                                        # 99714-99716 descartadas por bugs #1 y #2)
+PISTA_SEEDS = [99720, 99721, 99722]     # QUEMADAS (certificación; 99700-99722
+                                        # bloques previos descartados: bugs #1/#2 +
+                                        # 99717 cortada para paralelizar)
 TEC_SEED = 99703
 TANDA_SEEDS = list(range(99704, 99714))  # 10 seeds × 2 brazos × 2 polos = 40 celdas
 ARMS = ("SILENCIO", "REBOTE")
