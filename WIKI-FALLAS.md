@@ -34,6 +34,14 @@ revelador: hasta cuando la evidencia discriminante estaba IMPRESA en su propia p
 histograma con dos jorobas), no la vieron — se mira a través de los resúmenes que el modelo
 vigente considera relevantes.
 
+El control más limpio nuevo es **Perfiles persistentes**. Allí separar la población mejora mucho
+el modelo y, en las 400 filas exactas de cada una de diez partidas, la división en dos era
+abrumadora. `gpt-5.4` vio las dependencias, pero **9/10** las licuó dentro de una sola campana;
+**0/10** construyó espontáneamente la explicación compacta de dos tipos. Con la idea nombrada,
+el mismo modelo sí la construyó 2/3. Un caso sin ayuda preservó la forma copiando perfiles
+completos: éxito predictivo funcional, pero no compresión conceptual. Esto localiza la falla
+principal entre **ver la dependencia** y **generar/probar la partición correcta**.
+
 **Las profesiones**: la CIA lo llama “no generar el conjunto completo de hipótesis” y encontró
 que las personas generan muy pocas alternativas; el menú además lo trunca el HÁBITO (cada
 analista usa casi siempre una sola estrategia). La teoría del insight marca el **impasse** —un

@@ -26,14 +26,16 @@ La gramática completa está en
 - **Salto:** grupos escondidos — pasar de una población aparente a dos tipos persistentes.
 - **Estado:** los dos experimentos de la planta química están cerrados; el último no llegó a
   su tanda principal.
-- **Qué estamos haciendo:** el primer mundo nuevo, **Perfiles persistentes**, ya pasó la
-  resolubilidad con idea nombrada 2/3; sigue una tanda de 10 partidas sin ayuda con `gpt-5.4`.
+- **Qué pasó:** el primer mundo nuevo, **Perfiles persistentes**, pasó la resolubilidad con idea
+  nombrada 2/3. Sin ayuda, `gpt-5.4` preservó funcionalmente las dos familias en **1/10**, pero
+  mediante remuestreo; **0/10** construyó espontáneamente la explicación compacta de dos tipos.
 - **Pregunta principal:** ¿el agente descubre y realiza el salto de una población aparente a dos
   tipos persistentes?
 - **Primer control de construcción:** aprobado 2/3 con `gpt-5.4`; los dos éxitos implementaron
   la bifurcación y uno falló al confundir variación continua con cuatro tipos.
 - **Gemelo:** fuera de esta etapa; podrá agregarse después como control anti-reflejo.
-- **Corridas autorizadas ahora:** 10 partidas frescas sin ayuda, `gpt-5.4`, seeds 99830–99839.
+- **Próximo nivel:** replicar en otra familia de modelo o en otro anfitrión; no seguir retocando
+  este mundo.
 
 ## La lista, de un vistazo
 
@@ -266,7 +268,7 @@ archivos históricos.
 
 | Salto | Experimentos y situaciones estudiadas | Qué sabemos |
 |---|---|---|
-| **Grupos escondidos** | ✅ **Grupos escondidos — Conteos por lote** (`count_mix`; observación sin ayuda) · ✅ **Grupos escondidos — Planta química** (`D1`; modelo final) · ⛔ **Grupos escondidos — Planta a alta temperatura** (`D2`; subpregunta de error visible, cancelada antes de la tanda principal) | **0/9** generaron los grupos espontáneamente. En la planta, con la disyuntiva disponible y evidencia comprada por ellos, los escribieron **2/15**; un aviso neutral no cambió eso (**1/15**). Pero Lucas encontró que allí una buena campana simple ya sacaba **0.986/1.0**: el salto casi no mejoraba la vara y no tenía una consecuencia visible. El intento siguiente tampoco quedó validado: un rival de un solo grupo llegó a **0.67/1.0**, el evento casi no lo distinguía de la verdad (débito esperado **31.1 vs 30.0**) y el aviso de error no podía ocurrir en 5/6 pruebas. **Conclusión: el 0/9 espontáneo es real; la planta todavía no demuestra que evitar el salto sea irracional.** |
+| **Grupos escondidos** | ✅ **Grupos escondidos — Perfiles persistentes** · ✅ **Grupos escondidos — Conteos por lote** (`count_mix`) · ✅ **Grupos escondidos — Planta química** (`D1`) · ⛔ **Grupos escondidos — Planta a alta temperatura** (`D2`, cancelado antes de la tanda) | En **Perfiles persistentes**, el salto paga mucho, las filas de cada partida lo permiten y la idea nombrada funciona 2/3; aun así, `gpt-5.4` sin ayuda lo realizó funcionalmente **1/10** y construyó el modelo compacto de dos tipos **0/10**. Nueve entregaron una sola campana; el único cruce copió perfiles completos. Alcance: un modelo×mundo×n=10. Esto corrige la debilidad de la planta, donde una campana ya sacaba 0.986 y el salto casi no pagaba. Conteos por lote había dado 0/9 espontáneo. |
 | **Régimen oculto** | ✅ **Régimen oculto — Proceso con umbral** (`count_regime`; v0: quiebre visible · v1: fallo del propio modelo visible) | La primera situación midió aceptación, no generación. En la segunda: **0/9 sin fallo visible → 30/30 con el fallo del propio modelo a la vista**. Sabemos que el choque puede disparar este salto en ese modelo y ese mundo; todavía no que sea el único motor. |
 | **Transferencia estructural** | ✅ **Transferencia de la regla local — Dos dominios gemelos** (`overgen`) | Par medido en su era. |
 | **Entidad oculta, geometría, unificación, invariante, observador, realimentación, conservación y memoria** | Sin experimento todavía | — |

@@ -1,7 +1,8 @@
 # Ficha de descubrimiento — Grupos escondidos: perfiles persistentes
 
 **Fecha:** 2026-08-13  
-**Estado:** slice exploratorio; no es confirmación ni certificación verde.
+**Estado:** confirmación `gpt-5.4 × mundo × n=10` completa; falta réplica con otra familia de
+modelo antes de hablar de agentes en general.
 
 ## Qué salto buscamos
 
@@ -141,3 +142,53 @@ Lectura predeclarada para decidir rumbo, no para inflar alcance:
 
 Todo titular dirá `gpt-5.4 × Perfiles persistentes × n=10`. El gemelo y otros modelos quedan
 fuera de esta tanda.
+
+## Resultado de la tanda principal
+
+Las diez partidas terminaron y entregaron código válido, sin reintentos. Según la medida primaria
+congelada, **1/10 cruzó la frontera funcional del salto**:
+
+| Partida | Modelo entregado | `S_profile` | ¿cruza? |
+|---|---|---:|---|
+| 01–03 | una Gaussiana conjunta | 0 | no |
+| 04 | remuestreo de los 400 perfiles completos | 0.942 | sí |
+| 05–10 | una Gaussiana conjunta | 0 | no |
+
+La única entrega que cruzó no construyó una explicación de dos tipos. Conservó las dos familias
+copiando la distribución empírica completa. Esto **cuenta como éxito funcional**, tal como estaba
+declarado antes de correr: su programa produce la geometría correcta y no la rellena con perfiles
+intermedios. Pero se informa por separado que **0/10 entregó el modelo simple de dos tipos**.
+
+Los otros nueve vieron las fuertes dependencias y las resumieron como dos factores continuos dentro
+de una sola nube Gaussiana. Ocho no ajustaron una partición de la población. Uno hizo un corte de
+dos grupos con `k`-means, lo interpretó como un corte artificial sobre una dirección continua y lo
+descartó sin comparar el modelo de dos perfiles que resolvía la tarea.
+
+## Control decisivo sobre lo que cada agente podía ver
+
+La auditoría cero-LLM se repitió sobre las **400 filas exactas de cada partida**, no sobre la verdad
+abstracta ni sobre otra muestra. En las diez:
+
+- dos perfiles superan a una Gaussiana conjunta por `Delta BIC=705–795`;
+- el ajuste legal de dos perfiles obtiene `S_profile=0.943–0.999`;
+- la asignación media de cada fila a uno de los dos perfiles es prácticamente 100% segura.
+
+Por lo tanto, los nueve negativos no se explican por una instancia sin señal ni por falta de datos.
+La falla dominante está entre **notar dependencia** e **interpretar/probar una población partida**.
+El analizador reproducible es `scripts/analyze_hidden_profiles_discovery.py` y los crudos viven en
+`scripts/out/hidden_profiles_discovery/confirmacion_sin_ayuda_*`.
+
+## Lectura y decisión
+
+**Resultado con alcance:** `gpt-5.4 × Perfiles persistentes × n=10`: 1/10 preserva
+espontáneamente la bifurcación funcional y 0/10 construye la explicación compacta de dos tipos;
+con la idea nombrada, el mismo modelo había construido correctamente dos tipos en 2/3 partidas.
+
+**Decisión: MANTENER el hallazgo y cerrar el ajuste local de este anfitrión.** Cayó en el rango
+predeclarado `0–2/10`: la falla espontánea reaparece aun cuando el salto mejora mucho y cada
+partida contiene evidencia suficiente. No se prueban más frases ni pequeños retoques aquí. El
+próximo nivel es una réplica con otra familia de modelo o un segundo anfitrión del mismo salto.
+
+Una etiqueta de metadatos en los recibos quedó vieja (`exploratory resolvability slice`) también
+para estas diez condiciones. No cambia condición, seeds, código ni pre-registro; se corrige en el
+runner para no repetir la ambigüedad.

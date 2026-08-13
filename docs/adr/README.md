@@ -191,4 +191,5 @@
 | 0178 | v1.78 | 2026-08-11 | [Experimento como paquete completo + nombres e IDs semánticos para experimentos, mundos y partidas](0178-nomenclatura-orientada-al-salto.md) | Supersedido parcialmente por 0179 en jerarquía y nombres; conserva niveles y trazabilidad |
 | 0179 | v1.79 | 2026-08-11 | [El experimento se centra en el salto; subpreguntas subordinadas y gemelo posterior](0179-experimento-centrado-en-el-salto.md) | Vigente — foco actual: un mundo base de grupos escondidos |
 | 0180 | v1.80 | 2026-08-11 | [Separar preguntas de diseño de subpreguntas científicas](0180-preguntas-de-diseno-y-subpreguntas-cientificas.md) | Vigente — la resolubilidad con idea nombrada valida primero el diseño |
-| 0181 | v1.81 | 2026-08-13 | [Primer anfitrión validado: Grupos escondidos — Perfiles persistentes](0181-primer-anfitrion-validado-perfiles-persistentes.md) | Vigente — tanda sin ayuda gpt-5.4×n=10 autorizada |
+| 0181 | v1.81 | 2026-08-13 | [Primer anfitrión validado: Grupos escondidos — Perfiles persistentes](0181-primer-anfitrion-validado-perfiles-persistentes.md) | Ejecutada — resultado y decisión en 0182 |
+| 0182 | v1.82 | 2026-08-13 | [Perfiles persistentes: falla espontánea confirmada en gpt-5.4](0182-perfiles-persistentes-falla-espontanea-confirmada-en-gpt-5-4.md) | Vigente — 1/10 funcional, 0/10 dos tipos; cerrar tuning local y replicar un nivel arriba |

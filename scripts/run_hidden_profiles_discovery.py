@@ -69,7 +69,11 @@ def main() -> int:
         "seed_burned": True,
         "hint": hint,
         "started_at_utc": datetime.now(timezone.utc).isoformat(),
-        "interpretation": "exploratory resolvability slice; not confirmation",
+        "interpretation": (
+            "frozen no-hint confirmation"
+            if condition.startswith("confirmacion_sin_ayuda_")
+            else "exploratory resolvability slice; not confirmation"
+        ),
     }
     receipt.write_text(json.dumps(started, indent=2) + "\n", encoding="utf-8")
 

@@ -26,13 +26,16 @@
 > subpreguntas científicas. No se interpreta al agente si antes falló el diseño. Versión completa:
 > [WIKI — workflow obligatorio](../WIKI.md#el-workflow-obligatorio-para-diseñar-cualquier-experimento).
 
-> **FOCO ACTUAL (2026-08-13): Grupos escondidos — Perfiles persistentes.** El mundo base ya
-> separa limpiamente una banda continua (`S_profile=0.464`) de dos perfiles aprendidos
-> (`0.924–0.997`). La resolubilidad con `gpt-5.4` y la idea nombrada pasó 2/3
-> (`0.964/0/0.998`): el agente puede descubrir en los datos e implementar el salto, aunque la
-> ayuda no garantiza hacerlo bien. Dos partidas exploratorias sin ayuda quedaron 0/2. **Siguiente
-> paso congelado y autorizado:** `gpt-5.4 × n=10` sin ayuda, seeds 99830–99839; `S_profile>=0.5`
-> es el primario y `R` queda secundario por ruido conocido. El gemelo sigue fuera. Ficha y crudos:
+> **FOCO ACTUAL (2026-08-13): Grupos escondidos — Perfiles persistentes.** El anfitrión separa
+> limpiamente una banda continua (`S_profile=0.464`) de dos perfiles aprendidos (`0.924–0.997`)
+> y la resolubilidad con la idea nombrada pasó 2/3. La tanda congelada sin ayuda ya cerró:
+> **`gpt-5.4 × mundo × n=10`: 1/10 cruzó funcionalmente (`S=.942`) y 0/10 construyó el modelo
+> compacto de dos tipos; 9/10 entregaron una sola Gaussiana.** El único cruce remuestreó perfiles
+> completos, por lo que conserva las dos familias y cuenta según la regla previa, aunque no las
+> explicó. En las filas exactas de cada partida, dos perfiles ganaban por `Delta BIC=705–795` y
+> alcanzaban `S=.943–.999`: la señal estaba. **Decisión: MANTENER el hallazgo, cerrar tuning local
+> y volver un nivel arriba. Próximo paso: réplica con otra familia de modelo o segundo anfitrión,
+> no más frases.** El gemelo sigue fuera. Ficha y crudos:
 > [Perfiles persistentes](research/2026-08-13-ficha-grupos-escondidos-perfiles-persistentes.md).
 
 > **REGLA DE NAVEGACIÓN (Lucas, 2026-07-31): avanzar y volver a mirar un paso arriba.**

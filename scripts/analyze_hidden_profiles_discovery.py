@@ -43,6 +43,40 @@ def score_code(code: str) -> dict:
     }
 
 
+def audit_archive_evidence(payload: dict) -> dict:
+    """Check whether the exact archive rows bought in an episode support the split."""
+    blocks = []
+    for entry in payload.get("evidence_ledger", []):
+        if entry.get("kind") != "observe" or entry.get("source") != "profile_archive":
+            continue
+        data = entry.get("data") or {}
+        if data.get("data"):
+            blocks.extend(data["data"])
+    if not blocks:
+        return {"archive_n": 0, "archive_auditable": False}
+
+    y = np.asarray(blocks, dtype=float)
+    one = cert._fit_gmm(y, 1, "full")
+    two = cert._fit_gmm(y, 2, "tied")
+    delta_bic = float(one.bic(y) - two.bic(y))
+
+    x, truth_cdf = cert._projection_grid()
+    gaussian = cert._best_gaussian(x, truth_cdf)
+    fitted_regret = cert._cdf_regret(
+        x, truth_cdf, cert._fitted_projection_cdf(two, x)
+    )
+    fitted_s = float(np.clip(1.0 - fitted_regret / gaussian["regret"], 0.0, 1.0))
+    posterior = two.predict_proba(y).max(axis=1)
+    return {
+        "archive_n": int(len(y)),
+        "archive_auditable": True,
+        "archive_delta_BIC_two_tied_minus_one_full": delta_bic,
+        "archive_two_profile_S": fitted_s,
+        "archive_two_profile_weights": two.weights_.tolist(),
+        "archive_mean_assignment_confidence": float(posterior.mean()),
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("results", nargs="+", type=Path)
@@ -50,7 +84,8 @@ def main() -> int:
     for path in args.results:
         payload = json.loads(path.read_text(encoding="utf-8"))
         result = score_code(payload["episode"]["submission_code"])
-        print(json.dumps({"path": str(path), **result}, indent=2))
+        evidence = audit_archive_evidence(payload)
+        print(json.dumps({"path": str(path), **result, **evidence}, indent=2))
     return 0
 
 

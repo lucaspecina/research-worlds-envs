@@ -416,8 +416,11 @@ juicio entero. Crecen, y nunca lo cubren del todo.
   modelo pasó de 0/9 sin fallo visible a 30/30 con su fallo a la vista. La planta química
   produjo un hecho interesante —investigaron pero casi nunca escribieron los grupos—, aunque
   después descubrimos que su vara casi no premiaba el salto. El intento de corregirla y mostrar
-  el error se cerró antes de la tanda principal porque tampoco pasó la validación. **Ahora no
-  hay ninguna tanda autorizada en esa planta.** El detalle: WIKI-FALLAS ⑤ y WIKI-SALTOS.
+  el error se cerró antes de la tanda principal porque tampoco pasó la validación. El reemplazo
+  limpio, **Perfiles persistentes**, sí hace que separar la población mejore mucho: con la idea
+  nombrada `gpt-5.4` construyó dos tipos en 2/3 partidas; sin ayuda, solo 1/10 preservó las dos
+  familias y lo hizo copiando los perfiles, mientras 9/10 volvió a una sola campana. **No hay
+  ninguna tanda autorizada en la planta.** El detalle: WIKI-FALLAS ① y WIKI-SALTOS.
 
 **Lo que todavía no:**
 - No entrenamos nada aún (la fase de RL — la apuesta grande, no un hecho).
