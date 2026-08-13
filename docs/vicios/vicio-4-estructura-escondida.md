@@ -24,6 +24,17 @@ parámetros, promedia.
   picture"* — el vicio 1 dentro del benchmark del vicio 4). Nuestro trofeo `[VERIFICADO propio]`: 0/10
   postulan la mezcla; el genérico sin-mezcla no cierra la brecha. OSWorld estado-oculto
   `[VERIFICADO]` (inferir lo latente es juicio — el propio benchmark de operación lo dice).
+- **Model Discovery Agent / MDA** ([arXiv 2608.09696](https://arxiv.org/abs/2608.09696))
+  `[LEÍDO completo 2026-08-13][VECINO METODOLÓGICO, NO RÉPLICA]` — muestra cómo un sistema
+  híbrido puede superar parte de esta falla: un chequeo matemático detecta que el mejor modelo
+  no alcanza, obliga al LLM a proponer otras formas, Bayes las compara y una rutina elige el
+  experimento que más las separa. No demuestra postulación espontánea: en física y química el
+  prompt nombra gran parte de la gramática correcta, y el impasse/reintento vienen impuestos por
+  el controlador. Para el próximo anfitrión interactivo de WAGER aporta un control diagnóstico
+  sin regalar “dos grupos”: mostrar el fallo predictivo de la campana y observar si el agente
+  recién entonces abre la población; no reabre la tanda cerrada de Perfiles persistentes.
+  [Extracción completa](../lectura-de-fuentes.md#mda-model-discovery-agent-arxiv-260809696) ·
+  [comparación en llano](../../WIKI-INDAGACION.md#un-vecino-muy-cercano-model-discovery-agent-mda).
 - **count_mix_v0 + gemelo (nuestra mesa, 2026-08-07)** `[VERIFICADO propio][AGÉNTICO]` — primer
   mundo del programa de saltos (mezcla discreta de dos tasas por lote; gemelo continuo apareado
   por media): **0/9 episodios espontáneos postulan los grupos** (gpt-5.4 y DeepSeek-V3.2, encargo

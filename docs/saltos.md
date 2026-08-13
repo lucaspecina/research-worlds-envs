@@ -614,6 +614,13 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
   operaciones (sobre-conectar, sub-desacoplar) medido a escala; nuestra receta de validación.
 - DiscoverPhysics ([2605.26087](https://arxiv.org/abs/2605.26087)) `[LEÍDO]` — frontier falla
   justo donde hay estructura latente.
+- Model Discovery Agent ([2608.09696](https://arxiv.org/abs/2608.09696))
+  `[LEÍDO COMPLETO 2026-08-13]` — vecino metodológico directo: un LLM propone formas, pero
+  matemática bayesiana las compara, elige el experimento y **fuerza** a abrir formas nuevas
+  cuando el modelo falla. Inspira la separación detectar→generar→seleccionar→usar y los mundos
+  con una intervención decisiva; no demuestra salto espontáneo porque externaliza el impasse y
+  entrega mucho vocabulario. [Extracción](lectura-de-fuentes.md#mda-model-discovery-agent-arxiv-260809696) ·
+  [explicación en llano](../WIKI-INDAGACION.md#un-vecino-muy-cercano-model-discovery-agent-mda).
 - NewtonBench / LLM-SRBench `[LEÍDOS 2026-08-06]` — el estado del arte en descubrimiento de
   ecuaciones; qué miden y qué no ([extracción](research/2026-08-06-lectura-newtonbench-llm-srbench.md)).
 - KellyBench ([2604.27865](https://arxiv.org/abs/2604.27865)) `[LEÍDO 2026-08-07]` —

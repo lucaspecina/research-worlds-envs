@@ -116,6 +116,72 @@ mide al PROPONEDOR, no al puntuador: los agentes ejecutan los niveles 1 y 2 muy 
 jamás escriben una entrada nueva en el menú (el 0/9 de **Conteos por lote: tipos discretos o
 variación continua**, alias técnico `count_mix`).
 
+### Un vecino muy cercano: Model Discovery Agent (MDA)
+
+El paper [*Model Discovery Agent*](https://arxiv.org/abs/2608.09696), de Kevin Murphy
+(`[LEÍDO completo 2026-08-13]`), construye una máquina que a primera vista se parece muchísimo
+a WAGER: hay una verdad oculta, un simulador, pocos experimentos comprables y un examen en
+situaciones nuevas. La diferencia decisiva es **quién hace cada parte de la investigación**.
+
+MDA reparte el trabajo así:
+
+1. un LLM propone varias formas de modelo ejecutables;
+2. una rutina matemática ajusta sus números, compara las formas y cobra la complejidad extra;
+3. otra rutina elige la prueba donde los modelos predicen cosas más diferentes;
+4. si el mejor modelo todavía falla demasiado, un controlador declara que la lista actual no
+   alcanza y **obliga** al LLM a proponer formas nuevas;
+5. el modelo elegido predice experimentos ocultos y se puntúa matemáticamente.
+
+Sus mundos tienen tres trajes:
+
+| Familia | Qué esconden | Qué puede hacer el investigador | Dónde vive la prueba decisiva |
+|---|---|---|---|
+| **Física** | una ley de fuerzas, una masa invisible o especies ocultas | lanzar partículas desde distintas posiciones, velocidades y perillas | por ejemplo, la fuerza Yukawa parece una potencia simple cerca y se separa recién con un lanzamiento lejano |
+| **Química** | una de 57 leyes, hechas con 9 mecanismos conocidos y sus combinaciones | elegir siete variables como concentraciones, temperatura y pH; observar la velocidad de reacción | buscar el punto donde dos mecanismos candidatos predicen velocidades distintas |
+| **Neuronas** | una neurona normal más un mecanismo eléctrico escondido | elegir entre nueve secuencias de corriente y observar su respuesta | cinco mecanismos están hechos para parecer normales en las pruebas de manual y revelarse solo bajo una secuencia especial |
+
+La receta de construcción es valiosa para WAGER: **lo rutinario deja vivos varios modelos y una
+intervención alcanzable los separa con fuerza**. Eso aparece muy limpio en Yukawa —cerca todos
+parecen iguales, lejos divergen— y en las neuronas —los estímulos comunes no dicen nada, pero una
+secuencia temporal precisa revela el mecanismo oculto—.
+
+Pero MDA **no demuestra que un LLM dé el salto espontáneamente**. El sistema le resuelve desde
+afuera varios de nuestros eslabones difíciles:
+
+| Pregunta | WAGER | MDA |
+|---|---|---|
+| ¿Quién nota que el modelo no cierra? | debe notarlo el agente, salvo en una condición de ayuda declarada | un chequeo matemático lo decide con un umbral |
+| ¿Quién decide volver a pensar la forma? | el agente | el controlador lo obliga |
+| ¿Quién inventa candidatos? | el mismo agente dentro de su investigación | un LLM especializado solo en proponer |
+| ¿Quién elige el próximo experimento? | el agente, con su presupuesto | una optimización matemática elige donde los candidatos discrepan más |
+| ¿Quién compara y conserva creencias? | el agente debe reflejarlo en su modelo ejecutable | inferencia bayesiana mantiene y pesa toda la lista |
+| Pregunta principal | ¿descubre y realiza por sí mismo la edición necesaria? | ¿cuántos experimentos ahorra el sistema híbrido al identificar el mecanismo? |
+
+Además, sus ayudas son fuertes. En física el prompt nombra incluso fuerzas apantalladas y la forma
+Yukawa; en química entrega la gramática de los nueve mecanismos y dice cómo combinarlos; en
+neuronas fija el marco Hodgkin–Huxley y ofrece un menú que contiene las pruebas reveladoras. Es
+principalmente **abducción selectiva bien orquestada**: traer, combinar y elegir piezas cuyo
+vocabulario ya fue preparado. Puede haber expansión real cuando un residuo obliga a agregar otra
+combinación, pero el gatillo y la obligación vienen de la máquina.
+
+Lo más útil no es copiar todo el sistema, sino usarlo como **bisturí diagnóstico** en el próximo
+anfitrión interactivo del mismo salto. Después de que un agente registre una campana, un control
+podría mostrarle, sin nombrar
+dos grupos: *“tu modelo produce muchos perfiles intermedios que no aparecen en los datos
+reservados”*. Si entonces abre dos familias, antes fallaba en **detectar el impasse o decidir
+reabrir**; si propone la idea pero no la adopta, falla la **selección o el compromiso**; si ni así
+la genera, falla la **creación de la alternativa**. Esa ayuda no reemplaza la prueba principal sin
+pistas: sirve para localizar por qué falló. No reabre ni modifica la tanda ya cerrada de Perfiles
+persistentes.
+
+Hay otra coincidencia importante: Murphy encuentra inestable el juez-LLM textual heredado de
+DiscoverPhysics y lo excluye de su criterio numérico de aprobación. Las trayectorias ocultas, las
+predicciones y la equivalencia de fórmulas se evalúan con cómputo. Es la misma razón por la que
+WAGER protege el reward cero-LLM.
+
+La extracción técnica completa, incluidos mundos, prompts, resultados y límites, está en
+[Lectura de fuentes — MDA](docs/lectura-de-fuentes.md#mda-model-discovery-agent-arxiv-260809696).
+
 ## 4. Las cuatro perillas (por qué el juez, el médico y el detective no son idénticos)
 
 Mismo ciclo, distinto punto del espacio de configuraciones:

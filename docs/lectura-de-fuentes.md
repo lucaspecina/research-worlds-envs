@@ -59,6 +59,7 @@
 | Invisible Saboteurs | sycophancy que desorienta a novatos EN TAREAS de problem-solving (candidato agéntico del canal social) | arxiv.org/abs/2510.03667 | [ ] |
 | **SUMADOS POR CODEX r24 (2026-07-13; los 8 IDs verificados título↔claim contra arXiv)** — LLM-as-an-Investigator (Marozzo et al.) | diagnóstico interactivo: desafío espontáneo a la hipótesis plantada 1-2/30, con chequeo explícito 27-28/30 | arxiv.org/abs/2606.13220 | **LEÍDO** (2026-07-13) |
 | **DiscoverPhysics** — 22 mundos de física alterada (EL VECINO MÁS CERCANO) | ley oculta + presupuesto + entrega ejecutable + held-out; frontier falla en estructura LATENTE; "fitting without understanding" | arxiv.org/abs/2605.26087 | **LEÍDO** (2026-07-13, pedido de Lucas) |
+| **Kevin Murphy — “Model Discovery Agent” (MDA, 2608.09696)** | sistema híbrido sobre ForceBench, ChemBench y seis neuronas nuevas: el LLM propone formas; Bayes las ajusta/elige; un chequeo residual fuerza expansión; valor-de-información elige experimentos | arxiv.org/pdf/2608.09696 | **LEÍDO** (2026-08-13, PDF v2 completo, 61 pp. + prompts) → vecino metodológico, no evidencia de salto espontáneo |
 | BeliefShift (Myakala et al.) | consistencia de creencias entre SESIONES: resistir deriva vs updates legítimos (el par, longitudinal) | arxiv.org/abs/2603.23848 | [ ] |
 | Verify Before You Commit / SAVeR (Yuan et al.) | creencias no verificadas se guardan y propagan entre pasos → precedente del 1.2 | arxiv.org/abs/2604.08401 | [ ] |
 | When Agents Commit Too Soon (Mehta et al.) | la convergencia temprana NO correlaciona con corrección — comprometerse ≠ el vicio | arxiv.org/abs/2606.22936 | [ ] |
@@ -463,6 +464,92 @@ otro nombre — salvo el juez.
   understanding" sin juez), pares gemelos, vicio-como-jugada-perdedora, conducta instrumentada
   (register). Robables: pass@k, presupuesto de rondas, su catálogo de leyes alteradas como
   cantera de física.
+
+### MDA: Model Discovery Agent (arXiv 2608.09696)
+
+**Leído completo:** 2026-08-13. Fuente: [PDF v2 completo, 61 páginas](https://arxiv.org/pdf/2608.09696), incluidos algoritmos,
+tablas de mundos y apéndice de prompts. Es un vecino metodológico directo de WAGER, pero su
+unidad de éxito es **el sistema híbrido completo**, no el juicio espontáneo de un solo agente.
+
+**Qué construye realmente.** MDA separa la investigación en módulos. Un LLM propone un lote de
+formas ejecutables. Para cada forma, una rutina bayesiana ajusta parámetros y calcula cuánto la
+apoyan los datos, integrando el costo de los parámetros extra. Una rutina de
+valor-de-información elige la intervención donde las predicciones de los candidatos discrepan más.
+Después de observarla, un chequeo predictivo mide el residuo del mejor candidato: si supera un
+umbral, el controlador declara que el espacio actual no alcanza y vuelve a llamar al LLM para que
+proponga estructuras distintas. Si el ajuste es bueno y la creencia se concentró, achica la lista.
+La predicción final en intervenciones ocultas se computa desde el modelo seleccionado.
+
+**Los mundos, qué esconden y cómo se rompen los empates:**
+
+- **ForceBench / física.** Reenvuelve 11 mundos públicos de DiscoverPhysics: seis leyes de dos
+  cuerpos (1/r, Yukawa apantallada, 1/r², fuerza oscilante, potencia fraccional y transición por
+  dimensión extra) y cinco extensiones (corona de partículas, éter, expansión Hubble, masas
+  invisibles y tres especies). En los seis básicos el sistema parte de una caída desde `r=3` y
+  elige hasta ocho lanzamientos de un menú de 13: radios `1.5–10`, velocidad tangencial y cambios
+  en dos perillas. El examen usa lanzamientos y perillas nuevos, más extremos. Yukawa es el diseño
+  más limpio: cerca de la fuente la verdad y varias potencias casi coinciden; recién una sonda a
+  `r=5–6` las separa. Puntaje principal: error normalizado de trayectorias ocultas; también
+  equivalencia funcional de la ley. Murphy elimina del criterio de aprobación el juez-LLM textual
+  heredado de DiscoverPhysics porque lo encuentra inestable.
+- **ChemBench / química.** Son 57 leyes estáticas: 9 mecanismos canónicos y 48 combinaciones.
+  Cada experimento fija siete variables —sustratos, inhibidor, producto, enzima, temperatura y
+  pH— y devuelve una velocidad de reacción. El diseño es continuo: MDA busca matemáticamente el
+  punto donde las fórmulas candidatas se separan. Se puntúa RMSLE en 1.000 puntos ocultos y
+  equivalencia simbólica con SymPy. Los niveles fácil/medio/difícil cambian mecanismos y
+  parámetros, a veces dejando una firma muy débil. La reapertura por residuos aumenta la exactitud
+  estructural de 36% a 50% en su ablación y es la única vía que recupera algún mecanismo compuesto
+  (`0%→11%`), aunque no salva los casos duros cuya señal es pequeña.
+- **NeuronBench / biología.** Es el benchmark nuevo del paper: seis neuronas sintéticas, cada una
+  basada en Na+K+fuga y una modificación oculta. Cinco son mecanismos diseñados por los autores
+  y una es una corriente M de manual. Los cinco nuevos fueron afinados para parecer una neurona
+  normal bajo los estímulos y bloqueadores habituales; cada uno se revela bajo una secuencia
+  temporal específica. El agente elige entre nueve protocolos —pulsos breves, largos, dobles y
+  distintas preparaciones antes del estímulo—. El examen pide conteos de picos y respuesta en
+  protocolos nunca corridos; se puntúa el error de esos conteos y, secundariamente, rasgos de la
+  traza. La extensión estocástica conserva los seis mecanismos y agrega ruido de canales, ruido de
+  medición y repeticiones comprables.
+
+**Cuánta idea recibe ya hecha.** El encuadre “abierto” necesita una lectura muy acotada. En física
+el prompt nombra explícitamente las familias de campos, incluida la forma `K1(r/λ)/λ` de Yukawa,
+las potencias y la modulación temporal. En química entrega las nueve familias, varias fórmulas y
+la instrucción de componerlas multiplicativamente; cuando refina, muestra qué modelos fallaron y
+con qué variable se correlaciona el residuo. En neuronas fija Hodgkin–Huxley, pide corrientes más
+allá de Na/K, proporciona categorías de activación/inactivación y un menú que contiene los
+protocolos reveladores. En materia oscura incluso declara que hay fuentes invisibles y solo deja
+por inferir cuántas y dónde; tres especies se resuelve con álgebra+BIC, sin propuesta del LLM.
+
+Por eso el paper mide principalmente **selección, composición, ajuste y experimentación eficiente
+dentro de un vocabulario preparado**. Hay expansión de forma cuando el controlador abre la lista,
+pero el detector del impasse, la orden de reestructurar, la memoria de candidatos, la comparación
+y la elección del experimento están externalizados. No es evidencia de que un agente libre note la
+falla y decida agrandar por sí mismo su espacio de hipótesis.
+
+**Qué cambia o reafirma para WAGER:**
+
+1. Reafirma una receta de mundo: varios modelos empatan en la rutina y una intervención legal los
+   hace divergir mucho. Antes de agentes debemos certificar esa separación, pero el agente debe
+   encontrar la prueba en la condición principal.
+2. Ofrece una descomposición limpia para nuestras autopsias: **detectar el desajuste → reabrir la
+   búsqueda → generar otra forma → seleccionarla → usarla**. El éxito híbrido no permite atribuir
+   todos esos verbos al LLM.
+3. Motiva un único control diagnóstico en el **próximo anfitrión interactivo** del mismo salto:
+   después de registrar la Gaussiana, mostrar un fallo predictivo mecánico sobre perfiles
+   completos, sin nombrar grupos. Esto no reabre la tanda cerrada de Perfiles persistentes.
+   Si aparece la bifurcación, el cuello estaba antes de la generación; si no aparece, queda en
+   generación/representación; si aparece en notas pero no en código, queda en compromiso.
+4. La idea de cobrar ajuste y complejidad en una misma moneda converge con nuestra vara de dos
+   bolsillos. No sustituye la certificación contra el mejor rival ni vuelve “correcta” una etiqueta
+   estructural solo porque coincide con la verdad del simulador.
+
+**Límite anti-recencia.** MDA es un paper de ingeniería: pregunta cómo construir un descubridor
+más eficiente, mientras WAGER pregunta cuándo un agente realiza o no la jugada conceptual. Sus
+episodios son además cortos (ocho experimentos en el protocolo común; química se extiende hasta
+60), con acciones curadas y sin la historia, consecuencias y dependencias largas que WAGER quiere
+instanciar después. Se toma como cantera de diseño y control, no como teoría ya demostrada sobre
+por qué fallaron nuestros agentes.
+
+Versión en llano y comparación directa: [WIKI-INDAGACION — MDA](../WIKI-INDAGACION.md#un-vecino-muy-cercano-model-discovery-agent-mda).
 
 ### LLM-as-an-Investigator (2606.13220) — LEÍDO 2026-07-13
 
@@ -881,3 +968,47 @@ sub-actualización tardía (Strategic Play), no indiferencia" — parcialmente s
 REBOTE entrega el desajuste masticado (no exige actualización fina). La lectura no decide
 adoptar su métrica: primero interesa entender si, con las armas propias de WAGER, podemos separar
 evidencia disponible, reconocimiento explícito, cambio de modelo y acción.
+
+### "Model Discovery Agent (MDA): LLM-assisted Bayesian experiment design for data-efficient discovery of mechanistic world models" (arXiv 2608.09696, Kevin Murphy) — LEÍDO 2026-08-13 (abstract + HTML v1 completo vía fetch con extracción dirigida; pedido de Lucas)
+
+**Qué es**: NO es un benchmark de juicio — es un SISTEMA que descubre mecanismos: el LLM actúa
+solo como **proposer** de estructuras candidatas y toda la inferencia la hace maquinaria bayesiana
+clásica (SMC para posteriors de parámetros y estructura, SBI para verosimilitudes intratables,
+VoI para elegir el experimento siguiente). Proposers: Claude Opus 4.7 y DeepSeek-v4 Pro.
+Benchmarks: ForceBench (física, sobre DiscoverPhysics — el paper que YA leímos y que valida
+nuestro vicio 4), ChemBench (AutoSciLab) y NeuronBench (Hodgkin-Huxley, 6 neuronas misteriosas,
+nuevo). Evaluación mecánica (nMSE / RMSLE / accuracy simbólica), sin juez-LLM.
+
+- **M-open con disparador MECÁNICO** (lo más relevante para nosotros): *"If the error is too
+  large, MDA expands the hypothesis space by prompting the LLM to suggest a novel unnamed
+  mechanism"* — el chequeo predictivo dispara automáticamente cuando el residuo pasa un umbral
+  (Algoritmo 1, línea 7). **Es exactamente nuestro C1 (el golpe) automatizado por fuera del
+  agente.** Nuestra tanda de Perfiles persistentes es el complemento: 9/10 nunca ejecutaron ese
+  test (uno ANUNCIÓ que usaría un modelo rico si encontraba multimodalidad y no lo hizo).
+- **Su ablación contiene nuestra tesis**: el brazo "LLM agent" (LLM diseña + LLM pronostica, sin
+  andamio) pierde feo — ForceBench ~0.1+ nMSE vs 0.013 de MDA con 8 experimentos; ChemBench
+  LLM-AutoSciLab 42% con B=60 vs 56% de MDA con ~8. El LLM desnudo no descubre.
+- **El proposer falla incluso CON andamio** (límite que ellos declaran): *"LLM proposals can miss
+  ground truth"* — en NeuronBench el LLM omite la corriente de bajo umbral. Evidencia externa
+  extra del cuello de generación de candidatos.
+- **Su criterio anti-curve-fit es la INTERVENCIÓN**: *"Predicting the answer to interventional
+  'what if' questions --- the outcome of an action never taken --- requires a mechanistic, causal
+  model, not a curve fit"*; y critican a PySR por devolver *"numerically-fit but mechanistically
+  meaningless expressions"* (RMSLE 0.001 con forma simbólica incorrecta).
+- VoI = elegir el diseño que maximiza I(M;Y|D); con ruido gaussiano se reduce a máxima varianza
+  predictiva posterior, dominada por el desacuerdo entre modelos. Es nuestro D_pre — ellos lo
+  usan para ELEGIR por el agente, nosotros para MEDIR si el agente compra evidencia discriminante.
+- Límites declarados: verosimilitud sintética determinista (la extensión estocástica con filtros
+  de partículas es cara), estadísticos resumen hechos a mano o aprendidos, proposals que se
+  pierden la verdad.
+
+⚠️ **Anti-recencia**: es un paper de RENDIMIENTO (SOTA con andamio), no de medición de juicio;
+sus resultados no dicen nada sobre qué hace un agente solo salvo por su propia ablación. No
+adoptar su arquitectura: darle el exoesqueleto al agente destruiría exactamente lo que medimos.
+
+**Impacto directo**: su criterio interventional es la salida al callejón que dejó la auditoría
+de D2 (una skew-normal copiaba la predicción sin tener la estructura, S=0.671 > 0.5, y no hay
+base operacional para castigar el vocabulario interno de un modelo que reproduce todas las
+consecuencias). Camino: el próximo anfitrión debe puntuar **predicción bajo intervención**, donde
+dos tipos ocultos responden distinto a una acción nunca tomada y ninguna familia sin partición
+puede copiar la respuesta. Registrado como requisito de diseño, no como adopción de su método.
