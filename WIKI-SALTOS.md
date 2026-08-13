@@ -26,15 +26,14 @@ La gramática completa está en
 - **Salto:** grupos escondidos — pasar de una población aparente a dos tipos persistentes.
 - **Estado:** los dos experimentos de la planta química están cerrados; el último no llegó a
   su tanda principal.
-- **Qué estamos haciendo:** diseñar desde cero un mundo y una tarea donde representar dos tipos
-  persistentes sea la manera de llegar al modelo bueno.
+- **Qué estamos haciendo:** el primer mundo nuevo, **Perfiles persistentes**, ya pasó la
+  resolubilidad con idea nombrada 2/3; sigue una tanda de 10 partidas sin ayuda con `gpt-5.4`.
 - **Pregunta principal:** ¿el agente descubre y realiza el salto de una población aparente a dos
   tipos persistentes?
-- **Primer control de construcción:** con la idea de “dos tipos” nombrada, pero sin la solución,
-  ¿puede investigarla, implementarla y mejorar claramente? Es una validación del diseño que usa
-  un agente; no es la pregunta principal ni una subpregunta científica todavía.
+- **Primer control de construcción:** aprobado 2/3 con `gpt-5.4`; los dos éxitos implementaron
+  la bifurcación y uno falló al confundir variación continua con cuatro tipos.
 - **Gemelo:** fuera de esta etapa; podrá agregarse después como control anti-reflejo.
-- **Corridas autorizadas ahora:** ninguna.
+- **Corridas autorizadas ahora:** 10 partidas frescas sin ayuda, `gpt-5.4`, seeds 99830–99839.
 
 ## La lista, de un vistazo
 

@@ -26,13 +26,14 @@
 > subpreguntas científicas. No se interpreta al agente si antes falló el diseño. Versión completa:
 > [WIKI — workflow obligatorio](../WIKI.md#el-workflow-obligatorio-para-diseñar-cualquier-experimento).
 
-> **FOCO ACTUAL (decisión de Lucas, 2026-08-11):** volver al objetivo primario del programa de
-> saltos. Diseñar desde cero **un solo mundo** donde pasar de una población aparente a dos tipos
-> persistentes sea necesario para encontrar el modelo bueno; luego medir si el agente descubre y
-> realiza ese salto. La idea nombrada se usa primero para validar la resolubilidad del diseño;
-> error visible o presión son subpreguntas científicas posteriores. **El gemelo queda
-> deliberadamente fuera de esta etapa** y podrá
-> agregarse después. No hay mundo nuevo aprobado ni corridas autorizadas todavía.
+> **FOCO ACTUAL (2026-08-13): Grupos escondidos — Perfiles persistentes.** El mundo base ya
+> separa limpiamente una banda continua (`S_profile=0.464`) de dos perfiles aprendidos
+> (`0.924–0.997`). La resolubilidad con `gpt-5.4` y la idea nombrada pasó 2/3
+> (`0.964/0/0.998`): el agente puede descubrir en los datos e implementar el salto, aunque la
+> ayuda no garantiza hacerlo bien. Dos partidas exploratorias sin ayuda quedaron 0/2. **Siguiente
+> paso congelado y autorizado:** `gpt-5.4 × n=10` sin ayuda, seeds 99830–99839; `S_profile>=0.5`
+> es el primario y `R` queda secundario por ruido conocido. El gemelo sigue fuera. Ficha y crudos:
+> [Perfiles persistentes](research/2026-08-13-ficha-grupos-escondidos-perfiles-persistentes.md).
 
 > **REGLA DE NAVEGACIÓN (Lucas, 2026-07-31): avanzar y volver a mirar un paso arriba.**
 > Trabajamos con una hipótesis concreta, la probamos pronto y usamos el resultado para decidir;

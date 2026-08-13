@@ -9,12 +9,18 @@ import numpy as np
 import pandas as pd
 
 from wager.contracts import Battery, BatteryItem, FunctionalSpec, Regime, ScoringParams
+from wager.reward.functionals import FunctionalScorer
 from wager.reward.scorer import WorldSide, score_callable
 
 COLS = ["x"]
 PARAMS = ScoringParams(lambda_mdl=0.0, n_samples=2000, m_reps=2)
 FAIL = FunctionalSpec(name="exceedance", column="x", threshold=-2.0, direction="below",
                       brief_clause="a value below -2 is a failure")
+PROFILE = FunctionalSpec(
+    name="projection_energy",
+    projection={"x1": 1.0, "x2": -1.0},
+    brief_clause="the joint contrast between x1 and x2 matters",
+)
 
 
 def world(regime, n, seed):  # bimodal +-5: P(x < -2) = 0.5
@@ -65,3 +71,26 @@ def test_dmax_is_function_of_cf():
     d2 = WorldSide(world, bat, COLS, PARAMS.n_samples, null_sample=unimodal,
                    functionals=[FAIL], c_f=2.0).d_maxes[0]
     assert d2 > d1 > d0
+
+
+def test_projection_energy_prices_joint_shape_from_samples():
+    """Correct marginals do not excuse destroying the declared joint profile."""
+    rng = np.random.default_rng(123)
+    n = 2000
+    z = rng.choice((-1.0, 1.0), n)
+    truth = pd.DataFrame({
+        "x1": 3.0 * z + rng.normal(0.0, 0.4, n),
+        "x2": -3.0 * z + rng.normal(0.0, 0.4, n),
+    })
+    shuffled = truth.copy()
+    shuffled["x2"] = rng.permutation(shuffled["x2"].to_numpy())
+    scorer = FunctionalScorer(
+        [PROFILE], truth, ["x1", "x2"], truth[["x1", "x2"]].std().to_numpy(), c_f=1.0
+    )
+    assert scorer.extra_distance(truth.copy()) < 1e-10
+    assert scorer.extra_distance(shuffled) > 0.05
+
+
+def test_projection_energy_contract_rejects_missing_weights():
+    with np.testing.assert_raises(ValueError):
+        FunctionalSpec(name="projection_energy", brief_clause="profile matters")

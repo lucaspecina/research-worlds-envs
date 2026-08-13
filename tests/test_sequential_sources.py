@@ -19,11 +19,13 @@ def _world(regime, n, seed):
     return pd.DataFrame({"x": rng.normal(0, 1, n), "y": rng.normal(0, 1, n)})
 
 
-def _server(n_exact=None):
+def _server(n_exact=None, finite_archive=False):
     config = EpisodeConfig(
         budget=10_000.0,
         observe_sources={
-            "overview": SourceConfig(cost_per_row=0.0, max_rows=48),
+            "overview": SourceConfig(
+                cost_per_row=0.0, max_rows=48, finite_archive=finite_archive
+            ),
             "layer_1": SourceConfig(cost_per_row=2.0, max_rows=96),
             "layer_2": SourceConfig(cost_per_row=2.0, max_rows=96, unlock_after="layer_1"),
         },
@@ -43,6 +45,20 @@ def test_max_rows_pass_then_fail():
     assert len(s.observe("overview", 8)) == 8        # exactly exhausts it
     with pytest.raises(ValueError, match="rows left"):
         s.observe("overview", 1)                     # the free source is FINITE
+
+
+def test_finite_archive_is_one_table_independent_of_purchase_batching():
+    split = _server(finite_archive=True)
+    a = split.observe("overview", 40)
+    b = split.observe("overview", 8)
+
+    whole = _server(finite_archive=True).observe("overview", 48)
+    pd.testing.assert_frame_equal(pd.concat([a, b], ignore_index=True), whole)
+
+
+def test_finite_archive_requires_declared_size():
+    with pytest.raises(ValueError, match="requires max_rows"):
+        SourceConfig(cost_per_row=0.0, finite_archive=True)
 
 
 def test_unlock_chain_fail_then_pass():

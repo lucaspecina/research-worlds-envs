@@ -133,6 +133,17 @@ class SourceConfig(BaseModel):
     # time). None/None = inert for every existing world.
     max_rows: int | None = Field(default=None, ge=1)
     unlock_after: str | None = None
+    # A finite archive is one fixed table revealed progressively. Without this
+    # flag, repeated observe() calls are fresh draws (the historical default).
+    # This distinction matters for paired episodes and for the ordinary meaning
+    # of "read 100 more rows from the same archive".
+    finite_archive: bool = False
+
+    @model_validator(mode="after")
+    def _finite_archive_has_size(self):
+        if self.finite_archive and self.max_rows is None:
+            raise ValueError("finite_archive requires max_rows")
+        return self
 
 
 class ExperimentCost(BaseModel):

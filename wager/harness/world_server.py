@@ -103,6 +103,7 @@ class WorldServer:
         self._unlocked: dict = {}        # sources revealed by fired events (D4)
         self._fired_events: set = set()
         self._rows_bought: dict = {}     # per-source totals (max_rows/unlock_after)
+        self._finite_source_archives: dict[str, pd.DataFrame] = {}
         self._turn = 0                   # last begin_turn index (register latency)
         self._register_jobs: list = []   # queued own-model diagnostics (lab largo)
         self._register_versions: dict = {}  # line -> artifact version counter
@@ -290,8 +291,9 @@ class WorldServer:
                     f"source {source!r} is locked: it opens after {spec.unlock_after!r} "
                     f"has been fully read ({need} rows)"
                 )
+        start = self._rows_bought.get(source, 0)
         if spec.max_rows is not None:
-            left = spec.max_rows - self._rows_bought.get(source, 0)
+            left = spec.max_rows - start
             if n > left:
                 raise ValueError(
                     f"source {source!r} has {left} rows left this episode "
@@ -299,10 +301,21 @@ class WorldServer:
                 )
         cost = spec.cost_per_row * n
         self._charge(cost, f"observe({source!r}, {n})")
-        self._rows_bought[source] = self._rows_bought.get(source, 0) + n
         # the agent receives the SOURCE VIEW (selection + channel per the
         # declared pipeline), never the clean mechanism (v0.55/v0.56)
-        df = source_view(self.world_sample, spec, n, self._next_seed(700_000))
+        if spec.finite_archive:
+            if source not in self._finite_source_archives:
+                assert spec.max_rows is not None  # guarded by SourceConfig
+                self._finite_source_archives[source] = source_view(
+                    self.world_sample,
+                    spec,
+                    spec.max_rows,
+                    self._next_seed(700_000),
+                )
+            df = self._finite_source_archives[source].iloc[start:start + n].reset_index(drop=True)
+        else:
+            df = source_view(self.world_sample, spec, n, self._next_seed(700_000))
+        self._rows_bought[source] = start + n
         self._log("observe", {"source": source, "n": n}, cost)
         self._record_evidence(
             "observe", source=source, request={"n": n}, frame=df

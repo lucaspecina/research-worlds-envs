@@ -7,7 +7,7 @@ model-side seeds are derived as derive_seed(seed_world, rep), never persisted.
 import json
 from pathlib import Path
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 from typing import Literal
 
 from wager.contracts.episode import EpisodeConfig
@@ -81,13 +81,32 @@ class FunctionalSpec(BaseModel):
 
     model_config = ConfigDict(frozen=True, extra="forbid")
 
-    name: Literal["exceedance", "quantile", "subgroup_mean", "expected_loss"]
+    name: Literal[
+        "exceedance",
+        "quantile",
+        "subgroup_mean",
+        "expected_loss",
+        "projection_energy",
+    ]
     column: str = "outcome"
     threshold: float | None = None  # exceedance / expected_loss failure threshold
     direction: Literal["below", "above"] = "below"
     tau: float | None = None  # quantile level in (0,1)
     subgroup: dict[str, float] | None = None  # subgroup_mean: regime/context filter
+    # Distributional functional for joint-profile worlds. The submitted sampler still emits the
+    # ordinary columns; server-side math projects every generated row with these declared weights
+    # and compares the complete projected distributions with energy distance.
+    projection: dict[str, float] | None = None
     brief_clause: str  # verbatim clause from the brief that promises this (traceability)
+
+    @model_validator(mode="after")
+    def _projection_contract(self):
+        if self.name == "projection_energy":
+            if not self.projection or not any(abs(v) > 0 for v in self.projection.values()):
+                raise ValueError("projection_energy requires non-zero projection weights")
+        elif self.projection is not None:
+            raise ValueError("projection weights are only valid for projection_energy")
+        return self
 
 
 class StakesSpec(BaseModel):
