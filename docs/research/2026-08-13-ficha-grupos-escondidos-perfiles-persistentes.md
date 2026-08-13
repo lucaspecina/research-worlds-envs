@@ -201,6 +201,9 @@ Mundo, tarea, presupuesto, ayuda y medidas quedan idénticos.
 Primero se ejecutan tres partidas con la misma idea nombrada, seeds `99840–99842`. La compuerta es
 al menos 2/3 entregas válidas con `S_profile>=0.5`. Si falla, no se ejecuta la tanda sin ayuda:
 un negativo de descubrimiento no sería interpretable para un modelo que no demostró capacidad.
+Una caída de API, harness o infraestructura pausa la réplica y no entra al denominador; no se
+reemplaza sin dejar una enmienda previa. Una entrega inválida, `max_turns` o error de código causado
+por el agente sí cuenta como no-cruce: también es parte de su capacidad para resolver la tarea.
 
 Si pasa, se ejecutan diez partidas sin ayuda, seeds `99843–99852`. El primario vuelve a ser el
 cruce funcional `S_profile>=0.5`; se informa aparte cuántas construyen un modelo compacto de dos
