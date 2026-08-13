@@ -209,3 +209,31 @@ Si pasa, se ejecutan diez partidas sin ayuda, seeds `99843–99852`. El primario
 cruce funcional `S_profile>=0.5`; se informa aparte cuántas construyen un modelo compacto de dos
 tipos. No se cambia la frase, no se agregan ejemplos y no se ajusta el mundo entre ambas etapas.
 Todo titular dirá `DeepSeek-V3.2 × Perfiles persistentes × n`.
+
+## Resultado de la compuerta DeepSeek
+
+Por una ejecución paralela, las partidas 01 y 03 comenzaron; la 02 fue rechazada por la capa de
+permisos **antes** de llamar a la API y su seed `99841` no se quemó. Las dos iniciadas terminaron
+con entregas válidas. Ambas obtuvieron `S_profile=0`.
+
+El gate queda matemáticamente cerrado: después de dos fallos ya no puede alcanzar 2/3, aun si la
+tercera acertara. Por eso la tercera no se ejecuta y tampoco corre la tanda sin ayuda. El resultado
+se informa honestamente como `DeepSeek-V3.2 × idea nombrada × Perfiles persistentes × n=2: 0/2`;
+no como `0/3`.
+
+No fue una muestra sin señal ni un problema de interfaz:
+
+- en las 200 filas exactas de 99840, dos perfiles ganaban por `Delta BIC=361.6` y alcanzaban
+  `S_profile=.982`;
+- en las 200 filas exactas de 99842, ganaban por `Delta BIC=368.0` y alcanzaban `S_profile=.964`;
+- ambas entregas compilaron y fueron aceptadas.
+
+En las dos trazas DeepSeek leyó la pista y consideró tipos o mezclas, pero reinterpretó la forma
+como dos factores continuos y entregó una sola Gaussiana. Esto es una falla de capacidad bajo
+**esta ayuda**, no evidencia sobre descubrimiento espontáneo. Se abandona esta réplica sin cambiar
+la pista ni buscar otra formulación que “dé”.
+
+**Decisión: ABANDONAR la tanda DeepSeek en este anfitrión; MANTENER el resultado acotado de
+`gpt-5.4`.** Tras un control externo decisivo fallido, se vuelve un nivel arriba. El siguiente
+anfitrión del salto grupos escondidos deberá exigir investigación secuencial —no solo modelar una
+tabla estática— y se validará desde cero con el mismo workflow.

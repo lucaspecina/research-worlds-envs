@@ -34,9 +34,11 @@
 > completos, por lo que conserva las dos familias y cuenta según la regla previa, aunque no las
 > explicó. En las filas exactas de cada partida, dos perfiles ganaban por `Delta BIC=705–795` y
 > alcanzaban `S=.943–.999`: la señal estaba. **Decisión: MANTENER el hallazgo, cerrar tuning local
-> y volver un nivel arriba. Próximo paso congelado: **DeepSeek-V3.2 con la misma idea nombrada,
-> n=3; solo si pasa 2/3, n=10 sin ayuda.** No más frases ni tuning local. El gemelo sigue fuera.
-> Ficha y crudos:
+> y volver un nivel arriba. El control externo ya cerró: **DeepSeek-V3.2 falló 0/2 con la idea
+> nombrada; como 2/3 quedó imposible, la tercera no corrió y tampoco corre la tanda sin ayuda.**
+> No fue falta de señal: en sus filas, dos perfiles daban `S=.982/.964`. Próximo paso: otro
+> anfitrión del mismo salto que exija investigación secuencial, no más modelos o frases sobre esta
+> tabla. El gemelo sigue fuera. Ficha y crudos:
 > [Perfiles persistentes](research/2026-08-13-ficha-grupos-escondidos-perfiles-persistentes.md).
 
 > **REGLA DE NAVEGACIÓN (Lucas, 2026-07-31): avanzar y volver a mirar un paso arriba.**

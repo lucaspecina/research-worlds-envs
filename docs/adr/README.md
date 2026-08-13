@@ -193,5 +193,6 @@
 | 0180 | v1.80 | 2026-08-11 | [Separar preguntas de diseño de subpreguntas científicas](0180-preguntas-de-diseno-y-subpreguntas-cientificas.md) | Vigente — la resolubilidad con idea nombrada valida primero el diseño |
 | 0181 | v1.81 | 2026-08-13 | [Primer anfitrión validado: Grupos escondidos — Perfiles persistentes](0181-primer-anfitrion-validado-perfiles-persistentes.md) | Ejecutada — resultado y decisión en 0182 |
 | 0182 | v1.82 | 2026-08-13 | [Perfiles persistentes: falla espontánea confirmada en gpt-5.4](0182-perfiles-persistentes-falla-espontanea-confirmada-en-gpt-5-4.md) | Vigente — 1/10 funcional, 0/10 dos tipos; cerrar tuning local y replicar un nivel arriba |
-| 0183 | v1.83 | 2026-08-13 | [Réplica externa de Perfiles persistentes con DeepSeek](0183-replica-externa-perfiles-persistentes-deepseek.md) | Vigente — gate de capacidad 2/3 antes de la tanda sin ayuda |
-| 0184 | v1.84 | 2026-08-13 | [Regla de episodios inválidos en la réplica DeepSeek](0184-regla-de-episodios-invalidos-en-la-replica-deepseek.md) | Vigente — fallas externas pausan; fallas del agente cuentan no-cruce |
+| 0183 | v1.83 | 2026-08-13 | [Réplica externa de Perfiles persistentes con DeepSeek](0183-replica-externa-perfiles-persistentes-deepseek.md) | Ejecutada y cerrada por 0185 |
+| 0184 | v1.84 | 2026-08-13 | [Regla de episodios inválidos en la réplica DeepSeek](0184-regla-de-episodios-invalidos-en-la-replica-deepseek.md) | Aplicada; cierre en 0185 |
+| 0185 | v1.85 | 2026-08-13 | [DeepSeek falla capacidad y cierra la réplica](0185-deepseek-falla-capacidad-y-cierra-la-replica.md) | Vigente — gate imposible tras 0/2; no corre tanda sin ayuda |

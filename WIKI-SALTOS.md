@@ -34,8 +34,10 @@ La gramática completa está en
 - **Primer control de construcción:** aprobado 2/3 con `gpt-5.4`; los dos éxitos implementaron
   la bifurcación y uno falló al confundir variación continua con cuatro tipos.
 - **Gemelo:** fuera de esta etapa; podrá agregarse después como control anti-reflejo.
-- **Próximo nivel:** replicar en otra familia de modelo o en otro anfitrión; no seguir retocando
-  este mundo.
+- **Control externo:** DeepSeek falló 0/2 aun con la idea nombrada, así que no se interpretan
+  partidas suyas sin ayuda.
+- **Próximo nivel:** otro anfitrión del mismo salto, con investigación secuencial; no seguir
+  retocando esta tabla ni buscando otra frase.
 
 ## La lista, de un vistazo
 

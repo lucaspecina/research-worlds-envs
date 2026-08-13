@@ -66,6 +66,15 @@ def main() -> int:
     parser.add_argument("condition", choices=tuple(CELLS))
     args = parser.parse_args()
     condition = args.condition
+    if condition == "replica_deepseek_idea_nombrada_02":
+        raise SystemExit(
+            "gate DeepSeek cerrado: 01 y 03 no cruzaron; 2/3 ya es imposible; "
+            "seed 99841 queda sin quemar"
+        )
+    if condition.startswith("replica_deepseek_sin_ayuda_"):
+        raise SystemExit(
+            "tanda DeepSeek no autorizada: la compuerta con idea nombrada falló"
+        )
     seed = CELLS[condition]["seed"]
     hint = CELLS[condition]["hint"]
     model = CELLS[condition]["model"]
