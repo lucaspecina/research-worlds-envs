@@ -192,3 +192,17 @@ próximo nivel es una réplica con otra familia de modelo o un segundo anfitrió
 Una etiqueta de metadatos en los recibos quedó vieja (`exploratory resolvability slice`) también
 para estas diez condiciones. No cambia condición, seeds, código ni pre-registro; se corrige en el
 runner para no repetir la ambigüedad.
+
+## Réplica externa congelada — DeepSeek-V3.2
+
+Para separar un resultado de `gpt-5.4` de una propiedad del anfitrión, se cambia **solo el modelo**.
+Mundo, tarea, presupuesto, ayuda y medidas quedan idénticos.
+
+Primero se ejecutan tres partidas con la misma idea nombrada, seeds `99840–99842`. La compuerta es
+al menos 2/3 entregas válidas con `S_profile>=0.5`. Si falla, no se ejecuta la tanda sin ayuda:
+un negativo de descubrimiento no sería interpretable para un modelo que no demostró capacidad.
+
+Si pasa, se ejecutan diez partidas sin ayuda, seeds `99843–99852`. El primario vuelve a ser el
+cruce funcional `S_profile>=0.5`; se informa aparte cuántas construyen un modelo compacto de dos
+tipos. No se cambia la frase, no se agregan ejemplos y no se ajusta el mundo entre ambas etapas.
+Todo titular dirá `DeepSeek-V3.2 × Perfiles persistentes × n`.

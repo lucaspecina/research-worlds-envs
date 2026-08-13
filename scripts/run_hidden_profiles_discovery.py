@@ -22,7 +22,8 @@ from wager.harness.episode import run_episode  # noqa: E402
 
 CASE = ROOT / "cases/hidden_profiles_v0"
 OUT = ROOT / "scripts/out/hidden_profiles_discovery"
-MODEL = "gpt-5.4"
+GPT_MODEL = "gpt-5.4"
+DEEPSEEK_MODEL = "DeepSeek-V3.2"
 HINT = (
     "Considerá la posibilidad de que los perfiles completos provengan de unos pocos tipos "
     "ocultos que se mantienen a través de las doce pruebas. Investigá esa idea con los datos "
@@ -41,6 +42,23 @@ CELLS.update({
     f"confirmacion_sin_ayuda_{i:02d}": {"seed": seed, "hint": ""}
     for i, seed in enumerate(range(99830, 99840), start=1)
 })
+for cell in CELLS.values():
+    cell["model"] = GPT_MODEL
+
+# External model replication, frozen after the gpt-5.4 batch. The no-hint cells are
+# contingent on at least 2/3 valid hint cells crossing S_profile >= 0.5.
+CELLS.update({
+    f"replica_deepseek_idea_nombrada_{i:02d}": {
+        "seed": seed, "hint": HINT, "model": DEEPSEEK_MODEL,
+    }
+    for i, seed in enumerate(range(99840, 99843), start=1)
+})
+CELLS.update({
+    f"replica_deepseek_sin_ayuda_{i:02d}": {
+        "seed": seed, "hint": "", "model": DEEPSEEK_MODEL,
+    }
+    for i, seed in enumerate(range(99843, 99853), start=1)
+})
 
 
 def main() -> int:
@@ -50,9 +68,10 @@ def main() -> int:
     condition = args.condition
     seed = CELLS[condition]["seed"]
     hint = CELLS[condition]["hint"]
+    model = CELLS[condition]["model"]
 
     OUT.mkdir(parents=True, exist_ok=True)
-    stem = f"{condition}__{MODEL}__{seed}"
+    stem = f"{condition}__{model}__{seed}"
     receipt = OUT / f"{stem}.started.json"
     result_path = OUT / f"{stem}.json"
     if receipt.exists() or result_path.exists():
@@ -60,20 +79,25 @@ def main() -> int:
             f"seed {seed} ya fue quemada; no se re-ejecuta ({receipt.name})"
         )
 
+    if condition.startswith("replica_deepseek_sin_ayuda_"):
+        interpretation = "external-model no-hint replication"
+    elif condition.startswith("replica_deepseek_idea_nombrada_"):
+        interpretation = "external-model resolvability gate"
+    elif condition.startswith("confirmacion_sin_ayuda_"):
+        interpretation = "frozen no-hint confirmation"
+    else:
+        interpretation = "exploratory resolvability slice; not confirmation"
+
     started = {
         "experiment_id": "exp__grupos-escondidos__perfiles-persistentes__v1",
         "case_id": "hidden_profiles_v0",
         "condition": condition,
-        "model": MODEL,
+        "model": model,
         "seed": seed,
         "seed_burned": True,
         "hint": hint,
         "started_at_utc": datetime.now(timezone.utc).isoformat(),
-        "interpretation": (
-            "frozen no-hint confirmation"
-            if condition.startswith("confirmacion_sin_ayuda_")
-            else "exploratory resolvability slice; not confirmation"
-        ),
+        "interpretation": interpretation,
     }
     receipt.write_text(json.dumps(started, indent=2) + "\n", encoding="utf-8")
 
@@ -83,7 +107,7 @@ def main() -> int:
     try:
         episode = run_episode(
             server,
-            model=MODEL,
+            model=model,
             initial_note=hint,
             capture_working_model=True,
         )
