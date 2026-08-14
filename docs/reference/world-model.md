@@ -54,13 +54,16 @@ class World:
 
 ### 2.2 Las tres capas
 
-| Capa | Implementación | Trampas |
+| Capa | Implementación | Estructuras que puede esconder |
 |---|---|---|
-| Mecanismo | `world.py` (ecuaciones/dinámica) | Raras (heterogeneidad latente, umbrales, contaminación) |
-| Canal de observación | operadores declarados en `meta.json` | Frecuentes (error de medición, proxies, batch effects) |
-| Proceso de muestreo | operadores declarados en `meta.json` | Frecuentes (selección, survivorship, censura) |
+| Mecanismo | `world.py` (ecuaciones/dinámica) | grupos, regímenes, memoria, feedback, entidades o mecanismos faltantes |
+| Canal de observación | operadores declarados en `meta.json` | error de medición, proxies, batch effects, observador |
+| Proceso de muestreo | operadores declarados en `meta.json` | selección, survivorship, censura |
 
-**Invariante**: las trampas viven en las fuentes; `world.sample()` (lo que usa el scorer) es siempre el mecanismo limpio. El agente recibe vistas corrompidas vía `observe`; la corrección corre la verdad.
+**Invariante**: las corrupciones observacionales viven en las fuentes; el salto objetivo puede
+vivir en cualquiera de las tres capas. `world.sample()` (lo que usa el scorer) conserva la verdad
+limpia del mecanismo. El agente recibe las vistas legales vía `observe`; la corrección conoce qué
+proceso las produjo.
 
 ### 2.3 Familias de mecanismos v0 (el catálogo de motores)
 
@@ -72,11 +75,46 @@ class World:
 | Colas/servicio | M/M/k, triage de tickets, soporte | simulación de eventos discretos |
 | Feedback/regulación | termostato, mercado con ajuste de precios | ODE |
 
-Fuente: libros de texto de modelado aplicado (modelado dinámico multi-compartimento, teoría de colas, dinámica de sistemas). **No se inventan motores: se instancian del catálogo con parámetros sampleados.** Post-v1: redes de reacción, agent-based.
+Fuentes posibles: libros de modelado aplicado, motores publicados portados y mecanismos sintéticos
+controlados. El catálogo v0 evita inventar física innecesaria, pero **no es una lista cerrada**:
+cualquier motor entra si pasa las compuertas del caso; ninguno entra por realismo o fama solamente.
+Post-v1: redes de reacción, agent-based, N-body, SBML y autómatas/SCMs generados.
+
+#### 2.3.1 Motor reemplazable; situación causal no reemplazable
+
+El **motor** es el procedimiento forward que genera resultados. El **mundo WAGER** agrega la
+estructura escondida, las vistas y acciones legales, la historia, el presupuesto, la tarea y la
+batería. Portar un N-body, un modelo SBML, Hodgkin–Huxley o un SCM no crea por sí solo un
+experimento sobre saltos.
+
+Dos motores son intercambiables para un claim únicamente si preservan estas compuertas:
+
+1. **Necesidad:** el mejor rival serio sin el salto sobrevive en la rutina pero pierde de forma
+   material en el examen.
+2. **Identificabilidad activa:** existe al menos una observación o intervención legal que separa
+   las explicaciones; tamaño o caos sin una prueba discriminante no cuentan.
+3. **Accesibilidad y expresión:** el agente puede conseguir esa evidencia y representar la forma
+   ganadora con su presupuesto, interfaz y cómputo.
+4. **Visibilidad conductual:** el reward premia la consecuencia del salto, no una etiqueta ni una
+   forma particular de código.
+5. **Anti-atajo:** brief, piel y fama del simulador no permiten resolver sin datos. Baseline
+   `DataBlind`/sin-datos obligatorio para motores o mecanismos conocidos; si gana, neutralizar,
+   trasplantar de dominio o reclasificar como tarea de recuperación.
+
+La complejidad forward y la dificultad inversa son ejes distintos. Ejecutar una verdad puede ser
+barato aunque inferirla desde evidencia parcial sea difícil porque muchas causas producen salidas
+parecidas. El diseño buscado no maximiza oscuridad: fabrica una **equivalencia rutinaria** y deja
+una **prueba decisiva alcanzable** que la rompa. Replicar un salto en motores distintos es el
+control de que medimos la edición estructural y no una peculiaridad del anfitrión.
 
 ### 2.4 Piel semántica y perilla de prior
 
 Cada mundo lleva naming + dominio + narrativa. `meta.json` registra `prior_reliability ∈ [0,1]`: correlación entre lo que un panel de LLMs frescos espera del mundo dado solo el naming, y la verdad del programa. El curriculum controla la *base rate* de sorpresa con esta perilla (`docs/archived/NORTH_STAR_full.md` §4.6, anti-contrarian).
+
+Para un claim de abducción creativa, `prior_reliability` no basta: se registra además el desempeño
+sin evidencia y, cuando el mecanismo sea público o canónico, una piel neutral/trasplantada. La
+condición familiar mide recuperación y aplicación de conocimiento; la neutral mide reconstrucción
+estructural desde la evidencia. Ambas son válidas, pero autorizan titulares diferentes.
 
 ---
 

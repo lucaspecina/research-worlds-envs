@@ -41,6 +41,19 @@
 > tabla. El gemelo sigue fuera. Ficha y crudos:
 > [Perfiles persistentes](research/2026-08-13-ficha-grupos-escondidos-perfiles-persistentes.md).
 
+> **DIRECCIÓN DE MOTORES (2026-08-14; revisión comparada de la cantera):** el motor concreto no es
+> la contribución científica, pero tampoco es decorado: debe producir la equivalencia rutinaria, la
+> intervención discriminante y la ventaja material que definen el caso. **ModelSMC** reafirma la
+> receta de esconder una pieza de un simulador publicado, pero no ofrece por sí mismo un laboratorio
+> interactivo. Para el próximo anfitrión de grupos persistentes, el candidato principal de diseño es
+> reutilizar solo el motor N-body de **DiscoverPhysics** y construir un caso fresco de especies/tipos
+> ocultos —no copiar su mundo público ni su juez textual—. **NeuronBench** queda para saltos de
+> mecanismo temporal; **SciGym/BioModels**, para una generación posterior más larga; **BoxingGym,
+> CausaLab, DiscoveryWorld y autómatas ocultos** aportan piezas de interfaz o control, no un paquete a
+> adoptar entero. Antes de elegir motor rige: rival sin salto fuerte, prueba legal que lo separe,
+> entrega capaz de expresar la solución, score cero-LLM y baseline sin datos/neutralización contra
+> memoria. Comparación completa: [cantera de motores](lectura-de-fuentes.md#cantera-comparada-de-motores-y-laboratorios-virtuales).
+
 > **REGLA DE NAVEGACIÓN (Lucas, 2026-07-31): avanzar y volver a mirar un paso arriba.**
 > Trabajamos con una hipótesis concreta, la probamos pronto y usamos el resultado para decidir;
 > no intentamos resolver por discusión todos los detalles antes de construir. Al cerrar CADA
@@ -882,7 +895,9 @@ pregunta de Lucas por los "seeds de papers" destapó vías dispersas en tres doc
 DISEÑADO, alcanza para hoy], (2) semilla-paper [doctrina original, fallback], (3) semilla-simulador
 [Tübingen: "romper"=ESCONDER una pieza de un sim real portado; preferida para diversidad profunda;
 piloto de 1 mundo cuando se abra el slot]. Decisión de Lucas: motores = CONTENIDO, no instrumento →
-la fábrica se PAUSA post-batch y el slot vuelve a VALIDAR (P1).
+la fábrica se PAUSA post-batch y el slot vuelve a VALIDAR (P1). **Alcance histórico de la frase:**
+quería decir “no cambiar el harness para enriquecer el temario”; ADR 0133 y la dirección vigente
+aclaran que el motor sí forma parte de la validez del caso, aunque no sea por sí solo el experimento.
 
 **RONDA 11 + GO DE LUCAS (ADR 0133, 2026-07-10)**: Codex corrigió el rationale de 0132 (la
 distribución de mundos ES parte del instrumento — los manuales calibran, no prueban no-circularidad)

@@ -87,7 +87,9 @@ Tres piezas.
 **Un mundo es un programa.** No una base de datos, no un texto: un programa que, cuando lo
 corrés, genera datos según reglas ocultas. La "verdad" del mundo *es* ese código. Como es un
 programa, podemos correrlo bajo cualquier condición —incluso condiciones que la IA nunca vio—
-y ver qué pasa. Eso es lo que hace imposible ganar de memoria.
+y ver qué pasa. Eso permite fabricar instancias frescas y examinar fuera de lo visto, pero **no
+impide por sí solo ganar de memoria**: si el nombre o un mecanismo famoso regalan la respuesta,
+el caso necesita controles contra ese atajo.
 
 **La IA entrega otro programa.** Su respuesta no es prosa ("creo que la relación es lineal").
 Es un **modelo ejecutable**: un pedacito de código que, corrido bajo cualquier condición,
@@ -100,6 +102,29 @@ verdadero, en muchos casos de evaluación, y mide la distancia. **Cero IA en ese
 siempre** ✅ (hay un test de integración continua que rompe el build si una IA se cuela en el camino de
 la nota). Esto es lo que permite usar la nota como recompensa de entrenamiento sin que se pueda
 hacer trampa: no hay opinión que engañar, solo comportamiento que reproducir.
+
+### El motor no es el experimento
+
+El **motor** es la maquinaria que hace avanzar el mundo: puede ser una ecuación pequeña, un
+simulador de partículas, una neurona, una red causal o una fábrica completa. El **experimento
+WAGER** empieza cuando decidimos qué estructura esconder, qué puede observar e intervenir el
+agente, qué pruebas rutinarias dejan vivas varias explicaciones, qué prueba las separa y cómo se
+puntúa el modelo entregado.
+
+> **El simulador concreto no es sagrado; la situación investigativa que produce, sí.**
+
+Por eso casi cualquier motor puede servir, pero no cualquier uso de él. Tiene que hacer que un
+buen modelo sin el salto parezca razonable al principio, que exista evidencia accesible capaz de
+romper ese empate y que el modelo con el salto gane claramente en situaciones nuevas. La tarea
+también debe dejar que el agente encuentre y exprese esa estructura con sus recursos reales.
+Complejidad sola no alcanza: un mundo puede ser enorme y no tener ninguna prueba que distinga las
+explicaciones, o ser chico y contener un salto perfectamente limpio.
+
+Un motor conocido tampoco invalida automáticamente el caso. Recuperar y trasladar conocimiento
+previo es parte legítima de investigar. El problema aparece cuando la piel permite contestar sin
+usar la evidencia. Para distinguir ambas cosas usamos una partida sin datos, nombres neutrales o
+un trasplante de dominio y mecanismos o combinaciones frescas. Repetir el mismo salto en motores
+distintos permite separar una capacidad general de una peculiaridad del anfitrión.
 
 ### Cómo ordenamos y nombramos una investigación
 
@@ -213,6 +238,7 @@ Ejemplo: **Planta a alta temperatura — degradación real creciente** =
 
 | Rasgo | Pregunta simple |
 |---|---|
+| **Motor** | ¿qué simulador o reglas hacen avanzar el mundo? |
 | **Forma oculta** | ¿grupos, umbral, memoria, observador, bucle…? |
 | **Verdad oculta** | ¿qué estructura tiene realmente el mundo? |
 | **Dinámica** | ¿la verdad queda fija o cambia durante la partida? |
@@ -222,6 +248,7 @@ Ejemplo: **Planta a alta temperatura — degradación real creciente** =
 | **Interacción** | ¿solo observa, interviene, decide y/o recibe consecuencias? |
 | **Dependencias** | ¿qué decisiones o artefactos usan el modelo y sobreviven? |
 | **Complejidad efectiva** | ¿se resuelve con un resumen pequeño o exige mantener mucho estado? |
+| **Familiaridad** | ¿el nombre activa conocimiento útil o regala la respuesta sin investigar? |
 | **Dificultad observada** | ¿qué tasa logra cada agente, con y sin ayuda? |
 
 La dificultad **no es una propiedad absoluta del mundo**: depende del agente, la tarea y la
@@ -275,16 +302,16 @@ qué compró, qué entregó, y por qué sacó lo que sacó.
 
 Cada mundo tiene **tres capas**, y esta separación es la clave de todo:
 
-| Capa | Qué es | Dónde viven las trampas |
+| Capa | Qué es | Qué puede esconder |
 |---|---|---|
-| **Mecanismo** | Las reglas de fondo, limpias (las ecuaciones del sistema) | Casi nunca |
+| **Mecanismo** | Las reglas de fondo, limpias (las ecuaciones del sistema) | grupos, regímenes, memoria, bucles o mecanismos faltantes |
 | **Canal de observación** | Cómo se mide: con qué ruido, qué proxies | Muy seguido (error de medición) |
 | **Proceso de muestreo** | Quién/qué entra a cada registro de datos | Muy seguido (sesgos de selección) |
 
-**Las trampas viven en las fuentes de datos, no en el mecanismo.** El mundo verdadero es
-limpio; lo que la IA *ve* está corrompido (registros históricos sesgados, instrumentos
-ruidosos). Por eso **copiar los datos pierde**: copiás la corrupción. Para ganar hay que
-*deshacer* la corrupción, y para eso hay que entender el sistema.
+El **salto objetivo puede vivir en cualquiera de las tres capas**. Una estructura física nueva
+vive en el mecanismo; un sensor roto, en el canal; una selección engañosa, en el muestreo. La
+verdad queda explícita y limpia en el programa aunque la vista del agente esté incompleta o
+corrompida. Por eso copiar los datos puede perder: hay que reconstruir qué proceso los produjo.
 
 Encima de las reglas va una **"piel" semántica**: el mismo mecanismo matemático puede vestirse
 de línea de proceso, de cultivo, de mercado. La piel importa porque activa el conocimiento

@@ -81,6 +81,15 @@ Con eso, "crear un modelo a partir de datos" se descompone sin misterio:
 | Comparar formas de un menú FIJO por BIC/Bayes | Abducción **selectiva** mecanizada (elegís, no inventás) |
 | Agregar al menú una forma que no estaba | Abducción **creativa** — el salto |
 
+**¿Y si el agente ya conocía la idea?** La creatividad es relativa a su repertorio. Si el nombre
+"neurona" le alcanza para recitar el canal correcto antes de mirar un dato, medimos recuerdo o
+selección, no descubrimiento creativo. Si conocía los ingredientes pero la evidencia lo lleva a
+armar una combinación que no estaba en su modelo del caso, sí observamos una expansión estructural
+durante la investigación, aunque no podamos probar que la pieza era inédita en todo su
+entrenamiento. WAGER separa esos alcances con un baseline sin datos y con versiones neutralizadas o
+trasplantadas de dominio: la versión familiar mide recuperación y transferencia; la neutralizada,
+reconstrucción desde la evidencia. No se titulan igual.
+
 **La conexión con nuestros hallazgos**: nuestros agentes hacen inducción casi impecable
 (ajustan, estiman, hasta comparan si se lo ordenás) **sobre un espacio que jamás agrandan**.
 El déficit no está en Bayes — está en quién escribe la lista sobre la que Bayes corre.

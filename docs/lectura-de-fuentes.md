@@ -89,8 +89,9 @@
 | Huang et al. — SynAnchors | anclaje de capas superficiales; no lo eliminan las estrategias convencionales; el razonamiento mitiga parcial | arxiv.org/abs/2505.15392 | [ ] |
 | Shi et al. — GSM-IC (ICML 2023) | el linaje original de la distracción por contexto irrelevante | arxiv.org/abs/2302.00093 | [ ] |
 | Xiang et al. — MemSyco-Bench | la memoria recuperada induce sycophancy (preferencias viejas ganan a la evidencia actual) — el material re-entra por RAG | arxiv.org/abs/2607.01071 | [ ] |
-| **IMPORTANTES QUE FALTABAN EN ESTE REGISTRO (pedido de Lucas 2026-07-13; 14 IDs verificados título↔claim)** — BoxingGym (Gandhi et al., Stanford) | 10 entornos de diseño experimental + descubrimiento de modelos (ganancia de información esperada); prior-vs-no-prior — lo que Lucas recordaba como "bayesian update" | arxiv.org/abs/2501.01540 | [ ] |
-| CausaLab (Yang et al.) | descubrimiento causal interactivo con SCM oculto y presupuesto: brecha exactitud-vs-mecanismo; el chequeo de consistencia ataca el CIERRE PREMATURO (vecino del vicio 2 vivo) | arxiv.org/abs/2605.26029 | [ ] |
+| **IMPORTANTES QUE FALTABAN EN ESTE REGISTRO (pedido de Lucas 2026-07-13; 14 IDs verificados título↔claim)** — BoxingGym (Gandhi et al., Stanford) | 10 entornos probabilísticos interactivos de diseño experimental y descubrimiento de modelos; EIG computable; la evaluación de explicaciones usa otro LLM | arxiv.org/abs/2501.01540 | **REVISIÓN ARQUITECTÓNICA** (2026-08-14; abstract, paper/repo dirigidos; lectura completa pendiente) |
+| CausaLab (Yang et al.) | laboratorio causal con SCM fresco, intervenciones y registro del modelo en DSL; separa predicción de recuperación del mecanismo | arxiv.org/abs/2605.26029 | **REVISIÓN ARQUITECTÓNICA** (2026-08-14; fuente primaria dirigida; lectura completa pendiente) |
+| SciGym (Duan et al.; no confundir con Science-Gym) | 350 sistemas SBML de BioModels; el agente perturba concentraciones y reconstruye reacciones desde series temporales | arxiv.org/abs/2507.02083 | **REVISIÓN ARQUITECTÓNICA** (2026-08-14; paper/repo dirigidos; lectura completa pendiente) |
 | NewtonBench (Zheng et al.) | CONFIRMADO el tool paradox (verbatim: code acelera convergencia a "good enough" → óptimo local prematuro; GPT-5 72.9→69.6, Gemini-2.5-pro 65.0→62.0, GPT-5-mini 51.5→44.7; los DÉBILES mejoran 4.6→13.0); generación = mutaciones sobre árbol de expresión (108 leyes × 3 niveles de sistema = 324); ruido 1e-4 ya cuesta −13–15%; scoring simbólico por LLM-judge (98.3% acuerdo) — NO cero-LLM; SIN controles negativos/gemelos; SIN presupuesto duro; solvabilidad por prueba formal genérica (App. E.2), no testigo por instancia | arxiv.org/abs/2510.07172 | **LEÍDO** (2026-08-06, extracción dirigida 2 pasadas; notas en research/2026-08-06-lectura-newtonbench-llm-srbench.md) |
 | LLM-SRBench (Shojaee et al., ICML 2025 oral) | 239 problemas anti-memorización: LSR-Transform (111: resolver ecuaciones de Feynman para OTRA variable vía SymPy, solo las analíticamente resolubles, complejidad apareada por nodos) + LSR-Synth (128: términos conocidos + sintéticos por LLM, solvabilidad = solve_ivp corre, validación 2 expertos, test sets OOD); memorización rota demostrada por BRECHA a igual complejidad (~50%+ Feynman vs ~31% transformado) + baseline DataBlind; mejor sistema 31.5%; equivalencia simbólica por GPT-4o (94.6% acuerdo) — NO cero-LLM; sin identificabilidad formal; sin gemelos; sin agencia/presupuesto | arxiv.org/abs/2504.10415 | **LEÍDO** (2026-08-06, extracción dirigida 2 pasadas; notas ídem) |
 | CausalGame (Chen et al.) | 14 escenarios de protocolo experimental activo (selección, error de medición, confusores); 30 agentes, NINGUNO confiable (mejor 68% vs óptimo 78-85%) | arxiv.org/abs/2607.04293 | [ ] |
@@ -106,7 +107,9 @@
 | mARC follow-up (Shidara et al.) | los modelos de razonamiento fuertes ESQUIVAN las trampas Einstellung que volteaban a los viejos — la evidencia de "los vicios evaporan entre generaciones" | arxiv.org/abs/2601.11866 | [ ] |
 | The AI Scientist (Sakana) + críticas | Agente que genera papers de punta a punta | *(buscar URL)* | [ ] |
 | AI Co-Scientist (Google) | Sistema multi-agente de hipótesis científicas | *(buscar URL)* | [ ] |
-| SciAgentBench / DiscoveryWorld / DiscoveryBench | Benchmarks de descubrimiento con análisis de error | *(buscar URLs)* | [ ] |
+| DiscoveryWorld | mundo persistente de objetos, herramientas e instrumentos; 120 tareas largas en 8 familias | arxiv.org/abs/2406.06769 · github.com/allenai/discoveryworld | **REVISIÓN ARQUITECTÓNICA** (2026-08-14; paper/repo dirigidos; lectura completa pendiente) |
+| SciAgentBench / DiscoveryBench | Benchmarks de descubrimiento con análisis de error | *(buscar URLs)* | [ ] |
+| Agentic Automata Learning | DFA oculto generado proceduralmente; consultas de pertenencia/equivalencia y verificador exacto | arxiv.org/abs/2606.16576 | **REVISIÓN ARQUITECTÓNICA** (2026-08-14; fuente primaria dirigida; lectura completa pendiente) |
 | **LHTB — Long-Horizon Terminal-Bench (Tencent HY Frontier, jul-2026; lo trajo Lucas)** | 46 tareas / 9 categorías de trabajo LARGO en terminal (120-320 pasos, ~90 min, incl. reproducción de papers); verificadores OCULTOS que re-ejecutan (cero juez LLM) + **crédito parcial continuo 0→1** (solo 7% de 782 corridas "resuelve"; binario = 93% ceros); mejor modelo 0.51, 29/46 jamás resueltas; **79% de las no resueltas muere con tiempo agotado TRABAJANDO** — el benchmark del vicio de perder-el-hilo, y el modelo metodológico "el vicio como fracaso natural de una capacidad exigida, no como carnada" | zli12321.github.io/LHTB/ | **LEÍDO** (2026-07-14, la página del benchmark; paper si existe: pendiente) |
 | **MORPHEUS (Skyfall AI, RLC 2026 workshop; PDF completo lo trajo Lucas)** | empresa simulada PERSISTENTE (logística inbound/outbound, sin resets) donde las reglas cambian SIN AVISO (controlador asíncrono + inyector de fallas tipadas 5-30%); reward de verificadores operativos (tickets/ledger/throughput, cero-LLM) + **techo teórico analítico por configuración**; 6 métricas (velocidad de adaptación = pasos hasta 50% del techo tras el cambio, olvido, recuperación...); entrenan Qwen3-14B (SFT de trazas Gemini 3.1 → PPO) = el pipeline de nuestra E2. Hallazgo: **los agentes se adaptan al primer régimen y siguen aplicando la política vieja cuando el mundo cambia** (reward decae a ~0 sin que lo detecten) — el primo OPERATIVO de la rigidez (en actos, no en creencias; sus agentes no investigan). Respalda el mundo-que-cambia + presta formas de métrica | github.com/Skyfall-Research/morpheus-evals (paper: PDF de Lucas) | **LEÍDO** (2026-07-14, completo) |
 
@@ -550,6 +553,53 @@ instanciar después. Se toma como cantera de diseño y control, no como teoría 
 por qué fallaron nuestros agentes.
 
 Versión en llano y comparación directa: [WIKI-INDAGACION — MDA](../WIKI-INDAGACION.md#un-vecino-muy-cercano-model-discovery-agent-mda).
+
+### Cantera comparada de motores y laboratorios virtuales
+
+**Revisión dirigida 2026-08-14.** Se volvió a las notas internas y a las fuentes primarias para
+responder dos preguntas distintas: qué motores podemos reutilizar y qué diseño convierte uno de
+ellos en un experimento WAGER. Solo ModelSMC, DiscoverPhysics, NewtonBench/LLM-SRBench y MDA estaban
+leídos con el estándar completo de este registro; BoxingGym, SciGym, CausaLab, DiscoveryWorld y
+Agentic Automata recibieron aquí una revisión de arquitectura, no se los rebautiza como leídos
+completos.
+
+**Resultado central:** no hay un paquete que debamos adoptar entero. El simulador es el motor
+*forward*; el experimento nace al elegir la estructura escondida, las vistas, las intervenciones,
+la historia, la entrega y la vara. Ejecutar una verdad puede ser fácil aunque inferirla sea difícil:
+con evidencia parcial, varias causas distintas pueden producir casi lo mismo. Pero complejidad o
+ruido por sí solos no crean un buen caso. El diseño limpio fabrica una **equivalencia en la rutina**
+y deja una **intervención alcanzable que rompe el empate**.
+
+| Proyecto | Qué motor ofrece | Qué sirve para WAGER | Límite principal |
+|---|---|---|---|
+| [ModelSMC](https://arxiv.org/abs/2602.18266) / [repo](https://github.com/mackelab/ModelSMC) | simuladores publicados de epidemias, riñón/QSP y Hodgkin–Huxley; población SMC de programas | receta potente: portar un simulador validado y esconderle una pieza; posterior como diagnóstico de no-identificabilidad | trabaja sobre datos fijos y el propio sistema ajusta/compara; es método de búsqueda, no laboratorio interactivo listo; costo alto y licencias mixtas en dependencias |
+| [DiscoverPhysics](https://arxiv.org/abs/2605.26087) / [repo](https://github.com/SampsonML/DiscoverPhysics) | N-body barato; el agente elige posiciones, velocidades, cargas y tiempos; 22 leyes curadas | motor más natural hoy para especies persistentes, fuentes ocultas, leyes temporales y cambios de régimen; entrega Python y forecast de trayectorias | sus mundos públicos ya son conocidos y el original usa juez-LLM textual; reutilizar el motor, no copiar la respuesta ni el juez |
+| [SciGym](https://arxiv.org/abs/2507.02083) / [repo](https://github.com/h4duan/SciGym) | 350 sistemas dinámicos SBML de BioModels; perturbaciones y series temporales | gran cantera futura para mecanismos faltantes, feedback y mundos largos; modelos reales anonimizables | el benchmark original reconstruye redes enteras: puede medir XML/cómputo más que un salto; WAGER debería esconder una sola pieza en un sistema chico |
+| [NeuronBench](https://github.com/murphyk/neuronbench) | Hodgkin–Huxley con mecanismos eléctricos ocultos y protocolos temporales | muy buen anfitrión para memoria, adaptación o mecanismo adicional | estrecho para grupos persistentes: exigiría agregar población de células; vocabulario canónico de canales puede cebar la respuesta |
+| [BoxingGym](https://arxiv.org/abs/2501.01540) / [repo](https://github.com/kanishkg/boxing-gym) | diez modelos generativos probabilísticos con experimentos interactivos y EIG computable | interfaz modular y controles de economía experimental fáciles de reutilizar | mundos chicos mayormente de parámetros; su evaluación principal de explicaciones delega predicción a otro LLM y no entra al reward WAGER |
+| [CausaLab](https://arxiv.org/abs/2605.26029) | SCMs frescos generados, observaciones/intervenciones y una hipótesis ejecutable/parseable que evoluciona | excelente patrón para registrar modelo por turno y separar predicción de mecanismo | la gramática causal ya está declarada y puede volver selectivo el salto; código/licencia todavía no verificados |
+| [DiscoveryWorld](https://arxiv.org/abs/2406.06769) / [repo](https://github.com/allenai/discoveryworld) | entorno persistente con objetos, instrumentos, acciones y 120 tareas largas | cantera para estado, latencias, herramientas, callejones y consecuencias | navegar y operar puede tapar el juicio; no exige nuestro modelo ejecutable y parte del score explicativo no es cero-LLM |
+| [NewtonBench](https://arxiv.org/abs/2510.07172) + [LLM-SRBench](https://arxiv.org/abs/2504.10415) | leyes canónicas mutadas y ecuaciones transformadas/sintéticas | mejor receta disponible para fabricar mecanismos contrafácticos y reducir recuerdo exacto | se concentran en ecuaciones; sus scorers simbólicos originales usan juez LLM y no certifican nuestro mejor rival sin salto |
+| [Agentic Automata](https://arxiv.org/abs/2606.16576) | DFA frescos de dificultad controlada; consultas y equivalencia exacta | laboratorio formal escalable para estado/memoria y verifier limpio | un agente puede recordar L*/TTT: sería integración de un método conocido, no necesariamente salto abierto |
+| [Science-Gym](https://doi.org/10.1007/s10994-025-06914-x) / [repo](https://github.com/pibborn/science-gym) | siete simulaciones Gym de física/epidemias con toma activa de datos | shell simple para ley oculta y experimentación | biblioteca chica y canónica; menos flexible que DiscoverPhysics/SciGym para nuestras formas estructurales |
+
+**Conocimiento previo: tres casos que no deben mezclarse.** Si el agente resuelve con
+`brief+schema` y cero datos, el mundo está contaminado para un titular creativo. Si el dominio le
+sugiere un candidato pero necesita experimentos para elegirlo e implementarlo, mide recuperación y
+transferencia legítimas. Si una piel neutral o un mecanismo contrafáctico exige reconstruir la
+forma desde la evidencia, habilita el claim más fuerte. Por eso los motores famosos llevan baseline
+sin datos, piel neutral/trasplante y parámetros o composiciones frescas. La creatividad es relativa
+al repertorio: no podemos demostrar que una idea jamás estuvo en pretraining, sí que no bastó con
+reconocer la fachada y que la forma tuvo que entrar al modelo activo de la partida.
+
+**Dirección resultante, no adopción cerrada.** Para el salto actual, el primer candidato es un
+slice fresco de **dos especies persistentes** sobre el motor N-body de DiscoverPhysics: identidades
+fijas, sondas elegidas por el agente, evaluación en trayectorias nuevas y mejor ley uniforme
+optimizada como rival. No se usa el `three_species` público tal cual. Para una segunda generación
+larga, el candidato es un sistema chico de SciGym/BioModels al que se le esconde un mecanismo.
+NeuronBench queda para saltos temporales. ModelSMC aporta la receta de rotura y rivales, no el
+entorno. La decisión de portar cualquiera exige primero el contrato de admisibilidad de
+[`world-model.md` §2.3.1](reference/world-model.md#231-motor-reemplazable-situación-causal-no-reemplazable).
 
 ### LLM-as-an-Investigator (2606.13220) — LEÍDO 2026-07-13
 

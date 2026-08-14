@@ -7,6 +7,12 @@ tiene una pieza que antes no existía. El salto es el momento creativo de la ind
 **abducción creativa**: fabricar un candidato de explicación que tu repertorio no contenía
 (ver [WIKI-INDAGACION.md](WIKI-INDAGACION.md)).
 
+Ese repertorio es relativo al agente. Usar un simulador o una idea conocida no arruina el caso:
+puede exigir combinar piezas conocidas de una manera nueva y trasladarlas a evidencia fresca. Pero
+si la respuesta aparece sin datos apenas se reconoce el dominio, no contamos descubrimiento. Por
+eso los casos con motores famosos llevan baseline sin datos y, cuando hace falta, nombres neutrales
+o trasplante de dominio.
+
 **Para profundizar**: [docs/saltos.md](docs/saltos.md) (el libro: historias completas, fuentes
 y estado de lectura) · [fundamentos formales](docs/research/2026-08-05-fundamentos-taxonomia-de-saltos.md)
 (la matriz componente×edición) · [WIKI-INDAGACION](WIKI-INDAGACION.md) (dónde encaja el salto

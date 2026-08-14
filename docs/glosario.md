@@ -25,13 +25,16 @@ para medir — sin jueces LLM — dónde exactamente se les rompe el proceso de 
   nuevos.
 - **Mundo**: un programa que genera datos con una verdad escondida adentro. Si cambia la verdad,
   cambia el mundo.
+- **Motor / simulador**: la maquinaria que hace avanzar el mundo —ecuaciones, partículas,
+  neuronas, una red causal, etc.—. Es una pieza reemplazable, no el experimento entero. Solo sirve
+  si permite observar, probar, descubrir y puntuar el salto que buscamos.
 - **Gemelo**: control anti-reflejo que puede agregarse después: un mundo parecido donde realizar
   el mismo salto sería un error. No es requisito de la etapa actual.
 - **Tarea**: qué debe lograr el agente, con qué herramientas, presupuesto, turnos y tipo de
   entrega. El **encargo (brief)** es solo el texto con que se la contamos.
-- **Perfil del mundo**: su ficha de forma oculta, verdad, dinámica, llegada de
+- **Perfil del mundo**: su ficha de motor, forma oculta, verdad, dinámica, llegada de
   evidencia, horizonte, profundidad, interacción, dependencias, complejidad efectiva y
-  dificultad observada por agente × tarea × ayuda.
+  familiaridad/atajo de prior, más dificultad observada por agente × tarea × ayuda.
 - **ID de mundo**: `world__<familia>__<verdad>__v<n>`. Cambiar solo números crea otra
   instancia; cambiar la verdad o la forma crea otro mundo o una nueva versión explícita.
 - **Condición**: la combinación exacta de los ejes manipulados: ayuda, aviso, consecuencia,
