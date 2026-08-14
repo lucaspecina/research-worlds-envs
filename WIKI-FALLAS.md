@@ -14,6 +14,30 @@ Después, las subpreguntas científicas y la autopsia localizan si no nació al 
 fue descartado al actualizar o quedó afuera de la entrega. Por eso un resultado siempre debe
 nombrar las dos cosas.
 
+**Tampoco son lo mismo creatividad y realización final.** Si el agente formula espontáneamente
+“estos perfiles podrían venir de dos tipos persistentes”, apareció la **generación abductiva
+expresada** aunque después lo descarte o entregue otra cosa. Realizar el salto en el modelo es un
+eslabón posterior. La ficha de cada partida registra por separado:
+
+> **evidencia → grieta → hipótesis específica → puesta en juego → consecuencia deducida → prueba
+> discriminante → selección → realización en código → propagación**; y aparte, la ganancia real.
+
+Una mención genérica dentro de una lista (“mezcla, colas, copula…”) se anota aparte de una
+hipótesis específica para el caso. La ficha no se suma en una nota única: dice en qué bisagra se
+rompió la investigación. Los detalles operativos y qué queda `N/A` bajo cada ayuda viven en
+[Cómo medimos — protocolo v1](docs/como-medimos.md#21-protocolo-v1--validar-el-caso-y-leer-la-trayectoria-del-agente).
+
+| Si se corta aquí | Familia de falla que ya teníamos |
+|---|---|
+| No busca evidencia que pueda discriminar | compra de “fiebre” / cierre prematuro |
+| La evidencia llega y no nota la grieta | saliencia o calibración de creencias |
+| Nota la grieta pero no formula otra estructura | vicio 4: falla abductiva |
+| Formula la estructura pero no deriva ni ejecuta una prueba | cierre prematuro o verificación de paja |
+| La prueba favorece la alternativa y elige la vieja | rigidez / retirada a lo familiar |
+| La elige pero no la construye o no la lleva a la entrega | implementación o no ensamblar/propagar |
+
+No abrimos seis vicios nuevos: la ficha ubica con más precisión los casos dentro del catálogo.
+
 ---
 
 **Para profundizar**: [docs/vicios/](docs/vicios/README.md) (el catálogo canónico con
@@ -36,11 +60,13 @@ vigente considera relevantes.
 
 El control más limpio nuevo es **Perfiles persistentes**. Allí separar la población mejora mucho
 el modelo y, en las 400 filas exactas de cada una de diez partidas, la división en dos era
-abrumadora. `gpt-5.4` vio las dependencias, pero **9/10** las licuó dentro de una sola campana;
-**0/10** construyó espontáneamente la explicación compacta de dos tipos. Con la idea nombrada,
-el mismo modelo sí la construyó 2/3. Un caso sin ayuda preservó la forma copiando perfiles
-completos: éxito predictivo funcional, pero no compresión conceptual. Esto localiza la falla
-principal entre **ver la dependencia** y **generar/probar la partición correcta**.
+abrumadora. El resultado ejecutable sellado sigue siendo: **1/10** preservó funcionalmente las dos
+familias, **0/10** construyó la explicación compacta y 9/10 entregaron una sola campana. Pero la
+autopsia encontró que ocho de los nueve negativos mencionaron mezcla o multimodalidad como
+posibilidad, y uno halló los dos grupos exactos y los descartó sin comparación. Por eso esos
+números miden **realización final**, no una tasa de creatividad. La relectura con la ficha v1 debe
+separar evocación genérica, hipótesis específica, contraste, selección e implementación antes de
+localizar la falla.
 
 **Las profesiones**: la CIA lo llama “no generar el conjunto completo de hipótesis” y encontró
 que las personas generan muy pocas alternativas; el menú además lo trunca el HÁBITO (cada

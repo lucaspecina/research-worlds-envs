@@ -5,8 +5,10 @@
 > — validación externa nueva y fuerte (DiscoverPhysics).**
 
 **Qué es (paraguas).** La explicación correcta requiere postular algo NO observado (una entidad,
-una mezcla, una geometría) y el agente se queda en el menú familiar: ajusta curvas, parcha
-parámetros, promedia.
+una mezcla, una geometría) y esa hipótesis estructural específica no aparece. La entrega final no
+demuestra por sí sola este vicio: la idea puede haber aparecido y perderse después. Desde
+2026-08-14 la [ficha de trayectoria](../como-medimos.md#21-protocolo-v1--validar-el-caso-y-leer-la-trayectoria-del-agente)
+separa no postular de cierre prematuro, verificación de paja, rigidez e implementación.
 
 ## Sub-formas
 
@@ -53,7 +55,11 @@ parámetros, promedia.
   remuestreando perfiles completos, **0/10** entregó el modelo compacto de dos tipos y 9/10
   entregaron una sola Gaussiana. La auditoría sobre las 400 filas exactas de cada partida da
   `Delta BIC=705–795` y `S=.943–.999` para dos perfiles: no es la falla de incentivos de D1 ni
-  falta de señal. [Ficha y resultado](../research/2026-08-13-ficha-grupos-escondidos-perfiles-persistentes.md).
+  falta de señal. **Corrección de alcance 2026-08-14:** estos números miden realización final,
+  no generación creativa. Ocho de los nueve negativos evocaron mezcla/multimodalidad y uno halló
+  los dos grupos exactos pero los descartó sin comparación. La localización entre evocación,
+  hipótesis específica, puesta en juego, test y selección queda pendiente de la reanotación v1.
+  [Ficha y resultado](../research/2026-08-13-ficha-grupos-escondidos-perfiles-persistentes.md).
 - **count_regime_v0 + gemelo (mundo 2, 2026-08-07; constructo CORREGIDO por Lucas la misma
   noche)** `[VERIFICADO propio][AGÉNTICO]` — segundo operador construido (régimen/quiebre
   oculto), certificado verde y con R que premia el descubrimiento. **OJO: la v0 NO mide este
@@ -96,8 +102,9 @@ parámetros, promedia.
   28 episodios v0.2, fenómeno replicado con el encargo justo (0/9); la escalera de ayudas
   además LOCALIZA dónde muere la hipótesis regalada por modelo (canales, no dosis).
 - **Perfiles persistentes (2026-08-13)**: anfitrión validado y tanda `gpt-5.4 × n=10` cerrada;
-  confirma la retirada a una sola campana aun con premio grande y evidencia exacta suficiente.
-  Estado: replicar fuera del modelo/anfitrión, sin tuning local.
+  confirma la retirada final a una sola campana aun con premio grande y evidencia exacta
+  suficiente. No confirma todavía en qué proporción faltó creatividad: primero se reanotan las
+  trazas con la ficha v1. Sin tuning local ni nuevas partidas en este anfitrión.
 - **count_regime_v0/twin (2026-08-07)**: tercera familia CONSTRUIDA (operador régimen) —
   certificación verde con R direccional (+1.0: primera familia donde R premia el salto, A2 por
   construcción); 13 episodios v0. Constructo corregido: la v0 dicta el candidato → midió

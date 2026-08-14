@@ -123,6 +123,13 @@ Por eso se observan por separado:
 Una mala entrega no se llama automáticamente “terquedad”: primero se localiza dónde se rompió
 la cadena.
 
+Esta tabla sigue siendo la subcadena canónica de **revisión de creencias**. Para experimentos de
+saltos, desde 2026-08-14 se abre además la parte creativa y de realización: evidencia → grieta →
+hipótesis estructural específica → puesta en juego → consecuencia deducida → contraste → selección
+→ realización → propagación; la ganancia funcional se informa aparte. Ambas vistas son compatibles; la
+[ficha v1](como-medimos.md#21-protocolo-v1--validar-el-caso-y-leer-la-trayectoria-del-agente)
+evita inferir “no se le ocurrió” solamente porque la entrega quedó vieja.
+
 ## 4. Banco compacto de casos que los mundos deben poder reproducir
 
 La tabla no sustituye el dossier detallado de `docs/vicios/`. Es el recordatorio de cobertura
@@ -157,7 +164,8 @@ agentes ni una razón para convertir KellyBench en el centro del proyecto.
    regular idéntico entre brazos; no solamente alrededor del dato que nos interesa.
 3. **Adquisición y asimilación se separan.** Una versión garantiza que el mismo dato llegue de
    forma natural para medir incorporación; otra permite que dependa del experimento elegido
-   para medir la cadena completa.
+   para medir también la adquisición. En ambos casos solo se atribuyen los eslabones que ese
+   mundo realmente instancia.
 4. **Primero se valida el mundo que instancia el fenómeno.** En la etapa inicial alcanza con
    demostrar que la jugada buscada es necesaria, alcanzable y ejecutable en un mundo. Los pares
    o tríos se agregan después cuando haga falta probar calibración bilateral o derrotar un

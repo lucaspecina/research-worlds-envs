@@ -88,6 +88,11 @@ solo una revisión técnica del mismo artefacto.
   las dos. Lo que separamos server-side es el MOMENTO (antes/después de que la evidencia
   discrimine), y eso prueba activación-antes-de-discriminación, no que el candidato estuviera
   fuera del espacio efectivo del agente.
+- **Descubrimiento / generación del salto**: la hipótesis estructural específica se expresa
+  espontáneamente en la traza o aparece encarnada en un artefacto del agente. Es el hito observable
+  de creatividad; no autoriza a leer una creencia interna no exteriorizada.
+- **Realización del salto**: esa forma llega al modelo ejecutable y produce su consecuencia. La
+  pregunta principal informa ambos hitos por separado: descubrir no garantiza realizar.
 - **Lista de saltos** (alias técnico histórico: operadores): las 10+1 clases están
   **contadas con historia y fuentes en [el libro de los saltos](saltos.md)** y su
   [justificación formal](research/2026-08-05-fundamentos-taxonomia-de-saltos.md): 1 entidad oculta ·
@@ -96,13 +101,27 @@ solo una revisión técnica del mismo artefacto.
   oculta · 9 conservación/cuantización · 10 memoria oculta · 11 transferencia estructural
   (analogía tipo Darwin).
 - **Menú de hipótesis**: las familias de modelos que el agente considera de entrada. **Lo
-  observado en trazas: el candidato correcto no llega a compararse ni implementarse** — todo lo
-  demás (comprar datos, ajustar, chequear) lo hacen bien. ⚠️ "No ENTRÓ al menú" es
-  interpretación post-hoc, no variable observada (Codex 2026-08-09); se vuelve observable con
-  la cadena registrada de la ficha v1 (candidata registrada ANTES del punto de discriminación
-  = expansión generativa).
-- **Juntura**: eslabón específico de la cadena de investigar (comprar → mirar → postular →
-  testear → entregar). Medimos cuál se rompe, no "si es bueno o malo".
+  ponemos activamente en juego. ⚠️ “No entró al menú” no se deduce de una mala entrega: la traza
+  puede mostrar que la idea apareció y luego fue descartada. Se registran por separado evocación
+  genérica, hipótesis específica y realización funcional.
+- **Hipótesis estructural específica**: una explicación nueva aplicada a este caso —por ejemplo,
+  “estos perfiles pueden venir de dos tipos persistentes”—. Su aparición espontánea cuenta como
+  generación abductiva expresada, aunque después no sea probada o elegida. Una lista genérica de
+  métodos o familias no cuenta igual.
+- **Ficha de trayectoria**: perfil por partida, no nota total: evidencia → grieta → creatividad →
+  puesta en juego → desarrollo → contraste → selección → realización → propagación. La ganancia
+  funcional se informa aparte. Solo el contenido regalado o ausente del mundo se marca `N/A`.
+- **Puesta en juego / tomarla en serio**: la hipótesis específica entra como rival vivo —se le
+  asigna un plan, una predicción o un criterio para ganar/perder— en vez de morir al ser mencionada.
+- **Juntura / eslabón**: punto específico donde puede romperse esa cadena. Medimos cuál se rompe,
+  no “si el agente es bueno o malo”.
+- **Control de capacidad**: condición con una ayuda declarada —normalmente la idea nombrada— que
+  prueba qué puede hacer el agente desde allí. No mide el paso que la ayuda le regaló.
+- **Brecha funcional de ayuda**: diferencia de desempeño entre una condición ayudada y otra sin
+  ayuda. No es una prima pura de creatividad: la ayuda también puede cambiar atención, búsqueda,
+  prueba, selección e implementación.
+- **Fork diagnóstico**: dos continuaciones desde el mismo estado previo que difieren en una sola
+  intervención. Localiza causalmente un cuello; no reemplaza la prueba principal sin ayuda.
 
 ## La vara y las señales (el fondo del marco — [WIKI-INDAGACION §6](../WIKI-INDAGACION.md))
 
@@ -144,8 +163,9 @@ escalera anterior. Resultado histórico que motivó la separación: nombrar la i
 - **ICC**: persistencia por lote — cuánto se parecen mediciones del mismo lote.
 - **R**: parecido global de los datos generados (0→1). ⚠️ Deuda conocida: hoy castiga al que
   descubre los grupos; no usarla para rankear salto.
-- **Censura**: corrida inválida (se quedó sin tokens, no entregó código) — se reporta, no cuenta
-  ni a favor ni en contra.
+- **Censura**: corrida que no informa por una causa externa al agente, como una caída de API antes
+  de actuar; se reporta y no cuenta. Una entrega inválida, `max_turns` o falta de código causada por
+  el agente cuenta según la regla pre-registrada de capacidad, no se borra como censura.
 
 ## Microscopio vs mundo realista ([anatomía de casos reales](research/2026-08-10-anatomia-casos-reales-requisitos-mundo-realista.md))
 

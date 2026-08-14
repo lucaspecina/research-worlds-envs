@@ -165,18 +165,29 @@ Una **partida / episodio** es una sola ejecución dentro del experimento. Dentro
 lo que el agente compra para poner una hipótesis a prueba se llama **ensayo**. Así “experimento”
 siempre significa nuestro paquete científico y nunca una compra del agente.
 
-La **validación previa** tiene dos partes. La **certificación matemática** comprueba que el salto
-es necesario para llegar al modelo bueno, que mejora claramente frente al mejor rival sin ese
-salto y que la evidencia para descubrirlo está al alcance. La **prueba de resolubilidad con
-agente** comprueba que el mismo agente, con la idea nombrada pero sin la solución, puede investigar
-e implementar el salto. Compararlo con el agente sin ayuda es un control muy informativo sobre la
-dificultad de descubrir la idea, pero en esta etapa es una **prueba del diseño**, no una subpregunta
-científica ni el objetivo del experimento. Una solución casi regalada es solo un **control de
-techo**, nunca una medida de descubrimiento.
+La **validación previa** tiene dos partes. La **certificación matemática y mecánica** comprueba que
+el salto es necesario para llegar al modelo bueno, que mejora claramente frente al mejor rival sin
+ese salto, que una campaña legal puede descubrirlo, que la diferencia es visible con la información
+del agente y que scorer e interfaz reconocen la solución. La **prueba de resolubilidad con agente**
+comprueba que el mismo agente, con la idea nombrada pero sin la solución, puede investigar e
+implementar el salto y mejorar materialmente frente al control sin ayuda. Esa brecha funcional
+valida que la ayuda cambia el resultado, pero no aísla creatividad pura: también puede cambiar
+atención, prueba, selección e implementación. En esta etapa es una **prueba del diseño**, no una
+subpregunta científica ni el objetivo del experimento. Una solución casi regalada es solo un
+**control de techo**, nunca una medida de descubrimiento.
 
 La misma ayuda puede cumplir dos papeles distintos. **Antes** de validar el mundo, una partida con
 la idea nombrada pregunta “¿este diseño es resoluble?”. **Después**, sobre un mundo ya validado, un
 contraste pre-registrado con y sin ayuda puede responder una subpregunta científica sobre el agente.
+
+Una misma partida puede producir varios datos, pero no todos valen para lo mismo. En cada corrida
+registramos la cadena **evidencia → grieta → creatividad → puesta en juego → desarrollo → contraste
+→ selección → realización → propagación**, y aparte la ganancia funcional. Solo el contenido que
+nosotros regalamos queda `N/A`: si nombramos “dos tipos”, no medimos la aparición espontánea de esa
+familia, pero sí lo que el agente elabora desde allí. La generación creativa expresada ocurre
+cuando aparece una hipótesis estructural específica para el caso; realizarla en el modelo viene
+después. La implementación completa vive en
+[Cómo medimos — protocolo v1](docs/como-medimos.md#21-protocolo-v1--validar-el-caso-y-leer-la-trayectoria-del-agente).
 
 La nota mide la **consecuencia** del salto, no palabras ni una forma específica de código. Después
 podemos mirar la traza para entender qué representación usó el agente, pero esa lectura nunca entra
@@ -189,14 +200,21 @@ Este es el “tatuaje en la frente” del proyecto. Siempre se sigue en este ord
 1. **Nombrar el salto.** Definir qué cambio de forma debería realizar el agente.
 2. **Diseñar el mundo y la tarea.** Crear una situación donde ese salto sea necesario para
    encontrar el modelo bueno.
-3. **Validar matemáticamente el diseño.** Demostrar que el mejor rival serio sin el salto pierde
-   claramente y que la evidencia necesaria está al alcance.
+3. **Validar matemática y mecánicamente el diseño.** Demostrar que el mejor rival serio sin el
+   salto pierde claramente, que la evidencia necesaria está al alcance y es visible desde adentro,
+   y que robots de solución, rival, basura y sin-datos auditan scorer e interfaz.
 4. **Validar la resolubilidad con agente.** Con la idea nombrada, pero sin la solución, comprobar
-   que el agente puede investigarla, implementarla y mejorar.
+   que el agente puede investigarla, implementarla y mejorar materialmente frente al control
+   neutral. La aparición espontánea de la familia nombrada queda `N/A`; la elaboración no regalada
+   y el resto de la ficha sí se completan.
 5. **Hacer la prueba principal sin ayuda.** Recién ahora preguntar si el agente descubre y realiza
-   el salto por sí mismo.
+   el salto por sí mismo y registrar por separado dónde llegó en cada eslabón.
 6. **Estudiar las subpreguntas científicas.** Después probar cuándo y por qué salta: error visible,
    presión, pistas, horizonte u otras condiciones.
+
+Si una tanda negativa necesita localización causal, puede agregarse **como máximo un fork
+diagnóstico decisivo** en ese anfitrión, desde el mismo checkpoint y dirigido al primer eslabón
+roto. Es un control opcional, no otra etapa obligatoria ni una escalera completa de pistas.
 
 **No se saltea una etapa.** Si fallan los pasos 2, 3 o 4, se cambia o abandona el diseño; todavía
 no se concluye nada sobre la capacidad del agente para saltar. El gemelo puede agregarse más
@@ -375,9 +393,11 @@ registrada; solo llega una muestrita de sensor por lote. Para ganar hay que *inf
 composición de cada lote desde esa muestrita. En la partida más ilustrativa, el mejor modelo
 disponible jugó **técnicamente perfecto, cero errores** — y sacó **0.096 sobre 1**. Y en las
 diez partidas que corrimos (dos familias de modelo), el **máximo fue 0.666** — igual lejísimos
-del techo (1.0): **nadie** intentó inferir la composición del lote. No por torpeza: porque no
-se le ocurrió la idea. Ejecutar la jugada ganadora cuesta diez líneas de código; *concebirla*
-es lo que faltó. **Ese es el trofeo: un mundo donde falta juicio, no ejecución.**
+del techo (1.0): **ninguna entrega** infirió la composición del lote. La lectura original fue
+“no se les ocurrió”; el protocolo v1 obliga ahora a comprobar eso en la trayectoria, porque una
+idea puede aparecer y ser descartada antes de llegar al código. **El trofeo seguro es el mundo:**
+la jugada estructural gana mucho y el sustituto familiar pierde. La localización conductual se
+informa aparte.
 
 Y descubrimos que **el presupuesto es una perilla de dificultad gratis** ✅: al mismo mundo,
 con la plata recortada a un cuarto, la escasez no bloquea el premio — **separa estilos**. Un
@@ -446,7 +466,8 @@ juicio entero. Crecen, y nunca lo cubren del todo.
   el error se cerró antes de la tanda principal porque tampoco pasó la validación. El reemplazo
   limpio, **Perfiles persistentes**, sí hace que separar la población mejore mucho: con la idea
   nombrada `gpt-5.4` construyó dos tipos en 2/3 partidas; sin ayuda, solo 1/10 preservó las dos
-  familias y lo hizo copiando los perfiles, mientras 9/10 volvió a una sola campana. **No hay
+  familias y lo hizo copiando los perfiles, mientras 9/10 volvió a una sola campana. Es una tasa de
+  realización final, no todavía de creatividad: las trazas se reanotan con la ficha v1. **No hay
   ninguna tanda autorizada en la planta.** El detalle: WIKI-FALLAS ① y WIKI-SALTOS.
 
 **Lo que todavía no:**

@@ -52,6 +52,13 @@ ensayos):
    todas, que no vale nada (el concepto de *diagnosticity*: la fiebre prueba que estás
    enfermo, no QUÉ tenés).
 
+Para medirlo no alcanza con mirar la entrega. Desplegamos el lazo en una ficha observable:
+**adquirir evidencia → notar una grieta → formular una hipótesis específica → ponerla en juego →
+deducir una prueba → contrastarla → seleccionar → realizarla en código → propagarla**. La
+generación abductiva expresada ocurre al formular la nueva explicación; realizar el salto en el
+modelo viene después. Así, un agente puede ser creativo y poco riguroso, o no narrar la idea pero
+realizarla funcionalmente. [Protocolo operativo v1](docs/como-medimos.md#21-protocolo-v1--validar-el-caso-y-leer-la-trayectoria-del-agente).
+
 ## 3. Las tres herramientas, bien separadas
 
 - **DEDUCCIÓN**: de la regla al caso. *"Todos los lotes de la máquina A salen fallados; este
@@ -90,9 +97,12 @@ entrenamiento. WAGER separa esos alcances con un baseline sin datos y con versio
 trasplantadas de dominio: la versión familiar mide recuperación y transferencia; la neutralizada,
 reconstrucción desde la evidencia. No se titulan igual.
 
-**La conexión con nuestros hallazgos**: nuestros agentes hacen inducción casi impecable
-(ajustan, estiman, hasta comparan si se lo ordenás) **sobre un espacio que jamás agrandan**.
-El déficit no está en Bayes — está en quién escribe la lista sobre la que Bayes corre.
+**La conexión con nuestros hallazgos**: en **Conteos por lote**, nuestros agentes hicieron
+inducción casi impecable (ajustaron, estimaron y compraron evidencia), pero 0/9 expresó la
+partición que faltaba. En **Perfiles persistentes**, en cambio, varias trazas evocaron mezclas y
+una encontró los grupos pero no los hizo competir justamente; allí la atribución generativa queda
+abierta hasta aplicar la ficha v1. El déficit puede estar en escribir una entrada nueva en el menú
+o en desarrollarla, probarla, elegirla y realizarla. La entrega final sola no distingue esos casos.
 
 **La misma idea, dicha con la fórmula de Bayes** (la formulación de la casa, útil para gente
 de ML). P(hipótesis | evidencia) admite dos lecturas, y las dos son inducción:
@@ -121,9 +131,10 @@ es el de todos los programas posibles") y entonces "todo es inducción"… sobre
 nadie puede recorrer. En la práctica solo se pueden ESCRIBIR y puntuar un puñado de
 candidatos, y elegir cuáles escribís es de vuelta el problema original: la abducción no
 desaparece con la lista infinita — se esconde en el paso de proponer. Por eso el programa
-mide al PROPONEDOR, no al puntuador: los agentes ejecutan los niveles 1 y 2 muy bien, y
-jamás escriben una entrada nueva en el menú (el 0/9 de **Conteos por lote: tipos discretos o
-variación continua**, alias técnico `count_mix`).
+mide al PROPONEDOR, no solo al puntuador. En **Conteos por lote: tipos discretos o variación
+continua** (`count_mix`), 0/9 trazas expresó la entrada de dos tipos; en otros anfitriones la idea
+puede aparecer y perderse después. La ficha de trayectoria evita convertir toda mala entrega en
+“nunca propuso”.
 
 ### Un vecino muy cercano: Model Discovery Agent (MDA)
 

@@ -72,6 +72,9 @@ el candidato disponible; con ella el agente lo verifica y lo implementa, sin ell
 alcanzaba pero el candidato no entró al menú. Es una señal exploratoria limpia de falla en
 generación/testeo del candidato, no una tasa ni una confirmación.
 
+> **Lectura histórica corregida por el addendum 2026-08-14:** la entrega final no demuestra por sí
+> sola que el candidato nunca entró al menú; generación, contraste y realización deben reanotarse.
+
 ## Control decisivo siguiente — mismo archivo, idea disponible o no
 
 Se correrá un único par exploratorio adicional con `gpt-5.4`. Ambas ramas usan el mismo
@@ -84,7 +87,8 @@ del contraste coherente con la verdad, con `0` en la mejor banda Gaussiana y `1`
 modelo cruza la frontera del salto si `S_profile >= 0.5`. La nota `R` completa queda como secundaria
 porque su inestabilidad ya está documentada.
 
-Lectura predeclarada:
+Lectura predeclarada histórica —se conserva para auditar qué se había fijado; el addendum limita
+las atribuciones de “generación” que la entrega sola no identifica—:
 
 - ayuda cruza y neutral no: fortalece resolubilidad + falla de generación espontánea;
 - ambos cruzan: el salto aparece espontáneamente y el anfitrión puede ser demasiado fácil;
@@ -237,3 +241,23 @@ la pista ni buscar otra formulación que “dé”.
 `gpt-5.4`.** Tras un control externo decisivo fallido, se vuelve un nivel arriba. El siguiente
 anfitrión del salto grupos escondidos deberá exigir investigación secuencial —no solo modelar una
 tabla estática— y se validará desde cero con el mismo workflow.
+
+## Addendum 2026-08-14 — realización final no equivale a creatividad
+
+Lucas detectó una confusión de constructo en la lectura anterior. El resultado sellado no cambia:
+`1/10` cruces funcionales, `0/10` modelos compactos de dos tipos y `9/10` Gaussianas finales. Lo
+que cambia es lo que esos números autorizan a decir.
+
+La autopsia preliminar encontró que ocho de los nueve negativos mencionaron mezcla o
+multimodalidad como posibilidad. Uno además ejecutó `k`-means, encontró dos grupos de tamaños
+`206/194` con la firma correcta y los descartó como un corte continuo sin comparar el modelo de dos
+perfiles. Por lo tanto, **“0/10 modelos compactos” no es una tasa de creatividad**. Si una partida
+formuló espontáneamente la hipótesis específica de tipos persistentes, la generación abductiva
+expresada ocurrió aunque luego fallaran el contraste, la selección o la implementación.
+
+Se mantiene el anfitrión cerrado y no se reescriben las reglas predeclaradas. La tanda se usará
+como primera prueba retrospectiva —exploratoria, no confirmatoria— de la
+[ficha de trayectoria v1](../como-medimos.md#21-protocolo-v1--validar-el-caso-y-leer-la-trayectoria-del-agente):
+evidencia, grieta, creatividad, puesta en juego, desarrollo, contraste, selección, realización y
+propagación, con ganancia funcional aparte. La lectura anterior “falla espontánea” queda restringida
+a **realización funcional y compacta** hasta completar esa reanotación con citas por episodio.

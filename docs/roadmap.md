@@ -26,19 +26,34 @@
 > subpreguntas científicas. No se interpreta al agente si antes falló el diseño. Versión completa:
 > [WIKI — workflow obligatorio](../WIKI.md#el-workflow-obligatorio-para-diseñar-cualquier-experimento).
 
-> **FOCO ACTUAL (2026-08-13): Grupos escondidos — Perfiles persistentes.** El anfitrión separa
+> **PROTOCOLO DE MEDICIÓN V1 (2026-08-14; ADR 0186):** cada caso pasa compuertas de ventaja real,
+> evidencia legal y visible, scorer/interfaz y capacidad condicionada. Cada partida se lee como un
+> perfil — **evidencia → grieta → creatividad → puesta en juego → desarrollo → contraste →
+> selección → realización → propagación**—, con ganancia funcional aparte; nunca como una nota
+> psicológica única. Solo el contenido suministrado o ausente del host queda `N/A`. La hipótesis
+> estructural específica marca generación abductiva expresada;
+> probarla, elegirla e implementarla son eslabones distintos. Los negativos admiten como máximo un
+> fork diagnóstico dirigido al primer quiebre. Especificación:
+> [Cómo medimos §2.1](como-medimos.md#21-protocolo-v1--validar-el-caso-y-leer-la-trayectoria-del-agente).
+
+> **FOCO ACTUAL (2026-08-14): Grupos escondidos — Perfiles persistentes.** El anfitrión separa
 > limpiamente una banda continua (`S_profile=0.464`) de dos perfiles aprendidos (`0.924–0.997`)
 > y la resolubilidad con la idea nombrada pasó 2/3. La tanda congelada sin ayuda ya cerró:
 > **`gpt-5.4 × mundo × n=10`: 1/10 cruzó funcionalmente (`S=.942`) y 0/10 construyó el modelo
 > compacto de dos tipos; 9/10 entregaron una sola Gaussiana.** El único cruce remuestreó perfiles
 > completos, por lo que conserva las dos familias y cuenta según la regla previa, aunque no las
 > explicó. En las filas exactas de cada partida, dos perfiles ganaban por `Delta BIC=705–795` y
-> alcanzaban `S=.943–.999`: la señal estaba. **Decisión: MANTENER el hallazgo, cerrar tuning local
-> y volver un nivel arriba. El control externo ya cerró: **DeepSeek-V3.2 falló 0/2 con la idea
-> nombrada; como 2/3 quedó imposible, la tercera no corrió y tampoco corre la tanda sin ayuda.**
+> alcanzaban `S=.943–.999`: la señal estaba. **Corrección conceptual de Lucas:** esos números miden
+> realización final, no por sí solos creatividad. Ocho de los nueve negativos mencionaron
+> mezcla/multimodalidad y uno encontró los dos grupos exactos pero los descartó sin compararlos.
+> **Decisión: MANTENER los hechos, MODIFICAR la atribución y no tunear el anfitrión.** La primera
+> aplicación del protocolo v1 será reanotar las diez trazas para separar evocación genérica,
+> hipótesis específica, puesta en juego, contraste, selección e implementación. El control externo ya cerró:
+> **DeepSeek-V3.2 falló 0/2 con la idea nombrada; como 2/3 quedó imposible, la tercera no corrió y
+> tampoco corre la tanda sin ayuda.**
 > No fue falta de señal: en sus filas, dos perfiles daban `S=.982/.964`. Próximo paso: otro
-> anfitrión del mismo salto que exija investigación secuencial, no más modelos o frases sobre esta
-> tabla. El gemelo sigue fuera. Ficha y crudos:
+> anfitrión del mismo salto que exija investigación secuencial, después de esa auditoría
+> metodológica; no más partidas ni frases sobre esta tabla. El gemelo sigue fuera. Ficha y crudos:
 > [Perfiles persistentes](research/2026-08-13-ficha-grupos-escondidos-perfiles-persistentes.md).
 
 > **DIRECCIÓN DE MOTORES (2026-08-14; revisión comparada de la cantera):** el motor concreto no es

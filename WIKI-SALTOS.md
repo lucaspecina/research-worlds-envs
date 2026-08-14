@@ -34,7 +34,8 @@ La gramática completa está en
   su tanda principal.
 - **Qué pasó:** el primer mundo nuevo, **Perfiles persistentes**, pasó la resolubilidad con idea
   nombrada 2/3. Sin ayuda, `gpt-5.4` preservó funcionalmente las dos familias en **1/10**, pero
-  mediante remuestreo; **0/10** construyó espontáneamente la explicación compacta de dos tipos.
+  mediante remuestreo; **0/10 entregó** la explicación compacta de dos tipos. Eso mide realización
+  final, no todavía creatividad: varias trazas evocaron mezclas y se reanotan con la ficha v1.
 - **Pregunta principal:** ¿el agente descubre y realiza el salto de una población aparente a dos
   tipos persistentes?
 - **Primer control de construcción:** aprobado 2/3 con `gpt-5.4`; los dos éxitos implementaron
@@ -42,8 +43,8 @@ La gramática completa está en
 - **Gemelo:** fuera de esta etapa; podrá agregarse después como control anti-reflejo.
 - **Control externo:** DeepSeek falló 0/2 aun con la idea nombrada, así que no se interpretan
   partidas suyas sin ayuda.
-- **Próximo nivel:** otro anfitrión del mismo salto, con investigación secuencial; no seguir
-  retocando esta tabla ni buscando otra frase.
+- **Próximo nivel:** primero aplicar la ficha v1 a las diez trazas; después, otro anfitrión del
+  mismo salto con investigación secuencial. No seguir retocando esta tabla ni buscando otra frase.
 
 ## La lista, de un vistazo
 
@@ -276,7 +277,7 @@ archivos históricos.
 
 | Salto | Experimentos y situaciones estudiadas | Qué sabemos |
 |---|---|---|
-| **Grupos escondidos** | ✅ **Grupos escondidos — Perfiles persistentes** · ✅ **Grupos escondidos — Conteos por lote** (`count_mix`) · ✅ **Grupos escondidos — Planta química** (`D1`) · ⛔ **Grupos escondidos — Planta a alta temperatura** (`D2`, cancelado antes de la tanda) | En **Perfiles persistentes**, el salto paga mucho, las filas de cada partida lo permiten y la idea nombrada funciona 2/3; aun así, `gpt-5.4` sin ayuda lo realizó funcionalmente **1/10** y construyó el modelo compacto de dos tipos **0/10**. Nueve entregaron una sola campana; el único cruce copió perfiles completos. Alcance: un modelo×mundo×n=10. Esto corrige la debilidad de la planta, donde una campana ya sacaba 0.986 y el salto casi no pagaba. Conteos por lote había dado 0/9 espontáneo. |
+| **Grupos escondidos** | ✅ **Grupos escondidos — Perfiles persistentes** · ✅ **Grupos escondidos — Conteos por lote** (`count_mix`) · ✅ **Grupos escondidos — Planta química** (`D1`) · ⛔ **Grupos escondidos — Planta a alta temperatura** (`D2`, cancelado antes de la tanda) | En **Perfiles persistentes**, el salto paga mucho, las filas de cada partida lo permiten y la idea nombrada funciona 2/3; `gpt-5.4` sin ayuda lo realizó funcionalmente **1/10** y entregó el modelo compacto **0/10**. Nueve entregaron una sola campana; el único cruce copió perfiles completos. Eso es realización final, no una tasa creativa: la autopsia preliminar halló evocaciones de mezcla y ahora se aplica la ficha v1. Alcance: un modelo×mundo×n=10. Esto corrige la debilidad de la planta, donde una campana ya sacaba 0.986 y el salto casi no pagaba. Conteos por lote había dado 0/9 espontáneo. |
 | **Régimen oculto** | ✅ **Régimen oculto — Proceso con umbral** (`count_regime`; v0: quiebre visible · v1: fallo del propio modelo visible) | La primera situación midió aceptación, no generación. En la segunda: **0/9 sin fallo visible → 30/30 con el fallo del propio modelo a la vista**. Sabemos que el choque puede disparar este salto en ese modelo y ese mundo; todavía no que sea el único motor. |
 | **Transferencia estructural** | ✅ **Transferencia de la regla local — Dos dominios gemelos** (`overgen`) | Par medido en su era. |
 | **Entidad oculta, geometría, unificación, invariante, observador, realimentación, conservación y memoria** | Sin experimento todavía | — |
