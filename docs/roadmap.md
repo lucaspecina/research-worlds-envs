@@ -56,6 +56,14 @@
 > metodológica; no más partidas ni frases sobre esta tabla. El gemelo sigue fuera. Ficha y crudos:
 > [Perfiles persistentes](research/2026-08-13-ficha-grupos-escondidos-perfiles-persistentes.md).
 
+> **SEGUNDO ANFITRIÓN EN CONSTRUCCIÓN — Partículas bajo una sonda (2026-08-14):** ya existe un
+> slice ejecutable con 24 identidades persistentes y una orientación elegida por turno. La primera
+> certificación mecánica quedó **ROJA**, por lo que no se llamó a ningún agente: los ángulos
+> aislados y la evidencia secuencial pasan, y el mejor rival de una banda queda en `S=.474`, pero
+> el solver legal de dos tipos solo logra `S=.795–.968`, el headroom productivo queda en `.049`
+> frente al gate `.05` y su `R` productivo es inestable/insuficiente. **Decisión: MODIFICAR** la
+> alineación solver–scorer antes de gastar API; no bajar gates ni reinterpretar el rojo.
+
 > **DIRECCIÓN DE MOTORES (2026-08-14; revisión comparada de la cantera):** el motor concreto no es
 > la contribución científica, pero tampoco es decorado: debe producir la equivalencia rutinaria, la
 > intervención discriminante y la ventaja material que definen el caso. **ModelSMC** reafirma la
