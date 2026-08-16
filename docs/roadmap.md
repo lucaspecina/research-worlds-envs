@@ -70,12 +70,25 @@
 > path, centrado simétrico, grillas irregulares, persistencia, presupuesto y analizador pasan
 > `31/31` tests enfocados.
 >
-> **PRÓXIMO CORTE YA CONGELADO:** tres partidas frescas `gpt-5.4` con la idea nombrada —sin fórmula,
-> ángulos, prueba ni código—; cada una pasa si entrega, cruza `S_probe>=.5` y logra `R>=.5`; la
-> capacidad queda validada con al menos `2/3`. Si pasa, corre una partida fresca idéntica sin ayuda.
-> La primera mide resolubilidad para el agente y la segunda descubrimiento espontáneo exploratorio;
-> no se mezclan como una tasa ni como una “prima de creatividad”. Seeds, texto y recibos quemados
-> viven en `scripts/run_hidden_probe_types_discovery.py`.
+> **CONTROL CON IDEA NOMBRADA CERRADO (2026-08-16): `gpt-5.4 × mundo × n=3`, gate 1/3 — FALLA.**
+> Las tres partidas compraron el archivo completo y cinco ángulos sobre los mismos IDs; en sus datos,
+> dos tipos ganaban por `Delta BIC=248/248/287`. Las tres elaboraron, probaron y eligieron una mezcla
+> 50/50; la creatividad espontánea queda `N/A` porque la familia fue nombrada. Dos realizaron la
+> estructura funcionalmente (`S_probe=.964/.990`) y una la deformó (`.261`); solo una completó el
+> criterio combinado congelado (`R=0/.689/.140`, exigía `R>=.5` además de `S>=.5`). La autopsia
+> localiza las dos caídas después del salto: una sumó una onda común espuria aprendida de 200 filas
+> rutinarias; otra confundió ruido nuevo de lectura con diferencias permanentes entre partículas.
+> Dos auditorías contrafactuales posteriores —no resultados prerregistrados— muestran el tamaño del
+> problema: quitar solo la onda lleva `S .261→.950`; separar el ruido nuevo lleva `R .689→.858`.
+>
+> **Lectura:** no es `1/3 tuvo la idea`; es **3/3 pusieron en juego los dos tipos, 2/3 los llevaron a
+> la geometría ejecutable y 1/3 terminó bien toda la tarea**. El gate de capacidad completa falló y,
+> por regla congelada, la partida sin ayuda NO corre. Además, una nota secundaria de la interfaz aún
+> decía “24” aunque brief y servidor exigían 192; todos usaron 192, pero las corridas quedan marcadas
+> con esa contaminación y el texto ya tiene un test de consistencia. **Decisión: MODIFICAR**, no
+> reinterpretar el 1/3. El próximo cambio debe quitar o aislar la calibración de ruido que no es el
+> salto creativo; como máximo un control decisivo antes de volver arriba. Crudos y resumen:
+> `scripts/out/hidden_probe_types_discovery/`.
 
 > **DIRECCIÓN DE MOTORES (2026-08-14; revisión comparada de la cantera):** el motor concreto no es
 > la contribución científica, pero tampoco es decorado: debe producir la equivalencia rutinaria, la

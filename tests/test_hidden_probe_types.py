@@ -52,6 +52,11 @@ def test_calibration_bank_persists_and_fresh_exam_units_have_complete_curves():
 
 def test_server_enforces_one_orientation_and_exact_bank_size():
     server = build_world_server(CASE, seed_offset=99001)
+    sheet = server.describe()
+    assert "192-particle" in sheet["control_surface"]["context"]["panel"]["description"]
+    assert "same 192 labelled" in sheet["control_surface"]["experiment_note"]
+    assert "centers every curve" in sheet["control_surface"]["deliverable_note"]
+    assert "24-particle" not in str(sheet)
     with pytest.raises(ValueError, match="exactly one"):
         server.experiment(
             ExperimentDesign(

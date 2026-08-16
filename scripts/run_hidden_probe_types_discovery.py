@@ -42,6 +42,10 @@ def main() -> int:
     parser.add_argument("condition", choices=tuple(CELLS))
     args = parser.parse_args()
     condition = args.condition
+    if condition == "exploratoria_sin_ayuda_01":
+        raise SystemExit(
+            "no se corre sin ayuda: la capacidad condicionada cerró 1/3 y el gate exigía 2/3"
+        )
     seed = CELLS[condition]["seed"]
     hint = CELLS[condition]["hint"]
 
@@ -120,4 +124,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
