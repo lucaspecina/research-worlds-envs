@@ -24,18 +24,16 @@ from sklearn.mixture import GaussianMixture
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 CASE = Path(__file__).parent
-sys.path.insert(0, str(CASE))
 
-import world  # noqa: E402
-
+from cases.hidden_probe_types_v0 import world  # noqa: E402
 from wager.contracts import Battery, BatteryItem, CaseMeta, Regime  # noqa: E402
 from wager.factory.case_loader import make_sample_transform  # noqa: E402
 from wager.reward.scorer import WorldSide, score_callable  # noqa: E402
 from wager.reward.trajectory import pivot_trajectories  # noqa: E402
 
 
-BATTERY_SEEDS = tuple(range(2026081451, 2026081456))
-LAB_INSTANCE_KEYS = tuple(range(410, 415))
+BATTERY_SEEDS = tuple(range(2026081661, 2026081666))
+LAB_INSTANCE_KEYS = tuple(range(610, 615))
 LAB_GRID = (0.0, np.pi / 2.0, np.pi, 3.0 * np.pi / 2.0)
 FIT_RANDOM_STATE = 20260814
 
@@ -179,33 +177,62 @@ def _harmonic_coefficients(panel: np.ndarray, theta: np.ndarray) -> tuple[np.nda
 def fit_legal_two_type(instance_key: int) -> tuple[dict, dict]:
     panel, theta = _lab_panel(instance_key)
     coefficients, residual_sd = _harmonic_coefficients(panel, theta)
-    one = _fit_gmm(coefficients, 1, "full")
-    two = _fit_gmm(coefficients, 2, "tied")
-    delta_bic = float(one.bic(coefficients) - two.bic(coefficients))
 
-    labels = two.predict(coefficients)
-    means = np.vstack([coefficients[labels == j].mean(axis=0) for j in range(2)])
+    # The intercept is a nuisance: it is a broad, continuous particle-level
+    # baseline shared by both response types.  Clustering the full coefficient
+    # vector lets finite-sample baseline imbalances masquerade as a property of
+    # a type.  A legal investigator can remove that baseline by comparing the
+    # same labelled particle across orientations, so the capacity solver does
+    # exactly that and clusters only the two response coefficients.
+    responses = coefficients[:, 1:]
+    one = _fit_gmm(responses, 1, "full")
+    two = _fit_gmm(responses, 2, "tied")
+    delta_bic = float(one.bic(responses) - two.bic(responses))
+
+    labels = two.predict(responses)
+    response_means = np.vstack([responses[labels == j].mean(axis=0) for j in range(2)])
     weights = np.asarray([(labels == j).mean() for j in range(2)], dtype=float)
-    centered = np.vstack([
-        coefficients[labels == j] - means[j] for j in range(2) if np.any(labels == j)
-    ])
-    covariance = centered.T @ centered / max(len(coefficients) - 2, 1)
+
     design = np.column_stack([np.ones(theta.size), np.cos(theta), np.sin(theta)])
-    covariance -= residual_sd**2 * np.linalg.inv(design.T @ design)
-    eigenvalues, eigenvectors = np.linalg.eigh((covariance + covariance.T) / 2.0)
-    covariance = eigenvectors @ np.diag(np.maximum(eigenvalues, 1e-5)) @ eigenvectors.T
+    coefficient_noise = residual_sd**2 * np.linalg.inv(design.T @ design)
+
+    level_mean = float(coefficients[:, 0].mean())
+    level_var = max(
+        float(np.var(coefficients[:, 0], ddof=1) - coefficient_noise[0, 0]),
+        1e-5,
+    )
+
+    type_axis = response_means[1] - response_means[0]
+    type_axis /= np.linalg.norm(type_axis)
+    orthogonal_axis = np.asarray([-type_axis[1], type_axis[0]])
+    response_residual = responses - response_means[labels]
+    orthogonal_coordinates = response_residual @ orthogonal_axis
+    orthogonal_var = max(
+        float(
+            np.var(orthogonal_coordinates, ddof=1)
+            - orthogonal_axis @ coefficient_noise[1:, 1:] @ orthogonal_axis
+        ),
+        1e-5,
+    )
 
     fit = {
         "weights": weights,
-        "means": means,
-        "covariance": covariance,
+        "response_means": response_means,
+        "level_mean": level_mean,
+        "level_sd": float(np.sqrt(level_var)),
+        "orthogonal_axis": orthogonal_axis,
+        "orthogonal_sd": float(np.sqrt(orthogonal_var)),
         "residual_sd": residual_sd,
     }
     audit = {
         "instance_key": instance_key,
         "legal_scan_orientations": [float(v) for v in theta],
-        "delta_BIC_two_tied_minus_one_full": delta_bic,
+        "delta_BIC_two_tied_minus_one_full_on_response_coefficients": delta_bic,
         "weights": weights.tolist(),
+        "response_means": response_means.tolist(),
+        "level_mean": level_mean,
+        "level_sd": float(np.sqrt(level_var)),
+        "orthogonal_sd": float(np.sqrt(orthogonal_var)),
         "residual_sd": residual_sd,
     }
     return fit, audit
@@ -213,20 +240,26 @@ def fit_legal_two_type(instance_key: int) -> tuple[dict, dict]:
 
 def fitted_sampler(fit: dict):
     weights = np.asarray(fit["weights"], dtype=float)
-    means = np.asarray(fit["means"], dtype=float)
-    covariance = np.asarray(fit["covariance"], dtype=float)
+    response_means = np.asarray(fit["response_means"], dtype=float)
+    level_mean = float(fit["level_mean"])
+    level_sd = float(fit["level_sd"])
+    orthogonal_axis = np.asarray(fit["orthogonal_axis"], dtype=float)
+    orthogonal_sd = float(fit["orthogonal_sd"])
     residual_sd = float(fit["residual_sd"])
-    chol = np.linalg.cholesky(covariance)
 
     def sample(regime, n: int, seed: int) -> pd.DataFrame:
         theta = np.asarray(tuple(regime.context["t_grid"]), dtype=float)
         rng = np.random.default_rng(seed)
         component = rng.choice(len(weights), size=n, p=weights)
-        coefficients = means[component] + rng.normal(size=(n, 3)) @ chol.T
+        level = rng.normal(level_mean, level_sd, n)
+        response = (
+            response_means[component]
+            + rng.normal(0.0, orthogonal_sd, n)[:, None] * orthogonal_axis[None, :]
+        )
         y = (
-            coefficients[:, [0]]
-            + coefficients[:, [1]] * np.cos(theta)[None, :]
-            + coefficients[:, [2]] * np.sin(theta)[None, :]
+            level[:, None]
+            + response[:, [0]] * np.cos(theta)[None, :]
+            + response[:, [1]] * np.sin(theta)[None, :]
             + rng.normal(0.0, residual_sd, size=(n, theta.size))
         )
         return pd.DataFrame({
@@ -411,13 +444,13 @@ def main() -> int:
 
     isolated = []
     for j, theta in enumerate(world.SCORE_GRID):
-        frame = world.sample(_ns(context={"t_grid": (theta,)}), 500, 2026081400 + j)
+        frame = world.sample(_ns(context={"t_grid": (theta,)}), 500, 2026081600 + j)
         values = frame[["y"]].to_numpy(float)
         one = _fit_gmm(values, 1, "full")
         two = _fit_gmm(values, 2, "full")
         isolated.append(float(one.bic(values) - two.bic(values)))
 
-    routine = world.sample(_ns(config={"__routine": 1.0}), 200, 2026081409)
+    routine = world.sample(_ns(config={"__routine": 1.0}), 200, 2026081609)
     routine_unique = int(routine["unit_id"].nunique()) == len(routine)
 
     finite = []
@@ -453,7 +486,7 @@ def main() -> int:
         "isolated_orientations_not_split": max(isolated) <= MAX_ISOLATED_DBIC,
         "routine_has_no_repeated_ids": routine_unique,
         "legal_scan_split_visible": min(
-            row["delta_BIC_two_tied_minus_one_full"] for row in finite
+            row["delta_BIC_two_tied_minus_one_full_on_response_coefficients"] for row in finite
         ) >= MIN_LEGAL_DBIC,
         "best_one_band_below_frontier": oracle_s <= MAX_ONE_BAND_S,
         "legal_two_type_above_frontier": min(row["two_type_S"] for row in finite) >= MIN_LEGAL_TWO_TYPE_S,
@@ -489,6 +522,8 @@ def main() -> int:
             },
             "truth_minus_best_one_band": denominator,
             "legal_two_type_R": production_r,
+            "projection_weight": meta.scoring.c_f["projection_energy"],
+            "within_unit_centering": True,
         },
         "gates": gates,
         "frozen_seeds": {

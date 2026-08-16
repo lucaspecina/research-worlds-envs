@@ -56,13 +56,26 @@
 > metodológica; no más partidas ni frases sobre esta tabla. El gemelo sigue fuera. Ficha y crudos:
 > [Perfiles persistentes](research/2026-08-13-ficha-grupos-escondidos-perfiles-persistentes.md).
 
-> **SEGUNDO ANFITRIÓN EN CONSTRUCCIÓN — Partículas bajo una sonda (2026-08-14):** ya existe un
-> slice ejecutable con 24 identidades persistentes y una orientación elegida por turno. La primera
-> certificación mecánica quedó **ROJA**, por lo que no se llamó a ningún agente: los ángulos
-> aislados y la evidencia secuencial pasan, y el mejor rival de una banda queda en `S=.474`, pero
-> el solver legal de dos tipos solo logra `S=.795–.968`, el headroom productivo queda en `.049`
-> frente al gate `.05` y su `R` productivo es inestable/insuficiente. **Decisión: MODIFICAR** la
-> alineación solver–scorer antes de gastar API; no bajar gates ni reinterpretar el rojo.
+> **SEGUNDO ANFITRIÓN — Partículas bajo una sonda (2026-08-16):** certificación mecánica **VERDE**
+> con una vara limpia y seeds frescas. La primera versión mezclaba el salto con estimar el nivel
+> propio de cada partícula usando solo 24 casos. Un candidato intermedio de 64 casos y peso
+> estructural `8` llegó a verde, pero la revisión crítica lo rechazó por post-hoc: el peso dominaba
+> el resultado. La versión congelada vuelve al peso natural `1`, declara que la aplicación centra
+> cada curva por su propia media —por eso el nivel irrelevante no entra al examen— y usa 192
+> identidades para que una solución finita pueda estimar el resto sin privilegios. Una orientación
+> aislada sigue sin mostrar dos grupos (`Delta BIC=-3…-21`); cuatro mediciones legales de los mismos
+> IDs sí (`211…239`); el mejor rival de una sola banda queda en `S=.474`; cinco soluciones
+> aprendidas solo con esa evidencia dan `S=.958–.999` y `R=.827–.977`; el headroom productivo es
+> `.071`. También se corrigió una colisión accidental entre IDs rutinarios y de calibración. Reward
+> path, centrado simétrico, grillas irregulares, persistencia, presupuesto y analizador pasan
+> `31/31` tests enfocados.
+>
+> **PRÓXIMO CORTE YA CONGELADO:** tres partidas frescas `gpt-5.4` con la idea nombrada —sin fórmula,
+> ángulos, prueba ni código—; cada una pasa si entrega, cruza `S_probe>=.5` y logra `R>=.5`; la
+> capacidad queda validada con al menos `2/3`. Si pasa, corre una partida fresca idéntica sin ayuda.
+> La primera mide resolubilidad para el agente y la segunda descubrimiento espontáneo exploratorio;
+> no se mezclan como una tasa ni como una “prima de creatividad”. Seeds, texto y recibos quemados
+> viven en `scripts/run_hidden_probe_types_discovery.py`.
 
 > **DIRECCIÓN DE MOTORES (2026-08-14; revisión comparada de la cantera):** el motor concreto no es
 > la contribución científica, pero tampoco es decorado: debe producir la equivalencia rutinaria, la

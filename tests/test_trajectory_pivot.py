@@ -93,3 +93,24 @@ def test_scale_sanity_on_pivoted_early_columns():
     pred["y@0"] = pred["y@0"] + 1e-6
     d = ts.distance_to(pred)
     assert d < 0.05, f"degenerate early-t column inflated distance to {d}"
+
+
+def test_optional_within_unit_centering_is_symmetric():
+    from types import SimpleNamespace
+
+    from wager.factory.case_loader import make_sample_transform
+
+    meta = SimpleNamespace(
+        trajectory_protocol={
+            "version": "traj.1", "grid_key": "t_grid", "format": "long",
+            "unit_column": "unit_id", "center_within_unit": True,
+        }
+    )
+    transform = make_sample_transform(meta)
+    wide = make_wide(n_units=12)
+    long = wide_to_long(wide)
+    offsets = {float(i): float(i * 100) for i in range(12)}
+    shifted = long.copy()
+    shifted["y"] += shifted["unit_id"].map(offsets)
+    ns = SimpleNamespace(context={"t_grid": GRID})
+    assert np.allclose(transform(ns, long), transform(ns, shifted))

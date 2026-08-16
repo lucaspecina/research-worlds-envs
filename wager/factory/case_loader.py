@@ -98,8 +98,15 @@ def make_sample_transform(meta: CaseMeta) -> Callable | None:
     from wager.reward.trajectory import pivot_trajectories
 
     grid_key = meta.trajectory_protocol.get("grid_key", "t_grid")
+    center_within_unit = bool(meta.trajectory_protocol.get("center_within_unit", False))
 
     def transform(ns, df):
-        return pivot_trajectories(df, ns.context[grid_key])
+        wide = pivot_trajectories(df, ns.context[grid_key])
+        if center_within_unit:
+            # Some trajectory tasks care about response SHAPE after a routine
+            # per-unit zeroing step.  Apply it symmetrically to truth, rivals
+            # and submissions at the one scorer choke point.
+            wide = wide.sub(wide.mean(axis=1), axis=0)
+        return wide
 
     return transform

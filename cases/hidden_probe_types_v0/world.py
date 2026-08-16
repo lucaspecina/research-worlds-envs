@@ -1,6 +1,7 @@
 """Grupos escondidos — Particulas bajo una sonda.
 
-Twenty-four labelled calibration particles persist across experiment calls.  Each particle has a
+One hundred ninety-two labelled calibration particles persist across experiment calls. Each
+particle has a
 large continuous baseline and one of two hidden response types.  A single probe orientation shows
 one broad population; paired orientations on the same IDs cancel the baseline and reveal two
 opposite, persistent response curves.
@@ -19,7 +20,7 @@ LEVEL_SD = 1.0
 ORTHOGONAL_SD = 0.25
 READING_SD = 0.30
 
-LAB_N = 24
+LAB_N = 192
 ANGLE_MIN = 0.0
 ANGLE_MAX = float(2.0 * np.pi)
 SCORE_GRID = tuple(float(v) for v in np.arange(8) * np.pi / 4.0)
@@ -76,7 +77,10 @@ def _routine_snapshots(n: int, seed: int) -> pd.DataFrame:
         + rng.normal(0.0, READING_SD, n)
     )
     return pd.DataFrame({
-        "unit_id": np.arange(n, dtype=float),
+        # Deliberately disjoint from the persistent calibration-bank IDs.  The
+        # routine archive contains different particles and must not invite a
+        # scientifically false join by ID.
+        "unit_id": 10_000.0 + np.arange(n, dtype=float),
         "t": theta,
         "y": y,
     })
