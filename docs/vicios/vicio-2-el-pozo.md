@@ -83,6 +83,20 @@ pozo-identidad — es el de **cierre prematuro / verificación barata omitida** 
 consistencia disponible y no usado; gana quien lo paga, pierde quien entrega sin él). El
 pozo-identidad baja a EXPERIMENTO de contraste (propio-vs-heredado), no mundo.
 
+### 2.6 CANDIDATAS nuevas (shadow evaluations 2607.27191, 2026-08-18) — a formalizar
+
+- **El juicio de la vara** `[VERIFICADO][AGÉNTICO-real, n=2]`: *"lacked the judgment to
+  identify when a problem was adequately solved... presented underpowered negative results as
+  substantive findings"*. No es solo CUÁNDO parar (2.x clásico): es CONTRA QUÉ VARA — el
+  meta-juicio de "¿esto alcanza como hallazgo?". Conecta con el "good enough" de D1 (entregan
+  el modelo suficiente) y con v9 (el test flojo contado como evidencia). Candidata a sub-forma
+  propia; falta mecanismo/disparador/firma.
+- **La calibración de recursos** `[VERIFICADO][AGÉNTICO-real, n=2]`: *"Both runs ended with
+  less than 50% of the API budget spent... did not appear to intuitively grasp the meaning of
+  these resource limits"*. La dimensión presupuesto/tiempo de la política de parada — nuestras
+  tandas también muestran infragasto sistemático (D1/D2: 490-800 de 800 sin plan de gasto).
+  Se MIDE con la maquinaria existente (presupuestos ya instanciados); no pide mundo dedicado.
+
 ## Condiciones de emergencia (síntesis de las cinco vías)
 El pozo dispara con la CONJUNCIÓN, no de a uno (nuestra escalera probó de a uno — por eso 0/60):
 **identidad-en-la-obra + contabilidad fuera de vista + objetivo difuso + pagar-localmente

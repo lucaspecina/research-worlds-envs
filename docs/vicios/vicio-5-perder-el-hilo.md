@@ -19,6 +19,11 @@
 - **5.4 Terminación prematura por scaffold**: Terminal-Bench 12.9% `[POR-LEER]`; PaperBench
   `[VERIFICADO parcial]` — firma de la familia o-series, NO ley (Claude empeora sin submit).
 
+**Instruction drift a escala real** (shadow evaluations 2607.27191, `[VERIFICADO]
+[AGÉNTICO-real, n=2]`, 2026-08-18): *"increasingly failed to follow explicit instructions over
+the course of the run"* (límites de largo, presupuestos de exploración, uso de herramientas) —
+el hilo perdido en corridas de 6 días; también toca v8 (objetivo).
+
 ## Corpus minable
 MAST `[POR-LEER]`: 1.600+ trazas multi-agente anotadas (HF mcemri/MAD, κ=0.88, 14 modos) —
 ~41.8% especificación, ~36.9% desalineación inter-agente, ~21.3% verificación. Confirma que la

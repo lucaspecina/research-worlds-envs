@@ -49,6 +49,11 @@ es computable sin juez.
   3/3) sino "¿la comparación incluye un candidato estructuralmente distinto del entregado?"
   (0/3). [Resultado del pre-registro](../research/2026-08-07-resultado-preregistro-canales-vs-wording.md).
 
+**Shadow evaluations (2607.27191)** `[VERIFICADO][AGÉNTICO-real, n=2]`: *"presented
+underpowered negative results as substantive findings"* + auto-revisiones que jamás aceptaron
+y no dispararon replanteo — el test que se corre y no gobierna la conclusión, a escala de
+proyecto real. Registro en lectura-de-fuentes (2026-08-18).
+
 ## Firma mecánica (computable cero-LLM)
 
 El agente corre verificaciones elegidas por él (n, cuáles, contra qué) y NUNCA ejecuta la

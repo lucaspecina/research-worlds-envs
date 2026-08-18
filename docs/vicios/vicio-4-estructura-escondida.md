@@ -76,6 +76,18 @@ separa no postular de cierre prematuro, verificación de paja, rigidez e impleme
 - **Es la celda del catálogo donde la evidencia externa ya nos esperaba** — y donde el par
   Neptuno/Vulcano (postular-entidad ↔ parchar) tiene además el respaldo del position paper
   "LLMs can't jump" `[VERIFICADO]` (usa literalmente el ejemplo Vulcano).
+- **Shadow evaluations (2607.27191, leído 2026-08-18)** `[VERIFICADO][AGÉNTICO-real, n=2]` —
+  la versión a ESCALA DE PROYECTO REAL: Opus 4.8 con 6 días y ~USD 3000 sobre la pregunta de
+  un paper inédito de NeurIPS. Sus modos *"uncreative responses to shortcomings"* ("responded
+  by adding caveats... continued to pursue unpromising research directions") e *"ineffective
+  backtracking"* son este vicio: ante el fallo, parchan en vez de regenerar. Y el detalle que
+  AFILA la distinción madre refinar-vs-saltar: *"small pivots to their approach, but did not
+  fundamentally rethink"* — **backtrackean a nivel de parámetros, jamás a nivel de proyecto**,
+  incluso con sus propias auto-revisiones dando veredicto negativo repetido (el saber estaba;
+  cf. D1 y Strategic Play). Corroboración agéntica-real del can't-jump — con el matiz que
+  NUESTROS datos agregan y ellos no pueden separar: con la idea nombrada los modelos ejecutan
+  (2/3 en Perfiles), así que la evidencia conjunta apunta a "no salta espontáneamente ni
+  comprometido", no a incapacidad pura. Registro completo en lectura-de-fuentes.
 
 ### 4.2 Topología de razonamiento que no se adapta a la demanda epistémica
 - Corral `[POR-LEER el detalle]`: la estructura del razonamiento es IDÉNTICA trabaje en
