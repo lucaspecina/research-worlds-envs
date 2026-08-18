@@ -36,6 +36,14 @@
 > fork diagnóstico dirigido al primer quiebre. Especificación:
 > [Cómo medimos §2.1](como-medimos.md#21-protocolo-v1--validar-el-caso-y-leer-la-trayectoria-del-agente).
 
+> **BORRADOR DE DIRECCIÓN EN DISCUSIÓN (2026-08-18; NO ADOPTADO):** WAGER podría explicitarse
+> como un instrumento mecánicamente anclado para evaluar el proceso investigativo alrededor de los
+> saltos, sin volverse un benchmark de harnesses. El agente con harness mínimo sigue siendo la celda
+> primaria; las ayudas son diagnósticos y modelo/harness/mundo/condición/entrenamiento son factores
+> selectivos, no un factorial obligatorio. Antes de adoptar la formulación, la reanotación de
+> Perfiles debe probar qué perfiles y quiebres observables pueden distinguir dos anotadores sin
+> deducirlos del score final. [Nota borrador y criterio de falsación](research/2026-08-18-borrador-wager-evaluacion-proceso-investigativo.md).
+
 > **FOCO ACTUAL (2026-08-14): Grupos escondidos — Perfiles persistentes.** El anfitrión separa
 > limpiamente una banda continua (`S_profile=0.464`) de dos perfiles aprendidos (`0.924–0.997`)
 > y la resolubilidad con la idea nombrada pasó 2/3. La tanda congelada sin ayuda ya cerró:
