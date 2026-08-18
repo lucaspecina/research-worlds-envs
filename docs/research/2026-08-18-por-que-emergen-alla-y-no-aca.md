@@ -93,3 +93,31 @@ Todos heredan la infraestructura existente (kernel persistente, presupuestos, CR
 registro por celda). El (2) es candidato natural a PRÓXIMO anfitrión tras partículas: es
 nuestro salto-vs-parche de siempre con la tentación del escape negativo agregada — y es el
 fallo de creatividad más grave que shadow evals documentó.
+
+## Los canales de detección de shadow evals y su versión mecánica nuestra (2026-08-18)
+
+Dónde vieron cada fallo: (a) timing/decisiones en LOGS (hora 5: compromiso tras 5h de 42h
+presupuestadas; hora 14: re-encuadre negativo con 110h restantes — nunca más revisó el
+enfoque); (b) la SECUENCIA de auto-revisiones contra la conducta (10-15 rechazos idénticos
+consecutivos sin cambio; "proyecto completo" declarado 7h ANTES del deadline con su propia
+revisión diciendo que no llegaba); (c) la estructura del ARTEFACTO final (re-encuadre vs
+método nuevo); (d) el careo experto contra la literatura ("exactamente Guillory et al.");
+(e) el tracking de RECURSOS (<50% gastado). Además el gap verificador-generador: sus propias
+revisiones flaggeaban lo fatal pero enterrado entre minucias.
+
+Nuestra correspondencia mecánica: (a)=trazas+turnos ✓ · (c)=la entrega ✓ · (d)=auditoría
+contra la verdad ✓ · (e)=presupuestos ✓ · (b)=NO existe hoy — la versión mecánica es el
+archivo de `working_model` por celda (partículas) y/o la condición de auto-nota por turno
+(separada, jamás default). Los fallos de creatividad se manifiestan en MOMENTOS de decisión
+puntuales — la resolución exacta de la ficha de trayectoria del Protocolo v1.
+
+## Conexión con el programa de saltos (handover a esta sesión, 2026-08-18)
+
+Nada de esto reemplaza el programa: lo alimenta en sus tres frentes abiertos. (1) La
+re-anotación pendiente de las 10 trazas gana DOBLE propósito: primera aplicación del
+Protocolo v1 + validación de la rúbrica contra la taxonomía de shadow evals. (2) El análisis
+del hábitat explica el patrón del programa (elicitamos generación limpia; los vicios de
+alrededor no tenían su tentación). (3) El diseño del "escape negativo" es un TERCER anfitrión
+candidato PARA EL MISMO SALTO (el roadmap ya exigía otro anfitrión secuencial): compite/se
+secuencia con Partículas (cert ROJA, arreglo pendiente). Orden propuesto: re-anotación →
+arreglo Partículas → decisión de anfitrión a la mesa de Lucas.
