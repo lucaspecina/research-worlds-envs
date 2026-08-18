@@ -54,9 +54,18 @@
 > alcanzaban `S=.943–.999`: la señal estaba. **Corrección conceptual de Lucas:** esos números miden
 > realización final, no por sí solos creatividad. Ocho de los nueve negativos mencionaron
 > mezcla/multimodalidad y uno encontró los dos grupos exactos pero los descartó sin compararlos.
-> **Decisión: MANTENER los hechos, MODIFICAR la atribución y no tunear el anfitrión.** La primera
-> aplicación del protocolo v1 será reanotar las diez trazas para separar evocación genérica,
-> hipótesis específica, puesta en juego, contraste, selección e implementación. El control externo ya cerró:
+> **Decisión: MANTENER los hechos, MODIFICAR la atribución y no tunear el anfitrión.**
+> **RE-ANOTACIÓN COMPLETA (2026-08-18, primera aplicación del Protocolo v1)**: la cadena se
+> corta en DOS eslabones tempranos en las 10 partidas — grieta jamás expresada (0/10; el
+> mecanismo: "ver la señal y RENOMBRARLA" — autovalores → "dos factores", kurtosis → "colas
+> livianas") y contraste con poder jamás ejecutado (0/10; vara floja 8/10). "8/9 mencionaron
+> mezcla" refinado: eran MENÚS (evocación genérica) — 0/10 hipótesis específica en palabras.
+> Rúbrica validada contra shadow evals (sus 2 modos dominantes dominan acá; re-encuadre
+> negativo 0/10 = el host no tiene esa tentación, como predijo el análisis del hábitat) y ahora
+> SEPARA "nunca dejó formarse el saber" (Perfiles) de "supo y no escribió" (D1). 8 ambigüedades
+> de rúbrica coleccionadas (corrección de ficha pendiente, con OK de Lucas). El eslabón-palanca
+> es el CONTRASTE → sube la prioridad del arreglo de Partículas.
+> [Resultado](research/2026-08-18-resultado-reanotacion-perfiles-protocolo-v1.md). El control externo ya cerró:
 > **DeepSeek-V3.2 falló 0/2 con la idea nombrada; como 2/3 quedó imposible, la tercera no corrió y
 > tampoco corre la tanda sin ayuda.**
 > No fue falta de señal: en sus filas, dos perfiles daban `S=.982/.964`. Próximo paso: otro

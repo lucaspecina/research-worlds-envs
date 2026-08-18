@@ -261,3 +261,17 @@ como primera prueba retrospectiva —exploratoria, no confirmatoria— de la
 evidencia, grieta, creatividad, puesta en juego, desarrollo, contraste, selección, realización y
 propagación, con ganancia funcional aparte. La lectura anterior “falla espontánea” queda restringida
 a **realización funcional y compacta** hasta completar esa reanotación con citas por episodio.
+
+
+## Re-anotación con el Protocolo v1 (2026-08-18) — la localización que quedó abierta, cerrada
+
+Primera aplicación de la ficha de trayectoria (reglas congeladas antes de leer; 10 anotadores +
+10 verificadores adversariales; 8/10 sin objeción, 2 correcciones menores aplicadas).
+**Resultado**: la cadena se corta en DOS eslabones tempranos en las 10 partidas — la grieta
+jamás se expresa (0/10; el mecanismo es "ver la señal y renombrarla": autovalores dominantes →
+"dos factores", kurtosis negativa → "colas livianas") y ningún contraste con poder se ejecuta
+(0/10). La lectura "8/9 mencionaron mezcla" queda refinada: eran menús (evocación genérica),
+no hipótesis — 0/10 expresó la hipótesis específica. El cruce 04 fue `sin señal` (bootstrap
+como hedge, realización sin generación); el 05 construyó k-means en código y lo descartó a ojo.
+Detalle, validación contra shadow evals y ambigüedades de rúbrica:
+[resultado completo](2026-08-18-resultado-reanotacion-perfiles-protocolo-v1.md).
