@@ -396,6 +396,30 @@ lado malo.
 
 ---
 
+## La derivación desde el HÁBITAT (2026-08-18, shadow evals + Lucas) — cómo fabricar cada tentación
+
+**El principio de diseño que ordena esta capa**: *cada vicio emerge cuando su tentación es la
+política localmente atractiva*. Los vicios que NO reprodujimos (pozo 0/60, deriva, recursos) no
+faltaban en los modelos — faltaba SU tentación en nuestros mundos. Shadow evaluations
+(2607.27191) los muestra floreciendo solos en el hábitat con las 5 características que los
+nuestros no tienen (inversión hundida · vara tácita · jerarquía de decisiones · autoría del
+enfoque · cero confrontación + fases de recursos). Análisis completo:
+[por qué emergen allá y no acá](research/2026-08-18-por-que-emergen-alla-y-no-aca.md).
+
+**Palancas fabricables, por vicio no-reproducido** (candidatas de diseño, ninguna construida):
+
+| Vicio | La tentación que le falta al mundo | La palanca |
+|---|---|---|
+| 2 (pozo/overstay) | nada que duela abandonar | episodio multi-fase donde el agente CONSTRUYE infraestructura propia + ramal garden-path que paga goteo temprano y se seca; cambiar = re-armar (costo hundido real) |
+| 2.6a (juicio de la vara) | la vara computable existe y "se siente" cerca | vara oculta + canal tácito inferible: archivo de entregas históricas aceptadas/rechazadas — ¿calibra la vara desde ejemplos? |
+| 2.6b (recursos) | presupuesto de una fase, planificación trivial | presupuesto con FASES (la ventana de exploración cierra; medir se encarece tarde; acciones con vencimiento); asignación vs óptimo medible con la información esperada |
+| 5/8 (deriva) | horizonte corto, nada que olvidar | pedidos del mundo que EVOLUCIONAN a mitad de corrida; mecánico: ¿la entrega honró el pedido vigente? |
+| 1/4 (backtracking multi-nivel) | espacio plano, sin niveles que abandonar | elección de ENFOQUE al inicio (familia de instrumento/marco) con garden-path diseñado; medir retroceso a nivel proyecto vs parche local |
+| 2.2 (identidad/autoría) | el encargo viene dado | el agente ELIGE y declara su enfoque temprano (autoría real) antes de la evidencia que lo contradice |
+
+Todas convergen en el mundo largo secuencial con goteo (la dirección ya declarada): la anatomía
+lo pedía por FIDELIDAD; shadow evals lo valida por ELICITACIÓN.
+
 ## La derivación desde la ANATOMÍA DE CASOS REALES (2026-08-10)
 
 > Barrido de TODO el corpus (no solo las lecturas nuevas): pedido de Lucas — *"los mundos deben
