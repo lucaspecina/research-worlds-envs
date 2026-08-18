@@ -55,3 +55,41 @@ Evidencia de vicios (papers o propia) → SOLO `docs/vicios/` (hecho: v2 candida
 (hecho) · derivación vicio→mundo → `mundos-por-vicio.md` (las palancas de arriba, cuando se
 decida construir) · las WIKIs solo absorben lo que cambia la HISTORIA en llano (WIKI-FALLAS:
 puntero agregado hoy).
+
+
+## Diseños baratos para los FALLOS DE CREATIVIDAD (agregado 2026-08-18, pedido de Lucas)
+
+**El principio de compresión**: shadow evals cuesta USD 3000/corrida porque sus momentos de
+decisión (la hora 5 del compromiso, la hora 14 del re-encuadre) están separados por horas de
+ingeniería. El microcosmo borra la ingeniería y conserva LA ESTRUCTURA DE DECISIÓN: 30-60
+episodios controlados (~USD 0.5-1.5 c/u) por el precio de UNA corrida de ellos, con vara
+mecánica y gemelos. Cada fallo de creatividad observado allá → su mundo barato:
+
+1. **Compromiso prematuro** (Personas: 5h de 42h, primera idea con "resultados básicos"):
+   mundo con MENÚ de enfoques visibles y explorables barato, donde el PRIMERO probado paga
+   temprano por diseño (garden path) pero el bueno es otro. Medidas mecánicas: amplitud de
+   exploración antes del primer registro; turno de lock-in vs evidencia disponible (el archivo
+   de `working_model` por celda captura el momento exacto — ya construido en partículas).
+2. **Re-encuadre en vez de re-pensamiento** (TabPFN: "mis 6 intentos fallaron → no puede
+   existir" → paper negativo): mundo donde la familia obvia de enfoques FALLA por diseño y un
+   enfoque estructuralmente distinto funciona — **con la salida negativa como opción CONTRACTUAL
+   de entrega** ("no hay señal aprovechable"): la tentación del escape negativo se vuelve real.
+   Gemelo obligatorio: un polo donde el negativo ES correcto (concluir "no hay señal" debe ganar
+   ahí — castiga tanto el escape fácil como el empecinamiento). Medidas: ¿cuántos candidatos
+   estructuralmente DISTINTOS generó tras k fallos? (clasificador mecánico de familias sobre los
+   modelos registrados); ¿tomó la salida negativa con señal viva?
+3. **La disociación saber/actuar** (10-15 auto-revisiones negativas sin cambio de conducta):
+   condición separada (jamás default — la elicitación contamina, lección D1): pedirle nota
+   1-10 de su propio modelo por turno, captura mecánica; la firma = notas bajas sin cambio del
+   `working_model`. Gratis dentro del episodio.
+4. **Originalidad derivativa** (hipótesis = las obvias de los autores): métrica de diversidad
+   estructural de candidatos por episodio (distancia de familia respecto del default, con los
+   clasificadores mecánicos existentes) + el test de contaminación constitutivo de siempre.
+5. **El gap verificador-generador** (flaggea lo fatal pero enterrado entre minucias): versión
+   conductual mecánica — ¿la compra/cambio relevante al problema fatal SIGUIÓ a haberlo
+   registrado? (cruce de trazas con compras; anotación con reglas congeladas para el texto).
+
+Todos heredan la infraestructura existente (kernel persistente, presupuestos, CRN, gemelos,
+registro por celda). El (2) es candidato natural a PRÓXIMO anfitrión tras partículas: es
+nuestro salto-vs-parche de siempre con la tentación del escape negativo agregada — y es el
+fallo de creatividad más grave que shadow evals documentó.

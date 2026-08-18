@@ -417,8 +417,13 @@ enfoque · cero confrontación + fases de recursos). Análisis completo:
 | 1/4 (backtracking multi-nivel) | espacio plano, sin niveles que abandonar | elección de ENFOQUE al inicio (familia de instrumento/marco) con garden-path diseñado; medir retroceso a nivel proyecto vs parche local |
 | 2.2 (identidad/autoría) | el encargo viene dado | el agente ELIGE y declara su enfoque temprano (autoría real) antes de la evidencia que lo contradice |
 
+| 4 (compromiso prematuro) | explorar es caro/lento y lo primero "anda" | menú de enfoques + garden path que paga temprano; medir amplitud explorada y turno de lock-in (archivo de `working_model`) |
+| 4 (re-encuadre negativo) | "no existe" es entrega válida y barata | familia obvia que falla por diseño + salida negativa CONTRACTUAL + gemelo donde el negativo es correcto; medir diversidad estructural de candidatos tras k fallos |
+| 8.6 (saber/actuar) | nada archiva lo que el agente cree de su modelo | condición con auto-nota por turno (separada, jamás default); firma = notas bajas sin cambio de modelo |
+
 Todas convergen en el mundo largo secuencial con goteo (la dirección ya declarada): la anatomía
-lo pedía por FIDELIDAD; shadow evals lo valida por ELICITACIÓN.
+lo pedía por FIDELIDAD; shadow evals lo valida por ELICITACIÓN. Los diseños baratos de
+creatividad, en detalle: [por qué emergen allá y no acá §diseños baratos](research/2026-08-18-por-que-emergen-alla-y-no-aca.md).
 
 ## La derivación desde la ANATOMÍA DE CASOS REALES (2026-08-10)
 
