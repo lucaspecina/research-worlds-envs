@@ -220,6 +220,17 @@ automáticamente agregar corrección.
 
 ---
 
+## La prueba a escala real (agosto 2026) — y por qué acá no todos aparecen
+
+Un equipo grande (Princeton y otros) le dio a agentes frontier la pregunta central de un paper
+inédito, 6 días y miles de dólares: hicieron TODA la ingeniería solos y no avanzaron nada la
+ciencia — y sus cinco modos de falla calzan casi uno a uno con este catálogo. Lección doble:
+(1) el déficit es real en el hábitat natural; (2) los vicios que nosotros NO logramos
+reproducir (quedarse de más, derivar, malgastar recursos) necesitan características que
+nuestros mundos cortos no tienen — inversión hundida, vara tácita, jerarquía de decisiones,
+autoría del enfoque, fases de recursos. El análisis y las palancas de diseño:
+[por qué emergen allá y no acá](docs/research/2026-08-18-por-que-emergen-alla-y-no-aca.md).
+
 ## Comentarios (el meta)
 
 - **Este wiki es la entrada en llano.** El registro CANÓNICO de evidencia por vicio — con
