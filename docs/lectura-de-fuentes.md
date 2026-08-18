@@ -1062,3 +1062,49 @@ base operacional para castigar el vocabulario interno de un modelo que reproduce
 consecuencias). Camino: el próximo anfitrión debe puntuar **predicción bajo intervención**, donde
 dos tipos ocultos responden distinto a una acción nunca tomada y ninguna familia sin partición
 puede copiar la respuesta. Registrado como requisito de diseño, no como adopción de su método.
+
+### "Can AI agents conduct open-ended AI research? Early evidence from two case studies" (arXiv 2607.27191; Kirgis, Kapoor, ..., Toner, Hadfield, Lazar, Bommasani, Narayanan) — LEÍDO 2026-08-18 (abs + HTML v2 completo vía fetch con extracción dirigida; pedido de Lucas)
+
+**Qué es**: "shadow evaluations" — agentes frontier (Opus 4.8 + OpenClaw, extra-high reasoning;
+robustez con gpt-5.6-sol + Codex) toman LA pregunta central de un paper inédito de NeurIPS 2026
+(dos casos: Personas y TabPFN), con 6 días, ~USD 3000 de API y GPU; **los autores originales
+califican el resultado** (escala 1-6 de conferencia, no ciego). Resultado: *"the agents completed
+all of the engineering without human help, yet could not make substantial progress towards
+answering the research questions"* — ambos papers rechazados sin ambigüedad (overall 2/6 y 1/6).
+
+**Los cinco failure modes (verbatim) y su mapeo a nuestro catálogo**:
+1. *Poor judgment about the bar* ("presented underpowered negative results as substantive
+   findings") → vicios 2/9 (cierre prematuro, verificación de paja) + nuestra indiferencia
+   al "good enough".
+2. *Uncreative responses to shortcomings* ("responded by adding caveats to existing findings,
+   and continued to pursue unpromising research directions") → **vicio 4 exacto** — nuestros
+   9/10 que ven las dependencias y resumen en vez de reestructurar.
+3. *Ineffective backtracking* ("Despite AI self-reviews consistently returning negative
+   verdicts, neither agent responded by abandoning its approach... small pivots... did not
+   fundamentally rethink") → **el saber ESTABA y no actuaron** — nuestro "supo y no actuó" /
+   el vínculo creencia→acción roto (D1, Strategic Play) a escala de proyecto real.
+4. *Poor resource awareness* (<50% del presupuesto gastado; exploración terminada 37h antes)
+   → nuestros mundos de presupuesto; el infragasto también aparece en nuestras tandas.
+5. *Instruction drift* → vicios 5/8 (perder el hilo/objetivo).
+
+**La complementariedad estructural (el punto estratégico)**: su método está en el extremo
+opuesto del trade-off — validez ecológica máxima (investigación real abierta) pero n=2, jueces
+humanos expertos (caro, no repetible, no entrenable, no ciego), y ellos mismos declaran que los
+revisores-IA disponibles no sirven (*"we cannot say whether the AI reviews were actually
+discerning quality"*). Lo que a ellos les falta es EXACTAMENTE lo que construimos: evaluación
+mecánica del proceso, por eslabón, con gemelos y auditoría "podía-saberse", repetible a escala
+de entrenamiento. Ellos prueban que el déficit existe en el mundo real; nosotros lo
+descomponemos, lo medimos mecánicamente y podemos entrenar contra él. Es LA cita de motivación
+del programa — y valida la dirección "benchmark del proceso de investigación" de esta semana:
+sus 5 modos son observaciones DE PROCESO hechas a mano leyendo logs; lo nuestro es esa lectura,
+mecanizada.
+
+**Bonus**: pidieron a un modelo que ARREGLE el scaffold en base a los fallos piloto — y el
+arreglo exhibió los mismos failure modes ("harness no arregla juicio": apoya la celda primaria
+del agente desnudo). Ética observada buena (pre-registró hipótesis, reportó negativo sin
+inventar) — consistente con que el cuello es competencia, no integridad.
+
+⚠️ **Anti-recencia**: n=2 papers, un solo dominio (investigación de IA sobre IA), calificación
+no ciega por los autores sombreados, 6 días < línea de tiempo original, bugs de scaffold (14
+resets de sesión en una corrida). "Early evidence" por sus propias palabras. Entra como
+convergencia + motivación, no como verdad.
