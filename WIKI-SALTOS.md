@@ -13,6 +13,16 @@ si la respuesta aparece sin datos apenas se reconoce el dominio, no contamos des
 eso los casos con motores famosos llevan baseline sin datos y, cuando hace falta, nombres neutrales
 o trasplante de dominio.
 
+> **El rol de esta lista (2026-08-21, ADR 0187)**: esta taxonomía clasifica **destinos** —
+> cómo queda el modelo después de la edición — y su función es ser **biblioteca de diseño**:
+> de acá salen las verdades ocultas de los mundos. El ANÁLISIS de por qué los agentes fallan
+> no va por tipo sino por eslabón del **flujo de descubrimiento** (ver
+> [WIKI-INDAGACION §6](WIKI-INDAGACION.md) y el
+> [enunciado maestro](docs/research/2026-08-21-marco-dos-mitades-ediciones-y-flujo.md)):
+> nuestros propios datos muestran que mundos de tipos distintos rompen la cadena en los
+> mismos lugares. Si algún día un tipo mostrara un perfil de falla propio, esa apuesta se
+> rompe — y sería un hallazgo.
+
 **Para profundizar**: [docs/saltos.md](docs/saltos.md) (el libro: historias completas, fuentes
 y estado de lectura) · [fundamentos formales](docs/research/2026-08-05-fundamentos-taxonomia-de-saltos.md)
 (la matriz componente×edición) · [WIKI-INDAGACION](WIKI-INDAGACION.md) (dónde encaja el salto

@@ -197,3 +197,4 @@
 | 0184 | v1.84 | 2026-08-13 | [Regla de episodios inválidos en la réplica DeepSeek](0184-regla-de-episodios-invalidos-en-la-replica-deepseek.md) | Aplicada; cierre en 0185 |
 | 0185 | v1.85 | 2026-08-13 | [DeepSeek falla capacidad y cierra la réplica](0185-deepseek-falla-capacidad-y-cierra-la-replica.md) | Vigente — gate imposible tras 0/2; no corre tanda sin ayuda |
 | 0186 | v1.86 | 2026-08-14 | [Protocolo v1 para validar casos y leer la trayectoria del salto](0186-protocolo-v1-validacion-y-trayectoria-del-salto.md) | Vigente v1 — mantiene gate de ayuda de 0176, limita escalera de 0177 y corrige alcance de 0182 |
+| 0187 | v1.87 | 2026-08-21 | [El marco de dos mitades (EDICIONES × FLUJO): la taxonomía baja a biblioteca de diseño](0187-marco-de-dos-mitades-ediciones-por-flujo.md) | Vigente — refina 0179/0180/0186; creatividad = sentido estricto; apuesta falsable registrada |

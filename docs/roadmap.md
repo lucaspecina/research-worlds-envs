@@ -44,6 +44,12 @@
 > Perfiles debe probar qué perfiles y quiebres observables pueden distinguir dos anotadores sin
 > deducirlos del score final. [Nota borrador y criterio de falsación](research/2026-08-18-borrador-wager-evaluacion-proceso-investigativo.md).
 
+> **MARCO VIGENTE (2026-08-21, ADR 0187 — [enunciado maestro](research/2026-08-21-marco-dos-mitades-ediciones-y-flujo.md)):**
+> el fenómeno se formula en DOS MITADES — la MODIFICACIÓN (la edición estructural; los tipos
+> de salto son biblioteca de diseño de mundos) × el FLUJO de descubrimiento (la cadena del
+> Protocolo v1, el centro del programa). Los fallos se analizan por eslabón, no por tipo
+> (apuesta falsable registrada). "Creatividad" = sentido estricto (el eslabón de generación).
+
 > **FOCO ACTUAL (2026-08-14): Grupos escondidos — Perfiles persistentes.** El anfitrión separa
 > limpiamente una banda continua (`S_profile=0.464`) de dos perfiles aprendidos (`0.924–0.997`)
 > y la resolubilidad con la idea nombrada pasó 2/3. La tanda congelada sin ayuda ya cerró:

@@ -75,6 +75,18 @@ solo una revisión técnica del mismo artefacto.
 
 ## Los saltos
 
+- **Las dos mitades (ADR 0187)**: **la modificación** (la edición estructural del modelo — el
+  salto como objeto; hay tipos, y la taxonomía es biblioteca de DISEÑO de mundos) × **el flujo
+  de descubrimiento** (el proceso que la produce: ver → molestar → generar → testear → jugarse;
+  operacionalizado en la cadena del Protocolo v1). El análisis de fallas va por eslabón del
+  flujo, no por tipo. [Enunciado maestro](research/2026-08-21-marco-dos-mitades-ediciones-y-flujo.md).
+- **Salto (definición relacional)**: una edición es salto **relativa al repertorio del que
+  busca** — la misma edición es salto para un agente y consulta para otro; por eso el test de
+  contaminación es constitutivo del claim.
+- **Creatividad (estricta) vs rendimiento creativo**: "creatividad" = el eslabón de generación
+  del candidato (el "aha"); "rendimiento creativo" = que el descubrimiento ocurra, propiedad
+  del flujo entero. Se eligió el sentido estricto porque los eslabones se disocian en los
+  datos (menús sin hipótesis; candidatos en código sin narración; ejecución con idea nombrada).
 - **Refinamiento**: ajustar los NÚMEROS de un modelo sin cambiarle la forma.
 - **Salto**: una clase de cambio de forma del modelo —y también el acto de hacerla en una
   partida—: qué variables existen, cómo se conectan. **Grupos escondidos** es el nombre de un

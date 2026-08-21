@@ -238,7 +238,23 @@ indagación usa más músculos — y las fallas reales viven también ahí:
 
 Todo investigador carga un **modelo** de cómo funciona su pedazo del mundo (a veces escrito,
 casi siempre mental). Indagar es mejorar ese modelo comprando evidencia; **refinar** es
-ajustarle los números; **el salto** es editarle la FORMA. Hasta la "invención absoluta" se
+ajustarle los números; **el salto** es editarle la FORMA.
+
+**Las dos mitades del descubrimiento (2026-08-21 — [enunciado maestro](docs/research/2026-08-21-marco-dos-mitades-ediciones-y-flujo.md), ADR 0187).**
+Un descubrimiento tiene dos mitades que conviene no mezclar: **la MODIFICACIÓN** (qué edición
+se le hizo al modelo — el salto propiamente dicho; de esto hay tipos, y la lista de
+[WIKI-SALTOS](WIKI-SALTOS.md) es el catálogo para DISEÑAR mundos) y **el FLUJO** que la
+produce: ver que algo no cierra → que te moleste → generar el candidato (la creatividad en
+sentido estricto, el "aha") → correr el test que discrimina → jugarse a reconstruir. **Lo que
+medimos es el flujo** (la cadena de eslabones del Protocolo v1); los fallos que encontramos
+viven ahí y — apuesta falsable del marco — no dependen del tipo de edición. Y una precisión
+que ordena todo: una edición es salto **relativa al repertorio del que busca** — la misma
+edición es salto para un agente y consulta de memoria para otro; por eso el test de
+contaminación es parte constitutiva de cualquier claim de creatividad. La sospecha
+anti-romántica vigente: en nuestros datos los descubrimientos no mueren en el "aha" — mueren
+antes (no dudan) y después (no chequean, no se juegan); si generar es lo barato y la economía
+alrededor lo caro, el programa entero cambia de blanco. Sigue abierta: ¿la semilla o la
+tierra? Hasta la "invención absoluta" se
 descompone así cuando se la mira de cerca: Planck aplicó una técnica de conteo que ya existía
 (la de Boltzmann) donde "no correspondía"; Einstein combinó un hecho conocido desde Galileo
 con una geometría publicada 60 años antes (que le tuvo que enseñar un amigo). **No hay magia:
