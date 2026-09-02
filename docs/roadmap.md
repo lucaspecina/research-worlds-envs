@@ -50,6 +50,24 @@
 > Protocolo v1, el centro del programa). Los fallos se analizan por eslabón, no por tipo
 > (apuesta falsable registrada). "Creatividad" = sentido estricto (el eslabón de generación).
 
+> **ESTADO DE LA CONVERSACIÓN (2026-09-02) — DOS COSAS ESPERAN A LUCAS:** (1) Codex revisó el marco
+> de dos mitades y la re-anotación: **MODIFICAR** — el flujo sigue como centro de medición, pero la
+> taxonomía vuelve a ser VARIABLE MEDIDA (moderador predeclarado: si baja demasiado, la apuesta
+> "fallas independientes del tipo" se vuelve infalsable), la apuesta se reformula como equivalencia
+> en banda con interacción tipo×eslabón predefinida y replicada, el flujo es DAG y no cadena
+> obligatoria (lo probaban los casos 04 y 05), y caen cuatro afirmaciones: "ver la señal y
+> renombrarla", "nunca supo vs. supo y no escribió" (viola el propio ADR 0186), "rúbrica validada"
+> (sin acuerdo interanotador) y "nunca encontramos el cadáver en generación". Cola propuesta:
+> rúbrica v1.1 con doble anotación → reconciliar Partículas (certificado VERDE confirmado en HEAD,
+> headroom `.071`; lo rojo es el control con idea nombrada 1/3) → experimento reviewer rediseñado
+> como tres intervenciones que consumen un eslabón y miden rescate aguas abajo. Propuesta de
+> Claude: ADR 0188 "marco v1.1"; **sin ejecutar hasta el OK**. (2) Lucas planteó la pregunta
+> fundacional "¿el aha/salto es un mito? ¿el salto importa en el descubrimiento?"; la evaluación de
+> Claude (descubrimiento real · aha-momento mayormente narrativa retrospectiva · salto casi nunca el
+> cuello de botella — convergente con la re-anotación, shadow evals y el control con idea nombrada;
+> el experimento reviewer la testea a escala agente) quedó registrada sin respuesta de Lucas aún.
+> Nada decidido. [Handoff completo](research/2026-09-02-handoff-review-codex-y-pregunta-del-mito.md).
+
 > **FOCO ACTUAL (2026-08-14): Grupos escondidos — Perfiles persistentes.** El anfitrión separa
 > limpiamente una banda continua (`S_profile=0.464`) de dos perfiles aprendidos (`0.924–0.997`)
 > y la resolubilidad con la idea nombrada pasó 2/3. La tanda congelada sin ayuda ya cerró:
