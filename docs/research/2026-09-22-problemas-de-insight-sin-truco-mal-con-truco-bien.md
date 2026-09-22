@@ -12,6 +12,12 @@
 > sobre la página del paper; **[M]** de memoria del modelo, sin verificar. Antes de citar algo de
 > acá en un doc con autoridad, pasa por `docs/lectura-de-fuentes.md`.
 
+> **ACTUALIZACIÓN (mismo día, tarde):** cinco de estas fuentes se leyeron después a texto completo desde el PDF.
+> Lo que cambia (la pista SÍ funciona cuando nombra el invariante; notar ≠ perseguir; el poder de un test depende del
+> espacio de hipótesis, no de su forma; el menú no es el problema, tener UNA hipótesis sí) está en
+> [la lectura profunda](2026-09-22-lectura-profunda-insight-cinco-fuentes.md). Knoblich 1999 y Klahr & Dunbar 1988 ya
+> estaban leídos completos en la casa desde el 2026-08-07 (los marqué [S] por error de inventario).
+
 ## 1. Resumen en diez líneas
 
 1. Un **problema de insight** es un problema que no se resuelve avanzando paso a paso desde la

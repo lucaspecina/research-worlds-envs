@@ -65,7 +65,9 @@
 | When Agents Commit Too Soon (Mehta et al.) | la convergencia temprana NO correlaciona con corrección — comprometerse ≠ el vicio | arxiv.org/abs/2606.22936 | [ ] |
 | Words Speak Louder Than Code (Shahriar et al.) | código IDÉNTICO, juicio distinto según contexto (halo/framing/anclaje) — canal contenido | arxiv.org/abs/2606.30587 | [ ] |
 | FALSIFYBENCH (Bertolazzi et al.) | juegos de descubrimiento de reglas: los que buscan FALSAR ganan a los que confirman (1.6 + aha "pedir el dato que discrimina") | arxiv.org/abs/2606.04751 | [ ] |
-| Failing to Falsify | tarea 2-4-6 interactiva: pedir contraejemplos sube el descubrimiento 42→56 (vía R4) | arxiv.org/abs/2604.02485 | [ ] |
+| **Failing to Falsify — Jhaveri, GX-Chen, Sucholutsky & Choi (NYU), 2604.02485** | Wason 2-4-6 interactivo (45 turnos Guess/Test) en 11 LLMs; métrica de proceso **I:C** (tests incompatibles/compatibles con la hipótesis vigente, computada EJECUTANDO la regla en Python); I:C×éxito ρ=0.75 (thinking); intervenciones humanas Think-in-Opposites (11/11 mejoran) y Dual-Goal (8/11), 42→56%; destilación transfiere al Blicket (0.57→0.77*); thinking mejora SIN subir I:C | PDF arXiv (pp. 1-10 completas, sin apéndices) | **LEÍDO** (2026-09-22) → wording de referencia para "duda servida"; I:C computable en nuestros mundos si el agente enuncia el modelo por celda |
+| **Kaplan & Simon 1990 — "In search of insight" (Cognitive Psychology 22:374-419)** | Tablero mutilado; insight = descubrir la representación (paridad); experimento BREAD & BUTTER: 4 niveles de SALIENCIA de la clave (tiempo a notar 1980→342 s sin ninguna frase) + escalera de pistas IMPOSSIBLE→INSIGHT→PARITY→COUNT dada por tiempo; 77% del tiempo antes de mencionar paridad; 11/23 la notaron y tardaron ~12 min más en usarla ("parity competes with other cues") | PDF escaneado CMU (pp. 374-395 de 419) | **LEÍDO** (2026-09-22, parcial: teoría + experimento completo; falta SWITCH/discusión) → peldaño "saliencia" bajo la escalera de pistas; notar ≠ perseguir |
+| **NazoNazo Benchmark (JAIST; arXiv 2509.14704)** | 201 acertijos japoneses de insight; 38 LLMs zero-shot; humanos 52.9% (n=126, bimodales) vs no-razonadores 7.6% / razonadores 17.6%; **"verification failure"**: el candidato correcto aparece literal en el log y no se endosa — 25-39% de los errores en R1/Opus 4/Grok 4 (detector mecánico, cota inferior); "false insight" | PDF arXiv (pp. 3-13 de 18 + abstract) | **LEÍDO** (2026-09-22, parcial: resultados y discusión; faltan apéndices) → nombre y tasa para nuestro caso 05; detector mecánico del eslabón selección |
 | Huang et al. — Cannot Self-Correct Reasoning Yet | "revisá tu respuesta" SIN feedback externo degrada — la invitación a revisar no es evidencia | arxiv.org/abs/2310.01798 | [ ] |
 | Farmer et al. — probability transformations | contraevidencia que delimita: con protocolo limpio el update sale estructurado | arxiv.org/abs/2603.19262 | [ ] |
 | **3ª OLEADA (tres investigaciones externas de Lucas, 2026-07-13; los 21 IDs verificados título↔claim contra arXiv ese día)** — Hu et al., "Most LLM Conformity Needs No Speaker" | piso sin hablante 66.5% vs experto 79.4% (+12.9pp); persona anónima 57.4% (≤ piso); lo que sube el piso es PARECER EVIDENCIA (contenedor-referencia 80.4%) — ojo: 6 modelos abiertos CHICOS, MCQ, un turno | arxiv.org/abs/2607.05545 | **LEÍDO** (2026-07-13) |
@@ -842,6 +844,14 @@ Correcciones que estas lecturas destaparon (ADR 0115 manda registrarlas acá):
 - **Footsteps**: dice "MANY great leaps" (no todos) y "not JUST producing" (el cuello es la
   selección/taste, no solo la generación). Ajustado en el libro.
 
+**Relectura de verificación 2026-09-22 (Claude, pedido de Lucas "leé bien los materiales prometedores")**: Knoblich 1999
+(pp. 1534-1539 y 1549-1555) y Klahr & Dunbar 1988 (pp. 18-42) releídos desde el PDF con las páginas a la vista.
+Confirmado lo registrado el 08-07: 95/78/45% = Fig. 2 (19/20, ~15.5/20, 9/20 a 5 min); retención tras desconfirmación
+= 76/136 (56%); insight = "instantiation of a new frame" (§6.1). Agregado: Klahr & Dunbar **Estudio 2** (enumerar
+hipótesis ANTES de experimentar: 5/10 aciertan sin experimentos, 10/10 descubren, 15.2→5.7 experimentos, aparecen tests
+discriminatorios) y §6.2.1 (la estrategia positiva dio 60% de desconfirmaciones: el poder del test depende del espacio de
+hipótesis, no de su forma). Extracción y consecuencias: [`research/2026-09-22-lectura-profunda-insight-cinco-fuentes.md`](research/2026-09-22-lectura-profunda-insight-cinco-fuentes.md).
+
 ## Lecturas de LIBROS del programa de saltos — campaña 2026-08-09 (7 lectores en paralelo; PDFs provistos por Lucas)
 
 Cola completa: Darden 1991 · Ohlsson 2011 · Klein 2013 · Boden 2004 · Thagard 1992 ·
@@ -976,6 +986,8 @@ correcciones registradas. Los PDFs se borraron tras leerlos (pedido de Lucas).
 | 6 | **¿Castigar el residuo inexplicado?** | Nuestro instinto de scoring (el modelo debería explicar todo) | Magnani/Poincaré: Newton convivió con el perihelio de Mercurio; "hasta que el rival compite, no hay razón para eliminar la vieja"; Klein: la mayoría de los puntos desviados SON ruido | El mundo no castiga residuos per se: hace que la anomalía descartada sea CONSECUENTE para el objetivo declarado (necesidad teleológica) — descartar deja de ser gratis solo cuando el mundo lo cobra |
 | 7 | **¿La combinación explica la creatividad?** | Nuestra frase "no hay magia, hay combinación a distancia"; Poincaré/Koestler | Boden cap. 3: la teoría-combinación pura NO distingue lo nuevo de lo imposible-antes; exige operadores sobre las REGLAS | Resuelta por refinamiento (no por recencia): las "piezas" incluyen ediciones de reglas — registrado en el marco |
 | 8 | **¿El grupo corrige o empeora?** | Dunbar: el corrector real es el lab meeting; Ohlsson: crítica mutua "well supported" | Barkett: pares simétricos = 99.2% escalada; Klein garden path: 7/7 equipos peor que sus individuos; Jr. AI Scientist: el revisor induce fabricación | No es contradicción sino CONDICIONAL: lo que funciona es el crítico SIN propiedad de la teoría (Findley & Scott). Diseñable como brazo, no como supuesto |
+| 9 | **¿El test "confirmatorio" es malo?** | Failing to Falsify: I:C alto correlaciona con éxito (ρ=0.75 thinking); Wason: los que aciertan primero tienen I:C 1.79 vs 0.24 | Klahr & Dunbar §6.2.1: la estrategia positiva dio 60% de desconfirmaciones y fue ÚTIL (Klayman & Ha 1987); en Failing to Falsify mismo, thinking mejora el éxito SIN subir I:C | Se mide DIAGNOSTICIDAD del test respecto del espacio de hipótesis del certificado, no la forma del test; I:C entra como métrica secundaria, no como vara |
+| 10 | **¿Notar la anomalía es el cuello?** | Dunbar 1993 / CSP (MacGregor 2001): la meta de explicar la discrepancia es la palanca; sin fallo detectado no hay búsqueda | Kaplan & Simon 1990: 11/23 NOTARON la paridad y tardaron ~12 min más en usarla ("parity competes with other cues") | La rúbrica separa *mencionar* de *perseguir* (ambigüedad ya coleccionada en la re-anotación; ahora con precedente humano). Ninguna vara puntúa la mención sola |
 
 **Mantenimiento**: tensión nueva que aparezca en una lectura → fila nueva acá, en el momento.
 Una fila solo se cierra cuando NUESTROS datos (no otra lectura) la resuelven — y ahí migra al
@@ -1108,3 +1120,84 @@ inventar) — consistente con que el cuello es competencia, no integridad.
 no ciega por los autores sombreados, 6 días < línea de tiempo original, bugs de scaffold (14
 resets de sesión en una corrida). "Early evidence" por sus propias palabras. Entra como
 convergencia + motivación, no como verdad.
+
+### Jhaveri, GX-Chen, Sucholutsky & Choi 2026 — "Failing to Falsify" (arXiv 2604.02485) — LEÍDO 2026-09-22 (PDF pp. 1-10 completas; pedido de Lucas)
+
+**Qué hacía el agente**: Wason 2-4-6 interactivo: triple inicial + regla escondida; 45 turnos alternando
+*Guess* (enuncia la regla) y *Test* (propone un triple; feedback sí/no). 80 episodios de evaluación (4
+rule-sets × 4 reglas × 5 triples); reglas generadas por LLM (orden, aritmética, paridad, signo, propiedades)
+más UNA de origen humano por set (Bigelow & Piantadosi 2018). Éxito juzgado por LLM (validado a mano).
+**Métrica de proceso I:C** = Σ tests incompatibles / Σ tests compatibles con la hipótesis vigente; la
+compatibilidad se computa traduciendo la regla a una función Python y ejecutándola (mecánico).
+
+**Cómo falló**: sesgo de confirmación en la SELECCIÓN de evidencia — "often proposing triples to confirm their
+hypothesis rather than trying to falsify it. This leads to slower and less frequent discovery of the hidden
+rule". Baseline (Tabla 2): non-thinking Qwen3-8B 0.06 / 14B 0.23 / 32B 0.33 / Llama-3.3-70B 0.21 / GPT-4o 0.11;
+thinking Qwen3-8B 0.21 / 14B 0.34 / 32B 0.41 / R1-Llama-70B 0.35 / QwQ 0.50 / Gemini-2.5-Pro 0.73. I:C 0.14-0.72.
+Correlación I:C×éxito: thinking ρ=0.75 (p=0.0003, N=18); non-thinking ρ=0.54 (p=0.039). Wason 1960 (humanos,
+29): 6/29 al primer anuncio, 21/29 al final; I:C 1.79 (aciertan primero) vs 0.24.
+
+**Intervenciones** (prompts humanos): Think-in-Opposites (Branchini 2023: "identificá una propiedad saliente
+del último test y construí el opuesto") mejora en 11/11; Dual-Goal (Gale & Ball 2006: regla DAX + complemento
+MED; feedback DAX/MED) en 8/11; I:C sube en 18/22; promedio 42%→56%; significativo solo en thinking.
+Destilación (SFT sobre turnos Test del maestro TiO, 72k ejemplos): Qwen3-32B 0.41→0.64* (I:C 0.33*); Qwen3-8B
+0.21→0.59* con maestro 32B. **Transfiere al Blicket test** (192 episodios; AND/OR/XOR): Qwen3-32B thinking
+0.57→0.86 con TiO; destilado 0.77*.
+
+**Cita clave**: "the performance improvement from switching non-thinking to thinking mode is not accompanied
+by a consistent increase in I:C, indicating that these gains are not driven by reduced confirmation bias."
+
+**Para WAGER**: (i) eslabón "contraste con poder" medido aislado, con intervención y transferencia; (ii) sus
+dos prompts = wording de referencia para "duda servida" (estructura del proceso, cero contenido); (iii) I:C
+computable en nuestros mundos si el agente enuncia el modelo por celda — Perfiles 0/10 sin hipótesis
+específica = "I:C indefinido", el mismo fenómeno que los experimentos-sin-hipótesis de Klahr & Dunbar.
+⚠️ Anti-recencia: éxito juzgado por LLM; reglas generadas por LLM; tensión #9 (el test confirmatorio puede
+ser informativo según el espacio de hipótesis).
+
+### Kaplan & Simon 1990 — "In search of insight" (Cognitive Psychology 22:374-419) — LEÍDO 2026-09-22 (PDF escaneado CMU, pp. 374-395 de 419: abstract, teoría, experimento BREAD & BUTTER completo; NO leído: SWITCH en detalle, heurísticas, discusión)
+
+**Qué es**: tablero mutilado (8×8 sin dos esquinas opuestas, 31 dominós). Insight = descubrir la representación
+de PARIDAD. Piloto: un estudiante de posgrado, 18 h y 61 páginas, no lo resolvió; un programa necesitó
+758.148 colocaciones. Teoría: búsqueda a dos niveles — dentro del espacio de problema y en el META-espacio
+de representaciones; meta-heurística "Try a Switch" disparada por (a) frustración por falta de progreso,
+(b) atención a claves. Abstract: "performance on insight problems can be predicted from the availability of
+generators and constraints in the search for such a representation... cue salience manipulations, prior
+knowledge, hints, and heuristics... noticing invariants proved to be a particularly powerful means".
+
+**El experimento** (23 estudiantes CMU): 4 condiciones de saliencia de la paridad sin cambiar el problema
+(BLANK / COLOR / BLACK & PINK con palabras / BREAD & BUTTER con palabras) + escalera de pistas por tiempo si
+se trababan: IMPOSSIBLE (~15 min) → INSIGHT (~15) → PARITY (~30) → COUNT (~40). Tabla 3: tiempo a 1ª mención
+de paridad 1980 / 1265 / 905 / 342 s (F=11.09, p<.002); tiempo a prueba 2242 / 1375 / 1378 / 995 s (F=4.08,
+p<.025); enfoques probados 9.14 / 5.80 / 5.16 / 4.00. Tabla 2: 77% del tiempo antes de mencionar paridad;
+3% en generar la prueba. 12/23 notaron solos; 11/23 necesitaron PARITY. "Twelve of the 23 subjects did, in
+fact, generate a Rough Proof almost immediately after their first mention of parity; but the remaining 11
+subjects mentioned parity some time before generating a proof, with an average gap of about 12 min" —
+"parity competes with other cues in the search for a new representation".
+
+**Para WAGER**: (i) su escalera de pistas es nuestra escalera P3→P2→P1 con regla de tiempo, en 1990; (ii)
+peldaño nuevo por debajo del texto: SALIENCIA (cómo se muestra el dato) — ×5.8 más rápido sin frase alguna,
+compatible con "no le demos pistas"; (iii) notar ≠ perseguir (tensión #10). ⚠️ n=23, un problema, sujetos
+universitarios; escaneo con OCR imperfecto.
+
+### NazoNazo Benchmark (JAIST; arXiv 2509.14704 / zenodo 17019050) — LEÍDO 2026-09-22 (PDF pp. 3-13 de 18 + abstract; NO leídos: apéndices SI 1-6)
+
+**Qué es**: 201 acertijos infantiles japoneses ("nazonazo": juegos de palabras, kanji, instrucciones
+escondidas) elegidos por exigir reestructuración representacional + evaluación metacognitiva; renovables y
+baratos (anti-contaminación, anti-saturación). 38 LLMs (2023-2025) zero-shot sin retrieval; subset de 120
+con humanos (n=126): media 52.9% (IC95 46.6-59.2), dificultad por ítem GAUSSIANA, puntajes individuales
+BIMODALES (picos en 0 y 20/20). LLMs: no-razonadores 7.6%, razonadores 17.6% (201 ítems: 9.4% vs 19.3%, OR
+2.29); GPT-5 dentro del IC humano (observacional); la dificultad por ítem para LLMs apilada en 0.
+
+**Cómo falló** — "verification failure" (Tabla 2: % de errores donde una variante literal de la respuesta
+correcta aparece en el thought-log antes de la línea final): DeepSeek-R1-0528 30.57%, Gemini 2.5 Flash
+5.23%, Claude Opus 4 25.00%, Grok 4 39.34%. Cota inferior (conteo literal). También "false insight"
+(convergencia confiada a una reinterpretación incorrecta). Argumento contra "la traza es post-hoc": "a log
+produced merely to rationalize the final answer would have no reason to surface a correct candidate that
+contradicts that (incorrect) answer". Few-shot con demostraciones de razonamiento mejora en 4/4 (sig. en 2;
+no en el más fuerte).
+
+**Para WAGER**: (i) nuestro caso 05 (k-means construido y descartado a ojo) tiene nombre y tasa: 25-39% de
+los errores en modelos fuertes; (ii) detector MECÁNICO del eslabón selección: "¿el candidato correcto apareció
+en el sandbox y no fue entregado?" — cota inferior sin rúbrica; (iii) la distribución (bimodal humana vs
+apilada en cero) es la firma, no el promedio. ⚠️ Dominio lingüístico, no investigativo; accuracy por
+matching literal en la Tabla 2 (difiere de la primaria).
