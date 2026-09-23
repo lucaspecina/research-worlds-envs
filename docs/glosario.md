@@ -90,7 +90,11 @@ solo una revisión técnica del mismo artefacto.
   "creativa" (que la estructura nueva no estaba en su caja) no se certifica en un LLM; decimos
   "no la estaba usando", nunca "no la conocía". Para medir cuenta solo lo explícito (lo que
   predice y lo que entrega); lo mental se infiere. Es el nombre técnico del "salto" de la casa.
-  (Pendiente de la devolución de Astra, misma fecha.)
+  Devolución de Astra (misma fecha, [acá](research/2026-09-23-astra-en-codex-3-protocolos-y-definicion.md)):
+  acepta el contenido como **abducción ESTRUCTURAL** — "proponer una hipótesis que modifica los elementos
+  o relaciones del modelo de trabajo, respecto de una familia declarada, para explicar o unificar
+  evidencia" — y deja "creativa" como propiedad adicional no certificada. Cuál de las dos palabras
+  queda como nombre de la casa lo decide Lucas.
 - **Creatividad (estricta) vs rendimiento creativo**: "creatividad" = el eslabón de generación
   del candidato (el "aha"); "rendimiento creativo" = que el descubrimiento ocurra, propiedad
   del flujo entero. Se eligió el sentido estricto porque los eslabones se disocian en los

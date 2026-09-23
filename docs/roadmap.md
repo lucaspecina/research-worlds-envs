@@ -103,6 +103,10 @@
 > pasado* — con perilla k = entradas pasadas que importan (0..3), mundo binario determinista, nota Q = 1 − 4·Brier
 > (brecha constante 0.25), tres comprobaciones antes de construir y muerte por techo (≥90% cerrado sin ayuda).
 > "Creatividad" queda en la motivación, no en el claim. [Propuesta](research/2026-09-23-astra-en-codex-propuesta-clean-dependencias-del-pasado.md). Ida y vuelta con Lucas en curso.
+> Tercer turno: guiado primero, libre después sobre el mismo aparato; lo que mide es "incorporar dependencias
+> necesarias a un predictor"; Astra propone llamar a la definición de Lucas **abducción estructural** y dejar
+> "creativa" como propiedad no certificada ([respuesta](research/2026-09-23-astra-en-codex-3-protocolos-y-definicion.md)).
+> Definición de trabajo anotada en el glosario; el nombre final lo decide Lucas.
 
 > **FOCO ACTUAL (2026-08-14): Grupos escondidos — Perfiles persistentes.** El anfitrión separa
 > limpiamente una banda continua (`S_profile=0.464`) de dos perfiles aprendidos (`0.924–0.997`)
