@@ -67,6 +67,17 @@
 > cuello de botella — convergente con la re-anotación, shadow evals y el control con idea nombrada;
 > el experimento reviewer la testea a escala agente) quedó registrada sin respuesta de Lucas aún.
 > Nada decidido. [Handoff completo](research/2026-09-02-handoff-review-codex-y-pregunta-del-mito.md).
+>
+> **ACTUALIZACIÓN 2026-09-23 — tercera voz.** Lucas pidió una segunda opinión externa a GPT Astra (su Azure)
+> con todo el contexto: **MANTENER WAGER, retirar "mide el salto creativo" y "ya localizamos el cuello"**; el
+> producto es *medir cuándo un agente usa evidencia para mejorar un modelo ejecutable*; se aparta de Claude
+> (el aha NO está desacreditado) y de Codex (retirar la independencia por tipo, no salvarla); propone UN
+> experimento de dos brazos (control activo vs "construí 2-3 candidatos con predicciones distintas") con
+> pérdida predictiva fuera de muestra + gemelo negativo como primario y tabla de qué resultado abandona qué;
+> antes, auditar Perfiles contra el bootstrap y un rival flexible. Entre medio (22-09) se leyeron a texto
+> completo cinco fuentes del marco de insight ([lectura profunda](research/2026-09-22-lectura-profunda-insight-cinco-fuentes.md)).
+> Sigue sin decidir nada; las tres voces (Codex, Claude, Astra) esperan a Lucas.
+> [Respuesta completa de Astra](research/2026-09-23-segunda-opinion-gpt-astra.md).
 
 > **FOCO ACTUAL (2026-08-14): Grupos escondidos — Perfiles persistentes.** El anfitrión separa
 > limpiamente una banda continua (`S_profile=0.464`) de dos perfiles aprendidos (`0.924–0.997`)
