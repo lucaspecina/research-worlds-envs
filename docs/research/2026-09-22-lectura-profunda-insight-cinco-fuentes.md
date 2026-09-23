@@ -154,8 +154,7 @@ es la firma de que se relajó *esa* restricción y no otra. Para agentes nadie l
 **Qué es.** Wason 2-4-6 interactivo para LLMs: 45 turnos alternando *Guess* (enunciar la regla) y
 *Test* (proponer un triple; feedback sí/no). 80 episodios de evaluación; reglas generadas por LLM
 más una de origen humano por set. **Métrica de proceso I:C** = tests *incompatibles* con la
-hipótesis vigente / tests *compatibles* — la compatibilidad se computa **ejecutando la regla como
-función Python** (mecánico). El éxito lo juzga un LLM (validado a mano).
+hipótesis vigente / tests *compatibles* — la compatibilidad se computa traduciendo la regla a Python **con un LLM** y ejecutándola (ejecución mecánica, traducción semántica: NO es cero-LLM integral — corrección 23-09). El éxito lo juzga un LLM (validado a mano).
 
 **Números.** Wason 1960 (humanos, 29): 6/29 aciertan al primer anuncio; 21/29 al final; I:C 1.79 en
 los que aciertan primero vs 0.24. LLMs (Tabla 2, baseline): no-thinking 0.06 (Qwen3-8B) … 0.33
@@ -192,7 +191,7 @@ exhibir un candidato correcto que la contradice. Few-shot con demostraciones de 
 en 4/4 (significativo en 2; no en el más fuerte).
 
 **Qué nos dice.** (a) Nuestro caso 05 (construyó k-means y lo descartó a ojo) tiene nombre y tasa:
-25-39% de los errores en modelos fuertes. (b) Su detector es **mecánico** (búsqueda literal): para
+5-39% (5.23–39.34%) de los errores en modelos fuertes. (b) Su detector es **mecánico** (búsqueda literal): para
 nosotros el equivalente es "¿alguna celda ajustó un modelo de dos tipos?" sobre el working_model
 por celda — un detector de cota inferior del eslabón *selección* sin leer prosa. (c) Los humanos son
 bimodales y los LLMs están apilados en cero: la distribución, no el promedio, es la firma.
@@ -238,7 +237,7 @@ Ninguna sopla contenido. Las tres son "estructura del proceso", no "idea del mun
 | Descomponer un chunk | Knoblich tipo D | independiente de las restricciones (Exp. 3) | una variable que "viene pegada" y hay que partir |
 | Enumerar hipótesis antes de comprar | Klahr & Dunbar Est. 2 | 5/10 sin experimentos; 15.2 → 5.7 experimentos | menú de tests + medir cuántas hipótesis enuncia antes del primer gasto |
 | Elegir el test que puede refutar | Wason; Failing to Falsify | I:C ρ=0.75 con el éxito | dos historias dadas + cinco tests, uno discrimina |
-| Endosar el candidato correcto | NazoNazo | 25-39% de los errores | el candidato correcto ya construido en el sandbox; ¿lo entrega? |
+| Endosar el candidato correcto | NazoNazo | 5-39% (5.23–39.34%) de los errores | el candidato correcto ya construido en el sandbox; ¿lo entrega? |
 
 Cada fila tiene que pasar los dos controles (sin truco mal / con truco soplado bien) antes de existir.
 

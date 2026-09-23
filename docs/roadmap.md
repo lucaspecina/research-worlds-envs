@@ -91,6 +91,14 @@
 > cambiar la identidad ni a "cinco mutaciones = cinco primitivas"; corrige cuatro frases (addendum en la nota);
 > propone empezar por M4 binaria (XOR con el paso anterior) y un 2×2 que pruebe que la caja cambia la conducta.
 > [Review completa](research/2026-09-23-segunda-opinion-gpt-astra-b-nota-direccion.md). Sigue sin decidir.
+> **Noche (23-09):** Lucas objetó "la creatividad también es encontrar formas ya vistas"; Claude corrigió
+> (disparador / distancia / compromiso) y Astra, ahora DENTRO de Codex con el repo a la vista, corrigió la
+> corrección: "cerca = rutinario / lejos = creativo" es igual de engañoso; dos planos (condiciones vs
+> eventos, con la evaluación); tres distancias que no se suman; si la prioridad es distancia, un 2×2 de
+> transferencia con ejemplo fuente. Dos errores de hecho de Claude corregidos (Failing to Falsify no es
+> cero-LLM integral; NazoNazo 5.23–39.34%). Queda por decidir la pregunta del mes entre dos diseños "clean":
+> (A) escalera de ediciones con brecha cerrada como nota (propuesta de Claude, estilo NewtonBench) o (B) el 2×2
+> de transferencia (Astra). [Respuesta completa](research/2026-09-23-tercera-opinion-astra-en-codex-correccion-creatividad.md).
 
 > **FOCO ACTUAL (2026-08-14): Grupos escondidos — Perfiles persistentes.** El anfitrión separa
 > limpiamente una banda continua (`S_profile=0.464`) de dos perfiles aprendidos (`0.924–0.997`)
