@@ -310,6 +310,137 @@ can't-jump receta — mundos interactivos con intervención — o sea, esta máq
 
 ---
 
+## 7. Los hombros: quién sostiene qué pieza del marco (y qué nos corrigió cada uno)
+
+Nada de lo de arriba lo inventamos nosotros. Cada pieza está parada sobre alguien que la
+pensó antes, casi siempre con experimentos. Acá va, en llano, quién sostiene qué — y la
+**corrección** que cada lectura nos obligó a hacer, porque ese es el valor real de leer.
+Todos leídos a texto completo salvo donde se marca *(resumen)*; el registro auditable está en
+[docs/lectura-de-fuentes.md](docs/lectura-de-fuentes.md), las extracciones verbatim en
+[docs/saltos.md → biblioteca](docs/saltos.md#recursos-para-leer-más-la-biblioteca-del-programa),
+y las definiciones puestas lado a lado en
+[el doc del 23-09](docs/research/2026-09-23-que-es-el-salto-definiciones-canonicas-y-supuestos.md).
+
+**A. Los que dicen qué es el salto.**
+
+- **Peirce (1903)** — la *abducción*: "veo algo sorprendente; si X fuera cierto, dejaría de
+  ser sorprendente; entonces sospecho X". Sostiene: el salto es una **inferencia** (inventar
+  la explicación), no magia; y la sorpresa es su gatillo. Es el origen de todo el vocabulario.
+- **Magnani (2001)** — la abducción **selectiva** (elegir la explicación de una caja que ya
+  tenías: el médico que diagnostica) vs **creativa** (fabricar una que no estaba). Sostiene:
+  nuestra definición de salto *relativa al repertorio*; el test de contaminación como parte
+  del claim; y la pregunta "¿existe, o es todo memoria?" ya tiene nombre: "¿es selectiva?".
+  Nos corrigió: lo que medimos es abducción *existencial* (postular un tipo o entidad nueva),
+  la misma en la que fallaban los programas de descubrimiento de los 80; "lo ve y lo descarta
+  como outlier" es un paso legítimo — el vicio es descartarlo *sin test de fecundidad*; y
+  detectar la anomalía sin poder explicarla es lo esperable de una máquina selectiva, así que
+  para reclamar déficit creativo hay que mostrar que el agente tenía los ingredientes.
+- **Boden (2004)** — creativo = nuevo, sorprendente y valioso; **P-creatividad** (nuevo para
+  vos) vs **H-** (nuevo para la humanidad); y tres formas: **combinar** cosas conocidas,
+  **explorar** dentro de tu espacio, **transformar** las reglas del espacio. Sostiene: refinar
+  = explorar; saltar = transformar; y solo podemos reclamar P-creatividad. Nos corrigió: medir
+  contra el espacio *efectivo* del agente (lo que parece salto puede ser exploración de otra
+  representación → elicitar el menú previo); "combinación a distancia" no alcanza si no incluye
+  operadores sobre las reglas; y separar generar de reconocer (Copérnico tachó las elipses).
+- **Runco & Jaeger (2012), Simonton (2012)** *(resumen)* — la definición estándar del campo:
+  creatividad = originalidad + efectividad (Simonton: novedad × utilidad × sorpresa). Sostiene:
+  "creatividad" es el paraguas; lo nuestro es una especie (la transformacional), no el género.
+- **Aliseda (2006)** — la lógica de la revisión: revisar = contraer + expandir; y "hacer una
+  distinción" (partir un átomo en dos) como el operador que agranda el vocabulario. Sostiene:
+  dónde termina lo mecanizable — su generador es cerrado por vocabulario, así que formaliza la
+  **frontera** del salto, no el salto. Nos corrigió: novelty/anomaly tipifica el disparador,
+  no nuestro par generar/aceptar.
+- **Thagard (1992)** — grados de cambio conceptual, de agregar una instancia a reorganizar el
+  árbol entero. Sostiene: la escala de severidad. Nos corrigió: "entidad oculta" es su escalón
+  *barato* — que los agentes fallen justo ahí afila el hallazgo en vez de debilitarlo.
+
+**B. Los que miraron cómo pasa adentro de una cabeza.**
+
+- **Ohlsson (1984-2011) y Knoblich et al. (1999)** — el insight: te trabás (impasse) y salís
+  cambiando la representación: relajando una restricción que te impusiste solo, o partiendo un
+  bloque que veías entero. Con fósforos lo midieron: la dificultad se predice del **alcance**
+  de la restricción (95 / 78 / 45% a los 5 minutos) y, una vez relajada, queda relajada.
+  Sostiene: "ingeniar el impasse desde el mundo" y el molde de las primitivas (una restricción
+  = una primitiva aislable). Nos corrigió: el gatillo no es "el impasse" sino el fallo del
+  propio intento, persistente, *detectado* y fuerte; y el propio Ohlsson declara sus tests
+  débiles, con una prevalencia impasse→insight de 3 a 41%.
+- **Kaplan & Simon (1990)** *(leído en parte)* — insight = encontrar la **representación**
+  (la paridad en el tablero mutilado); se predice de qué generadores y restricciones tenés para
+  esa búsqueda; probaron cuatro ayudas: saliencia de la clave, conocimiento previo, pistas por
+  tiempo, heurísticas ("buscá lo que no cambia"). Sostiene: nuestra escalera de pistas existía
+  en 1990 con regla de tiempo; y el peldaño **saliencia** — cambiar cómo se ve el dato, sin
+  decir nada, bajó el tiempo de notar de 33 a 6 minutos. Nos corrigió: notar ≠ perseguir (11 de
+  23 notaron y tardaron 12 minutos más en usarlo) → la "grieta" son dos eslabones.
+- **Weisberg (1981, 1995)** *(resumen)* — el escéptico: decirle a la gente el truco ayudó poco
+  en los nueve puntos; muchos problemas de insight son "híbridos" (después del aha queda
+  trabajo); el genio es un mito. Sostiene: el lado deflacionario de la pregunta del mito y el
+  eslabón de "realización". Nos corrigió: la pista no basta como único control.
+- **Klein (2013)** — 120 insights reales de campo: se disparan por conexión, contradicción o
+  desesperación; solo el 25% pasa por impasse; el 44% son graduales; ninguno de sus casos
+  descartó la anomalía — pero es un corpus de *ganadores*. Sostiene: el contrapeso a Ohlsson
+  (tensiones #1-3 del registro). Nos corrigió: no absolutizar el impasse.
+- **Schmidhuber (2009)** — el aha como progreso de compresión: los mismos datos, de golpe,
+  descritos más corto. Sostiene: la vara de dos bolsillos de §6; el descubrimiento sin anomalía
+  (Newton y las manzanas). Lo cuestiona el paper del jump: con error casi cero, la compresión
+  prefiere parchar (Vulcano) antes que reestructurar.
+- **Simon (Newell & Simon; BACON)** — descubrir es resolver problemas: búsqueda con heurísticas,
+  también en el meta-espacio de las representaciones; "las representaciones nuevas no brotan de
+  la frente de Zeus: emergen por etapas graduales y muy lentas". Sostiene: no hay magia, hay
+  búsqueda a dos niveles. Nos cuestiona: si BACON redescubre a Kepler con búsqueda ordinaria,
+  ¿qué queda del salto? (la respuesta de Magnani: BACON fallaba justo en la existencial).
+
+**C. Los que miraron científicos de verdad.**
+
+- **Klahr & Dunbar (1988)** — descubrir = buscar en **dos espacios** a la vez, el de las
+  hipótesis y el de los experimentos; el insight = instanciar un *marco* nuevo (cambiar tres
+  cosas juntas, no un número). Números: retienen la hipótesis desconfirmada el 56% de las veces;
+  "teóricos" (cambian de marco desde la memoria) vs "experimentadores" (lo inducen del dato, el
+  doble de lento); y si los obligás a **enumerar hipótesis antes de tocar nada**, 5 de 10
+  aciertan sin experimentar y aparecen solos los tests que discriminan. Sostiene: medir el
+  contraste por *diagnosticidad*, no por forma (su estrategia "positiva" dio 60% de
+  desconfirmaciones y sirvió); la intervención "enumerá antes". Nos corrigió: el menú no era el
+  problema; tener *una sola* hipótesis, sí.
+- **Dunbar (1993; 1995-97)** — en un laboratorio simulado de genética, solo los que se pusieron
+  como *meta* explicar el dato raro descubrieron la inhibición; y un año adentro de cuatro
+  laboratorios reales: el científico solo atribuye la anomalía a error por defecto, y el
+  insight es distribuido (se arma en la reunión de grupo, por analogías encadenadas). Sostiene:
+  la grieta como eslabón; el revisor como canal. Pendiente: el paper de 1993 sigue sin leerse
+  completo.
+- **Kuhn (1962)** *(resumen del paper de Science)* — ciencia normal casi siempre; la anomalía
+  como motor; y "el descubrimiento no es un evento": no tiene cuándo ni dónde (el oxígeno).
+  Sostiene: medir el flujo, no el momento; la sospecha anti-romántica de §6.
+- **Darden (1991-2006)** — estrategias de cambio de teoría sacadas de casos reales (genética
+  mendeliana): exprimir la anomalía para elegir dónde editar, barrido sistemático, doce
+  transformaciones, monster-barring. Sostiene: la taxonomía de ediciones como *biblioteca de
+  diseño*; el pipeline de anomalías. Nos corrigió: alineación fuerte en 5 de nuestras 11
+  ediciones y sin correlato en las demás — nuestra lista es más ancha de lo que la historia
+  respalda.
+
+**D. Los que miden en modelos de lenguaje.**
+
+- **"Position: LLMs can't jump"** — la tesis blanco: los LLMs inducen y deducen pero no
+  abducen; Vulcano (parchar con un parámetro) vs relatividad (reestructurar). Sostiene: el par
+  Neptuno/Vulcano de nuestros gemelos; los mundos interactivos con intervención como el
+  laboratorio que ellos mismos piden. Nos cuestiona: los saltos más duros ocurren *sin* señal
+  de error — nuestros mundos modelan el caso con señal (tensión #7).
+- **Chollet / ARC (2019)** *(resumen)* — inteligencia = eficiencia para adquirir habilidad ante
+  lo nuevo; ARC son tareas mínimas con una regla que hay que captar. Sostiene: el estilo
+  "juegos mínimos". Nos delimita: ARC dice *si* encontraste la regla, no *dónde* te trabaste;
+  no tiene pista soplada ni gemelo; es un marcador, no un laboratorio.
+- **NazoNazo (2025), Failing to Falsify (2026), NewtonBench (2026)** — tres eslabones nuestros
+  medidos aislados en LLMs: endosar el candidato correcto (25-39% de los errores lo tenían
+  escrito y no lo eligieron); elegir el test que refuta (pedir "el opuesto" mejora 11 de 11
+  modelos, 42→56%); y comprometerse antes de tiempo (el intérprete de código empeora a los
+  modelos fuertes). Sostiene: que medir por eslabón es informativo y que hay intervenciones con
+  número. Nos corrigió: "nadie más mide el proceso mecánicamente" ya no es cierto.
+
+**Lo que ninguno tiene y nosotros sí** (la frase honesta, después de Astra): no los
+simuladores ni las pistas, sino la combinación de verdad fabricada + gemelo donde revisar sobra
++ el mejor rival sin salto optimizado + la pista como compuerta de diseño + puntaje sin LLM.
+**Lo que todos ellos tienen y nosotros no**: sujetos humanos en la misma tarea.
+
+---
+
 ## Comentarios (el meta)
 
 - **¿Por qué "indagación" y no otro nombre?** "Investigación" es ambiguo (también significa

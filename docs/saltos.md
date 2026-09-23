@@ -507,6 +507,10 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
 - **Peirce — abducción**: la entrada "Abduction" de la *Stanford Encyclopedia of Philosophy*
   (gratis online) es el mejor arranque; Hanson, *Patterns of Discovery* (1958) es el clásico
   que la vuelve lógica del descubrimiento.
+- **Las definiciones canónicas lado a lado** (Peirce · Magnani selectiva/creativa · Boden · Runco &
+  Jaeger · Simonton · Kuhn 1962 · Schmidhuber · Chollet · Aliseda) con el mapa de capas encajadas y
+  los diez supuestos nuestros a examinar:
+  [docs/research/2026-09-23-que-es-el-salto-definiciones-canonicas-y-supuestos.md](research/2026-09-23-que-es-el-salto-definiciones-canonicas-y-supuestos.md).
 - **"Position: LLMs can't jump"** (OpenReview klU4737opt) `[LEÍDO 2026-07-10]` — el paper del
   programa: abducción como el salto E→axiomas; Vulcano vs relatividad; mundos interactivos
   como laboratorio.
@@ -559,6 +563,11 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
   vía de escape es el modo SIN hipótesis (que los agentes nunca usan — siempre tienen un
   candidato); y no-generar-la-alternativa es causa documentada de no-revisar (nuestras dos
   líneas conectadas). [Extracción](research/2026-08-07-lecturas-programa-saltos.md).
+  **Relectura 2026-09-22** (pp. 18-42): Estudio 2 — obligar a ENUMERAR hipótesis antes de
+  experimentar: 5/10 aciertan sin experimentos, 10/10 descubren, 15.2→5.7 experimentos y aparecen
+  tests discriminatorios; "teóricos" (cambian de marco desde memoria) vs "experimentadores" (lo
+  inducen del dato, el doble de lento); la estrategia positiva dio 60% de desconfirmaciones y fue
+  útil (Klayman & Ha) — el poder del test depende del espacio de hipótesis, no de su forma.
 - **Dunbar**, "How scientists really reason" (1995, los laboratorios in vivo)
   `[LEÍDO completo 2026-08-07, + el paper 1997]` — un año DENTRO de 4 labs de élite: las
   analogías que descubren son CERCANAS (2/99 lejanas, cero descubrimientos); el individuo
@@ -568,6 +577,22 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
   importante para diseñar mundos fieles.
   [Extracción](research/2026-08-07-lecturas-programa-saltos.md).
 
+- **Kaplan & Simon, "In search of insight"** (*Cognitive Psychology* 1990) `[LEÍDO parcial
+  2026-09-22: pp. 374-395 de 419 — teoría + experimento completo]` — insight = descubrir la
+  REPRESENTACIÓN (paridad en el tablero mutilado); se predice de los generadores y restricciones
+  disponibles para esa búsqueda; cuatro fuentes de ayuda probadas: saliencia de la clave, conocimiento
+  previo, pistas por tiempo (IMPOSSIBLE→INSIGHT→PARITY→COUNT = nuestra escalera P3→P2→P1, en 1990) y
+  heurísticas ("buscá lo invariante"). Cambiar solo cómo se ve el tablero bajó el tiempo de notar de
+  1980 a 342 s sin decir nada; 11 de 23 notaron la paridad y tardaron ~12 min más en usarla (notar ≠
+  perseguir). [Extracción](research/2026-09-22-lectura-profunda-insight-cinco-fuentes.md).
+- **Weisberg & Alba 1981; Weisberg 1995** — el deflacionista: decirle a la gente "podés salir del
+  cuadrado" ayudó poco en los nueve puntos (la pista no basta: después del insight queda búsqueda);
+  problemas "puros" vs "híbridos"; *Creativity: Beyond the Myth of Genius*. El lado escéptico de la
+  pregunta del mito. (resúmenes; texto completo pendiente)
+- **Runco & Jaeger, "The Standard Definition of Creativity"** (*Creativity Research Journal* 2012) y
+  **Simonton 2012** (tres criterios: novedad × utilidad × sorpresa, multiplicativo) — la definición
+  estándar del campo: creatividad = originalidad + efectividad. Es el paraguas; lo nuestro es una
+  especie (la transformacional de Boden). (resúmenes)
 ### Filosofía e historia de la ciencia
 - **Nersessian** — razonamiento basado en modelos (analogía, experimento mental, casos
   límite; Maxwell como caso). Su paper canónico 1992 `[LEÍDO completo 2026-08-07]`: el
@@ -590,6 +615,10 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
   reordena).
 - **Kuhn, *La estructura de las revoluciones científicas*** (1962) — el telón de fondo de todo.
 
+- **Kuhn, "The Historical Structure of Scientific Discovery"** (*Science* 136, 1962) — el
+  descubrimiento "no es la clase de evento del que se pueda preguntar dónde ni cuándo"; descubrir es
+  darse cuenta de QUE algo es y de QUÉ es, y eso se extiende en el tiempo (oxígeno). Respaldo directo
+  de "medir el flujo, no el momento". (resumen; texto completo pendiente)
 ### Analogía (el salto +1)
 - **Gentner**, "Structure-Mapping: A Theoretical Framework for Analogy" (*Cognitive Science*
   1983) y su resumen autoritativo 2025 en la *Open Encyclopedia of Cognitive Science*
@@ -625,6 +654,15 @@ sin marca = puntero curado, pendiente de fichar (no se cita en el paper hasta le
   ecuaciones; qué miden y qué no ([extracción](research/2026-08-06-lectura-newtonbench-llm-srbench.md)).
 - KellyBench ([2604.27865](https://arxiv.org/abs/2604.27865)) `[LEÍDO 2026-08-07]` —
   no-estacionariedad natural + knowledge-action gap (diagnostican y no corrigen).
+
+- **NazoNazo Benchmark** ([2509.14704](https://arxiv.org/abs/2509.14704)) `[LEÍDO parcial 2026-09-22]`
+  — acertijos de insight; humanos 52.9% vs razonadores 17.6%; **"fallo de verificación"**: el modelo
+  escribe el candidato correcto y no lo elige (25-39% de los errores en modelos fuertes) — nuestro caso
+  05 con nombre y tasa; detector mecánico del eslabón de selección.
+- **Failing to Falsify** ([2604.02485](https://arxiv.org/abs/2604.02485)) `[LEÍDO completo 2026-09-22]`
+  — Wason 2-4-6 en 11 LLMs; métrica de proceso I:C computada ejecutando la regla; pedir "el test
+  opuesto" mejora 11/11 (42→56%) y destilarlo transfiere a otra tarea — nuestro eslabón de contraste
+  medido aislado, con intervención. [Extracción](research/2026-09-22-lectura-profunda-insight-cinco-fuentes.md).
 
 ## El estado del tablero, en una mirada
 
