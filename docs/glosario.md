@@ -87,6 +87,12 @@ solo una revisión técnica del mismo artefacto.
   del candidato (el "aha"); "rendimiento creativo" = que el descubrimiento ocurra, propiedad
   del flujo entero. Se eligió el sentido estricto porque los eslabones se disocian en los
   datos (menús sin hipótesis; candidatos en código sin narración; ejecución con idea nombrada).
+- **Transferencia diferencial (la firma de Knoblich)**: la prueba de que una primitiva es real.
+  Una vez que soltaste una regla, queda suelta: el agente que resolvió "partir en dos tipos" en
+  un mundo debería resolver "partir" más rápido en el siguiente y **no** mejorar en "memoria".
+  Mejora dentro del mismo tipo de edición y no entre tipos = la capacidad existe y es separable;
+  mejora en todo = aprendió a jugar nuestro juego; mejora en nada = no aprendió. Nadie la midió
+  en agentes. (Knoblich et al. 1999; propuesta en la nota de dirección del 2026-09-23, no decidida.)
 - **Refinamiento**: ajustar los NÚMEROS de un modelo sin cambiarle la forma.
 - **Salto**: una clase de cambio de forma del modelo —y también el acto de hacerla en una
   partida—: qué variables existen, cómo se conectan. **Grupos escondidos** es el nombre de un
