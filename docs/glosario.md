@@ -83,6 +83,14 @@ solo una revisión técnica del mismo artefacto.
 - **Salto (definición relacional)**: una edición es salto **relativa al repertorio del que
   busca** — la misma edición es salto para un agente y consulta para otro; por eso el test de
   contaminación es constitutivo del claim.
+- **Abducción creativa (definición de trabajo, Lucas 2026-09-23)**: **modificar la estructura de
+  tu modelo de cómo funciona este mundo, para explicar lo que la estructura anterior no podía.**
+  "Estructura" = qué elementos existen y cómo se conectan (el pasado entra o no entra), no los
+  números — y siempre relativa a la familia declarada en el certificado. Honestidad: lo de
+  "creativa" (que la estructura nueva no estaba en su caja) no se certifica en un LLM; decimos
+  "no la estaba usando", nunca "no la conocía". Para medir cuenta solo lo explícito (lo que
+  predice y lo que entrega); lo mental se infiere. Es el nombre técnico del "salto" de la casa.
+  (Pendiente de la devolución de Astra, misma fecha.)
 - **Creatividad (estricta) vs rendimiento creativo**: "creatividad" = el eslabón de generación
   del candidato (el "aha"); "rendimiento creativo" = que el descubrimiento ocurra, propiedad
   del flujo entero. Se eligió el sentido estricto porque los eslabones se disocian en los
