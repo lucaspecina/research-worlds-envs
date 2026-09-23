@@ -103,3 +103,30 @@ ciencia, y nadie lo midió en agentes.
 Revisión crítica de §3, §5, §6 y §7; comparación con ARC, NazoNazo, BoxingGym, DiscoveryWorld y
 "Knoblich para LLMs" si existe; y su plan de 2-4 semanas bajo este reencuadre (¿cambia lo que propuso
 el 23-09?). Después decide Lucas.
+
+---
+
+## Addendum (mismo día, tras la review de Astra — [respuesta completa](2026-09-23-segunda-opinion-gpt-astra-b-nota-direccion.md))
+
+Astra **adoptaría la reducción a juegos mínimos como programa de un mes**, pero no la identidad "ARC de
+la abducción creativa" ni "cinco mutaciones = cinco primitivas". Cuatro frases de esta nota que pide
+corregir (quedan marcadas, no borradas, hasta que Lucas decida):
+1. §3 "sin caja no hay abducción, hay inducción" → es una delimitación de *nuestro paradigma* (revisión
+   ante anomalías), no una definición de abducción.
+2. §6 "no estaba en la lista previa → creativo" → registrar como **"no expresado previamente"**; la lista
+   es una cota inferior bajo esa consigna y además cambia el episodio.
+3. §6 la tercera sonda (pista de memoria vs de estructura) → **no separa recuperación de construcción**;
+   son dos ayudas distintas; la literatura de analogía (Gick & Holyoak; Gentner; MAC/FAC) motiva manipular
+   recuperación y estructura pero no un clasificador binario. Reformulación posible: ¿aprovecha
+   correspondencias estructurales cuando no coinciden con la semejanza superficial? (2×2 fuente-objetivo).
+4. §7 "transferencia diferencial = las primitivas son reales" → es **evidencia de especificidad del
+   aprendizaje**, compatible con plantilla, reutilización de código, prior actualizado; la prueba correcta es
+   comparar predicciones de explicaciones rivales sobre la matriz de transferencia (dos operaciones × dos
+   anfitriones, exposición por demostraciones en contexto, índice S, gemelos).
+Además: la caja debe demostrarse **operativa** (predicciones consistentes con la familia antes de la
+evidencia crítica); "una edición" = distancia en una gramática declarada, no átomo cognitivo; el gemelo
+negativo no castiga automáticamente al que "salta siempre" (la familia ampliada contiene a la base); I:C
+no aplica a densidades continuas; M2/M3/M5 tal como están escritas pueden reabsorberse en la distribución
+latente; "una base universal" puede ser camisa de fuerza (prefiere contrato común + dos bases). Formulación
+provisional que propone: *"WAGER estudia cuándo un agente revisa una familia de modelos ante evidencia que la
+vuelve insuficiente, mediante tareas mínimas y controles contrafácticos."*

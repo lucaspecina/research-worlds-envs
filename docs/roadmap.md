@@ -87,6 +87,10 @@
 > [Nota de dirección](research/2026-09-23-nota-direccion-juegos-minimos-abduccion-creativa.md) ·
 > [definiciones](research/2026-09-23-que-es-el-salto-definiciones-canonicas-y-supuestos.md) ·
 > [boceto](research/2026-09-23-boceto-generador-una-base-cinco-mutaciones.md).
+> **Astra ya la revisó (misma tarde):** sí a un mes de juegos mínimos como programa experimental; no todavía a
+> cambiar la identidad ni a "cinco mutaciones = cinco primitivas"; corrige cuatro frases (addendum en la nota);
+> propone empezar por M4 binaria (XOR con el paso anterior) y un 2×2 que pruebe que la caja cambia la conducta.
+> [Review completa](research/2026-09-23-segunda-opinion-gpt-astra-b-nota-direccion.md). Sigue sin decidir.
 
 > **FOCO ACTUAL (2026-08-14): Grupos escondidos — Perfiles persistentes.** El anfitrión separa
 > limpiamente una banda continua (`S_profile=0.464`) de dos perfiles aprendidos (`0.924–0.997`)
