@@ -78,6 +78,15 @@
 > completo cinco fuentes del marco de insight ([lectura profunda](research/2026-09-22-lectura-profunda-insight-cinco-fuentes.md)).
 > Sigue sin decidir nada; las tres voces (Codex, Claude, Astra) esperan a Lucas.
 > [Respuesta completa de Astra](research/2026-09-23-segunda-opinion-gpt-astra.md).
+>
+> **ACTUALIZACIÓN 2026-09-23 (tarde) — nota de dirección en discusión:** Lucas propone reducir WAGER a
+> **juegos mínimos que aíslen la abducción creativa** ("el ARC de salir de la caja"), con una base + una
+> mutación por salto como unidad de trabajo y la transferencia diferencial de Knoblich como prueba de que
+> las primitivas son reales. Definiciones canónicas lado a lado, boceto del generador y nota de dirección
+> escritos; Astra la revisa; después decide Lucas. NO decidido.
+> [Nota de dirección](research/2026-09-23-nota-direccion-juegos-minimos-abduccion-creativa.md) ·
+> [definiciones](research/2026-09-23-que-es-el-salto-definiciones-canonicas-y-supuestos.md) ·
+> [boceto](research/2026-09-23-boceto-generador-una-base-cinco-mutaciones.md).
 
 > **FOCO ACTUAL (2026-08-14): Grupos escondidos — Perfiles persistentes.** El anfitrión separa
 > limpiamente una banda continua (`S_profile=0.464`) de dos perfiles aprendidos (`0.924–0.997`)
