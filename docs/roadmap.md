@@ -99,6 +99,10 @@
 > cero-LLM integral; NazoNazo 5.23–39.34%). Queda por decidir la pregunta del mes entre dos diseños "clean":
 > (A) escalera de ediciones con brecha cerrada como nota (propuesta de Claude, estilo NewtonBench) o (B) el 2×2
 > de transferencia (Astra). [Respuesta completa](research/2026-09-23-tercera-opinion-astra-en-codex-correccion-creatividad.md).
+> **Segundo turno de Astra en Codex:** elige A restringida a UNA transformación — *reconstruir dependencias del
+> pasado* — con perilla k = entradas pasadas que importan (0..3), mundo binario determinista, nota Q = 1 − 4·Brier
+> (brecha constante 0.25), tres comprobaciones antes de construir y muerte por techo (≥90% cerrado sin ayuda).
+> "Creatividad" queda en la motivación, no en el claim. [Propuesta](research/2026-09-23-astra-en-codex-propuesta-clean-dependencias-del-pasado.md). Ida y vuelta con Lucas en curso.
 
 > **FOCO ACTUAL (2026-08-14): Grupos escondidos — Perfiles persistentes.** El anfitrión separa
 > limpiamente una banda continua (`S_profile=0.464`) de dos perfiles aprendidos (`0.924–0.997`)
