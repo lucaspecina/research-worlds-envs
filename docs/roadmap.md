@@ -108,6 +108,19 @@
 > "creativa" como propiedad no certificada ([respuesta](research/2026-09-23-astra-en-codex-3-protocolos-y-definicion.md)).
 > Definición de trabajo anotada en el glosario; el nombre final lo decide Lucas.
 
+> **ACTUALIZACIÓN 2026-11-15 — reformulación en discusión (NO decidida; el repo estuvo quieto desde el 23-09):**
+> Lucas pidió un balance y una línea nueva tras la cumbre de ARC (23-oct, MIT). Propuesta: *descubrir =
+> encontrar un atajo verificable* — juegos con la regla a la vista, preguntas lejanas bajo tope de cómputo,
+> nota exacta sin LLM, mundos sin atajo y trampas, y la medida "¿lo ven o lo buscan?" (ventaja sobre un
+> buscador mecánico). Alcance: solo diseño y cuentas (6 ejemplos verificados sin LLM); **cero agentes
+> corridos**. Dos hechos verificados que cambian el contexto: (1) ARC-AGI-3 pasó de <1% a 81,2% en ocho
+> meses, y gpt-5.4 —el modelo de nuestras tandas de agosto— saca 0,2% ahí: lo observado en agosto es una
+> foto de modelos viejos; (2) DeepMind publicó en octubre un agente que encuentra atajos verificados en
+> máquinas de juguete (arXiv:2610.22603): la idea no es virgen; falta el instrumento con controles.
+> Recomendación: repo nuevo y chico para la línea (este queda como biblioteca) y, como primer paso, una
+> calibración de dos días con modelos de hoy. **Todo espera el GO de Lucas.**
+> [Documento](research/2026-11-15-reformulacion-descubrir-es-encontrar-un-atajo.md).
+
 > **FOCO ACTUAL (2026-08-14): Grupos escondidos — Perfiles persistentes.** El anfitrión separa
 > limpiamente una banda continua (`S_profile=0.464`) de dos perfiles aprendidos (`0.924–0.997`)
 > y la resolubilidad con la idea nombrada pasó 2/3. La tanda congelada sin ayuda ya cerró:

@@ -988,6 +988,8 @@ correcciones registradas. Los PDFs se borraron tras leerlos (pedido de Lucas).
 | 8 | **¿El grupo corrige o empeora?** | Dunbar: el corrector real es el lab meeting; Ohlsson: crítica mutua "well supported" | Barkett: pares simétricos = 99.2% escalada; Klein garden path: 7/7 equipos peor que sus individuos; Jr. AI Scientist: el revisor induce fabricación | No es contradicción sino CONDICIONAL: lo que funciona es el crítico SIN propiedad de la teoría (Findley & Scott). Diseñable como brazo, no como supuesto |
 | 9 | **¿El test "confirmatorio" es malo?** | Failing to Falsify: I:C alto correlaciona con éxito (ρ=0.75 thinking); Wason: los que aciertan primero tienen I:C 1.79 vs 0.24 | Klahr & Dunbar §6.2.1: la estrategia positiva dio 60% de desconfirmaciones y fue ÚTIL (Klayman & Ha 1987); en Failing to Falsify mismo, thinking mejora el éxito SIN subir I:C | Se mide DIAGNOSTICIDAD del test respecto del espacio de hipótesis del certificado, no la forma del test; I:C entra como métrica secundaria, no como vara |
 | 10 | **¿Notar la anomalía es el cuello?** | Dunbar 1993 / CSP (MacGregor 2001): la meta de explicar la discrepancia es la palanca; sin fallo detectado no hay búsqueda | Kaplan & Simon 1990: 11/23 NOTARON la paridad y tardaron ~12 min más en usarla ("parity competes with other cues") | La rúbrica separa *mencionar* de *perseguir* (ambigüedad ya coleccionada en la re-anotación; ahora con precedente humano). Ninguna vara puntúa la mención sola |
+| 11 | **¿Descubrir es comprimir?** | Wolfram (charla ARC 2026 y "Can AI Solve Science?", leídos): una regularidad es "a reduced representation from which one can reconstruct it"; descubrir = encontrar bolsillos donde se puede saltar adelante. Schmidhuber (progreso de compresión). Chollet [2ª mano, X]: la ciencia busca el modelo simbólico que más comprime | Stanley (keynote ARC 2026, leída; paráfrasis): lo interesante no está resuelto y parece subjetivo; elegir el problema es parte del trabajo. [2ª mano, X]: la ciencia no es solo compresión, lo no observado no se puede comprimir. El propio Wolfram concede: "There's no abstract notion of 'interestingness'..." | No se arbitra: son dos filas distintas del mapa de la reformulación 2026-11-15 ("atajo" vs "propósito"). La propuesta mide solo la primera y lo declara |
+| 12 | **¿Los agentes revisan su historia en mundos con regla escondida?** | Nuestro dato de agosto (`gpt-5.4 × Perfiles × n=10`): 9/10 entregaron una sola Gaussiana; MDA (leído 08-13): el LLM desnudo pierde contra el andamio | Tabla oficial de ARC-AGI-3 (leída 2026-11-15): gpt-5.4 saca 0,2%; Claude Fable 5.2, 81,2% (arnés neutral); GPT-6 Astra, 99,9% (arnés del fabricante); el análisis de Astra dice que arma modelos simbólicos del juego y los corrige | No es una contradicción entre fuentes sino entre generaciones de modelos: lo observado en agosto es una foto de modelos viejos. No se extrapola a "los agentes" sin volver a medir |
 
 **Mantenimiento**: tensión nueva que aparezca en una lectura → fila nueva acá, en el momento.
 Una fila solo se cierra cuando NUESTROS datos (no otra lectura) la resuelven — y ahí migra al
@@ -1201,3 +1203,35 @@ los errores en modelos fuertes; (ii) detector MECÁNICO del eslabón selección:
 en el sandbox y no fue entregado?" — cota inferior sin rúbrica; (iii) la distribución (bimodal humana vs
 apilada en cero) es la firma, no el promedio. ⚠️ Dominio lingüístico, no investigativo; accuracy por
 matching literal en la Tabla 2 (difiere de la primaria).
+
+## Cumbre ARC Prize 2026 (23-oct-2026, MIT) — LEÍDA 2026-11-15 (pedido de Lucas)
+
+Síntesis y uso: [`research/2026-11-15-reformulacion-descubrir-es-encontrar-un-atajo.md`](research/2026-11-15-reformulacion-descubrir-es-encontrar-un-atajo.md).
+
+| Fuente | Cómo se leyó | Estado |
+|---|---|---|
+| Stephen Wolfram — charla de cierre sobre descubrimiento ([video](https://www.youtube.com/watch?v=kdaGkpIUZyY)) | transcripción completa pegada por Lucas (30 min) | **LEÍDA ENTERA**; citas textuales en el doc |
+| Kenneth Stanley — keynote "Open-Endedness" ([video](https://www.youtube.com/watch?v=F3EILxCkm4U)) | subtítulos automáticos (5,8 mil palabras) | **LEÍDA ENTERA**, pero los subtítulos parecen retraducidos: solo paráfrasis, sin cita textual |
+| ARC Prize — video de lanzamiento de ARC-AGI-3 | subtítulos automáticos | **LEÍDO ENTERO** |
+| Tabla oficial de ARC-AGI-3 (arcprize.org/leaderboard), análisis de GPT-6 Astra (arcprize.org/blog/astra, 3-sep-2026), página de la cumbre | páginas abiertas | **VERIFICADO** (números en el doc §3.3) |
+| Wolfram — "Can AI Solve Science?" (2024), "Why Does Biological Evolution Work?" (2024), "Towards a Theory of Bugs" (2026), "What's the Future for Pure Math Research in the Age of AI?" (2026), "Endless Forms…: Ruliobiology" (2026) | un lector secundario bajó el texto completo y armó un digesto; las citas usadas se comprobaron contra el texto bajado | **CITAS VERIFICADAS; ensayos NO leídos enteros por el autor del doc** |
+| Chollet (apertura), Murphy, Fox, Bouayad — charlas de la cumbre | leídas por un lector secundario desde subtítulos | **2ª MANO** (la descarga directa falló por límite de YouTube) |
+| Anuncios en X: ARC-AGI-4 = "innovación abierta autónoma" (12-sep-2026), Chollet, Knoop, Kamradt, Stanley | leídos por un lector secundario | **2ª MANO** |
+
+**Lo central de Wolfram** (textual): "The question is, can we jump ahead?" · "You can think of each of those
+pockets of reducibility as a discovery." · "it's very easy to find things that are true. It's harder to find
+things that are true that we care about" · "I don't have a good theory for characterizing kind of how to
+count ideas, how to know whether you have a new idea or not."
+
+**Trabajo previo de la idea "descubrir = encontrar un atajo"** — verificado abriendo la página (resumen, no
+texto completo): Dos Santos et al. 2026 (arXiv:2610.22603, DeepMind; último autor Tom Zahavy, el de "LLMs
+can't jump"); "Agentic Euler" (MathArena, 2025: 79% en Project Euler 943–966); Zenil et al. 2011
+(arXiv:1104.3421); Israeli & Goldenfeld (arXiv:nlin/0309047); Moore 1997 (arXiv:patt-sol/9701008). **Falta
+leerlos a texto completo antes de afirmar novedad (ADR 0115).**
+
+**Cola que abre esta lectura** (NO leídos): arXiv:2610.22603 entero; Balani & Panda "LLMs Don't Pay for the
+Jump" (arXiv:2608.14397); Shi, Li & Hernández-Lobato (arXiv:2608.26187); informe técnico de ARC-AGI-3
+(arXiv:2603.24621); Herrmann & Schmidhuber 2026 (arXiv:2605.14831); WorldTest/AutumnBench (arXiv:2510.19788).
+
+⚠️ **Anti-recencia**: la cumbre es una lectura más. No cambia ningún pre-registro ni decide la dirección:
+motiva una propuesta, que decide Lucas. Tensiones nuevas registradas arriba (#11 y #12).
