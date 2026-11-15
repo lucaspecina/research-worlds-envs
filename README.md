@@ -1,5 +1,10 @@
 # WAGER — Worlds As Generators of Epistemic Reward
 
+> **Desde el 15-nov-2026 la línea de trabajo sigue en
+> [`essence-of-discovery`](https://github.com/lucaspecina/essence-of-discovery)** (juegos mínimos sobre la
+> esencia de descubrir; primer juego: `jump-ahead`). Este repo queda como **biblioteca**: lecturas,
+> fuentes, decisiones y el código de WAGER. No se sigue desarrollando acá.
+
 **Mundos sintéticos ejecutables para medir y entrenar el juicio investigativo de las IAs.**
 
 Fabricamos pequeños universos-programa con una verdad oculta y trampas realistas. Una IA los

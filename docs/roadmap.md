@@ -108,7 +108,14 @@
 > "creativa" como propiedad no certificada ([respuesta](research/2026-09-23-astra-en-codex-3-protocolos-y-definicion.md)).
 > Definición de trabajo anotada en el glosario; el nombre final lo decide Lucas.
 
-> **ACTUALIZACIÓN 2026-11-15 — reformulación en discusión (NO decidida; el repo estuvo quieto desde el 23-09):**
+> **DECISIÓN DE LUCAS, 2026-11-15 (tarde): la línea sigue en un repo nuevo y público,
+> [`essence-of-discovery`](https://github.com/lucaspecina/essence-of-discovery); este repo queda como
+> biblioteca.** Se llevó: los seis ejemplos verificados, la guía en llano y una página de lecciones. NO se
+> llevó: ADRs, vicios, saltos, guardias. Pendientes allá: el OK de Lucas a los primeros mini-juegos y a la
+> primera prueba con un modelo; acá: archivar el repo en GitHub cuando el nuevo funcione. Los pendientes
+> viejos de WAGER (ledger del documento del 15-11, §13) quedan congelados con el repo.
+>
+> **ACTUALIZACIÓN 2026-11-15 — reformulación en discusión (el repo estuvo quieto desde el 23-09):**
 > Lucas pidió un balance y una línea nueva tras la cumbre de ARC (23-oct, MIT). Propuesta: *descubrir =
 > encontrar un atajo verificable* — juegos con la regla a la vista, preguntas lejanas bajo tope de cómputo,
 > nota exacta sin LLM, mundos sin atajo y trampas, y la medida "¿lo ven o lo buscan?" (ventaja sobre un
