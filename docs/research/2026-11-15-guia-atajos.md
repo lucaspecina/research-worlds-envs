@@ -5,6 +5,12 @@
 >
 > **Estado: es una propuesta, no está decidida. Todavía no se corrió nada con una IA.**
 >
+> **Dónde leerla y editarla.** La versión de trabajo es el Claude Doc editable, donde Lucas edita y
+> comenta: <https://claude.ai/artifact/FR8Ty1b5pqsjAiUgahBBHX>. Hay además una página con figuras
+> interactivas: <https://claude.ai/artifact/SkZcqybGYf7nhKx1G5iboo> (su fuente es
+> [`2026-11-15-guia-atajos.html`](2026-11-15-guia-atajos.html)). Los dos enlaces son privados de Lucas.
+> **Este archivo es la copia del repo**: si el Doc cambia, hay que traer acá los cambios.
+>
 > El detalle, las fuentes y las críticas están en el
 > [documento largo](2026-11-15-reformulacion-descubrir-es-encontrar-un-atajo.md). Esta guía no agrega
 > nada nuevo: lo baja a tierra.
