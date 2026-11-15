@@ -422,6 +422,12 @@ el "right coordinate system" de Wolfram y la nube de puntos de la figura.
 
 ### 5.6 La medida nueva: ¿lo ven o lo buscan?
 
+*(Aviso del 15-11, tras la segunda pasada de trabajo previo, §8.6: la **pregunta** no es nueva. Han et al.
+2025, "Creativity or Brute Force?", y Hu et al. 2026 ya la plantearon, las dos veces con un LLM leyendo
+la solución para decidir. Lo que no apareció es **esta manera de medirla**: sin juez, por cómo crece el
+esfuerzo, con el atajo plantado. Y una regla que agrega esa lectura: la pendiente se mide solo sobre los
+casos resueltos, porque el esfuerzo baja cuando un modelo se rinde.)*
+
 Es la respuesta más honesta que encuentro a la pregunta de Lucas del 23-sep: *"si lo resuelve, ¿cómo
 sabemos que fue creatividad?"*.
 
@@ -516,7 +522,9 @@ medida de §5.6.
 
 ## 8. Trabajo previo: qué ya existe y qué no (honesto)
 
-**Veredicto corto: el instrumento de medida no existe, pero la idea ya no es virgen.**
+**Veredicto corto: el instrumento de medida no existe, pero la idea ya no es virgen.** *(Segunda pasada
+en §8.6: el veredicto sigue en pie, con el hueco más angosto — la pregunta "¿ve o busca?" ya fue
+planteada por otros; lo que no apareció es medirla sin un modelo de juez y con el atajo plantado.)*
 
 ### 8.1 Los cinco más cercanos (✔ = abrí la página y comprobé lo que se afirma)
 
@@ -528,7 +536,8 @@ medida de §5.6.
 | ✔ **Israeli & Goldenfeld, "On computational irreducibility and the predictability of complex physical systems"** (Phys. Rev. Lett. 92, 2004; [arXiv:nlin/0309047](https://arxiv.org/abs/nlin/0309047)) | agrupan casillas en bloques ("mirar de lejos") en autómatas elementales; muestran que procesos irreducibles pueden volverse predecibles a escala gruesa, incluido uno que es computadora universal | **es el catálogo de una de las formas de atajo**, con sus casos negativos | no hay agente ni medición |
 | ✔ **Moore, "Predicting Non-linear Cellular Automata Quickly by Decomposing Them into Linear Ones"** (1997, [arXiv:patt-sol/9701008](https://arxiv.org/abs/patt-sol/9701008)) | muchos autómatas complicados se descomponen en otros del tipo "suma de las partes" y se predicen "much faster than by explicit simulation" | **es exactamente la perilla "disfraz"** del ejemplo 5 | ídem. *(El lector lo atribuyó a "Moore & Pnin"; la página lista un solo autor: corregido.)* |
 
-Otros, todos de **segunda mano**: AlgoTune (Press et al., NeurIPS 2025, arXiv:2507.15887: agentes que
+Otros, de **segunda mano** en la primera pasada (AlgoTune, Liu et al., CellARC y el de OEIS quedaron
+comprobados contra su resumen oficial en §8.6): AlgoTune (Press et al., NeurIPS 2025, arXiv:2507.15887: agentes que
 reescriben 154 funciones conocidas para que corran más rápido; reportan que los modelos "fail to discover
 algorithmic innovations"); Liu et al., "Transformers Learn Shortcuts to Automata" (ICLR 2023,
 arXiv:2210.10749: ahí el "atajo" vive dentro de las capas de la red, no lo descubre un agente — la palabra
@@ -542,7 +551,9 @@ Hattori & Takesue 1991 (test de cantidades que se conservan); el benchmark de OE
 1. **Mundos sin atajo y trampas, con la abstención puntuada**: medir el *falso descubrimiento* de un
    agente descubridor. No se encontró en ningún benchmark de IA.
 2. **El tipo de atajo y la profundidad del disfraz como variables controladas**, con un buscador
-   mecánico de vara: la pregunta "¿lo ven o lo buscan?".
+   mecánico de vara: la pregunta "¿lo ven o lo buscan?". *(Corrección del 15-11, §8.6: la pregunta ya
+   la plantearon Han et al. 2025 y Hu et al. 2026, las dos veces con un LLM de juez. Lo nuevo sería
+   contestarla sin juez, con el atajo plantado.)*
 3. **El control de la idea nombrada**, que separa "no puede" de "no se le ocurre".
 4. **Empaquetarlo como medición**: regla conocida + experimentación libre + preguntas lejanas bajo tope.
 
@@ -570,7 +581,7 @@ Hattori & Takesue 1991 (test de cantidades que se conservan); el benchmark de OE
 - **El riesgo de techo subió.** La calibración tiene que apuntar al extremo difícil desde el primer día.
 
 **Sobre medir "ver contra buscar" agrandando el pajar** (dos búsquedas rápidas el 15-nov; NO es una
-auditoría): no apareció nadie que use la pendiente del esfuerzo para separar ver de buscar en
+auditoría — **la búsqueda más seria está en §8.6 y encontró vecinos más cercanos que estos**): no apareció nadie que use la pendiente del esfuerzo para separar ver de buscar en
 descubrimiento. Lo más cercano, todo de segunda mano: ZebraLogic (arXiv:2502.01100: la precisión se
 desploma cuando el espacio de búsqueda pasa de cierto tamaño); HypoSpace (ICML 2026: los modelos dan
 vueltas en una parte chica del espacio de hipótesis); Elenchos (arXiv:2607.12733: abducción con cambios
@@ -606,6 +617,81 @@ escondidos que interactúan); y un estudio que aplica el paradigma de búsqueda 
 - En el modelo mínimo de Wolfram no se encontró ningún estudio con LLMs.
 - *La objeción más fuerte*: en ese modelo cada mutación es cambiar una casilla de una tabla; "cambio de
   estructura" contra "ajuste" no existe ahí, y el LLM no tiene de qué agarrarse.
+
+### 8.6 Segunda pasada de trabajo previo (15-nov, a pedido de Lucas: "lo primero es ver si alguien ya lo hizo")
+
+**Cómo se buscó.** 21 búsquedas web con palabras distintas, en seis ángulos: la tarea (atajo para una
+regla conocida), las propiedades que un programa cumple siempre, la medida "ver contra buscar", las
+trampas, la abstención, y la idea de Wolfram convertida en benchmark. ✔ = leí el resumen oficial en la
+API de arXiv el 15-11 (24 trabajos). ✔✔ = además bajé el texto y busqué en él cómo deciden lo que afirman.
+**Ninguno está leído a texto completo.** Una búsqueda que no encuentra no demuestra que algo no exista.
+
+**Resultado en una línea.** No apareció nadie que haga el paquete completo. Pero cada ingrediente tiene
+vecinos, y dos de ellos están más cerca de lo que decía la primera pasada.
+
+**A. La tarea: encontrar un atajo para una regla conocida**
+
+| Trabajo | Qué hace | Qué nos dice |
+|---|---|---|
+| ✔ Kamath et al. 2023, "Finding Inductive Loop Invariants using Large Language Models" ([arXiv:2311.07948](https://arxiv.org/abs/2311.07948)) y ✔ Bharti et al. 2025 ([arXiv:2508.00419](https://arxiv.org/abs/2508.00419)) | Un programa conocido con un ciclo. El modelo propone una propiedad que vale en todas las vueltas (una "invariante") y un programa verificador la acepta o la rechaza ("checked for correctness using sound symbolic tools"). Bharti: 133 de 133 en el banco Code2Inv, "requiring only 1-2 model proposals per instance" | **Es la forma "conservación" de nuestra lista, con verificación exacta y sin LLM, hecha desde 2023 y ya en techo en su banco clásico.** Diferencias: prueban una afirmación dada, no predicen un futuro lejano bajo tope de cómputo; no hay disfraz graduado ni mundos sin atajo. *Se me había pasado en la primera pasada.* |
+| ✔ LoopSCC ([arXiv:2411.02863](https://arxiv.org/abs/2411.02863)) y la literatura de "loop acceleration" (segunda mano) | Análisis de programas clásico, sin LLM: reemplazar un ciclo por una fórmula equivalente ("It produces symbolic expressions semantically equivalent to the loop program") | La palabra "acceleration" que usa DeepMind viene de acá: resumir muchos pasos en una fórmula es un campo con décadas. No encontré un benchmark de LLMs para esto (una sola búsqueda) |
+| ✔ O'Malley et al., sucesiones de OEIS ([arXiv:2411.04372](https://arxiv.org/abs/2411.04372)) | 1000 sucesiones; el código tiene que calcularlas "accurately and efficiently ... without using lookup tables" | Mismo esqueleto que Project Euler. "overall model performance on the hard sequences is poor" (modelos de 2025) |
+| ✔ LiveCodeBench Pro (Zheng et al. 2025, [arXiv:2506.11928](https://arxiv.org/abs/2506.11928)) | Problemas de competencias de programación, anotados por medallistas | "LLMs succeed at implementation-heavy problems but struggle with nuanced algorithmic reasoning and complex case analysis". De segunda mano (resúmenes, no el paper): lo que más les cuesta son los problemas que dependen de una sola ocurrencia ("observation-heavy") |
+| ✔ AlgoTune (Press et al., NeurIPS 2025, [arXiv:2507.15887](https://arxiv.org/abs/2507.15887)) | 154 funciones conocidas; el puntaje es cuánto más rápido corre lo que escribe el agente | "current models fail to discover algorithmic innovations, instead preferring surface-level optimizations" |
+| ✔ CellARC (Lžičař 2025, [arXiv:2511.07908](https://arxiv.org/abs/2511.07908)) | Autómatas celulares, pero con la regla **escondida**: "how quickly models infer new rules under tight budgets". GPT-5 High: 62,3% / 48,1% | Nivel 0 (encontrar la regla), no nivel 1 (atajo con la regla a la vista) |
+| ✔ Menaged et al. 2026, "Can Agents Infer Environment from Interaction? Evidence from Agentic Automata Learning" ([arXiv:2606.16576](https://arxiv.org/abs/2606.16576)) | El agente descubre una máquina de estados escondida preguntando. "controlled task complexity, measurable interaction efficiency, and strong algorithms to compare against from the classic automata-learning literature" | Nivel 0, pero con **el mismo esqueleto de medición que proponemos**: dificultad controlada, eficiencia medida y un algoritmo clásico de vara |
+| Wiki de Busy Beaver, página "Cryptids" (bajada el 15-11) | Entradas de noviembre de 2026 acreditadas a un miembro de la comunidad "y Claude", con pruebas en Lean | Fuera de DeepMind, la gente ya usa modelos para esto. (Son máquinas construidas para codificar problemas abiertos, no atajos descubiertos.) |
+
+**B. La medida: ¿lo ve o lo busca?**
+
+| Trabajo | Qué hace | Qué nos dice |
+|---|---|---|
+| ✔✔ **Han et al. 2025, "Creativity or Brute Force? Using Brainteasers as a Window into the Problem-Solving Abilities of Large Language Models"** ([arXiv:2505.10844](https://arxiv.org/abs/2505.10844)) | **La misma pregunta.** 242 acertijos de matemática y 236 de lógica sacados de un sitio web. Quién decide si una solución fue fuerza bruta: otro modelo ("We evaluated model reasoning strategies by prompting OpenAI o3 to judge whether each solution uses brute force") | "the tendency to use brute force decreases with model size and capability increasing"; "brute force behavior appears across all models". **Le falta**: un juez que no sea un LLM, mundos generados (los acertijos están en la web) y variar el tamaño del pajar |
+| ✔✔ **Hu, Roshan & Varma 2026, "Are More Tokens Rational? Inference-Time Scaling in Language Models as Adaptive Resource Rationality"** ([arXiv:2602.10329](https://arxiv.org/abs/2602.10329)) | **Agrandan el espacio de hipótesis** (más variables candidatas) y miran cómo cambia la estrategia: "Both models exhibit a transition from brute-force to analytic strategies as complexity increases". La estrategia la clasifica un juez LLM (acierto 0,86 contra etiquetas humanas) | Es lo más parecido a "agrandar el pajar". **Pero** sus dos estrategias son dos maneras de buscar (probar pares uno por uno, o ir descartando): "both strategies have similar theoretical complexity". No hay un atajo que se pueda *ver*, y la regla está escondida |
+| ✔ Estermann & Wattenhofer 2025 ([arXiv:2503.15113](https://arxiv.org/abs/2503.15113)) | Esfuerzo de razonamiento contra tamaño del problema, en un rompecabezas "which has a known linear-time solution" | "reasoning effort scales with problem size, but only up to a critical problem complexity. Beyond this threshold, the reasoning effort does not continue to increase, and may even decrease" |
+| ✔ Shojaee et al. 2025, "The Illusion of Thinking" ([arXiv:2506.06941](https://arxiv.org/abs/2506.06941)) | Lo mismo en varios rompecabezas | "their reasoning effort increases with problem complexity up to a point, then declines despite having remaining token budget". **Aviso para nuestra medida: el esfuerzo baja cuando el modelo se rinde** |
+| ✔ Liu et al. 2026, "When Agents Slow Down" ([arXiv:2609.15309](https://arxiv.org/abs/2609.15309)) | Cuánto rinde cada token de un agente, contra una referencia mecánica (muestreo independiente) | Comparar al agente contra un buscador "tonto" de referencia ya se hace, en tareas abiertas |
+| ✔ Li, Parsert & Polgreen 2024 ([arXiv:2403.03997](https://arxiv.org/abs/2403.03997)) | LLM solo, enumerador mecánico solo, y los dos juntos, en síntesis de programas | Ídem: "LLM contra buscador a ciegas" es comparación corriente en ese campo |
+| ✔ Mizumoto et al., NazoNazo ([arXiv:2509.14704](https://arxiv.org/abs/2509.14704)) | Adivinanzas que piden "insight-like representational restructuring" | Modelos 7,6%–17,6% contra 52,9% de personas. Falla típica: generan el candidato correcto y no lo eligen |
+
+**C. Trampas y mundos sin atajo.** No apareció nada directo (tres búsquedas: patrones que valen mucho y
+después fallan; modelos que ven patrones en el azar; abstenerse cuando no hay estructura). Vecinos:
+✔ REFUTE (Sinha et al. 2025, [arXiv:2502.19414](https://arxiv.org/abs/2502.19414): encontrar el
+contraejemplo de una solución sutilmente mala; los mejores agentes lo logran en "<9%" de los casos) y
+AbstentionBench (arXiv:2506.09038, segunda mano).
+
+**D. La idea de Wolfram convertida en benchmark para agentes.** No apareció nada (tres búsquedas, incluida
+una de reacciones posteriores a la cumbre). Sí apareció **teoría más formal que la de Wolfram**, que sirve
+de fundamento:
+- ✔ Zwirn & Delahaye 2011 ([arXiv:1111.4121](https://arxiv.org/abs/1111.4121)): "we propose a robust
+  formal definition" de irreducibilidad, bajo la cual "no computation of its nth state can be faster than
+  the simulation itself".
+- ✔ Liu, Ash, Goel, Krishnamurthy & Zhang 2023, "Transformers Learn Shortcuts to Automata"
+  ([arXiv:2210.10749](https://arxiv.org/abs/2210.10749)): cuándo una máquina de estados admite atajo
+  depende de su estructura algebraica ("O(1)-depth simulators are surprisingly common, and can be
+  understood using tools from Krohn-Rhodes theory and circuit complexity"). Ahí el atajo vive dentro de la
+  red, no lo descubre un agente.
+- ✔ Finzi et al. 2026, "From Entropy to Epiplexity" ([arXiv:2601.03220](https://arxiv.org/abs/2601.03220)):
+  "a formalization of information capturing what computationally bounded observers can learn from data".
+- De segunda mano: "In-Context Algebra" (arXiv:2512.16902, ICLR 2026): redes chicas que tienen que
+  inferir una estructura de grupo cuando los símbolos cambian de significado en cada secuencia. Es el
+  mecanismo de nuestro "disfraz", estudiado dentro de la red.
+
+**Qué cambia en la propuesta por esta pasada**
+
+1. **La pregunta "¿ve o busca?" no es nuestra.** Han et al. la hicieron en 2025 y Hu et al. agrandaron el
+   espacio en 2026. Lo que sigue sin dueño, hasta donde busqué: contestarla **sin juez LLM** (por cómo
+   crece el esfuerzo), en **mundos generados** (sin riesgo de que el acertijo esté en la web) y **con un
+   atajo plantado** contra el cual comparar. El hueco existe, pero es más angosto que "nadie lo hizo":
+   es "nadie lo midió limpio".
+2. **La forma "conservación" no debería ser el centro**: en su versión clásica (invariantes de ciclos) los
+   modelos ya están en techo.
+3. **La pendiente necesita una regla más**: medirla solo sobre casos resueltos. Si no, una pendiente chata
+   puede ser rendición (Shojaee; Estermann) y no visión.
+4. **Señal a favor de que hay algo que medir**: tres bancos independientes (AlgoTune, LiveCodeBench Pro,
+   OEIS) reportaron en 2025 que a los modelos les cuesta justo la parte de "ocurrírsele el truco". Son
+   modelos de 2025; con los de hoy no se sabe.
+5. **Las trampas y los mundos sin atajo siguen siendo lo más libre.**
 
 ## 9. ¿Repo nuevo? — Sí, chico, y con una condición
 
@@ -693,8 +779,10 @@ resultado.
 - Los **mundos salvajes** (§5.5) son una idea: no hay ninguno construido ni verificado.
 - La charla de **Stanley** se leyó entera pero de subtítulos que parecen retraducidos: está parafraseada.
 - De los **ensayos de Wolfram** comprobé las citas, no leí los ensayos enteros.
-- Del **trabajo previo**, cinco fuentes verificadas abriendo la página (§8.1); el resto es de segunda
-  mano. Nada leído a texto completo todavía.
+- Del **trabajo previo**, cinco fuentes verificadas abriendo la página (§8.1) y, en la segunda pasada
+  (§8.6), 24 resúmenes oficiales leídos y tres textos abiertos para buscar frases puntuales (DeepMind,
+  Han et al., Hu et al.). **Nada leído a texto completo todavía.** Fueron 21 búsquedas: no agotan la
+  literatura, y no busqué en revistas de psicología ni en tesis.
 - Que los modelos de frontera **no estén en techo**: no se sabe. Es exactamente lo que mide la calibración.
 - Los **costos** son estimaciones a ojo.
 - La lista de **formas de atajo** es una lista de familias de mundos, no una teoría comprobada.
@@ -728,7 +816,8 @@ resultado.
 | **VIVO** | ADR 0188 (las modificaciones de Codex al marco de dos mitades, ADR 0187) | sin decidir desde septiembre |
 | **VIVO** | Fusión de las dos notas de dirección del 18-ago | sin decidir |
 | **VIVO** | Cuatro charlas de la cumbre que yo no leí (Murphy, Chollet, Bouayad, Fox) | reintentar la descarga otro día, o que Lucas pegue las transcripciones |
-| **VIVO** | Auditoría a texto completo del trabajo previo más cercano (el paper de DeepMind y "Agentic Euler") | antes de cualquier afirmación de novedad |
+| **VIVO** | Auditoría a texto completo del trabajo previo más cercano (el paper de DeepMind, "Agentic Euler" y, desde la segunda pasada, Han et al. 2025 y Hu et al. 2026) | antes de cualquier afirmación de novedad |
+| ✓ | Segunda pasada de trabajo previo (§8.6): 21 búsquedas, 24 resúmenes oficiales | hecho el 15-11; el hueco quedó más angosto |
 | **VIVO** | Cola de lecturas nueva: el paper de DeepMind sobre atajos (arXiv:2610.22603), las respuestas a "LLMs can't jump" (Balani & Panda; Shi, Li & Hernández-Lobato), el informe técnico de ARC-AGI-3, Herrmann & Schmidhuber 2026 | registrar en `docs/lectura-de-fuentes.md` cuando se lean a texto completo (hoy no se registran: no se leyeron) |
 | **VIVO** | Volver a medir con modelos de hoy lo que WAGER observó en agosto con gpt-5.4 | solo si la línea vieja sigue; si no, queda como salvedad escrita |
 | ✓ | Lectura de la cumbre (Wolfram, Stanley, ARC-AGI-3) | hecho |
