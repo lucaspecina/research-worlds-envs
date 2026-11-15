@@ -45,7 +45,7 @@ PROPUESTA — NADA DE ESTO ESTÁ DECIDIDO NI CONSTRUIDO.**
 
 | Fuente | Cómo | Estado |
 |---|---|---|
-| Stephen Wolfram, charla en la ARC Prize Research Summit 2026 (23-oct-2026, MIT), [video](https://www.youtube.com/watch?v=kdaGkpIUZyY) | transcripción completa (la pegó Lucas; 30 min) | **leída entera**; las citas son textuales |
+| Stephen Wolfram, charla en la ARC Prize Research Summit 2026 (23-oct-2026, MIT), [video](https://www.youtube.com/watch?v=kdaGkpIUZyY) | transcripción completa (la pegó Lucas; 30 min) | **leída entera**; las citas son textuales y salen de esa transcripción. (Los subtítulos automáticos que bajé de YouTube para esta misma charla dicen "pockets of computational *convergence*" donde la transcripción dice "*reducibility*": están retraducidos y no se usaron) |
 | Kenneth Stanley, keynote "Open-Endedness", misma cumbre | subtítulos automáticos de YouTube, 5,8 mil palabras | **leída entera**, pero los subtítulos parecen retraducidos (dicen "openness"/"curiosity" donde lo esperable sería "open-endedness"/"interestingness"): **se parafrasea, no se cita textual** |
 | Video de lanzamiento de ARC-AGI-3 (ARC Prize 2026) | subtítulos automáticos | **leído entero** |
 | Kevin Murphy "Model Discovery Agents", François Chollet (4 min), Alexandre Bouayad "Weave of Formal Thought", Alexis Fox "PRO-LONG" | a mí YouTube me limitó las descargas (error 429); un lector secundario las leyó desde los subtítulos (la de Bouayad, en parte) | **yo NO las leí**; lo que se dice de ellas (§3.5) es de segunda mano |
@@ -129,8 +129,8 @@ had made a discovery". Su argumento, en cinco pasos:
    ("a series of breakthroughs… discoveries about how to live longer"), y admitió: "I don't have a good
    theory for characterizing kind of how to count ideas, how to know whether you have a new idea or not."
 
-De pasada, sobre los LLMs: "you can try feeding these things to LLMs and see whether LLMs can predict
-computationally irreducible things, and of course they can't."
+De pasada, sobre los LLMs: "you can try you know feeding these things to LLMs and see whether LLMs can
+predict computational irreducible things, and of course they can't."
 
 ### 3.2 Kenneth Stanley, keynote (leída entera; paráfrasis)
 
@@ -439,6 +439,18 @@ Dicho como tesis que se puede refutar: **la ventaja de un buscador inteligente s
 aparecer donde hay un atajo para encontrar, y solo ahí.** En los mundos sin atajo no debería haber
 ventaja (y el agente debería darse cuenta).
 
+**La forma más firme de medirlo: agrandar el pajar** (agregado el 15-nov, tras releer el paper de
+DeepMind). Contar intentos tiene un problema: una IA puede "buscar adentro", razonando, sin que se vea.
+La psicología resolvió eso hace décadas para la vista: una manzana roja entre verdes se encuentra al
+instante, haya 10 o 1.000; una cara en una multitud tarda más cuanta más gente hay. Lo primero es *ver*
+(el tiempo no crece con el pajar); lo segundo es *buscar* (crece). Acá se puede hacer igual: el mismo
+atajo escondido entre 120 disfraces posibles, después entre 5.040, después entre 40.320 (los números del
+ejemplo 5). Se mide el esfuerzo total de la IA (texto que razona, tiempo de máquina, experimentos). Un
+buscador mecánico multiplica su esfuerzo con el pajar. Si el de la IA casi no crece, *ve*; si crece con
+el pajar, *busca*, aunque lo haga adentro. El resultado es un número por modelo: la pendiente.
+Límites: el pajar lo definimos nosotros; si el disfraz tiene un truco de manual, la pendiente plana solo
+dice "conocía el truco"; y si la IA no resuelve los pajares grandes, no hay pendiente que medir.
+
 Por qué puede importar afuera: según el lector de §3.5, Mike Knoop (ARC) dijo en septiembre que no existe
 una medida formal de la división entre creatividad y razonamiento. Esta sería una candidata chica y
 mecánica: *razonar* = avanzar dentro de una mirada; *ver* = dar con la mirada correcta gastando menos
@@ -510,7 +522,7 @@ medida de §5.6.
 
 | Trabajo | Qué hace | En qué se parece | Qué le falta respecto de la propuesta |
 |---|---|---|---|
-| ✔ **Dos Santos, Veeriah, Havrilla, Bolt, Zuzic, Singh & Zahavy, "At the Limits of Computability: Steps Towards Autonomous AI Discovery on the Busy Beaver Frontier"**, 15-oct-2026, [arXiv:2610.22603](https://arxiv.org/abs/2610.22603) | (Google DeepMind y Universidad de Cambridge.) Un agente con Gemini mira computadoras de juguete de 6 estados con reglas conocidas, conjetura "aceleraciones" (reglas compactas que resumen muchos pasos) y las demuestra con un verificador formal (Lean); reporta resultados nuevos verificados para once máquinas y redescubre aceleraciones para otras quince | **es lo mismo**: regla a la vista, encontrar cómo saltar adelante, verificación exacta. Y en problemas abiertos de verdad | es una *cadena de descubrimiento*, no un *instrumento de medida*: en lo que leí (el resumen y unas tres cuartas partes del texto) no hay controles negativos ni comparación con un buscador que no sea un LLM |
+| ✔ **Dos Santos, Veeriah, Havrilla, Bolt, Zuzic, Singh & Zahavy, "At the Limits of Computability: Steps Towards Autonomous AI Discovery on the Busy Beaver Frontier"**, 15-oct-2026, [arXiv:2610.22603](https://arxiv.org/abs/2610.22603) | (Google DeepMind y Universidad de Cambridge.) Un agente con Gemini mira computadoras de juguete de 6 estados con reglas conocidas, conjetura "aceleraciones" (reglas compactas que resumen muchos pasos) y las demuestra con un verificador formal (Lean); reporta resultados nuevos verificados para once máquinas y redescubre aceleraciones para otras quince. Detalle que importa (leído en el texto, vía lector automático de la página): la manera de mirar la cinta la arma un programa escrito por los autores (simula 5 millones de pasos, comprime la cinta y ordena los patrones por frecuencia); el LLM escribe la regla para los patrones más frecuentes y después las demostraciones. Las máquinas candidatas (unas 1.094 sin resolver) las eligieron personas | **es lo mismo**: regla a la vista, encontrar cómo saltar adelante, verificación exacta. Y en problemas abiertos de verdad | es una *cadena de descubrimiento*, no un *instrumento de medida*: en lo que leí (el resumen y unas tres cuartas partes del texto) no hay controles negativos ni comparación con un buscador que no sea un LLM; no informa cuántas conjeturas se generaron ni cuántas se descartaron, ni el costo por máquina; y no afirma nada sobre si el modelo "ve" o "busca" |
 | ✔ **"Agentic Euler"** (Dekoninck, Jovanović & Vechev, MathArena, 28-nov-2025, [matharena.ai/euler](https://matharena.ai/euler/)) | Project Euler: problemas de matemática donde la fuerza bruta no alcanza; el agente tiene ejecución de código y entrega un número, que se chequea exacto. Un agente con GPT-5 resolvió 79% de los problemas 943–966 | **el mismo esqueleto de tarea**: regla conocida, camino obvio impagable, respuesta exacta | acertijos escritos a mano, sin mundo para experimentar, sin tipos de atajo graduados, sin mundos sin atajo |
 | ✔ **Zenil, Soler-Toscano & Joosten, "Empirical Encounters with Computational Irreducibility and Unpredictability"** (2011, [arXiv:1104.3421](https://arxiv.org/abs/1104.3421)) | toman todas las máquinas de Turing de 3 y 4 estados e intentan "ganarle a la cuenta" ("outrun the computation") con un buscador de fórmulas | **es nuestro experimento en versión anterior a los LLMs**, incluida la idea del buscador mecánico | no hay agente |
 | ✔ **Israeli & Goldenfeld, "On computational irreducibility and the predictability of complex physical systems"** (Phys. Rev. Lett. 92, 2004; [arXiv:nlin/0309047](https://arxiv.org/abs/nlin/0309047)) | agrupan casillas en bloques ("mirar de lejos") en autómatas elementales; muestran que procesos irreducibles pueden volverse predecibles a escala gruesa, incluido uno que es computadora universal | **es el catálogo de una de las formas de atajo**, con sus casos negativos | no hay agente ni medición |
@@ -556,6 +568,14 @@ Hattori & Takesue 1991 (test de cantidades que se conservan); el benchmark de OE
   *¿de qué tipo, hasta qué disfraz, con cuánta búsqueda, y cuántas veces creen ver uno que no está?*
 - **El titular deja de ser "nadie lo hizo"** y pasa a ser "nadie lo midió con controles".
 - **El riesgo de techo subió.** La calibración tiene que apuntar al extremo difícil desde el primer día.
+
+**Sobre medir "ver contra buscar" agrandando el pajar** (dos búsquedas rápidas el 15-nov; NO es una
+auditoría): no apareció nadie que use la pendiente del esfuerzo para separar ver de buscar en
+descubrimiento. Lo más cercano, todo de segunda mano: ZebraLogic (arXiv:2502.01100: la precisión se
+desploma cuando el espacio de búsqueda pasa de cierto tamaño); HypoSpace (ICML 2026: los modelos dan
+vueltas en una parte chica del espacio de hipótesis); Elenchos (arXiv:2607.12733: abducción con cambios
+escondidos que interactúan); y un estudio que aplica el paradigma de búsqueda visual a modelos con visión
+(arXiv:2510.19678), pero para la vista literal, no para descubrir.
 
 ### 8.5 Trabajo previo de las otras dos ideas (segunda mano; el lector chequeó los identificadores contra arXiv)
 
