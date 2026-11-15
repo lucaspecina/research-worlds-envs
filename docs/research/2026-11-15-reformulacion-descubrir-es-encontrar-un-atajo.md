@@ -450,8 +450,14 @@ DeepMind). Contar intentos tiene un problema: una IA puede "buscar adentro", raz
 La psicología resolvió eso hace décadas para la vista: una manzana roja entre verdes se encuentra al
 instante, haya 10 o 1.000; una cara en una multitud tarda más cuanta más gente hay. Lo primero es *ver*
 (el tiempo no crece con el pajar); lo segundo es *buscar* (crece). Acá se puede hacer igual: el mismo
-atajo escondido entre 120 disfraces posibles, después entre 5.040, después entre 40.320 (los números del
-ejemplo 5). Se mide el esfuerzo total de la IA (texto que razona, tiempo de máquina, experimentos). Un
+atajo escondido en pajares cada vez más grandes. **Corrección del 15-11 (tarde), error mío:** había
+escrito "entre 120 disfraces posibles, después entre 5.040, después entre 40.320". Esos son los totales,
+pero el tamaño que le importa a un buscador a ciegas es *uno de cada cuántos intentos funciona*, porque
+varios renombres destapan el mismo atajo. Con los números del ejemplo 5: 20 de 120 (uno de cada 6),
+1.344 de 40.320 (uno de cada 30) y 42 de 5.040 (uno de cada 120). El orden de chico a grande es entonces
+5 símbolos → bloques de 3 bits → 7 símbolos, no el que sugerían los totales. Solo el primero está
+verificado de punta a punta; de los otros dos se contaron las opciones; pajares más grandes (por ejemplo
+11 símbolos) quedan por calcular. Se mide el esfuerzo total de la IA (texto que razona, tiempo de máquina, experimentos). Un
 buscador mecánico multiplica su esfuerzo con el pajar. Si el de la IA casi no crece, *ve*; si crece con
 el pajar, *busca*, aunque lo haga adentro. El resultado es un número por modelo: la pendiente.
 Límites: el pajar lo definimos nosotros; si el disfraz tiene un truco de manual, la pendiente plana solo
@@ -745,7 +751,10 @@ de consistencia, el roadmap, la familia de wikis.
 5. Las decisiones van en un solo archivo, una línea cada una.
 
 **Nombre.** Para la pregunta, no para la idea: `essence-of-discovery` (las palabras de Lucas). `atajos` o
-`jump-ahead` nombran una respuesta que puede morir en la primera prueba.
+`jump-ahead` nombran una respuesta que puede morir en la primera prueba. *(Precisión del 15-11, tarde,
+cuando Lucas preguntó por el nombre: se mantiene el criterio y se separan dos nombres — el **repo** por
+la pregunta, `essence-of-discovery`, o `discovery-games` si suena grandilocuente; y el **primer juego**
+adentro, por lo que hace: `jump-ahead`, en castellano `atajos`. Decide Lucas.)*
 
 ## 10. Primer paso propuesto (nada de esto se hace sin el GO de Lucas)
 

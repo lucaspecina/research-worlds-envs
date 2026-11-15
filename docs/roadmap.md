@@ -119,7 +119,10 @@
 > máquinas de juguete (arXiv:2610.22603): la idea no es virgen; falta el instrumento con controles.
 > Recomendación: repo nuevo y chico para la línea (este queda como biblioteca) y, como primer paso, una
 > calibración de dos días con modelos de hoy. **Todo espera el GO de Lucas.**
-> [Documento](research/2026-11-15-reformulacion-descubrir-es-encontrar-un-atajo.md).
+> [Documento](research/2026-11-15-reformulacion-descubrir-es-encontrar-un-atajo.md) ·
+> [guía en llano para Lucas](research/2026-11-15-guia-atajos.md). Segunda pasada de trabajo previo (§8.6
+> del documento): nadie hace el paquete completo, pero la pregunta "¿ve o busca?" ya fue planteada por
+> otros con un LLM de juez; lo que no apareció es medirla sin juez y con el atajo plantado, ni las trampas.
 
 > **FOCO ACTUAL (2026-08-14): Grupos escondidos — Perfiles persistentes.** El anfitrión separa
 > limpiamente una banda continua (`S_profile=0.464`) de dos perfiles aprendidos (`0.924–0.997`)
